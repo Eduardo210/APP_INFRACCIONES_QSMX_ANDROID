@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:gravity="center_vertical|center_horizontal">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginBottom="100dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:id="@+id/llMenuIP"
+                style="@style/LayoutMenu"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivMenuIP"
+                    style="@style/ImageMenu"
+                    android:src="@drawable/icn_ip"
+                    android:contentDescription="@string/content"/>
+
+                <TextView
+                    android:text="@string/ip_input"
+                    android:id="@+id/tvMenuIP"
+                    android:gravity="center_vertical"
+                    style="@style/TextViewMenu" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:id="@+id/llMenuPrint"
+                style="@style/LayoutMenu"
+                tools:ignore="UseCompoundDrawables"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/ivMenuPrint"
+                    style="@style/ImageMenu"
+                    android:src="@drawable/icn_print"
+                    android:contentDescription="@string/content"/>
+
+                <TextView
+                    android:text="@string/print_prefs"
+                    android:id="@+id/tvMenuPrint"
+                    android:gravity="center_vertical"
+                    style="@style/TextViewMenu" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:id="@+id/llMenuConfig"
+                style="@style/LayoutMenu"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivMenuConfig"
+                    style="@style/ImageMenu"
+                    android:src="@drawable/icn_pic"
+                    android:contentDescription="@string/content"/>
+
+                <TextView
+                    android:text="@string/get_images"
+                    android:id="@+id/tvMenuConfig"
+                    android:gravity="center_vertical"
+                    style="@style/TextViewMenu" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:id="@+id/llMenuSync"
+                style="@style/LayoutMenu"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivMenuSync"
+                    style="@style/ImageMenu"
+                    android:src="@drawable/icn_sync"
+                    android:contentDescription="@string/content"/>
+
+                <TextView
+                    android:text="@string/sync"
+                    android:id="@+id/tvMenuSync"
+                    android:gravity="center_vertical"
+                    style="@style/TextViewMenu" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:id="@+id/llMenuSyncInf"
+                style="@style/LayoutMenu"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivMenuSyncInf"
+                    style="@style/ImageMenu"
+                    android:src="@drawable/icn_sync"
+                    android:contentDescription="@string/content"/>
+
+                <TextView
+                    android:text="@string/sync_inf"
+                    android:id="@+id/tvMenuSyncInf"
+                    android:gravity="center_vertical"
+                    style="@style/TextViewMenu" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:id="@+id/llMenuKey"
+                style="@style/LayoutMenu"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivMenuKey"
+                    style="@style/ImageMenu"
+                    android:src="@drawable/icn_dbdelete"
+                    android:contentDescription="@string/content"/>
+
+                <TextView
+                    android:text="@string/delete_db"
+                    android:id="@+id/tvMenuKey"
+                    android:gravity="center_vertical"
+                    style="@style/TextViewMenu" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:id="@+id/llMenuLogout"
+                style="@style/LayoutMenu"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/ivMenuLogout"
+                    style="@style/ImageMenu"
+                    android:src="@drawable/icn_exit"
+                    android:contentDescription="@string/content" />
+
+                <TextView
+                    android:text="@string/logout"
+                    android:id="@+id/tvMenuLogout"
+                    android:gravity="center_vertical"
+                    style="@style/TextViewMenu" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

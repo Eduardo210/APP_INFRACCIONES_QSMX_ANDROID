@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:background="@drawable/square_bg_list"
+    android:layout_width="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="350dp"
+        android:background="@android:color/black"
+        android:layout_marginEnd="4dp"
+        android:layout_height="45dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvCatDialTitle"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="2"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="80dp">
+
+        <ImageButton
+            android:id="@+id/ibExitDialCancel"
+            android:contentDescription="@string/image"
+            style="@style/InfraMenuButtons"
+            android:src="@drawable/ic_infra_cancel" />
+
+        <ImageButton
+            android:id="@+id/ibExitDialSave"
+            android:contentDescription="@string/image"
+            style="@style/InfraMenuButtons"
+            android:src="@drawable/ic_infra_save" />
+
+    </LinearLayout>
+</LinearLayout>

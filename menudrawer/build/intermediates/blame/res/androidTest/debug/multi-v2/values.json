@@ -1,0 +1,20 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/ingmtz/Documents/Repo/InfraccionesAndroid/menudrawer/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values/values.xml",
+            "map": [
+                {
+                    "source": "/Users/ingmtz/Documents/Repo/InfraccionesAndroid/menudrawer/build/intermediates/bundles/debug/res/values/values.xml",
+                    "from": {
+                        "startLines": "2,3,12,13,14,15,16,17,18,19,20,21,22,23",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,109,1312,1362,1401,1437,1478,1518,1556,1602,1648,1718,1787,1814",
+                        "endLines": "2,3,12,13,14,15,16,17,18,19,20,21,22,28",
+                        "endColumns": "53,57,49,38,35,40,39,37,45,45,69,68,26,12",
+                        "endOffsets": "104,162,1357,1396,1432,1473,1513,1551,1597,1643,1713,1782,1809,2210"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|center_horizontal">
+
+    <LinearLayout
+        android:layout_width="420dp"
+        android:layout_height="250dp"
+        android:background="@drawable/square_bg_cusdialog"
+        android:orientation="vertical"
+        android:gravity="center_vertical|center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvCusDialMessage"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvCusDialMessageTwo"
+            android:textSize="15sp"
+            android:layout_marginBottom="15dp" />
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="45dp"
+            android:id="@+id/etCusDialServ"
+            android:background="@drawable/square_bg_input"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:drawableLeft="@drawable/et_user"
+            android:inputType="textFilter|textNoSuggestions|text"
+            android:maxLines="1" />
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:id="@+id/btnCusDialOK"
+            android:background="@drawable/square_bg_button"
+            android:textColor="#ffffff"
+            android:layout_marginTop="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="420dp"
+        android:layout_height="250dp"
+        android:gravity="end">
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/ibCusDialCancel"
+            android:src="@drawable/btn_cancel"
+            android:background="@android:color/transparent"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+</RelativeLayout>

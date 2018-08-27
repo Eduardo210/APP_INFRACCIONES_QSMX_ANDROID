@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="mx.qsistemas.infracciones.Activities.MainMenu">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="2"
+        tools:ignore="UseCompoundDrawables,UselessParent">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            app:srcCompat="@drawable/ic_add"
+            android:id="@+id/ibMenuNew"
+            style="@style/ImageMenuActivity"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:text="Nueva Infracción"
+            android:id="@+id/tvMenuNew"
+            style="@style/TextViewMenuActivity" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            app:srcCompat="@drawable/ic_search"
+            android:id="@+id/ibMenuSearch"
+            style="@style/ImageMenuActivity"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:text="Busqueda de Infracciónes"
+            android:id="@+id/tvMenuSearch"
+            style="@style/TextViewMenuActivity" />
+
+    </LinearLayout>
+</RelativeLayout>

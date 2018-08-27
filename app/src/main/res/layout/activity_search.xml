@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_search"
+    tools:context="mx.qsistemas.infracciones.Activities.SearchActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/LayoutInfraItem" >
+
+        <TextView
+            android:text="@string/folio"
+            style="@style/TextViewInfraSubtitle" />
+
+        <EditText
+            android:hint="@string/folio"
+            android:id="@+id/etSearchFolio"
+            style="@style/InfraEditText"
+            android:inputType="textCapCharacters" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/LayoutInfraItem" >
+
+        <TextView
+            android:text="@string/id"
+            style="@style/TextViewInfraSubtitle" />
+
+        <RelativeLayout style="@style/SpinnerRelativeView">
+
+            <Spinner android:id="@+id/spSearchIdentificador"
+                style="@style/SpinnerSpinnerInfra" />
+
+            <ImageView style="@style/SpinnerImageView"
+                android:contentDescription="@string/content" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/LayoutInfraItem" >
+
+        <TextView
+            android:text="@string/id_num"
+            style="@style/TextViewInfraSubtitle" />
+
+        <EditText
+            android:hint="@string/id_num"
+            android:id="@+id/etSearchNumId"
+            style="@style/InfraEditText"
+            android:inputType="textCapCharacters" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        style="@style/LayoutInfraItem"
+        android:gravity="center">
+
+        <Button
+            android:text="@string/search"
+            android:id="@+id/btnSearchSearch"
+            style="@style/btnInfra"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+    </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lvSearchList"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+</RelativeLayout>

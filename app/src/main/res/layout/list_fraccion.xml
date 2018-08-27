@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/square_bg_list">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/LayoutInfraItem"
+            android:gravity="center">
+
+            <TextView
+                android:text="@string/article"
+                style="@style/TextViewInfraSubtitle"
+                android:textSize="18sp"
+                android:layout_height="30dp"
+                android:layout_weight="1.5"
+                android:id="@+id/tvListTitleOne" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvListArt"
+                android:layout_weight="3.5"
+                android:textSize="18sp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:maxLines="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            style="@style/LayoutInfraItem"
+            android:gravity="center">
+
+            <TextView
+                android:text="@string/fraction"
+                style="@style/TextViewInfraSubtitle"
+                android:textSize="18sp"
+                android:layout_height="30dp"
+                android:layout_weight="1.5"
+                android:id="@+id/tvListTitleTwo" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvListFracc"
+                android:layout_weight="2.5"
+                android:textSize="18sp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:maxLines="1" />
+
+            <ImageButton
+                app:srcCompat="@drawable/ic_infra_cancel"
+                android:id="@+id/ibListDelete"
+                android:layout_weight="1"
+                style="@style/InfraMenuButtons"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="70dp"
+            style="@style/LayoutInfraItem"
+            android:gravity="center"
+            android:id="@+id/llListDesc"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:text="@string/description"
+                android:id="@+id/tvListTitleThree"
+                style="@style/TextViewInfraSubtitle"
+                android:textSize="18sp"
+                android:layout_height="30dp"
+                android:layout_weight="1.5" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvListDesc"
+                android:layout_weight="3.5"
+                android:textSize="18sp"
+                android:paddingEnd="5dp"
+                android:paddingStart="5dp"
+                android:maxLines="3" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,222 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MyDialog" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowAnimationStyle">@style/FadeDialogAnimation</item>
+    </style>
+
+    <style name="FadeDialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="LayoutMenu">
+        <item name="android:layout_width">250dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:weightSum">4</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="ImageMenu">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="TextViewMenu" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">3</item>
+    </style>
+
+    <style name="ImageMenuActivity">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">0.7</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="TextViewMenuActivity" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">0.3</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="LayoutInfraTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:weightSum">5</item>
+        <item name="android:background">#000000</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TextViewInfraTitleWhite" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="LayoutInfraItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:weightSum">5</item>
+    </style>
+
+    <style name="TextViewInfraSubtitle" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/square_bg_title</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+    </style>
+
+    <style name="LayoutInfraMenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">90dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:weightSum">5</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">#000000</item>
+    </style>
+
+    <style name="SpinnerRelativeView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+    </style>
+
+    <style name="SpinnerImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@drawable/ic_arrow_down</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:contentDescription">@string/content</item>
+    </style>
+
+    <style name="SpinnerSpinnerInfra" parent="android:Widget.Spinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/square_bg_input</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:paddingEnd">20dp</item>
+    </style>
+
+    <style name="InfraMenuButtons" parent="android:Widget.ImageButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="InfraEditText" parent="android:Widget.EditText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">3</item>
+        <item name="android:ems">10</item>
+        <item name="android:background">@drawable/square_bg_input</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="btnInfra" parent="android:Widget.Button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/square_bg_button</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+    </style>
+
+    <style name="DialogTheme" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="TextViewInfraData" parent="android:Widget.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">4</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:background">@drawable/square_bg_data</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="RadiosInfraData" parent="android:Widget.CompoundButton.RadioButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">2.5</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:layout_marginStart">30dp</item>
+        <item name="android:layout_marginEnd">30dp</item>
+    </style>
+
+    <style name="ImageCaptureInfra">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="LayoutInfraItemPhoto">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:weightSum">4</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+
+</resources>

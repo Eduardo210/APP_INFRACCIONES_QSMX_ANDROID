@@ -148,6 +148,9 @@ public class Const {
         public static final int SEARCH_ONLINE_SUCCESS = 9;
         public static final int ONLINITEM = 10;
         public static final int PRINT_TWO = 11;
+        public static final int BARCODE_ONE = 12;
+        public static final int BARCODE_TWO = 13;
+
     }
 
     public class Typedata {

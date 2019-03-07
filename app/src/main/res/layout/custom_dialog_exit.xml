@@ -34,8 +34,8 @@
 
         <ImageButton
             android:id="@+id/ibExitDialCancel"
-            android:contentDescription="@string/image"
             style="@style/InfraMenuButtons"
+            android:contentDescription="@string/image"
             android:src="@drawable/ic_infra_cancel" />
 
         <ImageButton

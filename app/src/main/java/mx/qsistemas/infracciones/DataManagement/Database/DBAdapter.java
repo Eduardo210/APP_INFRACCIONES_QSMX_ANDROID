@@ -14,7 +14,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import mx.qsistemas.infracciones.DataManagement.Const;
 import mx.qsistemas.infracciones.DataManagement.Models.ArtFraccion;
@@ -306,9 +305,9 @@ class DBAdapter {
                 insertinfra.append("'" + infraid.getFecha_uno() + "', ");
                 insertinfra.append("'" + infraid.getFecha_dos() + "', ");
                 insertinfra.append("'" + infraid.getFecha_tres() + "', ");
-                insertinfra.append("'" + infraid.getImporte_uno() + "', ");
-                insertinfra.append("'" + infraid.getImporte_dos() + "', ");
-                insertinfra.append("'" + infraid.getImporte_tres() + "', ");
+                insertinfra.append("" + infraid.getImporte_uno() + ", ");
+                insertinfra.append("" + infraid.getImporte_dos() + ", ");
+                insertinfra.append("" + infraid.getImporte_tres() + ", ");
                 if (infraid.isOnline()){
                     insertinfra.append("'1', ");
                 }
@@ -1555,7 +1554,7 @@ class DBAdapter {
         database.close();
     }
 
-    UserLogin getUserLogin(String username){
+    UserLogin getUserLogin(String username   ){
 
         UserLogin userLogin = null;
         try {

@@ -17,20 +17,39 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import mx.qsistemas.infracciones.Activities.LoginActivity;
 import mx.qsistemas.infracciones.Activities.SearchActivity;
 import mx.qsistemas.infracciones.DataManagement.Const;
 import mx.qsistemas.infracciones.DataManagement.PreferenceHelper;
 import mx.qsistemas.infracciones.OnProgressCancelListener;
+import mx.qsistemas.infracciones.OnVolleyResponse;
 import mx.qsistemas.infracciones.R;
 
 /**
@@ -367,6 +386,59 @@ public class Utils {
             }
         });
         dialog.show();
+    }
+
+    public static void volleyWS(final Context context, String url, final HashMap<String, String> map, RequestQueue postQueue, final Integer serviceCode, final OnVolleyResponse listener){
+        try {
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject object = new JSONObject(response);
+                        listener.onServiceCompleted(object.getBoolean("SUCCESS"), object.getString("ERROR_MESSAGE"), object, serviceCode);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        listener.onServiceCompleted(false, context.getString(R.string.server_error) + ": " + e.getMessage() , null, serviceCode);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    String errmess = "Error desconocido";
+                    if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                        errmess = "Se supero el tiempo de espera al servidor";
+                    } else if (error instanceof AuthFailureError) {
+                        errmess = "Error de autenticación con el servidor";
+                    } else if (error instanceof ServerError) {
+                        errmess = "Error interno del servidor";
+                    } else if (error instanceof NetworkError) {
+                        errmess = "Se supero el tiempo de espera al servidor";
+                    } else if (error instanceof ParseError) {
+                        errmess = "Error al parsear la respuesta";
+                    }
+                    listener.onServiceCompleted(false, context.getString(R.string.server_error) + ": " + errmess , null, serviceCode);
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    return map;
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    return super.parseNetworkResponse(response);
+                }
+
+            };
+
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+            ));
+            postQueue.add(request);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

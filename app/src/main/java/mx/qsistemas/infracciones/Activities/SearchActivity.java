@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -20,9 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import mx.qsistemas.infracciones.DataManagement.Adapters.OnlineSearchAdapter;
 import mx.qsistemas.infracciones.DataManagement.Adapters.SearchAdapter;
@@ -291,9 +288,15 @@ public class SearchActivity extends InfraBase implements AdapterView.OnItemClick
                     if (pContent.isSuccess(response)) {
                         GetSaveInfra data = pContent.getdataitem(response, catalogs);
                         if (data != null){
-                            String[] oficial = dbHelper.getOficial(data.getId_persona_ayun());
-                            data.setOficialcaptura(oficial[0]);
-                            data.setOficialnum(oficial[1]);
+                            try {
+                                String[] oficial = dbHelper.getOficial(data.getId_persona_ayun());
+                                data.setOficialcaptura(oficial[0]);
+                                data.setOficialnum(oficial[1]);
+                            } catch (Exception e){
+                                e.printStackTrace();
+                                data.setOficialcaptura("-");
+                                data.setOficialnum("000000");
+                            }
                             data.setOnline(true);
                             Intent i = new Intent().setClass(SearchActivity.this, InfraccionActivity.class);
                             i.putExtra("data", data);

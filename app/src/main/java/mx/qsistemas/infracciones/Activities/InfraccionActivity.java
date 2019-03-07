@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,9 @@ import com.basewin.services.CardBinder;
 import com.basewin.services.ServiceManager;
 import com.basewin.utils.BCDHelper;
 import com.github.paolorotolo.expandableheightlistview.ExpandableHeightListView;
+import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.pos.sdk.card.PosCardInfo;
 
 import org.json.JSONException;
@@ -56,6 +60,7 @@ import org.json.JSONException;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -119,11 +124,14 @@ public class InfraccionActivity extends InfraBase implements CompoundButton.OnCh
     double longitude;
     private LocationManager locationManager;
     int count;
+    private BarcodeDetector detector;
 
     private Button btnLeerLic, btnLeerTC, btnValidaDocs;
     private CardBinder cardService;
     private PosCardInfo posCardInfo;
 
+    private static final String SAVED_INSTANCE_URI = "uri";
+    private static final String SAVED_INSTANCE_RESULT = "result";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +200,14 @@ public class InfraccionActivity extends InfraBase implements CompoundButton.OnCh
         checkHeaderFooter();
         initViewComplete();
         loadData();
+        detector = new BarcodeDetector.Builder(this)
+                .setBarcodeFormats(Barcode.QR_CODE)
+                .build();
+
+        if (!detector.isOperational()) {
+            Utils.showToast("Could not set up the detector!", this);
+            return;
+        }
 
     }
 
@@ -496,19 +512,10 @@ public class InfraccionActivity extends InfraBase implements CompoundButton.OnCh
                         @Override
                         public void onClick(View v) {
                             try {
-                                ServiceManager.getInstence().getScan().startScan(60 * 1000, new OnBarcodeCallBack() {
-                                    @Override
-                                    public void onScanResult(String s) throws RemoteException {
-                                        setDataIntoInfra(1);
-                                        dialog.dismiss();
-                                    }
 
-                                    @Override
-                                    public void onFinish() throws RemoteException {
-                                        Utils.showToast(getString(R.string.cancelled_read), InfraccionActivity.this);
-                                        dialog.dismiss();
-                                    }
-                                });
+                                    Intent intent = new Intent(getApplicationContext(),InfraccionActivity.class);
+                                    startActivityForResult(intent, Const.ServiceCode.BARCODE_ONE);
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Utils.showToast(getString(R.string.error_unknown_reading), InfraccionActivity.this);
@@ -559,6 +566,8 @@ public class InfraccionActivity extends InfraBase implements CompoundButton.OnCh
                 }
             });
         }
+
+
 
         btnLeerLic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -664,6 +673,12 @@ public class InfraccionActivity extends InfraBase implements CompoundButton.OnCh
         }
     }
 
+    private void launchMediaScanIntent() {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(imageUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
     private void loadData() {
         Utils.showCustomProgressDialog(this, false, null);
         mActivity = InfraccionActivity.this;
@@ -675,6 +690,22 @@ public class InfraccionActivity extends InfraBase implements CompoundButton.OnCh
         });
     }
 
+    private Bitmap decodeBitmapUri(Context ctx, Uri uri) throws FileNotFoundException {
+        int targetW = 600;
+        int targetH = 600;
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(ctx.getContentResolver().openInputStream(uri), null, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+
+        return BitmapFactory.decodeStream(ctx.getContentResolver()
+                .openInputStream(uri), null, bmOptions);
+    }
     private void updateDataSet() {
 
         artlist.addAll(saveData.getArticulos());
@@ -1290,10 +1321,9 @@ public class InfraccionActivity extends InfraBase implements CompoundButton.OnCh
 
                 saveData.setId_persona_ayun(pHelper.getIdPersonaAyuntamiento());
 
-                saveData.setImporte_tres(String.format("%.2f", sumatotal));
-                saveData.setImporte_dos(String.format("%.2f", sumatotal * 0.5));
-                saveData.setImporte_uno(String.format("%.2f", sumatotal * 0.3));
-
+                saveData.setImporte_tres(String.valueOf(sumatotal));
+                saveData.setImporte_dos(String.valueOf(sumatotal * 0.5));
+                saveData.setImporte_uno(String.valueOf(sumatotal * 0.3));
 
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat datefull = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -1889,7 +1919,42 @@ public class InfraccionActivity extends InfraBase implements CompoundButton.OnCh
                     Utils.showToast("Captura cancelada", this);
                 }
                 break;
-        }    }
+
+            case Const.ServiceCode.BARCODE_ONE:
+                if (resultCode == RESULT_OK) {
+                    launchMediaScanIntent();
+                    try {
+                        Bitmap bitmap = decodeBitmapUri(this, imageUri);
+                        if (detector.isOperational() && bitmap != null) {
+                            Frame frame = new Frame.Builder().setBitmap(bitmap).build();
+                            SparseArray<Barcode> barcodes = detector.detect(frame);
+                            for (int index = 0; index < barcodes.size(); index++) {
+                                Barcode code = barcodes.valueAt(index);
+                                int type = barcodes.valueAt(index).valueFormat;
+                                switch (type) {
+                                    case Barcode.URL:
+                                        Log.i("BARCODE", "url: " + code.url.url);
+                                        break;
+                                    default:
+                                        Log.i("BARCODE", code.rawValue);
+                                        break;
+                                }
+                            }
+                            if (barcodes.size() == 0) {
+                                Utils.showToast("No se encontro un código a escanear", this);
+                            }
+                        } else {
+                            Utils.showToast("No se pudo inicializar el lector", this);
+                        }
+                    } catch (Exception e) {
+                        Utils.showToast("Fallo al cargar la imagen QR" + e.getMessage(),this);
+                    }
+                }
+                break;
+            case Const.ServiceCode.BARCODE_TWO:
+                break;
+        }
+    }
 
     @Override
     public void onTaskCompleted(String response, int serviceCode) throws JSONException {

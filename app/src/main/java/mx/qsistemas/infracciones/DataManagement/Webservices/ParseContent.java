@@ -1,18 +1,14 @@
 package mx.qsistemas.infracciones.DataManagement.Webservices;
 
 import android.content.Context;
-import android.content.Intent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import mx.qsistemas.infracciones.DataManagement.Const;
-import mx.qsistemas.infracciones.DataManagement.Database.DBHelper;
 import mx.qsistemas.infracciones.DataManagement.Models.ArtFraccion;
 import mx.qsistemas.infracciones.DataManagement.Models.Catalogs;
 import mx.qsistemas.infracciones.DataManagement.Models.GetSaveInfra;

@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Gradle: __local_aars__:S.\Projects\Android\InfraccionesAndroid\app\libs\bcprov-jdk16-1.45.jar:unspecified@jar">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/bcprov-jdk16-1.45.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "51886383811",
+    "firebase_url": "https://honos-7f224.firebaseio.com",
+    "project_id": "honos-7f224",
+    "storage_bucket": "honos-7f224.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51886383811:android:c2657a2cffa97ff1",
+        "android_client_info": {
+          "package_name": "mx.qsistemas.infracciones"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "51886383811-0h9q3cl6n31dfqs3dk9kfklfdcj5mhed.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mx.qsistemas.infracciones",
+            "certificate_hash": "378530d9472a4db5dfd54c9b215ce4874a3e9705"
+          }
+        },
+        {
+          "client_id": "51886383811-253u5qgoal1hjuca90ebcn6n4c92g78g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACcJLUmIgh690GtY9y4R4XdVsf0KpDkDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "51886383811-253u5qgoal1hjuca90ebcn6n4c92g78g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

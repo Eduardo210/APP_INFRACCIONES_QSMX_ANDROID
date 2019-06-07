@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.commonsware.cwac:saferoom.x:1.0.4@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bc0f2eef6c75a586657a21439a97d091/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bc0f2eef6c75a586657a21439a97d091/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.commonsware.cwac/saferoom.x/1.0.4/c1d0eb0a58cc8a55c0781e46d598709f88ea72d3/saferoom.x-1.0.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

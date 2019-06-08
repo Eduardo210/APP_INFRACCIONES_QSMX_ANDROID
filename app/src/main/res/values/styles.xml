@@ -6,15 +6,117 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Enable fullscreen activities -->
+        <item name="android:windowFullscreen">true</item>
+        <!-- Toolbar configuration -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!-- Text View Style for Item Titles -->
+    <style name="TextView_TitleItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/qfont</item>
+    </style>
+
+    <style name="TextView_TitleItem_Bold">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/qfont</item>
+    </style>
+
+    <!-- Text View Style for Item Titles 2 -->
+    <style name="TextView_TitleItem2">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textSize">27sp</item>
+        <item name="android:fontFamily">@font/qfont</item>
+    </style>
+
+    <style name="TextView_TitleItem2_Bold">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">right</item>
+        <item name="android:textSize">27sp</item>
+        <item name="android:fontFamily">@font/qfont</item>
+    </style>
+
+    <!-- Text View Style for Item Titles in Expandable Toolbar -->
+    <style name="TextView_Title_Toolbar_Bold">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">@font/qfont</item>
+    </style>
+
+    <!-- Text View Style for Item Subtitles in Expandable Toolbar -->
+    <style name="TextView_Subtitle_Toolbar">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:fontFamily">@font/qfont</item>
+    </style>
+
+    <!-- Edit Text Style for Input Item -->
+    <style name="EditText_InputItem">
+        <item name="android:fontFamily">@font/qfont</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
+    <!-- Custom Small Button Style -->
+    <style name="SmallButton_Custom">
+        <item name="android:background">@drawable/small_button_gradient</item>
+        <item name="android:layout_width">@dimen/small_button_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/qfont</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- Custom Dialog Button Style -->
+    <style name="DialogButton_Custom" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:fontFamily">@font/qfont</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <!-- Floating Menu Text Style -->
+    <style name="FloatingMenuTextView">
+        <item name="android:background">@color/colorLightBlack</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:fontFamily">@font/qfont</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+    </style>
 </resources>

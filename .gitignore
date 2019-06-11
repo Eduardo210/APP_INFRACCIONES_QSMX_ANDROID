@@ -1,0 +1,6 @@
+#CARPETAS
+*.idea/*
+*.gradle/*
+*.build/*
+
+#ARCHIVOS 

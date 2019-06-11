@@ -3,6 +3,7 @@ package mx.qsistemas.incidencias.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
 import android.provider.Settings
 
 
@@ -18,15 +19,25 @@ class Validator {
 
         fun isNetworkEnable(context: Context): Boolean {
             val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val networkCapabilities = connManager.getNetworkCapabilities(connManager.activeNetwork)
-            return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val networkCapabilities = connManager.getNetworkCapabilities(connManager.activeNetwork)
+                return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            } else {
+                val networkCapabilities = connManager.activeNetworkInfo
+                return networkCapabilities != null && networkCapabilities.isConnectedOrConnecting
+            }
         }
 
         fun isConnectedToWifi(context: Context): Boolean {
             val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            val networkCapabilities = connManager.getNetworkCapabilities(connManager.activeNetwork)
-            return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
-                    && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val networkCapabilities = connManager.getNetworkCapabilities(connManager.activeNetwork)
+                return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+                        && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+            } else {
+                val networkCapabilities = connManager.activeNetworkInfo
+                return networkCapabilities != null && networkCapabilities.type == ConnectivityManager.TYPE_WIFI
+            }
         }
 
         fun isHighAccuracyEnable(context: Context): Boolean {

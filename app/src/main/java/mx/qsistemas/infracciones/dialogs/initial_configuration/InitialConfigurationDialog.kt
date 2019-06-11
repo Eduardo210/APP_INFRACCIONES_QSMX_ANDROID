@@ -19,6 +19,7 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.DialogInitialConfigurationBinding
 import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.payments_transfer.PaymentsTransfer
 import java.util.*
 
 
@@ -32,8 +33,9 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
     private var townshipKeys = mutableListOf<String>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        return dialog
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,7 +66,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                     states.add(data)
                 }
                 val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
                 binding.spnState.adapter = adapter
             }
         }
@@ -87,7 +89,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                     townshipKeys.add(document.id)
                 }
                 val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
                 binding.spnTownship.adapter = adapter
             }
         }
@@ -105,7 +107,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                 val imei = Utils.getImeiDevice(Application.getContext())
                 Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.set(map, SetOptions.merge())?.addOnCompleteListener { t2 ->
                     if (t2.isSuccessful) {
-                        //PaymentsTransfer.configDevice(township.id_town, prefix)
+                        PaymentsTransfer.configDevice(township.id_town, prefix)
                         dismiss()
                     } else {
                         listener?.onDialogError(Application.getContext().getString(R.string.e_firestore_not_saved))

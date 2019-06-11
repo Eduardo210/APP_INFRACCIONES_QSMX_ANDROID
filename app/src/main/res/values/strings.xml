@@ -52,6 +52,7 @@
     <string name="e_marker_too_distance">El marcador debe estar dentro del radio</string>
     <string name="e_without_address">Sin dirección obtenida</string>
     <string name="e_without_camera_resolutions">Sin resoluciones de cámara</string>
+    <string name="e_without_internet">Favor de validar la conexión a internet</string>
     <string name="e_stream_not_started">No se pudo iniciar la transmición</string>
     <string name="e_video_was_recorded">Solamente se puede guardar un video por reporte</string>
     <!-- Firebase Errors -->

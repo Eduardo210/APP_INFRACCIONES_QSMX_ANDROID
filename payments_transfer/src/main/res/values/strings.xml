@@ -1,46 +1,46 @@
 <resources>
-    <string name="app_name">Payments Transfer</string>
+    <string name="pt_app_name">Payments Transfer</string>
 
     <!-- Titles -->
-    <string name="t_pin_input">Ingresar firma electrónica</string>
-    <string name="t_obtaining_key">Obteniendo llave de cifrado</string>
-    <string name="t_waiting_card">Inserte/Deslice la tarjeta\no\nAproxime contactless</string>
-    <string name="t_waiting_nfc_card">Aproxime tarjeta</string>
-    <string name="t_reading_card">Leyendo tarjeta</string>
-    <string name="t_confirming_card">Confirmando tarjeta</string>
-    <string name="t_cipher_information">Cifrando información</string>
-    <string name="t_doing_payworks_tx">Realizando cargo</string>
-    <string name="t_printing_voucher">Imprimiendo voucher</string>
-    <string name="t_printing">Imprimiendo</string>
+    <string name="pt_t_pin_input">Ingresar firma electrónica</string>
+    <string name="pt_t_obtaining_key">Obteniendo llave de cifrado</string>
+    <string name="pt_t_waiting_card">Inserte/Deslice la tarjeta\no\nAproxime contactless</string>
+    <string name="pt_t_waiting_nfc_card">Aproxime tarjeta</string>
+    <string name="pt_t_reading_card">Leyendo tarjeta</string>
+    <string name="pt_t_confirming_card">Confirmando tarjeta</string>
+    <string name="pt_t_cipher_information">Cifrando información</string>
+    <string name="pt_t_doing_payworks_tx">Realizando cargo</string>
+    <string name="pt_t_printing_voucher">Imprimiendo voucher</string>
+    <string name="pt_t_printing">Imprimiendo</string>
 
     <!-- Shared Preferences -->
-    <string name="sp_name">payments_transfer</string>
-    <string name="sp_quetz_id_township">quetz_id_township</string>
-    <string name="sp_quetz_id_terminal">quetz_id_terminal</string>
-    <string name="sp_quetz_is_device_config">is_device_config</string>
-    <string name="sp_banorte_counter_control">ban_counter_control</string>
-    <string name="sp_banorte_aes_key">ban_key</string>
-    <string name="sp_banorte_serial_number">ban_serial_number</string>
-    <string name="sp_banorte_merchant_id">ban_merchant_id</string>
-    <string name="sp_banorte_user">ban_user</string>
-    <string name="sp_banorte_black_box">ban_black_box</string>
+    <string name="pt_sp_name">payments_transfer</string>
+    <string name="pt_sp_quetz_id_township">quetz_id_township</string>
+    <string name="pt_sp_quetz_id_terminal">quetz_id_terminal</string>
+    <string name="pt_sp_quetz_is_device_config">is_device_config</string>
+    <string name="pt_sp_banorte_counter_control">ban_counter_control</string>
+    <string name="pt_sp_banorte_aes_key">ban_key</string>
+    <string name="pt_sp_banorte_serial_number">ban_serial_number</string>
+    <string name="pt_sp_banorte_merchant_id">ban_merchant_id</string>
+    <string name="pt_sp_banorte_user">ban_user</string>
+    <string name="pt_sp_banorte_black_box">ban_black_box</string>
 
     <!-- Success Strings -->
-    <string name="s_load_key">Llave guardada correctamente</string>
-    <string name="s_load_key2">El dispositivo ya cuenta con llave</string>
-    <string name="s_print_voucher">Se ha impreso el voucher</string>
+    <string name="pt_s_load_key">Llave guardada correctamente</string>
+    <string name="pt_s_load_key2">El dispositivo ya cuenta con llave</string>
+    <string name="pt_s_print_voucher">Se ha impreso el voucher</string>
 
     <!-- Errors -->
-    <string name="e_unknown">Error desconocido</string>
-    <string name="e_declined">Operación declinada</string>
-    <string name="e_rejected">Operación rechazada</string>
-    <string name="e_terminated">Operación terminada</string>
-    <string name="e_canceled">Operación cancelada</string>
-    <string name="e_no_response">No se obtuvo respuesta</string>
-    <string name="e_card_not_found">No se pudo identificar la tarjeta</string>
-    <string name="e_need_to_load_key">Dispositivo no cuenta con llave de cifrado</string>
-    <string name="e_card_input_incorrect">Favor de insertar tarjeta por medio de chip</string>
-    <string name="e_print_run_out_paper">Se ha terminado el papel durante impresión</string>
-    <string name="e_print_overheat">Sobrecalentamiento de la terminal</string>
-    <string name="e_print_other_error">Ha ocurrido un error en la impresión</string>
+    <string name="pt_e_unknown">Error desconocido</string>
+    <string name="pt_e_declined">Operación declinada</string>
+    <string name="pt_e_rejected">Operación rechazada</string>
+    <string name="pt_e_terminated">Operación terminada</string>
+    <string name="pt_e_canceled">Operación cancelada</string>
+    <string name="pt_e_no_response">No se obtuvo respuesta</string>
+    <string name="pt_e_card_not_found">No se pudo identificar la tarjeta</string>
+    <string name="pt_e_need_to_load_key">Dispositivo no cuenta con llave de cifrado</string>
+    <string name="pt_e_card_input_incorrect">Favor de insertar tarjeta por medio de chip</string>
+    <string name="pt_e_print_run_out_paper">Se ha terminado el papel durante impresión</string>
+    <string name="pt_e_print_overheat">Sobrecalentamiento de la terminal</string>
+    <string name="pt_e_print_other_error">Ha ocurrido un error en la impresión</string>
 </resources>

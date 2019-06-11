@@ -19,7 +19,7 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
 
     fun printVoucher(activity: Activity, voucherInfo: Voucher, entryMode: String) {
         try {
-            activity.runOnUiThread { DialogStatusHelper.showDialog(activity, activity.getString(R.string.t_printing_voucher)) }
+            activity.runOnUiThread { DialogStatusHelper.showDialog(activity, activity.getString(R.string.pt_t_printing_voucher)) }
             ServiceManager.getInstence().printer.setPrintGray(1000)
             val printTest = JSONArray()
             ServiceManager.getInstence().printer.setPrintFontByAsserts("sans_bold.ttf")
@@ -54,16 +54,16 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
                 printTest.put(getPrintObject("AID: ${voucherInfo.AID}", "2"))
                 printTest.put(getPrintObject("TVR: ${voucherInfo.TVR}", "2"))
                 printTest.put(getPrintObject("TSI: ${voucherInfo.TSI}", "2"))
-                printTest.put(getPrintObject("APN: ${voucherInfo.APN}", "2"))
+                printTest.put(getPrintObject("APN: ${voucherInfo.APN}\n\n", "2"))
             }
             printJson.put("spos", printTest)
             ServiceManager.getInstence().printer.print(printJson.toString(), null, this)
         } catch (e: JSONException) {
             e.printStackTrace()
-            txListener.onTxVoucherFailer(context.getString(R.string.e_print_other_error))
+            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_other_error))
         } catch (e: Exception) {
             e.printStackTrace()
-            txListener.onTxVoucherFailer(context.getString(R.string.e_print_other_error))
+            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_other_error))
         }
     }
 
@@ -92,15 +92,15 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
     override fun onError(errorCode: Int, p1: String?) {
         if (errorCode == PrinterBinder.PRINTER_ERROR_NO_PAPER) {
             DialogStatusHelper.closeDialog()
-            txListener.onTxVoucherFailer(context.getString(R.string.e_print_run_out_paper))
+            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_run_out_paper))
         }
         if (errorCode == PrinterBinder.PRINTER_ERROR_OVER_HEAT) {
             DialogStatusHelper.closeDialog()
-            txListener.onTxVoucherFailer(context.getString(R.string.e_print_overheat))
+            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_overheat))
         }
         if (errorCode == PrinterBinder.PRINTER_ERROR_OTHER) {
             DialogStatusHelper.closeDialog()
-            txListener.onTxVoucherFailer(context.getString(R.string.e_print_other_error))
+            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_other_error))
         }
     }
 

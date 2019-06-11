@@ -14,9 +14,10 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.fabric.sdk.android.Fabric
 import mx.qsistemas.incidencias.utils.Preferences
-import mx.qsistemas.payments_transfer.PaymentsTransfer
 
 class Application : MultiDexApplication() {
 
@@ -25,10 +26,12 @@ class Application : MultiDexApplication() {
     }
 
     companion object {
+        val TAG = "Infracciones"
         private var instance: Application? = null
         /*private var m_database: AppDatabase? = null*/
-        private var prefs: Preferences? = null
-        private var firestore: FirebaseFirestore? = null
+        var prefs: Preferences? = null
+        var firestore: FirebaseFirestore? = null
+        var remoteConfig: FirebaseRemoteConfig? = null
 
         fun getContext(): Context {
             return instance!!.applicationContext
@@ -37,14 +40,6 @@ class Application : MultiDexApplication() {
         /*fun getAppDatabase(): AppDatabase {
             return m_database!!
         }*/
-
-        fun getPreferences(): Preferences {
-            return prefs!!
-        }
-
-        fun getFirestore(): FirebaseFirestore {
-            return firestore!!
-        }
     }
 
     override fun onCreate() {
@@ -52,31 +47,19 @@ class Application : MultiDexApplication() {
         MultiDex.install(getContext())
         prefs = Preferences(getContext())
         /*m_database = AppDatabase.getInMemoryDatabase(getContext())*/
-        val settings = FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build()
-        firestore = FirebaseFirestore.getInstance()
-        firestore?.firestoreSettings = settings
+        initializeFirebaseComponents()
         /* Initialize Payments Library */
-        PaymentsTransfer.initialize(getContext())
+        //PaymentsTransfer.initialize(getContext())
         /* Granted permission to access to storage*/
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
+        /* Initialize crashlytics */
         if (!BuildConfig.DEBUG) {
             Fabric.with(this, Crashlytics())
         } else {
             Stetho.initializeWithDefaults(getContext())
         }
-        /* Get Firebase push notification token */
-        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(this.javaClass.simpleName, "getInstanceId failed", task.exception)
-                return@OnCompleteListener
-            }
-            // Get new Instance ID token
-            val token = task.result?.token
-            prefs?.saveData(R.string.sp_firebase_token_push, token ?: "")
-        })
-        /* Create the NotificationChannel, but only on API 26+ because
-          the NotificationChannel class is new and not in the support library*/
+        /* Create the NotificationChannel, but only on API 26+ because the NotificationChannel class is new and not in the support library*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
@@ -88,5 +71,37 @@ class Application : MultiDexApplication() {
             val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    private fun initializeFirebaseComponents() {
+        /* Initialize Firebase Firestore */
+        val settings = FirebaseFirestoreSettings.Builder().setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED).setPersistenceEnabled(true).build()
+        firestore = FirebaseFirestore.getInstance()
+        firestore?.firestoreSettings = settings
+        /* Initialize Firebase Remote Config */
+        remoteConfig = FirebaseRemoteConfig.getInstance()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(1800)
+                .build()
+        remoteConfig?.setConfigSettings(configSettings)
+        remoteConfig?.setDefaults(R.xml.remote_config_defaults)
+        remoteConfig?.fetchAndActivate()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val updated = task.result
+                Log.d(TAG, "Config params updated: $updated")
+            } else {
+                Log.e(TAG, "Fetch failed")
+            }
+        }
+        /* Get Firebase push notification token */
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(this.javaClass.simpleName, "getInstanceId failed", task.exception)
+                return@OnCompleteListener
+            }
+            // Get new Instance ID token
+            val token = task.result?.token
+            prefs?.saveData(R.string.sp_firebase_token_push, token ?: "")
+        })
     }
 }

@@ -45,6 +45,7 @@ const val TAG_APN = 0x9F12
 const val TAG_AL = 0x50
 const val TAG_TVR = 0x95
 const val TAG_TSI = 0x9B
+const val TAG_PAN_SEQ = 0x5F34
 
 /* For pinpad interface versions */
 const val PINPAD_INTERFACE_VERSION1 = 1

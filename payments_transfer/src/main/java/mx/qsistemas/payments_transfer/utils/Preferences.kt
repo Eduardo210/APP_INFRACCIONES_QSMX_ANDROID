@@ -7,7 +7,7 @@ import mx.qsistemas.payments_transfer.R
 
 class Preferences(private val context: Context) {
 
-    private val preferences: SharedPreferences = context.getSharedPreferences(context.getString(R.string.sp_name),
+    private val preferences: SharedPreferences = context.getSharedPreferences(context.getString(R.string.pt_sp_name),
             MODE_PRIVATE)
 
     fun saveData(key: Int, data: String) {

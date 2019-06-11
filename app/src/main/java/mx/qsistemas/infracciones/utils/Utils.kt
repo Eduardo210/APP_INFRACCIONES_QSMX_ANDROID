@@ -3,17 +3,22 @@ package mx.qsistemas.incidencias.utils
 import android.app.job.JobInfo
 import android.content.ComponentName
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
 import android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
 import android.provider.Settings
+import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.net.NetworkInterface
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,6 +29,30 @@ class Utils {
 
         fun getTokenDevice(context: Context): String =
                 Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+
+        fun getImeiDevice(context: Context): String {
+            try {
+                val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                val imei: String?
+                if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    imei = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        telephonyManager.imei
+                    } else {
+                        telephonyManager.deviceId
+                    }
+                    return if (imei != null && imei.isNotEmpty()) {
+                        imei
+                    } else {
+                        Build.SERIAL
+                    }
+                }
+            } catch (e: Exception) {
+                val errors = StringWriter()
+                e.printStackTrace(PrintWriter(errors))
+                return errors.toString()
+            }
+            return "not_found"
+        }
 
         /**
          *  Generate folioIncidence for new incidence reports
@@ -66,11 +95,7 @@ class Utils {
 
         fun getOutputMediaFile(type: Int): File? {
             // Check that the SDCard is mounted
-            val mediaStorageDir = File(
-                    Environment.getExternalStoragePublicDirectory(
-                            Environment.DIRECTORY_PICTURES
-                    ), "Incidencias"
-            )
+            val mediaStorageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Incidencias")
             // Create the storage directory(MyCameraVideo) if it does not exist
             if (!mediaStorageDir.exists()) {
                 if (!mediaStorageDir.mkdirs()) {
@@ -96,11 +121,8 @@ class Utils {
         fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
             val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
             vectorDrawable?.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
-            val bitmap = Bitmap.createBitmap(
-                    vectorDrawable!!.intrinsicWidth,
-                    vectorDrawable.intrinsicHeight,
-                    Bitmap.Config.ARGB_8888
-            )
+            val bitmap = Bitmap.createBitmap(vectorDrawable!!.intrinsicWidth, vectorDrawable.intrinsicHeight,
+                    Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
             vectorDrawable.draw(canvas)
             return BitmapDescriptorFactory.fromBitmap(bitmap)
@@ -128,9 +150,7 @@ class Utils {
                                 if (!isIPv4) {
                                     val delim = sAddr.indexOf('%') // drop ip6 zone suffix
                                     return if (delim < 0) sAddr.toUpperCase() else sAddr.substring(
-                                            0,
-                                            delim
-                                    ).toUpperCase()
+                                            0, delim).toUpperCase()
                                 }
                             }
                         }

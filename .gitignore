@@ -1,0 +1,7 @@
+#CARPETAS
+*.idea/*
+*.gradle/*
+*.build/*
+
+#ARCHIVOS 
+.idea/workspace.xml

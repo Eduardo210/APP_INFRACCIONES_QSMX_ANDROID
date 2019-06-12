@@ -64,15 +64,31 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d698889-3499-4f97-b419-04ee070cc89c" name="Default" comment="* Prefix Configuration.">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/custom_dropdown_spinner_item.xml" afterDir="false" />
+    <list default="true" id="7d698889-3499-4f97-b419-04ee070cc89c" name="Default" comment="* Internet validations.&#10;* Correction of design in dialog initial configuration.">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Services.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/NetworkResponse.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/KotinUnitTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInContracts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Preferences.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Preferences.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Validator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Validator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_initial_configuration.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_initial_configuration.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/ExampleUnitTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsTransfer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsTransfer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsVoucher.kt" beforeDir="false" afterPath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsVoucher.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/pboc/PbocListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/pboc/PbocListener.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Constants.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -179,54 +195,12 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="18" column="30" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
-              <folding>
-                <element signature="e#618#641#1" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="706">
-              <caret line="109" column="47" selection-start-line="109" selection-start-column="47" selection-end-line="109" selection-end-column="47" />
+            <state relative-caret-position="520">
+              <caret line="105" column="87" lean-forward="true" selection-start-line="105" selection-start-column="87" selection-end-line="105" selection-end-column="87" />
               <folding>
-                <element signature="e#5072#5138#1" expanded="true" />
-                <element signature="e#5241#5307#1" expanded="true" />
-                <element signature="e#5892#5951#1" expanded="true" />
-                <element signature="e#6197#6220#1" expanded="true" />
-                <element signature="e#6288#6306#1" expanded="true" />
-                <element signature="e#6368#6397#1" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsTransfer.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-100">
-              <caret line="78" column="17" selection-start-line="78" selection-start-column="17" selection-end-line="78" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_initial_configuration.xml">
-          <provider editor-type-id="android-designer2" />
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
-              <caret line="51" column="57" selection-start-line="51" selection-start-column="57" selection-end-line="51" selection-end-column="57" />
-              <folding>
-                <element signature="e#1027#1051#0" expanded="true" />
-                <element signature="e#1136#1160#0" expanded="true" />
-                <element signature="e#2244#2271#0" expanded="true" />
-                <element signature="e#2356#2380#0" expanded="true" />
+                <element signature="e#7432#7454#1" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -235,8 +209,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="32" column="25" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="25" />
+            <state relative-caret-position="410">
+              <caret line="97" column="131" selection-start-line="97" selection-start-column="131" selection-end-line="97" selection-end-column="131" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="17">
+              <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="357">
+              <caret line="21" column="98" lean-forward="true" selection-start-line="21" selection-start-column="98" selection-end-line="21" selection-end-column="98" />
+              <folding>
+                <element signature="e#41#378#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -244,32 +239,62 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+            <state relative-caret-position="201">
+              <caret line="67" column="61" selection-start-line="67" selection-start-column="61" selection-end-line="67" selection-end-column="61" />
             </state>
           </provider>
           <provider editor-type-id="android-manifest" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
+            <state relative-caret-position="289">
+              <caret line="28" column="58" selection-start-line="28" selection-start-column="58" selection-end-line="28" selection-end-column="58" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="26" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="43" column="72" selection-start-line="43" selection-start-column="72" selection-end-line="43" selection-end-column="72" />
+            <state relative-caret-position="238">
+              <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
               <folding>
-                <element signature="e#1715#1778#1" expanded="true" />
-                <element signature="e#1837#1860#1" expanded="true" />
-                <element signature="e#2495#2558#1" expanded="true" />
+                <element signature="e#2230#2253#1" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="493">
+              <caret line="41" column="76" lean-forward="true" selection-start-line="41" selection-start-column="76" selection-end-line="41" selection-end-column="76" />
+              <folding>
+                <element signature="e#1186#1208#1" expanded="true" />
+                <element signature="e#1378#1400#1" expanded="true" />
+                <element signature="e#1503#1572#1" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="51" column="10" selection-start-line="51" selection-start-column="10" selection-end-line="51" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -282,6 +307,7 @@
         <option value="Interface" />
         <option value="resourceFile" />
         <option value="Kotlin Class" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -310,6 +336,10 @@
       <find>git</find>
       <find>Toast</find>
       <find>app_name</find>
+      <find>ip_add</find>
+      <find>articule</find>
+      <find>sp_last_synch</find>
+      <find>incidencias</find>
     </findStrings>
     <dirStrings>
       <dir>S:\Projects\Android\InfraccionesAndroid\menudrawer</dir>
@@ -326,16 +356,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Activities/InfraccionActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Utils/Utils.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Functions/PrintInfraNew.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/DataManagement/Database/DBAdapter.java" />
-        <option value="$PROJECT_DIR$/gradle.properties" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/content_manager.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" />
         <option value="$PROJECT_DIR$/app/src/release/res/values/google_maps_api.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_manager.xml" />
         <option value="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/Banxico_Request.kt" />
@@ -358,25 +380,33 @@
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/SnackbarHelper.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/RequestCatalogs.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/CloudFunctionsCatalogs.kt" />
-        <option value="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Constants.kt" />
+        <option value="$PROJECT_DIR$/payments_transfer/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/fcm/FirebaseMessagingService.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/custom_dropdown_spinner_item.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt" />
         <option value="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsVoucher.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/NetworkResponse.kt" />
+        <option value="$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/ExampleUnitTest.java" />
+        <option value="$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/KotinUnitTest.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" />
         <option value="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsTransfer.kt" />
         <option value="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/pboc/PbocListener.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInContracts.kt" />
-        <option value="$PROJECT_DIR$/payments_transfer/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/fcm/FirebaseMessagingService.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/custom_dropdown_spinner_item.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_initial_configuration.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Validator.kt" />
+        <option value="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Constants.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_initial_configuration.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInContracts.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Validator.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Services.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Preferences.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt" />
+        <option value="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" />
       </list>
     </option>
   </component>
@@ -394,79 +424,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="AndroidView">
-        <subPane>
-          <expand>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="modules" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="modules" type="462c0819:PsiDirectoryNode" />
-              <item name="login" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="catalogs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
-              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -523,6 +480,62 @@
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView">
+        <subPane>
+          <expand>
+            <path>
+              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+            </path>
+            <path>
+              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+            </path>
+            <path>
+              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="alarm" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="modules" type="462c0819:PsiDirectoryNode" />
+              <item name="login" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="InfraccionesAndroid" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -534,7 +547,7 @@
     <property name="algorithm" value="Scalr" />
     <property name="android.project.structure.last.selected" value="menudrawer" />
     <property name="android.project.structure.proportion" value="0.15" />
-    <property name="device.picker.selection" value="0123456789ABCDEF" />
+    <property name="device.picker.selection" value="P2000L" />
     <property name="format" value="PNG" />
     <property name="lastFolderRoot" value="S:/Pictures/PAP/icn_incidencia.png" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../TestTransferLibrary/payments_transfer" />
@@ -550,12 +563,8 @@
     <property name="sync.plugin.last.upgrade.timestamp" value="1535122566319" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\res\layout" />
-      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\java\mx\qsistemas\infracciones" />
-      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\java\mx\qsistemas\infracciones\net" />
-      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\java\mx\qsistemas\infracciones\modules" />
-      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\res\mipmap-xxxhdpi" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Android\Projects\InfraccionesAndroid\app" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="mx.qsistemas.infracciones" />
@@ -566,8 +575,12 @@
     <key name="android.template.parentActivityClass">
       <recent name="" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Android\Projects\InfraccionesAndroid\app" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\java\mx\qsistemas\infracciones" />
+      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\res\layout" />
+      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\java\mx\qsistemas\infracciones\net" />
+      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\java\mx\qsistemas\infracciones\modules" />
+      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\res\mipmap-xxxhdpi" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -600,6 +613,22 @@
     </configuration>
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration name="KotinUnitTest" type="AndroidJUnit" factoryName="Android JUnit" temporary="true" nameIsGenerated="true">
+      <module name="app" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="mx.qsistemas.infracciones.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="mx.qsistemas.infracciones" />
+      <option name="MAIN_CLASS_NAME" value="mx.qsistemas.infracciones.KotinUnitTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
       <option name="TEST_OBJECT" value="class" />
@@ -733,6 +762,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Android JUnit.KotinUnitTest" />
         <item itemvalue="Gradle.InfraccionesAndroid [signingReport]" />
       </list>
     </recent_temporary>
@@ -790,8 +820,29 @@
       <option name="project" value="LOCAL" />
       <updated>1560274062562</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="* Internet validations.&#10;* Correction of design in dialog initial configuration.">
+      <created>1560276046366</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1560276046366</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="KotinUnitTest - 2019.06.11 at 18h 31m 47s.xml">
+      <configuration name="KotinUnitTest" configurationId="AndroidJUnit" />
+    </history-entry>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-357" width="2576" height="1416" extended-state="6" />
@@ -812,12 +863,12 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.5555556" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32936507" />
       <window_info anchor="bottom" id="Android Profiler" order="7" />
-      <window_info anchor="bottom" x="0" y="23" width="1920" height="1017" id="Logcat" order="8" sideWeight="0.49570355" type="WINDOWED" visible="true" weight="0.45555556" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.3295325" />
+      <window_info anchor="bottom" x="0" y="23" width="1920" height="1017" id="Logcat" order="8" sideWeight="0.49570355" type="WINDOWED" weight="0.45555556" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32936507" />
       <window_info anchor="bottom" id="Build" order="10" sideWeight="0.74926543" weight="0.45079365" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49785176" weight="0.32692307" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49785176" weight="0.32619047" />
       <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5042965" side_tool="true" weight="0.32839224" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -838,7 +889,8 @@
     <MESSAGE value="* [Bug Fixed] Layout activity manager" />
     <MESSAGE value="* Clean compilation with Payments Transfer library integrated." />
     <MESSAGE value="* Prefix Configuration." />
-    <option name="LAST_COMMIT_MESSAGE" value="* Prefix Configuration." />
+    <MESSAGE value="* Internet validations.&#10;* Correction of design in dialog initial configuration." />
+    <option name="LAST_COMMIT_MESSAGE" value="* Internet validations.&#10;* Correction of design in dialog initial configuration." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -904,45 +956,57 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt</url>
-          <line>81</line>
-          <properties />
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt</url>
-          <line>129</line>
-          <properties />
-          <option name="timeStamp" value="43" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt</url>
-          <line>145</line>
-          <properties />
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt</url>
-          <line>144</line>
-          <properties />
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt</url>
-          <line>143</line>
-          <properties />
-          <option name="timeStamp" value="46" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt</url>
-          <line>142</line>
-          <properties />
-          <option name="timeStamp" value="47" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt</url>
           <line>90</line>
           <properties />
           <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/KotinUnitTest.kt</url>
+          <line>8</line>
+          <properties />
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt</url>
+          <line>57</line>
+          <properties />
+          <option name="timeStamp" value="63" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt</url>
+          <line>59</line>
+          <properties />
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt</url>
+          <line>61</line>
+          <properties />
+          <option name="timeStamp" value="65" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt</url>
+          <line>16</line>
+          <properties />
+          <option name="timeStamp" value="66" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt</url>
+          <line>35</line>
+          <properties />
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt</url>
+          <line>33</line>
+          <properties />
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt</url>
+          <line>37</line>
+          <properties />
+          <option name="timeStamp" value="69" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -954,6 +1018,11 @@
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>jobScheduler?.schedule(Utils.createJob(NOTIF_SEND_GEOS, ALARM_SEND_GEOS_TIME, serviceComponent).build())</expression-string>
+        <language-id>kotlin</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>townships</expression-string>
         <language-id>kotlin</language-id>
@@ -995,11 +1064,6 @@ townshipKeys.size</expression-string>
         <language-id>kotlin</language-id>
         <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
       </expression>
-      <expression>
-        <expression-string>document.toObject(States::class.java)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
     </expressions>
     <expressions id="watch">
       <expression>
@@ -1010,86 +1074,6 @@ townshipKeys.size</expression-string>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Utils.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="39" column="54" selection-start-line="39" selection-start-column="54" selection-end-line="39" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/CoDi.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/CoDi_Decypher.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="82" column="42" selection-start-line="82" selection-start-column="42" selection-end-line="82" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/Notification.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="205" column="42" selection-start-line="205" selection-start-column="42" selection-end-line="205" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="56" selection-start-line="8" selection-start-column="56" selection-end-line="8" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_manager.xml" />
-    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cb6f5f81887d309e4a05d0da4d0e23d5/jars/classes.jar!/com/google/firebase/remoteconfig/FirebaseRemoteConfigSettings.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="892">
-          <caret line="67" column="52" selection-start-line="67" selection-start-column="52" selection-end-line="67" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="699">
-          <caret line="59" column="63" selection-start-line="59" selection-start-column="63" selection-end-line="59" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/ManagerActivity.kt" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInRouter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="5" lean-forward="true" selection-start-line="7" selection-start-column="5" selection-end-line="7" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_manager.xml" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_log_in.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="43" lean-forward="true" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
-          <folding>
-            <element signature="e#736#762#0" expanded="true" />
-            <element signature="e#1925#1949#0" expanded="true" />
-            <element signature="e#4113#4135#0" expanded="true" />
-            <element signature="e#4393#4419#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/activity_helper/Direction.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/activity_helper/ActivityHelper.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1105,12 +1089,12 @@ townshipKeys.size</expression-string>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_title.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="12" column="44" lean-forward="true" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/AlertDialogHelper.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -1134,12 +1118,12 @@ townshipKeys.size</expression-string>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/xml/remote_config_defaults.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
           <caret line="3" column="23" selection-start-line="3" selection-start-column="23" selection-end-line="3" selection-end-column="23" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/SnackbarHelper.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -1158,13 +1142,6 @@ townshipKeys.size</expression-string>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/CloudFunctionsCatalogs.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/RequestCatalogs.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/edit_media/EditMediaDialog.kt" />
-    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Constants.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1175">
-          <caret line="87" column="40" selection-start-line="87" selection-start-column="40" selection-end-line="87" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/IPaymentsTransfer.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -1172,63 +1149,10 @@ townshipKeys.size</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsVoucher.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="26" column="89" lean-forward="true" selection-start-line="26" selection-start-column="89" selection-end-line="26" selection-end-column="89" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="26" column="17" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/pboc/PbocListener.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="77" column="108" selection-start-line="77" selection-start-column="108" selection-end-line="77" selection-end-column="108" />
-          <folding>
-            <element signature="e#45#1141#0" expanded="true" />
-            <element signature="e#7052#7100#1" expanded="true" />
-            <element signature="e#7310#7364#1" expanded="true" />
-            <element signature="e#9168#9216#1" expanded="true" />
-            <element signature="e#9509#9555#1" expanded="true" />
-            <element signature="e#9691#9740#1" expanded="true" />
-            <element signature="e#15286#15327#1" expanded="true" />
-            <element signature="e#17381#17423#1" expanded="true" />
-            <element signature="e#18654#18706#1" expanded="true" />
-            <element signature="e#18957#18987#1" expanded="true" />
-            <element signature="e#19522#19567#1" expanded="true" />
-            <element signature="e#19791#19832#0" expanded="true" />
-            <element signature="e#20276#20327#1" expanded="true" />
-            <element signature="e#20473#20507#1" expanded="true" />
-            <element signature="e#20570#20597#1" expanded="true" />
-            <element signature="e#20664#20696#1" expanded="true" />
-            <element signature="e#20767#20799#1" expanded="true" />
-            <element signature="e#20859#20891#1" expanded="true" />
-            <element signature="e#20960#20998#1" expanded="true" />
-            <element signature="e#21234#21270#1" expanded="true" />
-            <element signature="e#22443#22481#1" expanded="true" />
-            <element signature="e#23512#23548#1" expanded="true" />
-            <element signature="e#24584#24626#1" expanded="true" />
-            <element signature="e#25152#25188#1" expanded="true" />
-            <element signature="e#25651#25693#1" expanded="true" />
-            <element signature="e#26217#26253#1" expanded="true" />
-            <element signature="e#27133#27169#1" expanded="true" />
-            <element signature="e#27326#27371#1" expanded="true" />
-            <element signature="e#27775#27820#1" expanded="true" />
-            <element signature="e#28141#28182#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInContracts.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
         </state>
       </provider>
     </entry>
@@ -1257,40 +1181,11 @@ townshipKeys.size</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="38" column="26" selection-start-line="38" selection-start-column="10" selection-end-line="38" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-manifest" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="32" column="25" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/custom_spinner_item.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="7" column="31" lean-forward="true" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="2" selection-start-line="8" selection-start-column="2" selection-end-line="8" selection-end-column="2" />
         </state>
       </provider>
     </entry>
@@ -1317,82 +1212,210 @@ townshipKeys.size</expression-string>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_initial_configuration.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="51" column="57" selection-start-line="51" selection-start-column="57" selection-end-line="51" selection-end-column="57" />
-          <folding>
-            <element signature="e#1027#1051#0" expanded="true" />
-            <element signature="e#1136#1160#0" expanded="true" />
-            <element signature="e#2244#2271#0" expanded="true" />
-            <element signature="e#2356#2380#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="52" column="8" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="8" />
+        <state relative-caret-position="136">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt">
+    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsVoucher.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="706">
-          <caret line="109" column="47" selection-start-line="109" selection-start-column="47" selection-end-line="109" selection-end-column="47" />
-          <folding>
-            <element signature="e#5072#5138#1" expanded="true" />
-            <element signature="e#5241#5307#1" expanded="true" />
-            <element signature="e#5892#5951#1" expanded="true" />
-            <element signature="e#6197#6220#1" expanded="true" />
-            <element signature="e#6288#6306#1" expanded="true" />
-            <element signature="e#6368#6397#1" expanded="true" />
-          </folding>
+        <state relative-caret-position="359">
+          <caret line="66" column="44" selection-start-line="66" selection-start-column="44" selection-end-line="66" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/NetworkApi.kt" />
+    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/net/API_Banxico.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/net/API_Quetzalcoatl.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="43" column="51" lean-forward="true" selection-start-line="43" selection-start-column="51" selection-end-line="43" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/net/API_Banorte.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/ExampleUnitTest.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/KotinUnitTest.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Constants.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="68" column="35" lean-forward="true" selection-start-line="68" selection-start-column="35" selection-end-line="68" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/pboc/PbocListener.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="588" column="93" lean-forward="true" selection-start-line="588" selection-start-column="93" selection-end-line="588" selection-end-column="93" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsTransfer.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-100">
-          <caret line="78" column="17" selection-start-line="78" selection-start-column="17" selection-end-line="78" selection-end-column="17" />
+        <state relative-caret-position="60">
+          <caret line="125" column="17" selection-start-line="125" selection-start-column="17" selection-end-line="125" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_initial_configuration.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="63" column="43" selection-start-line="63" selection-start-column="43" selection-end-line="63" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/NetworkResponse.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="113" selection-start-line="22" selection-start-column="113" selection-end-line="22" selection-end-column="113" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
-          <caret line="18" column="30" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
-          <folding>
-            <element signature="e#618#641#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Validator.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="36" column="20" lean-forward="true" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+          <caret line="28" column="58" selection-start-line="28" selection-start-column="58" selection-end-line="28" selection-end-column="58" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="875">
-          <caret line="54" column="77" selection-start-line="54" selection-start-column="77" selection-end-line="54" selection-end-column="77" />
+        <state relative-caret-position="170">
+          <caret line="10" column="26" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInContracts.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="34" selection-start-line="6" selection-start-column="34" selection-end-line="6" selection-end-column="34" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="43" column="72" selection-start-line="43" selection-start-column="72" selection-end-line="43" selection-end-column="72" />
+        <state relative-caret-position="238">
+          <caret line="25" column="32" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
           <folding>
-            <element signature="e#1715#1778#1" expanded="true" />
-            <element signature="e#1837#1860#1" expanded="true" />
-            <element signature="e#2495#2558#1" expanded="true" />
+            <element signature="e#2230#2253#1" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/AppData/Local/Android/Sdk/platforms/android-29/android.jar!/java/lang/Integer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="67" column="61" selection-start-line="67" selection-start-column="61" selection-end-line="67" selection-end-column="61" />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Validator.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="25" selection-start-column="25" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="51" column="10" selection-start-line="51" selection-start-column="10" selection-end-line="51" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Services.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="46" column="40" lean-forward="true" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="41" column="76" lean-forward="true" selection-start-line="41" selection-start-column="76" selection-end-line="41" selection-end-column="76" />
+          <folding>
+            <element signature="e#1186#1208#1" expanded="true" />
+            <element signature="e#1378#1400#1" expanded="true" />
+            <element signature="e#1503#1572#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/Alarms.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="98" lean-forward="true" selection-start-line="21" selection-start-column="98" selection-end-line="21" selection-end-column="98" />
+          <folding>
+            <element signature="e#41#378#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Preferences.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="55" column="20" lean-forward="true" selection-start-line="55" selection-start-column="20" selection-end-line="55" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="25" lean-forward="true" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/initial_configuration/InitialConfigurationDialog.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="520">
+          <caret line="105" column="87" lean-forward="true" selection-start-line="105" selection-start-column="87" selection-end-line="105" selection-end-column="87" />
+          <folding>
+            <element signature="e#7432#7454#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="410">
+          <caret line="97" column="131" selection-start-line="97" selection-start-column="131" selection-end-line="97" selection-end-column="131" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
         </state>
       </provider>
     </entry>

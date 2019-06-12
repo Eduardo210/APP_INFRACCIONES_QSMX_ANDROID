@@ -261,6 +261,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     }
 
     override fun onReadECBalance(p0: Intent?) {
+        print(p0.toString())
     }
 
     override fun onContactlessCardType(kernelType: Int) {
@@ -294,6 +295,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     }
 
     override fun onConfirmCertInfo(p0: String?, p1: String?) {
+        print(p0)
     }
 
     override fun onTransactionResult(result: Int, data: Intent?) {
@@ -324,12 +326,13 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                 }
             }
         } else if (result == PBOCTransactionResult.TERMINATED) {
-            data?.getCharExtra("code", 0.toChar())
+            Log.e(this.javaClass.simpleName, "Transaction terminated")
             DialogStatusHelper.closeDialog()
         }
     }
 
     override fun onReadCardOfflineRecord(p0: Intent?) {
+        print(p0.toString())
     }
 
     override fun onError(p0: Intent?) {
@@ -503,8 +506,8 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                             if (entryMode == ENTRY_MODE_CHIP) {
                                 val onlineData = InputPBOCOnlineData()
                                 onlineData.responseCode = "00"
-                                onlineData.authCode = result.codigoAut
-                                onlineData.icData = result.datosEmv
+                                onlineData.authCode = ""
+                                onlineData.icData = ""
                                 try {
                                     ServiceManager.getInstence().pboc.inputOnlineProcessResult(onlineData.intent)
                                 } catch (e: Exception) {
@@ -557,6 +560,21 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                             paymentsVoucher.printVoucher(activity, voucher, entryMode)
                         }
                     }
+                } else if (response.code() == HttpsURLConnection.HTTP_CLIENT_TIMEOUT) {
+                    DialogStatusHelper.closeDialog()
+                    txListener.onTxFailed(activity.getString(R.string.pt_e_no_response))
+                    val paymentsVoucher = PaymentsVoucher(activity, txListener)
+                    val c = Calendar.getInstance().time
+                    val date = SimpleDateFormat("dd-MM-yyyy").format(c)
+                    val hour = SimpleDateFormat("HH:mm:SS").format(c)
+                    var voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
+                            "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
+                            FLAG_TRANS_TIMEOUT, needSign, map[MERCHANT_ID]!!, Preferences(activity).loadData(R.string.pt_sp_banorte_serial_number, "")
+                            ?: "")
+                    paymentsVoucher.printVoucher(activity, voucher, entryMode)
+                    if (entryMode == ENTRY_MODE_CHIP) {
+                        notifyTxFailToChip()
+                    }
                 } else {
                     DialogStatusHelper.closeDialog()
                     txListener.onTxFailed(activity.getString(R.string.pt_e_no_response))
@@ -569,6 +587,15 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 DialogStatusHelper.closeDialog()
                 txListener.onTxFailed(t.message ?: activity.getString(R.string.pt_e_unknown))
+                val paymentsVoucher = PaymentsVoucher(activity, txListener)
+                val c = Calendar.getInstance().time
+                val date = SimpleDateFormat("dd-MM-yyyy").format(c)
+                val hour = SimpleDateFormat("HH:mm:SS").format(c)
+                var voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
+                        "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
+                        FLAG_TRANS_OFFLINE, needSign, map[MERCHANT_ID]!!, Preferences(activity).loadData(R.string.pt_sp_banorte_serial_number, "")
+                        ?: "")
+                paymentsVoucher.printVoucher(activity, voucher, entryMode)
                 if (entryMode == ENTRY_MODE_CHIP) {
                     notifyTxFailToChip()
                 }

@@ -1,4 +1,4 @@
-package mx.qsistemas.incidencias.utils
+package mx.qsistemas.infracciones.utils
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -11,13 +11,13 @@ class Preferences(val context: Context) {
     fun saveData(key: Int, data: String) {
         val editor = this.preferences.edit()
         editor.putString(context.getString(key), data)
-        editor.commit()
+        editor.apply()
     }
 
     fun saveDataBool(key: Int, data: Boolean) {
         val editor = this.preferences.edit()
         editor.putBoolean(context.getString(key), data)
-        editor.commit()
+        editor.apply()
     }
 
     fun containsData(key: Int): Boolean {
@@ -39,21 +39,21 @@ class Preferences(val context: Context) {
     fun clearPreferences() {
         val editor = this.preferences.edit()
         editor.clear()
-        editor.commit()
+        editor.apply()
         return
     }
 
     fun clearPreference(key: Int) {
         val editor = this.preferences.edit()
         editor.remove(context.getString(key))
-        editor.commit()
+        editor.apply()
         return
     }
 
     fun saveDataInt(key: Int, data: Int) {
         val editor = this.preferences.edit()
         editor.putInt(context.getString(key), data)
-        editor.commit()
+        editor.apply()
     }
 
     fun loadDataInt(key: Int): Int {

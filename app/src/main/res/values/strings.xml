@@ -8,6 +8,7 @@
     <string name="sp_firebase_token_push">firebase_token_push</string>
     <string name="sp_id_township">id_township</string>
     <string name="sp_prefix">prefix</string>
+    <string name="sp_last_synch">last_synch</string>
 
     <!-- Remote Config Strings -->
     <string name="rc_ip_address">ip_address</string>
@@ -52,9 +53,11 @@
     <string name="e_marker_too_distance">El marcador debe estar dentro del radio</string>
     <string name="e_without_address">Sin dirección obtenida</string>
     <string name="e_without_camera_resolutions">Sin resoluciones de cámara</string>
-    <string name="e_without_internet">Favor de validar la conexión a internet</string>
     <string name="e_stream_not_started">No se pudo iniciar la transmición</string>
     <string name="e_video_was_recorded">Solamente se puede guardar un video por reporte</string>
+    <!-- Network Errors -->
+    <string name="e_without_internet">Favor de validar la conexión a internet</string>
+    <string name="e_other_problem_internet">Ocurrió un problema al consultar la información</string>
     <!-- Firebase Errors -->
     <string name="e_firestore_not_available">Ocurrió un problema con la obtención del catálogo</string>
     <string name="e_firestore_not_saved">Ocurrió un problema al guardar la información</string>

@@ -10,16 +10,16 @@ import androidx.fragment.app.DialogFragment
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.SetOptions
 import kotlinx.android.synthetic.main.dialog_title.view.*
-import mx.qsistemas.incidencias.utils.FS_COL_STATES
-import mx.qsistemas.incidencias.utils.FS_COL_TERMINALS
-import mx.qsistemas.incidencias.utils.FS_COL_TOWNSHIPS
-import mx.qsistemas.incidencias.utils.Utils
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.DialogInitialConfigurationBinding
 import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.net.catalogs.Townships
-import mx.qsistemas.payments_transfer.PaymentsTransfer
+import mx.qsistemas.infracciones.utils.FS_COL_STATES
+import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
+import mx.qsistemas.infracciones.utils.FS_COL_TOWNSHIPS
+import mx.qsistemas.infracciones.utils.Utils
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -100,14 +100,21 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
             if (t1.isSuccessful) {
                 val map = hashMapOf("id_township" to township.id_town,
                         "prefix" to prefix,
-                        "last_synch" to Date(),
+                        "last_synch" to Date(946688401000),
                         "last_geo" to GeoPoint(0.0, 0.0),
                         "time_geo" to Date(),
                         "android_id" to Utils.getTokenDevice(Application.getContext()))
                 val imei = Utils.getImeiDevice(Application.getContext())
                 Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.set(map, SetOptions.merge())?.addOnCompleteListener { t2 ->
                     if (t2.isSuccessful) {
-                        PaymentsTransfer.configDevice(township.id_town, prefix)
+                        /*PaymentsTransfer.configDevice(township.id_town, prefix)
+                        val loadKeyData = LoadKeyData("88888888", "7455440", "a7455440", "quet5440")
+                        PaymentsTransfer.loadKeyDevice(activity as LogInActivity, loadKeyData, object : IPaymentsTransfer.LoadKeyListener {
+                            override fun onLoadKey(success: Boolean, value: String) {
+                                if (!success) listener?.onDialogError(value)
+                            }
+                        })*/
+                        listener?.onConfigurationSuccessful()
                         dismiss()
                     } else {
                         listener?.onDialogError(Application.getContext().getString(R.string.e_firestore_not_saved))
@@ -143,6 +150,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                     Application.prefs?.saveDataInt(R.string.sp_id_township, township.id_town)
                     Application.prefs?.saveData(R.string.sp_prefix, prefix)
                     Application.prefs?.saveDataBool(R.string.sp_has_config_prefix, true)
+                    Application.prefs?.saveData(R.string.sp_last_synch, SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date(946688401000))) // Date: 01/01/2000 01:00:01
                     savePrefix(prefix, township, townshipKeys[binding.spnTownship.selectedItemPosition])
                 }
             }
@@ -158,4 +166,5 @@ interface DialogPresenter {
 
 interface InitialConfigurationCallback {
     fun onDialogError(msg: String)
+    fun onConfigurationSuccessful()
 }

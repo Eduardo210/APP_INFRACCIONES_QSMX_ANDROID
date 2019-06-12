@@ -3,7 +3,6 @@ package mx.qsistemas.infracciones.db.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "person_towship")
 data class PersonTownship(@PrimaryKey(autoGenerate = true) val id: Int,
@@ -23,7 +22,7 @@ data class PersonTownship(@PrimaryKey(autoGenerate = true) val id: Int,
                           @ColumnInfo(name = "ID_CATEGORIA_PERSONA") val id_category: Int,
                           @ColumnInfo(name = "BAN_ACTIVO") val is_active: Boolean,
                           @ColumnInfo(name = "EMPLEADO") val employee: String,
-                          @ColumnInfo(name = "FECHA_ALTA") val discharge_date: Date,
+                          @ColumnInfo(name = "FECHA_ALTA") val discharge_date: String,
                           @ColumnInfo(name = "ISSEMYM") val issemym: String,
                           @ColumnInfo(name = "BAN_LOC") val is_loc: Boolean,
                           @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user: Long,

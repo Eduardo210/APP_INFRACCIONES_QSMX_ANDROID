@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "attribute")
 data class Attribute(@PrimaryKey(autoGenerate = true) val id: Long,
                      @ColumnInfo(name = "ID_MODULO") val id_module: String,
                      @ColumnInfo(name = "ATRIBUTO") val attibute:String,

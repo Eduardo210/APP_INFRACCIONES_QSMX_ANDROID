@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "person_attribute")
 data class PersonAttibute(@PrimaryKey(autoGenerate = true) val id:Long,
                           @ColumnInfo(name = "ID_PERSONA") val id_person: Int,
                           @ColumnInfo(name = "ID_ATRIBUTO") val id_atribute: Int,

@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "colour")
 data class Colour(@PrimaryKey(autoGenerate = true) val id: Int,
                   @ColumnInfo(name = "COLOR") val colour: String,
                   @ColumnInfo(name = "CODE_ASCII") val code_ascii: String,

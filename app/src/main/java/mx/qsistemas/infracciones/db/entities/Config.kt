@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "config")
 data class Config(@PrimaryKey(autoGenerate = true) val id: Int,
                   @ColumnInfo(name = "FOTO_PERSONA_AYUNTAMIENTO") val path_to_person: String,
                   @ColumnInfo(name = "FOTO_VEHICULO_ROBADO") val path_to_stolen_vehicle: String,

@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "authority_issues")
 data class AuthorityIssues(@PrimaryKey(autoGenerate = true) val id: Long,
                            @ColumnInfo(name="AUTORIDAD") val authority: String,
                            @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user: String,

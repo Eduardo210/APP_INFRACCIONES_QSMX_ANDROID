@@ -17,6 +17,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.fabric.sdk.android.Fabric
+import mx.qsistemas.infracciones.db.AppDatabase
 import mx.qsistemas.infracciones.utils.Preferences
 
 class Application : MultiDexApplication() {
@@ -28,7 +29,7 @@ class Application : MultiDexApplication() {
     companion object {
         val TAG = "Infracciones"
         private var instance: Application? = null
-        /*private var m_database: AppDatabase? = null*/
+        var m_database: AppDatabase? = null
         var prefs: Preferences? = null
         var firestore: FirebaseFirestore? = null
         var remoteConfig: FirebaseRemoteConfig? = null
@@ -37,16 +38,13 @@ class Application : MultiDexApplication() {
             return instance!!.applicationContext
         }
 
-        /*fun getAppDatabase(): AppDatabase {
-            return m_database!!
-        }*/
     }
 
     override fun onCreate() {
         super.onCreate()
         MultiDex.install(getContext())
         prefs = Preferences(getContext())
-        /*m_database = AppDatabase.getInMemoryDatabase(getContext())*/
+        m_database = AppDatabase.getInMemoryDatabase(getContext())
         initializeFirebaseComponents()
         /* Initialize Payments Library */
         //PaymentsTransfer.initialize(getContext())

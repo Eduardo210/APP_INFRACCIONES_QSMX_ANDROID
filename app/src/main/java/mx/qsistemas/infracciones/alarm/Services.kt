@@ -21,7 +21,7 @@ class ReportsService : JobService() {
 
     override fun onStartJob(params: JobParameters?): Boolean {
         if (Validator.isNetworkEnable(Application.getContext())) {
-            //SenderManager.sendReports()
+            // TODO: Process the reports to send them.
         }
         return true
     }

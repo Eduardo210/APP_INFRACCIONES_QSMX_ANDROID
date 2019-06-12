@@ -16,20 +16,8 @@ import java.util.*
 
 class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContracts.Iterator {
 
-    private val USER_REPORTER = "user"
-    private val USER_ADMIN = "admin"
-    private val PSS = "123456"
-
     override fun registerAlarm() {
         Alarms()
-    }
-
-    override fun isCorrectCredentials(user: String, pss: String): Boolean {
-        return if ((user != USER_REPORTER && user != USER_ADMIN) || pss != PSS) false
-        else {
-            Application.prefs?.saveDataBool(R.string.sp_has_session, true)
-            true
-        }
     }
 
     override fun downloadCatalogs() {
@@ -51,5 +39,12 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                 listener.onError(t.message ?: "")
             }
         })
+    }
+
+    override fun login(user: String, psd: String) {
+        // TODO: Process of Login
+        // TODO: Process of save token session
+        Application.prefs?.saveDataBool(R.string.sp_has_session, true)
+        listener.onLoginSuccessful()
     }
 }

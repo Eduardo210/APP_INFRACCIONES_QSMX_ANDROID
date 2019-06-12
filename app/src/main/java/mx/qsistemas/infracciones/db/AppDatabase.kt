@@ -5,7 +5,7 @@ import android.text.Editable
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.commonsware.cwac.saferoom.SafeHelperFactory
-import mx.qsistemas.incidencias.utils.Utils
+import mx.qsistemas.infracciones.utils.Utils
 import mx.qsistemas.infracciones.Application
 
 private const val DB_NAME = "infracciones"

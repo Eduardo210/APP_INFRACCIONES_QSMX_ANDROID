@@ -159,10 +159,8 @@ object PaymentsTransfer : Interfaces.Contracts {
 
                 override fun onFailure(call: Call<GetKey_Result>, t: Throwable) {
                     DialogStatusHelper.closeDialog()
-                    listener.onLoadKey(
-                            false, t.message
-                            ?: paymentsContext.getString(R.string.pt_e_unknown)
-                    )
+                    listener.onLoadKey(false, t.message
+                            ?: paymentsContext.getString(R.string.pt_e_unknown))
                 }
             })
         } else {

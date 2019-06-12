@@ -1,4 +1,4 @@
-package mx.qsistemas.incidencias.utils
+package mx.qsistemas.infracciones.utils
 
 /* PERMISSION REQUEST CODES */
 const val RC_PERMISSION_LOCATION = 1

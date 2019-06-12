@@ -60,9 +60,11 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
             ServiceManager.getInstence().printer.print(printJson.toString(), null, this)
         } catch (e: JSONException) {
             e.printStackTrace()
+            DialogStatusHelper.closeDialog()
             txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_other_error))
         } catch (e: Exception) {
             e.printStackTrace()
+            DialogStatusHelper.closeDialog()
             txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_other_error))
         }
     }

@@ -1,4 +1,4 @@
-package mx.qsistemas.incidencias.utils
+package mx.qsistemas.infracciones.utils
 
 import android.app.job.JobInfo
 import android.content.ComponentName
@@ -95,7 +95,7 @@ class Utils {
 
         fun getOutputMediaFile(type: Int): File? {
             // Check that the SDCard is mounted
-            val mediaStorageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Incidencias")
+            val mediaStorageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Infracciones")
             // Create the storage directory(MyCameraVideo) if it does not exist
             if (!mediaStorageDir.exists()) {
                 if (!mediaStorageDir.mkdirs()) {

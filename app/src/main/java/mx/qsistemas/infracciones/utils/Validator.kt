@@ -1,4 +1,4 @@
-package mx.qsistemas.incidencias.utils
+package mx.qsistemas.infracciones.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

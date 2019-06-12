@@ -62,6 +62,7 @@ const val CODI_ACCOUNT_UNKNOWN = "Estatus desconocido"
 /* Network: Request: Generic Flags */
 const val FLAG_TRANS_APPROVE = "Aprobada"
 const val FLAG_TRANS_DECLINE = "Declinada"
+const val FLAG_TRANS_OFFLINE = "Sin conexión"
 const val FLAG_TRANS_REJECTED = "Rechazada"
 const val FLAG_TRANS_TIMEOUT = "Tiempo de espera\nfinalizado"
 

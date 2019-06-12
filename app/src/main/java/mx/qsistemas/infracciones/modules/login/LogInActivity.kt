@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
-import mx.qsistemas.incidencias.utils.Validator
+import mx.qsistemas.infracciones.utils.Validator
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivityLogInBinding
@@ -23,6 +23,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_log_in)
         binding.btnLogIn.setOnClickListener(this)
+        iterator.registerAlarm()
         if (Validator.isNetworkEnable(Application.getContext())) {
             if (!Application.prefs?.loadDataBoolean(R.string.sp_has_config_prefix, false)!!) {
                 val dialog = InitialConfigurationDialog()
@@ -30,13 +31,10 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                 dialog.isCancelable = false
                 dialog.show(supportFragmentManager, InitialConfigurationDialog::class.java.simpleName)
             } else {
-                // TODO: Sync Catalogs
+                iterator.downloadCatalogs()
             }
         } else {
             onError(Application.getContext().getString(R.string.e_without_internet))
-        }
-        if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
-            router.presentMainActivity()
         }
     }
 
@@ -46,6 +44,16 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
 
     override fun onDialogError(msg: String) {
         SnackbarHelper.showErrorSnackBar(this, msg, Snackbar.LENGTH_SHORT)
+    }
+
+    override fun onConfigurationSuccessful() {
+        iterator.downloadCatalogs()
+    }
+
+    override fun onCatalogsDownloaded() {
+        if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
+            router.presentMainActivity()
+        }
     }
 
     override fun onClick(v: View?) {

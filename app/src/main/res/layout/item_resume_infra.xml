@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cdv_infraccion_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="13dp"
+        card_view:cardElevation="3dp"
+        card_view:cardPreventCornerOverlap="false">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txt_vehicle_header"
+                style="@style/TextViewHeaderItem"
+                android:gravity="center_vertical"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/ic_car_front"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                tool:text="Ford Fiesta Rojo" />
+
+            <TextView
+                android:id="@+id/txt_folio_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Folio: "
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_vehicle_header" />
+            <TextView
+                android:id="@+id/txt_folio"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                tool:text="26704d9832"
+                android:textColor="@color/colorBlack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_vehicle_header"
+                card_view:layout_constraintStart_toEndOf="@id/txt_folio_title"/>
+
+            <TextView
+                android:id="@+id/txt_status_infra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/yellow_circle"
+                android:drawablePadding="5dp"
+                android:textColor="@color/colorYellow"
+                android:textSize="12sp"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                tool:text="Pendiente" />
+
+            <TextView
+                android:id="@+id/txt_date_infra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_status_infra"
+                tool:text="19:44 - 16/03/19" />
+
+            <TextView
+                android:id="@+id/txt_resume_art_frac"
+                android:layout_width="match_parent"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginTop="8dp"
+                tool:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dapibus nulla, eu bibendum metus. In ultrices orci a facilisis vehicula. Morbi urna dui, sodales at elementum sed, pellentesque ut est. Praesent laoreet pulvinar aliquam. Praesent nec ultricies nibh. Donec tristique eu lectus posuere vehicula. Fusce nisl sem, pharetra et luctus nec, condimentum in leo. Etiam id sapien lobortis, feugiat orci at, mattis dolor. In placerat blandit lorem vel rhoncus. Duis sit amet tempus justo, quis tincidunt sem."
+                android:layout_height="wrap_content"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_folio_title"/>
+
+            <TextView
+                android:id="@+id/txt_document_ident"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/ic_reader_mode"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_resume_art_frac"
+                tool:text="TJR-643" />
+
+            <Button
+                android:text="Ver infracción"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                android:id="@+id/btn_show_infra"
+                android:layout_width="130dp"
+                android:layout_marginTop="16dp"
+                android:layout_height="35dp"
+                android:background="@drawable/small_button_gradient"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_resume_art_frac"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <!--
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                style="@style/TextViewHeaderItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tool:text="Ford Fiesta Rojo" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="@string/search_folio_title"
+                    android:layout_width="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    style="@style/TextViewFolioTitle"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    tool:text="26704d9832"
+                    style="@style/TextViewFolio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                tool:text="Pendiente"
+                android:textColor="@color/colorYellow"
+                android:drawableLeft="@drawable/yellow_circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+-->
+
+</layout>

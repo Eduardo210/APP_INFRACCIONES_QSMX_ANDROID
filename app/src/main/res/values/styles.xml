@@ -119,4 +119,19 @@
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
     </style>
+    <style name="TextViewHeaderItem">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+    <style name="TextViewFolioTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+    <style name="TextViewFolio">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
+
 </resources>

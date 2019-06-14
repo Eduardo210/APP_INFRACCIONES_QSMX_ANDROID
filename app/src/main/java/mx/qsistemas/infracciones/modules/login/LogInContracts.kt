@@ -5,12 +5,13 @@ class LogInContracts {
     interface Presenter {
         fun onError(msg: String)
         fun onCatalogsDownloaded()
+        fun onLoginSuccessful()
     }
 
     interface Iterator {
         fun registerAlarm()
-        fun isCorrectCredentials(user: String, pss: String): Boolean
         fun downloadCatalogs()
+        fun login(user: String, psd: String)
     }
 
     interface Router {

@@ -34,6 +34,11 @@
     <string name="t_select_state">Seleccione un estado:</string>
     <string name="t_select_township">Seleccione un municipio:</string>
 
+    <!-- Dashboard Infraction String -->
+    <string name="t_toolbar_title_infraction">Infracciones</string>
+    <string name="t_toolbar_subtitle_infraction">Control y registro de infracciones</string>
+    <string name="t_last_infractions">Últimas infracciones</string>
+
     <!-- Dialog Buttons Strings -->
     <string name="t_accept">Aceptar</string>
     <string name="t_cancel">Cancelar</string>

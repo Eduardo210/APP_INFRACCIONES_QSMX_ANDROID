@@ -7,8 +7,8 @@ import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivityLogInBinding
-import mx.qsistemas.infracciones.dialogs.initial_configuration.InitialConfigurationCallback
-import mx.qsistemas.infracciones.dialogs.initial_configuration.InitialConfigurationDialog
+import mx.qsistemas.infracciones.dialogs.InitialConfigurationCallback
+import mx.qsistemas.infracciones.dialogs.InitialConfigurationDialog
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.utils.Validator
@@ -31,6 +31,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                 dialog.isCancelable = false
                 dialog.show(supportFragmentManager, InitialConfigurationDialog::class.java.simpleName)
             } else {
+                showLoader(getString(R.string.l_download_catalogs))
                 iterator.downloadCatalogs()
             }
         } else {
@@ -39,6 +40,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
     }
 
     override fun onError(msg: String) {
+        hideLoader()
         SnackbarHelper.showErrorSnackBar(this, msg, Snackbar.LENGTH_LONG)
     }
 
@@ -47,6 +49,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
     }
 
     override fun onConfigurationSuccessful() {
+        showLoader(getString(R.string.l_download_catalogs))
         iterator.downloadCatalogs()
     }
 
@@ -55,6 +58,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
     }
 
     override fun onCatalogsDownloaded() {
+        hideLoader()
         if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
             router.presentMainActivity()
         }

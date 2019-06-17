@@ -2,13 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBlackTransparent"
+    android:background="@color/colorBlueTransparent"
     android:orientation="vertical">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="350dp"
+        android:gravity="center"
+        android:layout_marginTop="80dp"
         android:scaleType="center" />
 
     <TextView
@@ -19,6 +21,7 @@
         android:gravity="center"
         android:text="ADBCE"
         android:textAlignment="center"
+        android:fontFamily="@font/pt_font"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/font_size_medium" />
 

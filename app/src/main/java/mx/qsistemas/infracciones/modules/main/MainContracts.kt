@@ -15,6 +15,7 @@ class MainContracts {
     interface Router {
         fun presentInfractionList(direction: Direction)
         fun presentNewInfraction()
+        fun presentSearchInfraction()
         fun presentDetailInfraction(folio: String)
         fun presentLogIn()
     }

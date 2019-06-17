@@ -6,6 +6,7 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.login.LogInActivity
 import mx.qsistemas.infracciones.modules.main.fr_infraction_history.InfractionListFr
+import mx.qsistemas.infracciones.modules.search.SearchActivity
 
 class MainRouter(private val activity: MainActivity) : MainContracts.Router {
 
@@ -15,6 +16,10 @@ class MainRouter(private val activity: MainActivity) : MainContracts.Router {
 
     override fun presentNewInfraction() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun presentSearchInfraction() {
+        activity.startActivity(Intent(Application.getContext(), SearchActivity::class.java))
     }
 
     override fun presentDetailInfraction(folio: String) {

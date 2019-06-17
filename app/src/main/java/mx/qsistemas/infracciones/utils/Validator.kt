@@ -41,7 +41,8 @@ class Validator {
         }
 
         fun isHighAccuracyEnable(context: Context): Boolean {
-            return Settings.Secure.getInt(context.contentResolver, Settings.Secure.LOCATION_MODE) == Settings.Secure.LOCATION_MODE_HIGH_ACCURACY
+            return Settings.Secure.getInt(context.contentResolver, Settings.Secure.LOCATION_MODE) in
+                    Settings.Secure.LOCATION_MODE_BATTERY_SAVING..Settings.Secure.LOCATION_MODE_HIGH_ACCURACY
         }
 
         fun isDateAutomatic(context: Context): Boolean {

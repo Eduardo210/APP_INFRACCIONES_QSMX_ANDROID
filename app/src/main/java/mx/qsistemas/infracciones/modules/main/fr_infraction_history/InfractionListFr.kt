@@ -33,6 +33,7 @@ class InfractionListFr : Fragment(), View.OnClickListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_infraction_list, container, false)
         binding.rcvInfractions.layoutManager = GridLayoutManager(activity, 1)
         binding.btnAddInfraction.setOnClickListener(this)
+        binding.include.imgSearchInfraction.setOnClickListener(this)
         return binding.root
     }
 
@@ -53,6 +54,9 @@ class InfractionListFr : Fragment(), View.OnClickListener {
                         activity.enableHighAccuracyGps()
                     }
                 }
+            }
+            binding.include.imgSearchInfraction.id -> {
+                activity.router.value.presentSearchInfraction()
             }
         }
     }

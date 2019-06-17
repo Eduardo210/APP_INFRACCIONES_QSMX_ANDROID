@@ -43,6 +43,9 @@
     <string name="t_accept">Aceptar</string>
     <string name="t_cancel">Cancelar</string>
 
+    <!-- Loader Strings -->
+    <string name="l_download_catalogs">Descargando catálogos</string>
+
     <!-- Errors -->
     <string name="e_empty_fields">Favor de validar campos</string>
     <string name="e_user_pss_incorrect">Credenciales incorrectas</string>

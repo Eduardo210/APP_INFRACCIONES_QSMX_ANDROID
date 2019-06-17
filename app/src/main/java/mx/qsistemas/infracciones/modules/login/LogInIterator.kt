@@ -1,5 +1,6 @@
 package mx.qsistemas.infracciones.modules.login
 
+import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
@@ -22,10 +23,11 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
 
     override fun downloadCatalogs() {
         val lastSynch = Application.prefs?.loadData(R.string.sp_last_synch, "01/01/2000")!!
-        NetworkApi().getNetworkService().downloadCatalogs(lastSynch).enqueue(object : Callback<DownloadCatalogs> {
-            override fun onResponse(call: Call<DownloadCatalogs>, response: Response<DownloadCatalogs>) {
+        NetworkApi().getNetworkService().downloadCatalogs(lastSynch).enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                    // TODO: Process catalogs
+                    val data = Gson().fromJson(response.body(), DownloadCatalogs::class.java)
+                    processCatalogs(data)
                     Application.prefs?.saveData(R.string.sp_last_synch, SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date()))
                     val imei = Utils.getImeiDevice(Application.getContext())
                     Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.update("last_synch", Date())
@@ -35,16 +37,19 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                 }
             }
 
-            override fun onFailure(call: Call<DownloadCatalogs>, t: Throwable) {
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
         })
     }
 
     override fun login(user: String, psd: String) {
-        // TODO: Process of Login
-        // TODO: Process of save token session
+
         Application.prefs?.saveDataBool(R.string.sp_has_session, true)
         listener.onLoginSuccessful()
+    }
+
+    private fun processCatalogs(data: DownloadCatalogs){
+
     }
 }

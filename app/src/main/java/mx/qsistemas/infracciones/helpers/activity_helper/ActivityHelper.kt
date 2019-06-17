@@ -4,6 +4,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import mx.qsistemas.payments_transfer.utils.DialogStatusHelper
 
 open class ActivityHelper : AppCompatActivity(), IActivityHelper {
 
@@ -15,11 +16,11 @@ open class ActivityHelper : AppCompatActivity(), IActivityHelper {
     }
 
     override fun showLoader(message: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        DialogStatusHelper.showDialog(this, message)
     }
 
     override fun hideLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        DialogStatusHelper.closeDialog()
     }
 
     override fun loadFragment(fragment: Fragment, idContainer: Int, direction: Direction, addToBackStack: Boolean) {

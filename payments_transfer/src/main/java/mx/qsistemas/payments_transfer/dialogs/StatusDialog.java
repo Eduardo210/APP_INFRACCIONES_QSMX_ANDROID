@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.airbnb.lottie.LottieAnimationView;
 import com.airbnb.lottie.LottieDrawable;
+
 import mx.qsistemas.payments_transfer.R;
 
 /**
@@ -38,7 +40,10 @@ public class StatusDialog extends BaseDialog {
         lottie = findViewById(R.id.animation_view);
         lottie.setRepeatMode(LottieDrawable.RESTART);
         lottie.loop(true);
+        lottie.setImageAssetsFolder("loader");
+        lottie.setSpeed(0.85F);
         lottie.setAnimation(R.raw.loader);
+        lottie.setMaxProgress(0.34F);
         lottie.playAnimation();
     }
 
@@ -47,6 +52,7 @@ public class StatusDialog extends BaseDialog {
     }
 
     public void dismissSelf() {
+        lottie.pauseAnimation();
         this.dismiss();
     }
 }

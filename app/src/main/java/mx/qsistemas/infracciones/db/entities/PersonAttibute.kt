@@ -8,5 +8,5 @@ import androidx.room.PrimaryKey
 data class PersonAttibute(@PrimaryKey(autoGenerate = true) val id:Long,
                           @ColumnInfo(name = "ID_PERSONA") val id_person: Int,
                           @ColumnInfo(name = "ID_ATRIBUTO") val id_atribute: Int,
-                          @ColumnInfo(name = "BAN_ACTIVA") val is_active: Boolean,
+                          //@ColumnInfo(name = "BAN_ACTIVA") val is_active: Boolean,
                           @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user: Long)

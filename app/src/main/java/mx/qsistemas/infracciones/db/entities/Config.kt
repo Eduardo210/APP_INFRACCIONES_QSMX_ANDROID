@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "config")
-data class Config(@PrimaryKey(autoGenerate = true) val id: Int,
+data class Config(@PrimaryKey @ColumnInfo(name = "ID_CONFIGURACION") val id: Int,
                   @ColumnInfo(name = "FOTO_PERSONA_AYUNTAMIENTO") val path_to_person: String,
                   @ColumnInfo(name = "FOTO_VEHICULO_ROBADO") val path_to_stolen_vehicle: String,
                   @ColumnInfo(name = "FOTO_DOCUMENTO_PERSONAL") val path_to_personal_document: String,
@@ -30,6 +30,5 @@ data class Config(@PrimaryKey(autoGenerate = true) val id: Int,
                   @ColumnInfo(name = "INFRACCION_MUNICIPIO") val infraccion_municipio: String,
                   @ColumnInfo(name = "INFRACCION_ID_PAIS") val id_country: Int,
                   @ColumnInfo(name = "INFRACCION_ID_ENTIDAD") val id_entity: Int,
-                  @ColumnInfo(name = "INFRACCION_ID_MUNICIPIO") val id_town: Int,
-                  @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user: Long
+                  @ColumnInfo(name = "INFRACCION_ID_MUNICIPIO") val id_town: Int
 )

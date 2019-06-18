@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "module")
-data class Module(@PrimaryKey(autoGenerate = true) val id:Int,
+data class Module(@PrimaryKey @ColumnInfo(name = "ID_MODULO") val id:Int,
                   @ColumnInfo(name = "MODULO") val module: String,
-                  @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user: Long,
-                  @ColumnInfo(name = "BAN_ACTIVO") val is_active:Boolean)
+                  @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user: Long)
+                  //@ColumnInfo(name = "BAN_ACTIVO") val is_active:Boolean)

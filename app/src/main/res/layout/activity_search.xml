@@ -49,21 +49,67 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_search_by_title"/>
+            <LinearLayout
+                android:id="@+id/lly_filter_data"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@id/btn_show_infra"
+                app:layout_constraintStart_toStartOf="@id/guide_line_center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="0dp">
+                <TextView
+                    android:id="@+id/txt_header_filter"
+                    tools:text="No. de Folio"
+                    android:layout_marginTop="10dp"
+                    style="@style/TextViewHeaderItem"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="parent" />
+
+            </LinearLayout>
+
             <Button
-                android:text="Buscar"
-                android:textColor="@color/colorWhite"
-                android:textSize="12sp"
-                android:layout_margin="16dp"
                 android:id="@+id/btn_show_infra"
                 android:layout_width="130dp"
                 android:layout_height="35dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sp_search_filter"
+                android:background="@drawable/small_button_gradient"
+                android:text="Buscar"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@drawable/small_button_gradient"/>
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_line_center_vertical"
+                app:layout_constraintGuide_percent=".5"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         
     </androidx.cardview.widget.CardView>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_results"
+        app:layout_constraintTop_toBottomOf="@id/cdv_search_filter"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

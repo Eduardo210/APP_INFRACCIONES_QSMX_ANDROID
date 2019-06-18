@@ -37,7 +37,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".modules.search.SearchActivity"></activity>
+        <activity android:name=".modules.NewVehicularInfraction"></activity>
+        <activity android:name="mx.qsistemas.infracciones.modules.infringement.search.SearchActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

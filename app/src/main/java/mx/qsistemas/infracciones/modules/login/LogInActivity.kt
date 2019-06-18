@@ -24,6 +24,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         binding = DataBindingUtil.setContentView(this, R.layout.activity_log_in)
         binding.btnLogIn.setOnClickListener(this)
         iterator.registerAlarm()
+        showLoader("")
         if (Validator.isNetworkEnable(Application.getContext())) {
             if (!Application.prefs?.loadDataBoolean(R.string.sp_has_config_prefix, false)!!) {
                 val dialog = InitialConfigurationDialog()

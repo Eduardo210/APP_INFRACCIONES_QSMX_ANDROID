@@ -8,9 +8,9 @@
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="150dp"
         android:gravity="center"
-        android:layout_marginTop="80dp"
         android:scaleType="center" />
 
     <TextView
@@ -18,10 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/animation_view"
+        android:fontFamily="@font/pt_font"
         android:gravity="center"
         android:text="ADBCE"
         android:textAlignment="center"
-        android:fontFamily="@font/pt_font"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/font_size_medium" />
 

@@ -41,9 +41,8 @@ public class StatusDialog extends BaseDialog {
         lottie.setRepeatMode(LottieDrawable.RESTART);
         lottie.loop(true);
         lottie.setImageAssetsFolder("loader");
-        lottie.setSpeed(0.85F);
         lottie.setAnimation(R.raw.loader);
-        lottie.setMaxProgress(0.34F);
+        lottie.setMaxProgress(0.25F);
         lottie.playAnimation();
     }
 

@@ -29,7 +29,7 @@
         <u>Olvidé mi contraseña</u>
     </string>
 
-    <!-- Initial Configuration Strings -->
+    <!-- Initial C_Configuration Strings -->
     <string name="t_initial_configuration">Configuración Inicial</string>
     <string name="t_select_state">Seleccione un estado:</string>
     <string name="t_select_township">Seleccione un municipio:</string>

@@ -9,6 +9,5 @@ data class PersonAccount(@PrimaryKey @ColumnInfo(name = "ID_CUENTA_USUARIO") val
                          @ColumnInfo(name = "ID_PERSONA") val id_person:Long,
                          @ColumnInfo(name = "BAN_ACTIVA") val is_active: Int,
                          @ColumnInfo(name = "USER_NAME") val user_name: String,
-                         @ColumnInfo(name = "PASSWORD") val password: String,
-                         @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user:Long
+                         @ColumnInfo(name = "PASSWORD") val password: String
                          )

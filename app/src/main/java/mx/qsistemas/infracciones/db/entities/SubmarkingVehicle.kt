@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "submarking_vehicle")
-data class SubmarkingVehicle(@PrimaryKey @ColumnInfo(name = "ID_SUBMARCA") val id_submarking_vehicle:Int,
-                             @ColumnInfo(name = "ID_MARCA_VEHICULO") val submarking_vehicle:String,
-                             @ColumnInfo(name = "ID_RGISTRO_USUARIO") val id_reg_user: Long)
-                             //@ColumnInfo(name = "BAN_ACTIVO") val is_active: Boolean)
+data class SubmarkingVehicle(@PrimaryKey @ColumnInfo(name = "ID_SUBMARCA") val id_submarking_vehicle: Int,
+                             @ColumnInfo(name = "ID_MARCA_VEHICULO") val id_brand: Int,
+                             @ColumnInfo(name = "SUBMARCA_VEHICULO") val subbrand: String)

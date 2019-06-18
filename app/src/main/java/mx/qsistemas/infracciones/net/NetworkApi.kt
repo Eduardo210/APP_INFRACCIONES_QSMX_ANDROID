@@ -3,12 +3,11 @@ package mx.qsistemas.infracciones.net
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.net.catalogs.DownloadCatalogs
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
@@ -26,12 +25,14 @@ open class NetworkApi {
         }
         val clientBuilder = customClient.build()
         val builder = Retrofit.Builder().baseUrl(Application.remoteConfig?.getString(Application.getContext().getString(R.string.rc_ip_address)))
-                .addConverterFactory(GsonConverterFactory.create()).client(clientBuilder).build()
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                //.addConverterFactory(GsonConverterFactory.create())
+                .client(clientBuilder).build()
         return builder.create(ApiService::class.java)
     }
 
     interface ApiService {
         @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Catalogos_Infracciones")
-        fun downloadCatalogs(@Query("FechaSincronizacion") date: String): Call<DownloadCatalogs>
+        fun downloadCatalogs(@Query("FechaSincronizacion") date: String): Call<String>
     }
 }

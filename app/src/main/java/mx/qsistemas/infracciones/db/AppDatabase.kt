@@ -7,6 +7,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.commonsware.cwac.saferoom.SafeHelperFactory
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.BuildConfig
+import mx.qsistemas.infracciones.db.dao.*
 import mx.qsistemas.infracciones.db.entities.*
 import mx.qsistemas.infracciones.utils.Utils
 
@@ -14,6 +16,7 @@ private const val DB_NAME = "infracciones"
 private const val DB_VERSION = 1
 
 @Database(entities = [
+    Address::class,
     Articles::class,
     Ascription::class,
     Attribute::class,
@@ -21,6 +24,7 @@ private const val DB_VERSION = 1
     Colour::class,
     Config::class,
     Disposition::class,
+    Infraction::class,
     IdentifierDocument::class,
     InfractionFraction::class,
     LicenseType::class,
@@ -36,11 +40,40 @@ private const val DB_VERSION = 1
     Syncronization::class,
     TownSepoMex::class,
     VehicleBrand::class,
-    VehicleType::class
+    VehicleType::class,
+    VehicleInfraction::class
 ], version = DB_VERSION, exportSchema = false)
 
 
 abstract class AppDatabase : RoomDatabase() {
+
+    abstract fun addressDao(): AddressDao
+    abstract fun articlesDao(): ArticlesDao
+    abstract fun ascriptionDao(): AscriptionDao
+    abstract fun attributeDao(): AttributeDao
+    abstract fun authorityIssuesDao(): AuthorityIssuesDao
+    abstract fun colourDao(): ColourDao
+    abstract fun configDao(): ConfigDao
+    abstract fun dispositionDao(): DispositionDao
+    abstract fun identifierDocumentDao(): IdentifierDocumentDao
+    abstract fun infractionDao(): InfractionDao
+    abstract fun infractionFractionDao(): InfractionFractionDao
+    abstract fun licenseTypeDao(): LicenseTypeDao
+    abstract fun moduleDao(): ModuleDao
+    abstract fun nonWorkingDayDao(): NonWorkingDayDao
+    abstract fun personAccountDao(): PersonAccountDao
+    abstract fun personAttributeDao(): PersonAttributeDao
+    abstract fun personDao(): PersonDao
+    abstract fun personTownshipDao(): PersonTownshipDao
+    abstract fun retainedDocumentDao(): RetainedDocumentDao
+    abstract fun stateDao(): StateDao
+    abstract fun submarkingVehicleDao(): SubmarkingVehicleDao
+    abstract fun synchronizationDao(): SyncronizationDao
+    abstract fun townSepomexDao(): TownSepomexDao
+    abstract fun vehicleBrandDao(): VehicleBrandDao
+    abstract fun vehicleInfractionDao(): VehicleInfractionDao
+    abstract fun vehicleTypeDao(): VehicleTypeDao
+
     companion object {
         private var INSTANCE: AppDatabase? = null
 
@@ -48,11 +81,13 @@ abstract class AppDatabase : RoomDatabase() {
         fun getInMemoryDatabase(context: Context): AppDatabase? {
             if (INSTANCE == null) {
                 synchronized(AppDatabase::class.java) {
-                    INSTANCE = run {
+                    INSTANCE = if (!BuildConfig.DEBUG) {
                         val editable = Editable.Factory.getInstance().newEditable(Utils.getTokenDevice(Application.getContext()))
                         val factory = SafeHelperFactory.fromUser(editable)
                         Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).openHelperFactory(factory)
                                 .build()
+                    } else {
+                        Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
                     }
                 }
             }

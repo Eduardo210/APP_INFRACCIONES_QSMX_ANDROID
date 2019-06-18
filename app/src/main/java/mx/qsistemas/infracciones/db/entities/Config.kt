@@ -5,14 +5,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "config")
-data class Config(@PrimaryKey @ColumnInfo(name = "ID_CONFIGURACION") val id: Int,
-                  @ColumnInfo(name = "FOTO_PERSONA_AYUNTAMIENTO") val path_to_person: String,
-                  @ColumnInfo(name = "FOTO_VEHICULO_ROBADO") val path_to_stolen_vehicle: String,
-                  @ColumnInfo(name = "FOTO_DOCUMENTO_PERSONAL") val path_to_personal_document: String,
+data class Config(@PrimaryKey(autoGenerate = true) val id: Int,
                   @ColumnInfo(name = "SALARIO_MINIMO") val minimum_salary: Float,
                   @ColumnInfo(name = "PLAZO_DIAS_DESCUENTO_INFRACCION") val discount_days_terms: Int,
-                  @ColumnInfo(name = "TAZA_RECARGOS_INFRACCION") val surcharge_rate: Float,
-                  @ColumnInfo(name = "ENCABEZADO_LOCTRASERA") val header_loctrasera: String,
                   @ColumnInfo(name = "TAZA_DESCUENTO_INFRACCION_MISMO_DIA") val same_day_discount: Float,
                   @ColumnInfo(name = "INFRACCION_IMPRESION_ENCABEZADO_I") val header_print_1: String,
                   @ColumnInfo(name = "INFRACCION_IMPRESION_ENCABEZADO_II") val header_print_2: String,

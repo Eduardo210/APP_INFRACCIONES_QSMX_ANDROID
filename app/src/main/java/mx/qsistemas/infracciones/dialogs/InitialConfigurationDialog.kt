@@ -1,4 +1,4 @@
-package mx.qsistemas.infracciones.dialogs.initial_configuration
+package mx.qsistemas.infracciones.dialogs
 
 import android.app.Dialog
 import android.os.Bundle

@@ -130,8 +130,6 @@
     <string name="search_folio_title">Folio:</string>
     <string name="status_send">Enviado</string>
     <string name="status_pending">Pendiente</string>
-    <string name="t_toolbar_title_new_infraction">Nueva</string>
-    <string name="t_toolbar_subtitle_new_infraction">Alta de infracción</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

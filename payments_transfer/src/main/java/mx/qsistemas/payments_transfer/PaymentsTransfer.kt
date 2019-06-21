@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.AsyncTask
 import android.os.StrictMode
 import android.util.Log
 import com.basewin.aidl.OnBarcodeCallBack
@@ -99,12 +100,14 @@ object PaymentsTransfer : Interfaces.Contracts {
         GlobalData.getInstance().tmkId = 1
         GlobalData.getInstance().pinkeyFlag = true
         ServiceManager.getInstence().pboc.setEmvParamSetBySdk(false)
-        LoadParamManage.getInstance().DeleteAllTerParamFile()
-        for (j in aid_data.indices) {
-            ServiceManager.getInstence().pboc.updateAID(0, CUPParam.aid_data[j])
-        }
-        for (i in CUPParam.ca_data.indices) {
-            ServiceManager.getInstence().pboc.updateRID(0, CUPParam.ca_data[i])
+        AsyncTask.execute {
+            LoadParamManage.getInstance().DeleteAllTerParamFile()
+            for (j in aid_data.indices) {
+                ServiceManager.getInstence().pboc.updateAID(0, CUPParam.aid_data[j])
+            }
+            for (i in CUPParam.ca_data.indices) {
+                ServiceManager.getInstence().pboc.updateRID(0, CUPParam.ca_data[i])
+            }
         }
         var posEmvParam = ServiceManager.getInstence().pboc.posTermPara
         System.arraycopy(byteArrayOf(0x04, 132.toByte()), 0, posEmvParam.TransCurrCode, 0, 2)

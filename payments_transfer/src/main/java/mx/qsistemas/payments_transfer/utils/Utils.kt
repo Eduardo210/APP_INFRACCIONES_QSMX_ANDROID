@@ -3,10 +3,13 @@ package mx.qsistemas.payments_transfer.utils
 import android.annotation.TargetApi
 import android.app.ActivityManager
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.util.Base64
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import mx.qsistemas.payments_transfer.BuildConfig
 import mx.qsistemas.payments_transfer.dtos.Info_Cuenta
@@ -14,6 +17,8 @@ import mx.qsistemas.payments_transfer.dtos.ValidacionCuentasDecryp_Data
 import okhttp3.Headers
 import org.apache.commons.codec.binary.Hex
 import org.json.JSONObject
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.math.BigInteger
 import java.nio.charset.Charset
 import java.security.MessageDigest
@@ -37,7 +42,32 @@ class Utils {
                     && content.contains("SER") && content.contains("ENC") && content.contains("CRY"))
         }
 
-        fun getTokenDevice(context: Context): String = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+        fun getTokenDevice(context: Context): String =
+            Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+
+        fun getImeiDevice(context: Context): String {
+            try {
+                val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                val imei: String?
+                if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    imei = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        telephonyManager.imei
+                    } else {
+                        telephonyManager.deviceId
+                    }
+                    return if (imei != null && imei.isNotEmpty()) {
+                        imei
+                    } else {
+                        Build.SERIAL
+                    }
+                }
+            } catch (e: Exception) {
+                val errors = StringWriter()
+                e.printStackTrace(PrintWriter(errors))
+                return errors.toString()
+            }
+            return "not_found"
+        }
 
         fun mapHeaders(headers: Headers): String {
             /* Cast headers to HashMap and after convert it to JSON */

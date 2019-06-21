@@ -6,6 +6,7 @@ class MainContracts {
 
     interface Presenter {
         fun enableHighAccuracyGps()
+        fun onError(msg: String)
     }
 
     interface Iterator {
@@ -18,5 +19,6 @@ class MainContracts {
         fun presentSearchInfraction()
         fun presentDetailInfraction(folio: String)
         fun presentLogIn()
+        fun presentLocationSettings()
     }
 }

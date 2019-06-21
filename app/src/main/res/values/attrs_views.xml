@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="StepCounter">
+        <attr name="steps" format="integer"/>
+    </declare-styleable>
+</resources>

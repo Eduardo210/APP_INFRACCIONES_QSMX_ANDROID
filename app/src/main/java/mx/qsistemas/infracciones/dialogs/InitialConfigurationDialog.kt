@@ -107,15 +107,8 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                 val imei = Utils.getImeiDevice(Application.getContext())
                 Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.set(map, SetOptions.merge())?.addOnCompleteListener { t2 ->
                     if (t2.isSuccessful) {
-                        /*PaymentsTransfer.configDevice(township.id_town, prefix)
-                        val loadKeyData = LoadKeyData("88888888", "7455440", "a7455440", "quet5440")
-                        PaymentsTransfer.loadKeyDevice(activity as LogInActivity, loadKeyData, object : IPaymentsTransfer.LoadKeyListener {
-                            override fun onLoadKey(success: Boolean, value: String) {
-                                if (!success) listener?.onDialogError(value)
-                            }
-                        })*/
-                        listener?.onConfigurationSuccessful()
                         dismiss()
+                        listener?.onConfigurationSuccessful(township.id_town, prefix)
                     } else {
                         listener?.onDialogError(Application.getContext().getString(R.string.e_firestore_not_saved))
                     }
@@ -166,5 +159,5 @@ interface DialogPresenter {
 
 interface InitialConfigurationCallback {
     fun onDialogError(msg: String)
-    fun onConfigurationSuccessful()
+    fun onConfigurationSuccessful(idTownship: Int, prefix: String)
 }

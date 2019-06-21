@@ -1,16 +1,12 @@
 package mx.qsistemas.infracciones.modules.main
 
-import android.content.IntentSender
 import android.os.Bundle
+import android.os.Handler
 import androidx.databinding.DataBindingUtil
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.location.LocationSettingsStatusCodes
+import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivityMainBinding
+import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 
@@ -25,8 +21,14 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
         router.value.presentInfractionList(Direction.NONE)
     }
 
+    override fun onError(msg: String) {
+        SnackbarHelper.showErrorSnackBar(this, msg, Snackbar.LENGTH_LONG)
+    }
+
     override fun enableHighAccuracyGps() {
-        val locationRequest = LocationRequest()
+        onError(getString(R.string.e_high_accuracy_required))
+        Handler().postDelayed({ router.value.presentLocationSettings() }, 3000)
+        /*val locationRequest = LocationRequest()
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         val builder = LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest)
@@ -48,6 +50,6 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
                     }
                 }
             }
-        }
+        }*/
     }
 }

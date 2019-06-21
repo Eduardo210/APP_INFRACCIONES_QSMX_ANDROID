@@ -19,6 +19,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.fabric.sdk.android.Fabric
 import mx.qsistemas.infracciones.db.AppDatabase
 import mx.qsistemas.infracciones.utils.Preferences
+import mx.qsistemas.payments_transfer.PaymentsTransfer
 
 class Application : MultiDexApplication() {
 
@@ -47,7 +48,7 @@ class Application : MultiDexApplication() {
         m_database = AppDatabase.getInMemoryDatabase(getContext())
         initializeFirebaseComponents()
         /* Initialize Payments Library */
-        //PaymentsTransfer.initialize(getContext())
+        PaymentsTransfer.initialize(getContext())
         /* Granted permission to access to storage*/
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())

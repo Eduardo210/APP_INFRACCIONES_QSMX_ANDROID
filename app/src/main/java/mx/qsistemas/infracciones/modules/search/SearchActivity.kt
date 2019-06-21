@@ -1,4 +1,4 @@
-package mx.qsistemas.infracciones.modules.infringement.search
+package mx.qsistemas.infracciones.modules.search
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

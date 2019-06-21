@@ -5,7 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EEEEEE"
-    tools:context=".modules.infringement.search.SearchActivity">
+    tools:context=".modules.search.SearchActivity">
+    <include
+        android:id="@+id/include_search"
+        layout="@layout/toolbar_search_infraction"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txt_title"
@@ -21,18 +29,34 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cdv_search_filter"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="180dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="13dp"
-        app:cardElevation="2dp"
+        app:cardElevation="3dp"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_title">
+        app:layout_constraintTop_toBottomOf="@id/include_search">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="14dp">
+            <TextView
+                android:id="@+id/txt_filter_folio"
+                style="@style/TextViewHeaderItem"
+                android:text="Folio: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <EditText
+                android:hint="Ingrese folio ..."
+                android:id="@+id/edt_filter_folio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guide_line_center_vertical"
+                app:layout_constraintTop_toBottomOf="@id/txt_filter_folio"/>
 
             <TextView
                 android:id="@+id/txt_search_by_title"
@@ -42,7 +66,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Búsqueda por"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/edt_filter_folio" />
 
             <Spinner
                 android:id="@+id/sp_search_filter"
@@ -53,37 +77,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txt_search_by_title" />
 
-            <LinearLayout
-                android:id="@+id/lly_filter_data"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@id/btn_show_infra"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guide_line_center_vertical"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/txt_header_filter"
-                    style="@style/TextViewHeaderItem"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="No. de Folio" />
-
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toTopOf="parent"
+                    android:id="@+id/et_filter_any"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@+id/sp_search_filter"
+                    app:layout_constraintStart_toEndOf="@+id/sp_search_filter"
+                    app:layout_constraintBottom_toBottomOf="@+id/sp_search_filter"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="parent" />
-
-            </LinearLayout>
+                    />
 
             <Button
                 android:id="@+id/btn_show_infra"

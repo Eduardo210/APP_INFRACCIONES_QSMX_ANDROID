@@ -9,26 +9,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         card_view:cardCornerRadius="13dp"
-        card_view:cardElevation="3dp"
+        card_view:cardElevation="5dp"
         card_view:cardPreventCornerOverlap="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:padding="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/txt_vehicle_header"
-                style="@style/TextViewHeaderItem"
-                android:gravity="center_vertical"
-                android:drawablePadding="5dp"
-                android:drawableLeft="@drawable/ic_car_front"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent"
-                tool:text="Ford Fiesta Rojo" />
-
             <TextView
                 android:id="@+id/txt_folio_title"
                 android:layout_width="wrap_content"
@@ -37,7 +24,17 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="16sp"
                 card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toBottomOf="@id/txt_vehicle_header" />
+                card_view:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/txt_vehicle_header"
+                android:gravity="center_vertical"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/ic_car_front"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_folio_title"
+                tool:text="Ford Fiesta Rojo" />
             <TextView
                 android:id="@+id/txt_folio"
                 android:textStyle="bold"
@@ -46,29 +43,30 @@
                 android:textColor="@color/colorBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                card_view:layout_constraintTop_toBottomOf="@id/txt_vehicle_header"
+                card_view:layout_constraintTop_toTopOf="parent"
                 card_view:layout_constraintStart_toEndOf="@id/txt_folio_title"/>
 
             <TextView
                 android:id="@+id/txt_status_infra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/yellow_circle"
+                android:drawableStart="@drawable/green_circle"
                 android:drawablePadding="5dp"
-                android:textColor="@color/colorYellow"
+                android:textColor="@color/colorGreen"
                 android:textSize="12sp"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent"
-                tool:text="Pendiente" />
+                card_view:layout_constraintTop_toBottomOf="@+id/txt_resume_art_frac"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                tool:text="Enviado" />
 
             <TextView
                 android:id="@+id/txt_date_infra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="10sp"
-                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@id/txt_status_infra"
-                tool:text="19:44 - 16/03/19" />
+                tool:text="16/03/19 19:44" />
 
             <TextView
                 android:id="@+id/txt_resume_art_frac"
@@ -78,31 +76,49 @@
                 android:layout_marginTop="8dp"
                 tool:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eget dapibus nulla, eu bibendum metus. In ultrices orci a facilisis vehicula. Morbi urna dui, sodales at elementum sed, pellentesque ut est. Praesent laoreet pulvinar aliquam. Praesent nec ultricies nibh. Donec tristique eu lectus posuere vehicula. Fusce nisl sem, pharetra et luctus nec, condimentum in leo. Etiam id sapien lobortis, feugiat orci at, mattis dolor. In placerat blandit lorem vel rhoncus. Duis sit amet tempus justo, quis tincidunt sem."
                 android:layout_height="wrap_content"
-                card_view:layout_constraintTop_toBottomOf="@id/txt_folio_title"/>
+                card_view:layout_constraintTop_toBottomOf="@id/txt_vehicle_header"/>
 
             <TextView
                 android:id="@+id/txt_document_ident"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                style="@style/TextViewHeaderItem"
                 android:gravity="center_vertical"
                 android:drawableLeft="@drawable/ic_reader_mode"
-                card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toBottomOf="@id/txt_resume_art_frac"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:layout_constraintBottom_toTopOf="@id/txt_vehicle_header"
                 tool:text="TJR-643" />
-
             <Button
-                android:text="Ver infracción"
+                android:text="Imprimir"
                 android:textColor="@color/colorWhite"
-                android:textSize="12sp"
-                android:id="@+id/btn_show_infra"
-                android:layout_width="130dp"
+                android:textSize="10sp"
+                android:id="@+id/btn_print"
+                android:layout_width="100dp"
+                android:paddingLeft="15dp"
                 android:layout_marginTop="16dp"
+                android:drawableStart="@drawable/ic_print"
                 android:layout_height="35dp"
                 android:background="@drawable/small_button_gradient"
                 card_view:layout_constraintTop_toBottomOf="@id/txt_resume_art_frac"
                 card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintBottom_toBottomOf="parent"/>
+
+            <Button
+                android:text="Pagar"
+                android:textColor="@color/colorWhite"
+                android:textSize="10sp"
+                android:id="@+id/btn_payment"
+                android:layout_width="100dp"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="15dp"
+                android:layout_height="35dp"
+                android:drawableStart="@drawable/ic_currency"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/small_btn_gradient_orange"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_resume_art_frac"
+                card_view:layout_constraintEnd_toStartOf="@id/btn_print"
                 card_view:layout_constraintBottom_toBottomOf="parent"/>
 
 

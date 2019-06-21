@@ -11,7 +11,7 @@ interface IdentifierDocumentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: MutableList<IdentifierDocument>)
 
-    @Query("SELECT ID, DOCUMENTO FROM identifier_document")
-    fun getAll() :MutableList<IdentifierDocument>
+    @Query("SELECT * FROM identifier_document ORDER BY DOCUMENTO ASC")
+    fun selectAll(): MutableList<IdentifierDocument>
 
 }

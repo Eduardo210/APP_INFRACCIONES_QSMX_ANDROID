@@ -11,27 +11,16 @@ const val RC_PERMISSION_STORAGE = 5
 const val ALARM_SEND_REPORT_TIME = 1000 * 60 * 30L // 30 min
 const val ALARM_SEND_GEOS_TIME = 1000 * 60 * 15L // 15 min
 
+/* EXTRA's INTENTS */
+const val EXTRA_OPTION_INFRACTION = "extra_option_infraction"
+
 /* INTENT REQUEST CODES */
 const val RC_INTENT_CAMERA = 11
 const val RC_INTENT_VIDEO = 12
 
 /* MAPS CONSTANTS */
 const val MAX_ACCURACY = 100.0
-const val MIN_ACCURACY = 10.0
 const val TIME_OUT_OF_GEO = 1000 * 60L
-
-/* INCIDENCE TAB's */
-const val TAB_ALL = 0
-const val TAB_SEND = 1
-const val TAB_PENDING = 2
-
-/* TIME PERIOD ID's */
-const val ID_DAILY = 1
-const val ID_WEEKLY = 2
-const val ID_MONTHLY = 3
-
-/* WEB SERVICE HEADER MAPPING */
-const val HEADER_FOLIO = "h_folio"
 
 /* FIRESTORE COLLECTIONS */
 const val FS_COL_STATES = "states"

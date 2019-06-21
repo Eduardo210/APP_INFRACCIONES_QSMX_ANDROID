@@ -3,6 +3,7 @@
 
     <!-- Titles -->
     <string name="pt_t_pin_input">Ingresar firma electrónica</string>
+    <string name="pt_t_config_terminal">Configurando terminal</string>
     <string name="pt_t_obtaining_key">Obteniendo llave de cifrado</string>
     <string name="pt_t_waiting_card">Inserte/Deslice la tarjeta\no\nAproxime contactless</string>
     <string name="pt_t_waiting_nfc_card">Aproxime tarjeta</string>

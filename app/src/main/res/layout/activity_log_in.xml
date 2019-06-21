@@ -60,7 +60,7 @@
                     android:inputType="text"
                     android:lines="1">
 
-                    <requestFocus />
+                    <!--<requestFocus />-->
                 </com.google.android.material.textfield.TextInputEditText>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,6 +98,7 @@
                 android:layout_gravity="center"
                 android:text="@string/t_btn_forgot_psw"
                 android:textColor="@color/colorGray"
+                android:visibility="gone"
                 android:textSize="13dp" />
 
         </LinearLayout>

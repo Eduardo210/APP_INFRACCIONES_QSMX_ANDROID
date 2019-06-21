@@ -37,8 +37,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".modules.NewVehicularInfraction"></activity>
-        <activity android:name="mx.qsistemas.infracciones.modules.search.SearchActivity" />
+
+
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -89,8 +90,7 @@
 
         <activity
             android:name=".modules.login.LogInActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -100,6 +100,14 @@
         <activity
             android:name=".modules.main.MainActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.search.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".modules.create.CreateInfractionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".modules.NewVehicularInfraction"></activity>
     </application>
 
 </manifest>

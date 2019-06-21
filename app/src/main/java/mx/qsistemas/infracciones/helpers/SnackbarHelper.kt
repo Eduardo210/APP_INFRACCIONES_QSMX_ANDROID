@@ -15,8 +15,9 @@ class SnackbarHelper {
             val view = snack.view
             val params = view.layoutParams as FrameLayout.LayoutParams
             params.gravity = Gravity.BOTTOM
+            params.setMargins(16, 0, 16, 100)
             view.layoutParams = params
-            view.setBackgroundColor(ContextCompat.getColor(Application.getContext(), R.color.colorRedTransparent))
+            view.setBackgroundColor(ContextCompat.getColor(Application.getContext(), R.color.colorRed))
             snack.show()
         }
 
@@ -25,8 +26,9 @@ class SnackbarHelper {
             val view = snack.view
             val params = view.layoutParams as FrameLayout.LayoutParams
             params.gravity = Gravity.BOTTOM
+            params.setMargins(16, 0, 16, 100)
             view.layoutParams = params
-            view.setBackgroundColor(ContextCompat.getColor(Application.getContext(), R.color.colorPrimaryTransparent))
+            view.setBackgroundColor(ContextCompat.getColor(Application.getContext(), R.color.colorPrimary))
             snack.show()
         }
     }

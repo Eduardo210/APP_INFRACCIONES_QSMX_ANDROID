@@ -9,6 +9,11 @@
     <string name="sp_id_township">id_township</string>
     <string name="sp_prefix">prefix</string>
     <string name="sp_last_synch">last_synch</string>
+    <string name="sp_id_person">id_person</string>
+    <string name="sp_id_township_person">id_township_person</string>
+    <string name="sp_person_name">person_name</string>
+    <string name="sp_person_f_last_name">person_f_last_name</string>
+    <string name="sp_person_m_last_name">person_m_last_name</string>
 
     <!-- Remote Config Strings -->
     <string name="rc_ip_address">ip_address</string>
@@ -18,8 +23,10 @@
     <string name="channel_description">Canal de notificationes de Quetzalcoatl Sistemas para la terminal de infracciones</string>
 
     <!-- Hints -->
-    <string name="h_user">Correo electrónico</string>
+    <string name="h_user">Usuario</string>
     <string name="h_password">Contraseña</string>
+    <string name="h_no_document"># Documento</string>
+    <string name="h_circulation_card"># Tarjeta</string>
 
     <!-- Log In Strings -->
     <string name="t_company_log_in">Sistema de\ninfracciones</string>
@@ -39,9 +46,51 @@
     <string name="t_toolbar_subtitle_infraction">Control y registro de infracciones</string>
     <string name="t_last_infractions">Últimas infracciones</string>
 
-    <!-- Dialog Buttons Strings -->
+    <!-- New Infraction Strings -->
+    <string name="t_toolbar_title_new_infraction">Nueva</string>
+    <string name="t_toolbar_subtitle_new_infraction">Alta de infracción</string>
+
+    <!-- Edit Infraction Strings -->
+    <string name="t_toolbar_title_edit_infraction">Editar</string>
+    <string name="t_toolbar_subtitle_edit_infraction">Edición de infracción</string>
+    
+    <!-- Vehicle Fragment Strings -->
+    <string name="t_vehicle">Vehículo</string>
+    <string name="t_brand">Marca</string>
+    <string name="t_sub_brand">Submarca</string>
+    <string name="t_year">Año</string>
+    <string name="t_type">Tipo</string>
+    <string name="t_color">Color</string>
+    <string name="t_identifier_doc">Doc. Indentificador</string>
+    <string name="t_no_document">No. del documento</string>
+    <string name="t_evidence_1">Evidencia 1</string>
+    <string name="t_evidence_2">Evidencia 2</string>
+    <string name="t_issued_in">Expedido en</string>
+    <string name="t_doc_type">Tipo de documento</string>
+    <string name="t_circulation_card">Tarjeta de circulación</string>
+    
+    <!-- Infraction Fragment Strings -->
+    <string name="t_infraction">Infracción</string>
+    <string name="t_location_infraction">Lugar de la infracción</string>
+    <string name="t_location">Ubicación</string>
+    <string name="t_colony">Colonia</string>
+    <string name="t_street">Calle</string>
+    <string name="t_between_street1">Entre calle...</string>
+    <string name="t_between_street2">y calle...</string>
+    <string name="t_committed_offense">Infracción cometida</string>
+    <string name="t_article">Artículo</string>
+    <string name="t_fraction">Fracción</string>
+    <string name="t_uma">U.M.A</string>
+    <string name="t_retained_doc">Documento retenido</string>
+    <string name="t_referral_deposit">Remisión a depósito</string>
+
+    <!-- Buttons Strings -->
     <string name="t_accept">Aceptar</string>
+    <string name="t_add">Agregar</string>
     <string name="t_cancel">Cancelar</string>
+    <string name="t_continue">Continuar</string>
+    <string name="t_pin_up">Fijar</string>
+    <string name="t_next">Siguiente</string>
 
     <!-- Loader Strings -->
     <string name="l_download_catalogs">Descargando catálogos</string>
@@ -51,6 +100,7 @@
     <string name="e_user_pss_incorrect">Credenciales incorrectas</string>
     <string name="e_search_incidence">Ingresa el folio</string>
     <string name="e_location_permission_request">Es necesario aceptar los permisos de ubicación</string>
+    <string name="e_high_accuracy_required">Es necesario encender el modo de alta presición</string>
     <string name="e_camera_permission_request">Es necesario aceptar el permiso de cámara</string>
     <string name="e_audio_record_permission_request">Es necesario aceptar el permiso de audio</string>
     <string name="e_mock_location">Favor de apagar la obtención de ubicaciones falsas</string>

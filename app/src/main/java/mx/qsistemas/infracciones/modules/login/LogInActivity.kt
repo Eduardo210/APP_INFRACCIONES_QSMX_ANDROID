@@ -12,6 +12,9 @@ import mx.qsistemas.infracciones.dialogs.InitialConfigurationDialog
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.utils.Validator
+import mx.qsistemas.payments_transfer.IPaymentsTransfer
+import mx.qsistemas.payments_transfer.PaymentsTransfer
+import mx.qsistemas.payments_transfer.dtos.LoadKeyData
 
 class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickListener, InitialConfigurationCallback {
 
@@ -24,7 +27,6 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         binding = DataBindingUtil.setContentView(this, R.layout.activity_log_in)
         binding.btnLogIn.setOnClickListener(this)
         iterator.registerAlarm()
-        showLoader("")
         if (Validator.isNetworkEnable(Application.getContext())) {
             if (!Application.prefs?.loadDataBoolean(R.string.sp_has_config_prefix, false)!!) {
                 val dialog = InitialConfigurationDialog()
@@ -49,9 +51,17 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         SnackbarHelper.showErrorSnackBar(this, msg, Snackbar.LENGTH_SHORT)
     }
 
-    override fun onConfigurationSuccessful() {
-        showLoader(getString(R.string.l_download_catalogs))
-        iterator.downloadCatalogs()
+    override fun onConfigurationSuccessful(idTownship: Int, prefix: String) {
+        PaymentsTransfer.configDevice(idTownship, prefix)
+        val loadKeyData = LoadKeyData("88888888", "7455440", "a7455440", "quet5440")
+        PaymentsTransfer.loadKeyDevice(this, loadKeyData, object : IPaymentsTransfer.LoadKeyListener {
+            override fun onLoadKey(success: Boolean, value: String) {
+                if (!success){onError(value) }else {
+                    showLoader(getString(R.string.l_download_catalogs))
+                    iterator.downloadCatalogs()
+                }
+            }
+        })
     }
 
     override fun onLoginSuccessful() {
@@ -74,7 +84,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                 } else if (!Validator.isValidFields(*fields)) {
                     onError(getString(R.string.e_empty_fields))
                 } else {
-                    iterator.login(binding.edtUserLogIn.text.toString(), binding.edtDwpLogIn.text.toString())
+                    iterator.login(binding.edtUserLogIn.text.toString().toUpperCase(), binding.edtDwpLogIn.text.toString().toUpperCase())
                 }
             }
         }

@@ -5,9 +5,11 @@ import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.db.managers.CatalogsSyncManager
+import mx.qsistemas.infracciones.db.managers.LogInManager
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.DownloadCatalogs
 import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
+import mx.qsistemas.infracciones.utils.MD5
 import mx.qsistemas.infracciones.utils.Utils
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,9 +46,20 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
         })
     }
 
-    override fun login(user: String, psd: String) {
-        Application.prefs?.saveDataBool(R.string.sp_has_session, true)
-        listener.onLoginSuccessful()
+    override fun login(userName: String, psd: String) {
+        val user = LogInManager.getUser(userName)
+        val hash = MD5.toMD5(psd)
+        if (user == null || hash != user.password) {
+            listener.onError(Application.getContext().getString(R.string.e_user_pss_incorrect))
+        } else {
+            Application.prefs?.saveDataInt(R.string.sp_id_township_person, user.idPersonTownship)
+            Application.prefs?.saveDataInt(R.string.sp_id_person, user.idPerson)
+            Application.prefs?.saveData(R.string.sp_person_name, user.name)
+            Application.prefs?.saveData(R.string.sp_person_f_last_name, user.fLastName)
+            Application.prefs?.saveData(R.string.sp_person_m_last_name, user.mLastName)
+            Application.prefs?.saveDataBool(R.string.sp_has_session, true)
+            listener.onLoginSuccessful()
+        }
     }
 
     private fun processCatalogs(data: DownloadCatalogs) {

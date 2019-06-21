@@ -68,11 +68,28 @@
     <string name="t_issued_in">Expedido en</string>
     <string name="t_doc_type">Tipo de documento</string>
     <string name="t_circulation_card">Tarjeta de circulación</string>
+    
+    <!-- Infraction Fragment Strings -->
+    <string name="t_infraction">Infracción</string>
+    <string name="t_location_infraction">Lugar de la infracción</string>
+    <string name="t_location">Ubicación</string>
+    <string name="t_colony">Colonia</string>
+    <string name="t_street">Calle</string>
+    <string name="t_between_street1">Entre calle...</string>
+    <string name="t_between_street2">y calle...</string>
+    <string name="t_committed_offense">Infracción cometida</string>
+    <string name="t_article">Artículo</string>
+    <string name="t_fraction">Fracción</string>
+    <string name="t_uma">U.M.A</string>
+    <string name="t_retained_doc">Documento retenido</string>
+    <string name="t_referral_deposit">Remisión a depósito</string>
 
     <!-- Buttons Strings -->
     <string name="t_accept">Aceptar</string>
+    <string name="t_add">Agregar</string>
     <string name="t_cancel">Cancelar</string>
     <string name="t_continue">Continuar</string>
+    <string name="t_pin_up">Fijar</string>
     <string name="t_next">Siguiente</string>
 
     <!-- Loader Strings -->

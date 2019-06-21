@@ -103,6 +103,7 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
             if (snapshot != null && !snapshot.isEmpty) {
+                statesList = mutableListOf()
                 val list = mutableListOf<String>()
                 snapshot.documents.forEach {
                     val data = it.toObject(States::class.java)!!

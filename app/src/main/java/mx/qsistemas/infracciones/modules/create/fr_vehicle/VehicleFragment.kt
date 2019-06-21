@@ -25,7 +25,7 @@ private const val ARG_IS_CREATION = "is_creation"
  * Use the [VehicleFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnItemSelectedListener {
+class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnItemSelectedListener, View.OnClickListener {
 
     private var isCreation: Boolean = true
     private val iterator = lazy { VehicleIterator(this) }
@@ -47,22 +47,43 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_vehicle, container, false)
-        binding.spnBrandVehicle.onItemSelectedListener = this
         initAdapters()
+        binding.imgEvidence1.setOnClickListener(this)
+        binding.imgEvidence2.setOnClickListener(this)
         return binding.root
     }
 
     override fun initAdapters() {
+        /* Set selected item listeners */
+        binding.spnBrandVehicle.onItemSelectedListener = this
+        binding.spnSubBrandVehicle.onItemSelectedListener = this
+        binding.spnTypeDoc.onItemSelectedListener = this
+        binding.spnType.onItemSelectedListener = this
+        binding.spnIssuedIn.onItemSelectedListener = this
+        binding.spnIdentifierDoc.onItemSelectedListener = this
+        binding.spnColor.onItemSelectedListener = this
+        /* Set spinners adapters */
         binding.spnBrandVehicle.adapter = iterator.value.getBrandAdapter()
         binding.spnType.adapter = iterator.value.getTypeAdapter()
         binding.spnColor.adapter = iterator.value.getColorAdapter()
         binding.spnIdentifierDoc.adapter = iterator.value.getIdentifierDocAdapter()
         iterator.value.getIssuedInAdapter() // Download catalog from Firebase
-        binding.spnIssuedIn.adapter = iterator.value.getTypeDocument()
+        binding.spnTypeDoc.adapter = iterator.value.getTypeDocument()
     }
 
     override fun onIssuedInReady(adapter: ArrayAdapter<String>) {
         binding.spnIssuedIn.adapter = adapter
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            binding.imgEvidence1.id -> {
+
+            }
+            binding.imgEvidence2.id -> {
+
+            }
+        }
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

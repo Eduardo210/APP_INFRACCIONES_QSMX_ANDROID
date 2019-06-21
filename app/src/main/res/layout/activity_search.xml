@@ -3,82 +3,90 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#EEEEEE"
     android:layout_height="match_parent"
+    android:background="#EEEEEE"
     tools:context=".modules.search.SearchActivity">
+    <include
+        android:id="@+id/include_search"
+        layout="@layout/toolbar_search_infraction"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txt_title"
-        android:text="Filtros de búsqueda"
-        android:textSize="18sp"
-        android:textColor="#494949"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="10dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Filtros de búsqueda"
+        android:textColor="#494949"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cdv_search_filter"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="180dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="13dp"
         app:cardElevation="3dp"
 
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_title">
+        app:layout_constraintTop_toBottomOf="@id/include_search">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:padding="14dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="14dp">
+            <TextView
+                android:id="@+id/txt_filter_folio"
+                style="@style/TextViewHeaderItem"
+                android:text="Folio: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <EditText
+                android:hint="Ingrese folio ..."
+                android:id="@+id/edt_filter_folio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guide_line_center_vertical"
+                app:layout_constraintTop_toBottomOf="@id/txt_filter_folio"/>
+
             <TextView
                 android:id="@+id/txt_search_by_title"
-                android:text="Búsqueda por"
                 style="@style/TextViewHeaderItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:text="Búsqueda por"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                app:layout_constraintTop_toBottomOf="@id/edt_filter_folio" />
+
             <Spinner
                 android:id="@+id/sp_search_filter"
-                android:spinnerMode="dialog"
                 style="@android:style/Widget.DeviceDefault.Light.Spinner"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_search_by_title"/>
-            <LinearLayout
-                android:id="@+id/lly_filter_data"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/btn_show_infra"
-                app:layout_constraintStart_toStartOf="@id/guide_line_center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_width="0dp"
-                android:layout_height="0dp">
-                <TextView
-                    android:id="@+id/txt_header_filter"
-                    tools:text="No. de Folio"
-                    android:layout_marginTop="10dp"
-                    style="@style/TextViewHeaderItem"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                app:layout_constraintTop_toBottomOf="@id/txt_search_by_title" />
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toTopOf="parent"
+                    android:id="@+id/et_filter_any"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@+id/sp_search_filter"
+                    app:layout_constraintStart_toEndOf="@+id/sp_search_filter"
+                    app:layout_constraintBottom_toBottomOf="@+id/sp_search_filter"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="parent" />
-
-            </LinearLayout>
+                    />
 
             <Button
                 android:id="@+id/btn_show_infra"
@@ -93,23 +101,72 @@
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guide_line_center_vertical"
-                app:layout_constraintGuide_percent=".5"
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        
+
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_results"
-        app:layout_constraintTop_toBottomOf="@id/cdv_search_filter"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cdv_search_filter">
+
+        <TextView
+            android:id="@+id/txt_total_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="3" />
+
+        <TextView
+            android:id="@+id/txt_title_total_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txt_total_search"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Resultados para: " />
+
+        <TextView
+            android:id="@+id/txt_filter_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txt_title_total_search"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Folio ATZ1-15" />
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcl_results"
+        android:layout_margin="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/constraint_results"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_resume_infra"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

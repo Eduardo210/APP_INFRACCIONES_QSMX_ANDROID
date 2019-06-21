@@ -5,9 +5,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "vehicle_infraction")
-data class VehicleInfraction(@PrimaryKey(autoGenerate = true) val id:Int,
+data class VehicleInfraction(@PrimaryKey @ColumnInfo(name = "ID_VEHICULO") val id:Int,
                              @ColumnInfo(name = "ID_MARCA") val id_brand: Int,
-                             @ColumnInfo(name = "SUBMARCA") val sub_brand: Int,
+                             @ColumnInfo(name = "SUBMARCA") val sub_brand: String,
                              @ColumnInfo(name = "TIPO") val type: String,
                              @ColumnInfo(name = "COLOR") val colour: String,
                              @ColumnInfo(name = "MODELO") val model: String,

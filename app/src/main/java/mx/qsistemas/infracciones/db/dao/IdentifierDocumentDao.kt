@@ -13,4 +13,5 @@ interface IdentifierDocumentDao {
 
     @Query("SELECT * FROM identifier_document ORDER BY DOCUMENTO ASC")
     fun selectAll(): MutableList<IdentifierDocument>
+
 }

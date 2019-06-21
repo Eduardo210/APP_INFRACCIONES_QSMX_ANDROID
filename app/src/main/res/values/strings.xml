@@ -128,4 +128,9 @@
     <string name="w_date_time_zone_not_automatic">Favor de seleccionar fecha y zona horaria automática</string>
     <string name="w_min_photos_take">Favor de tomar por lo menos 1 foto</string>
     <string name="search_folio_title">Folio:</string>
+    <string name="status_send">Enviado</string>
+    <string name="status_pending">Pendiente</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

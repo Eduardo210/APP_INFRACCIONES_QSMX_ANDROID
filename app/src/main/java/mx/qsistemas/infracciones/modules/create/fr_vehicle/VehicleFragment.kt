@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentVehicleBinding
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
+import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 
 private const val ARG_IS_CREATION = "is_creation"
@@ -50,6 +51,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         initAdapters()
         binding.imgEvidence1.setOnClickListener(this)
         binding.imgEvidence2.setOnClickListener(this)
+        binding.btnSave.setOnClickListener(this)
         return binding.root
     }
 
@@ -83,6 +85,10 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             binding.imgEvidence2.id -> {
 
             }
+            binding.btnSave.id -> {
+                activity.stepUp()
+                activity.router.value.presentInfractionFragment(Direction.FORDWARD)
+            }
         }
     }
 
@@ -107,7 +113,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
+         * @param isCreation Parameter 1.
          * @return A new instance of fragment VehicleFragment.
          */
         @JvmStatic

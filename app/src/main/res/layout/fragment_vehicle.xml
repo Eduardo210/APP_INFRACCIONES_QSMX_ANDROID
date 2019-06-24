@@ -51,23 +51,170 @@
                     android:padding="12dp">
 
                     <TextView
-                        android:id="@+id/textView5"
+                        android:id="@+id/textView7"
                         style="@style/TextView_TitleItem2_Bold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/t_brand"
+                        android:text="@string/t_evidence_1"
                         android:textAlignment="textStart"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <ImageView
+                        android:id="@+id/img_evidence_1"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/dotted_square"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        style="@style/TextView_TitleItem2_Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/t_evidence_2"
+                        android:textAlignment="textStart"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/img_evidence_2"
+                        android:layout_width="0dp"
+                        android:layout_height="100dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/dotted_square"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        style="@style/TextView_TitleItem2_Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/t_identifier_doc"
+                        android:textAlignment="textStart"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/img_evidence_1" />
+
+                    <Spinner
+                        android:id="@+id/spn_identifier_doc"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:spinnerMode="dialog"
+                        app:layout_constraintBottom_toBottomOf="@+id/edt_no_doc"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        style="@style/TextView_TitleItem2_Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/t_no_document"
+                        android:textAlignment="textStart"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toBottomOf="@+id/img_evidence_2" />
+
+                    <EditText
+                        android:id="@+id/edt_no_doc"
+                        style="@style/EditText_InputItem"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/h_no_document"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/font_size_small"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        style="@style/TextView_TitleItem2_Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/t_issued_in"
+                        android:textAlignment="textStart"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/edt_no_doc" />
+
+                    <Spinner
+                        android:id="@+id/spn_issued_in"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                    <TextView
+                        android:id="@+id/textView13"
+                        style="@style/TextView_TitleItem2_Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/t_doc_type"
+                        android:textAlignment="textStart"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toBottomOf="@+id/edt_no_doc" />
+
+                    <Spinner
+                        android:id="@+id/spn_type_doc"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        style="@style/TextView_TitleItem2_Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/t_brand"
+                        android:textAlignment="textStart"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spn_issued_in" />
+
                     <Spinner
                         android:id="@+id/spn_brand_vehicle"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="2dp"
                         android:spinnerMode="dialog"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
@@ -78,13 +225,13 @@
                         style="@style/TextView_TitleItem2_Bold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:text="@string/t_sub_brand"
                         android:textAlignment="textStart"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@+id/spn_type_doc" />
 
                     <Spinner
                         android:id="@+id/spn_sub_brand_vehicle"
@@ -97,12 +244,12 @@
                         app:layout_constraintTop_toBottomOf="@+id/txt_title_subtype_incidence" />
 
                     <TextView
-                        android:id="@+id/textView9"
+                        android:id="@+id/textView11"
                         style="@style/TextView_TitleItem2_Bold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/t_year"
+                        android:text="@string/t_color"
                         android:textAlignment="textStart"
                         android:textSize="13sp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -110,14 +257,14 @@
                         app:layout_constraintTop_toBottomOf="@+id/spn_brand_vehicle" />
 
                     <Spinner
-                        android:id="@+id/spn_year"
+                        android:id="@+id/spn_color"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:spinnerMode="dialog"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
                     <TextView
                         android:id="@+id/textView10"
@@ -143,176 +290,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
                     <TextView
-                        android:id="@+id/textView11"
-                        style="@style/TextView_TitleItem2_Bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/t_color"
-                        android:textAlignment="textStart"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                        app:layout_constraintHorizontal_bias="0.833"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spn_year" />
-
-                    <Spinner
-                        android:id="@+id/spn_color"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-                    <TextView
-                        android:id="@+id/textView12"
-                        style="@style/TextView_TitleItem2_Bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/t_identifier_doc"
-                        android:textAlignment="textStart"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/spn_type" />
-
-                    <Spinner
-                        android:id="@+id/spn_identifier_doc"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        style="@style/TextView_TitleItem2_Bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/t_no_document"
-                        android:textAlignment="textStart"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spn_color" />
-
-                    <EditText
-                        android:id="@+id/editText"
-                        style="@style/EditText_InputItem"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="@string/h_no_document"
-                        android:inputType="textPersonName"
-                        android:textColor="@color/colorLightBlack"
-                        android:textSize="@dimen/font_size_small"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-                    <TextView
-                        android:id="@+id/textView7"
-                        style="@style/TextView_TitleItem2_Bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/t_evidence_1"
-                        android:textAlignment="textStart"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                        app:layout_constraintHorizontal_bias="0.833"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editText" />
-
-                    <ImageView
-                        android:id="@+id/img_evidence_1"
-                        android:layout_width="0dp"
-                        android:layout_height="100dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/dotted_square"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        style="@style/TextView_TitleItem2_Bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="@string/t_evidence_2"
-                        android:textAlignment="textStart"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/editText" />
-
-                    <ImageView
-                        android:id="@+id/img_evidence_2"
-                        android:layout_width="0dp"
-                        android:layout_height="100dp"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/dotted_square"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-                    <TextView
-                        android:id="@+id/textView8"
-                        style="@style/TextView_TitleItem2_Bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/t_issued_in"
-                        android:textAlignment="textStart"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                        app:layout_constraintHorizontal_bias="0.833"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/img_evidence_1" />
-
-                    <Spinner
-                        android:id="@+id/spn_issued_in"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"
-                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-                    <TextView
-                        android:id="@+id/textView13"
-                        style="@style/TextView_TitleItem2_Bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/t_doc_type"
-                        android:textAlignment="textStart"
-                        android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/img_evidence_2" />
-
-                    <Spinner
-                        android:id="@+id/spn_type_doc"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-                    <TextView
                         android:id="@+id/textView14"
                         style="@style/TextView_TitleItem2_Bold"
                         android:layout_width="0dp"
@@ -323,13 +300,14 @@
                         android:textSize="13sp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spn_issued_in" />
+                        app:layout_constraintTop_toBottomOf="@+id/spn_color" />
 
                     <EditText
-                        android:id="@+id/editText2"
+                        android:id="@+id/edt_no_card"
                         style="@style/EditText_InputItem"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
                         android:ems="10"
                         android:hint="@string/h_circulation_card"
                         android:inputType="textPersonName"
@@ -339,15 +317,43 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
+                    <TextView
+                        android:id="@+id/textView9"
+                        style="@style/TextView_TitleItem2_Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/t_year"
+                        android:textAlignment="textStart"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toBottomOf="@+id/spn_type" />
+
+                    <EditText
+                        android:id="@+id/edt_year"
+                        style="@style/EditText_InputItem"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="@string/h_year"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/font_size_small"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
                     <Button
                         android:id="@+id/btn_save"
                         style="@style/SmallButton_Custom"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:text="@string/t_next"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+                        app:layout_constraintTop_toBottomOf="@+id/edt_year" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline8"

@@ -5,6 +5,8 @@ import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 class CreateInfractionContracts {
     interface Presenter {
         fun onError(msg: String)
+        fun stepUp()
+        fun stepDown()
     }
 
     interface Iterator {

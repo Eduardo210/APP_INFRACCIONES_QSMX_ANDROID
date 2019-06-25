@@ -87,7 +87,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             }
             binding.btnSave.id -> {
                 activity.stepUp()
-                activity.router.value.presentInfractionFragment(Direction.FORDWARD)
+                activity.router.value.presentInfractionFragment(Direction.NONE)
             }
         }
     }

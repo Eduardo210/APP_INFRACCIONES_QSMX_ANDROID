@@ -7,6 +7,8 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -27,8 +29,9 @@ private const val ARG_IS_CREATION = "is_creation"
  * create an instance of this fragment.
  *
  */
-class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton.OnCheckedChangeListener {
+class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
     private var isCreation: Boolean = true
+    private val iterator = lazy { OffenderIterator(this) }
     private lateinit var binding: FragmentOffenderBinding
     private lateinit var activity: CreateInfractionActivity
 
@@ -53,6 +56,11 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun initAdapters() {
         /* Init listeners */
         binding.rdbAbsentYes.setOnCheckedChangeListener(this)
+        binding.lytOffender.spnState.onItemSelectedListener = this
+        binding.lytOffender.spnTownship.onItemSelectedListener = this
+        /* Init adapters */
+        iterator.value.getStatesList()
+        binding.lytOffender.spnLicenseType.adapter = iterator.value.getTypeLicenseAdapter()
     }
 
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
@@ -63,8 +71,27 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         }
     }
 
+    override fun onStatesReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnState.adapter = adapter
+    }
+
+    override fun onTownshipsReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnTownship.adapter = adapter
+    }
+
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        when (p0?.id) {
+            binding.lytOffender.spnState.id -> {
+                iterator.value.getTownshipsList(binding.lytOffender.spnState.selectedItemPosition)
+            }
+        }
     }
 
     companion object {

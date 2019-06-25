@@ -66,11 +66,11 @@ class CreateInfractionActivity : ActivityHelper(), CreateInfractionContracts.Pre
             }
             is InfractionFragment -> {
                 stepDown()
-                router.value.presentVehicleFragment(Direction.BACK)
+                router.value.presentVehicleFragment(Direction.NONE)
             }
             is OffenderFragment -> {
                 stepDown()
-                router.value.presentInfractionFragment(Direction.BACK)
+                router.value.presentInfractionFragment(Direction.NONE)
             }
         }
     }

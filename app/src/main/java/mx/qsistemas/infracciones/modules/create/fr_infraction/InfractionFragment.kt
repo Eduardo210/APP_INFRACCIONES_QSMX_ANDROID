@@ -99,7 +99,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
             }
             binding.btnNext.id -> {
                 activity.stepUp()
-                activity.router.value.presentOffenderFragment(Direction.FORDWARD)
+                activity.router.value.presentOffenderFragment(Direction.NONE)
             }
         }
     }

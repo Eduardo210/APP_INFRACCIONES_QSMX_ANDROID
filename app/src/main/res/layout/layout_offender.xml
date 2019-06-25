@@ -198,17 +198,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spn_state" />
 
-        <Spinner
-            android:id="@+id/spn_colony"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
+        <EditText
+            android:id="@+id/edt_colony"
+            style="@style/EditText_InputItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:spinnerMode="dialog"
-            app:layout_constraintBottom_toBottomOf="@+id/edt_offender_no_ext"
+            android:hint="@string/h_colony"
+            android:textColor="@color/colorLightBlack"
+            android:textSize="@dimen/font_size_small"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/edt_offender_no_ext" />
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <TextView
             android:id="@+id/textView12"
@@ -248,7 +249,7 @@
             android:textSize="13sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spn_colony" />
+            app:layout_constraintTop_toBottomOf="@+id/edt_colony" />
 
         <EditText
             android:id="@+id/edt_offender_no_int"

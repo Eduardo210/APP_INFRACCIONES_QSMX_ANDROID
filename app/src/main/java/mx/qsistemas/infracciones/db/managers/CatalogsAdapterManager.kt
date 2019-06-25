@@ -87,4 +87,12 @@ object CatalogsAdapterManager {
             }
         }.execute().get()
     }
+
+    fun getLicenseTypeList(): MutableList<LicenseType> {
+        return object : AsyncTask<Void, Void, MutableList<LicenseType>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<LicenseType> {
+                return Application.m_database?.licenseTypeDao()?.selectAll()!!
+            }
+        }.execute().get()
+    }
 }

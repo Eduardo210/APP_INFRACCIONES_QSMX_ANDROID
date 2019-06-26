@@ -68,6 +68,7 @@
                         android:layout_height="100dp"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/dotted_square"
+                        android:scaleType="centerCrop"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView7" />
@@ -92,6 +93,7 @@
                         android:layout_height="100dp"
                         android:layout_marginStart="8dp"
                         android:background="@drawable/dotted_square"
+                        android:scaleType="centerCrop"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
                         app:layout_constraintTop_toBottomOf="@+id/textView6" />
@@ -144,7 +146,9 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/h_no_document"
-                        android:inputType="textPersonName"
+                        android:imeOptions="actionDone"
+                        android:inputType="textNoSuggestions"
+                        android:maxLength="25"
                         android:textColor="@color/colorLightBlack"
                         android:textSize="@dimen/font_size_small"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -233,12 +237,19 @@
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
                         app:layout_constraintTop_toBottomOf="@+id/spn_type_doc" />
 
-                    <Spinner
-                        android:id="@+id/spn_sub_brand_vehicle"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        android:id="@+id/autxt_sub_brand_vehicle"
+                        style="@style/EditText_InputItem"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"
+                        android:completionThreshold="1"
+                        android:hint="@string/h_sub_brand"
+                        android:imeOptions="actionDone"
+                        android:inputType="textNoSuggestions"
+                        android:lines="1"
+                        android:maxLength="25"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/font_size_small"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
                         app:layout_constraintTop_toBottomOf="@+id/txt_title_subtype_incidence" />
@@ -256,12 +267,19 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/spn_brand_vehicle" />
 
-                    <Spinner
-                        android:id="@+id/spn_color"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        android:id="@+id/autxt_color"
+                        style="@style/EditText_InputItem"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"
+                        android:completionThreshold="1"
+                        android:hint="@string/h_color"
+                        android:imeOptions="actionDone"
+                        android:inputType="textNoSuggestions"
+                        android:lines="1"
+                        android:maxLength="15"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/font_size_small"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView11" />
@@ -277,7 +295,7 @@
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/spn_sub_brand_vehicle" />
+                        app:layout_constraintTop_toBottomOf="@+id/autxt_sub_brand_vehicle" />
 
                     <Spinner
                         android:id="@+id/spn_type"
@@ -300,7 +318,7 @@
                         android:textSize="13sp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spn_color" />
+                        app:layout_constraintTop_toBottomOf="@+id/autxt_color" />
 
                     <EditText
                         android:id="@+id/edt_no_card"
@@ -310,7 +328,8 @@
                         android:layout_marginEnd="5dp"
                         android:ems="10"
                         android:hint="@string/h_circulation_card"
-                        android:inputType="textPersonName"
+                        android:inputType="textNoSuggestions"
+                        android:maxLength="15"
                         android:textColor="@color/colorLightBlack"
                         android:textSize="@dimen/font_size_small"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
@@ -338,7 +357,8 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/h_year"
-                        android:inputType="textPersonName"
+                        android:inputType="number"
+                        android:maxLength="4"
                         android:textColor="@color/colorLightBlack"
                         android:textSize="@dimen/font_size_small"
                         app:layout_constraintEnd_toEndOf="parent"

@@ -82,25 +82,25 @@ object PaymentsTransfer : Interfaces.Contracts {
         paymentsPreferences.saveDataInt(R.string.pt_sp_quetz_id_township, idTownship)
         paymentsPreferences.saveData(R.string.pt_sp_quetz_id_terminal, terminalCode)
         paymentsPreferences.saveDataInt(R.string.pt_sp_quetz_id_township, 0)
-        /* Load Params of the terminal */
-        ServiceManager.getInstence().pinpad.loadProtectKeyByArea(1, "B0030345E0B41AE3AB93AA836BA5CE38")
-        ServiceManager.getInstence().pinpad.loadMainKeyWithKcvByArea(
-                1,
-                1,
-                "F9FA6ED854CCCDB23E1B036F4B893AA5",
-                "6D89EC94"
-        )
-        /* Set time to terminal */
-        ServiceManager.getInstence().deviceinfo.spTime = BCDHelper.StrToBCD(System.currentTimeMillis().toString())
-        ServiceManager.getInstence().pinpad.loadMacKeyByArea(1, 1, "585EEED9AEFEFDF2C7918E080B560D68", "BE0BDFA1")
-        ServiceManager.getInstence().pinpad.loadTDKeyByArea(1, 1, "585EEED9AEFEFDF2C7918E080B560D68", "BE0BDFA1")
-        ServiceManager.getInstence().pinpad.loadPinKeyByArea(1, 1, "F9FA6ED854CCCDB23E1B036F4B893AA5", "BE0BDFA1")
-        GlobalData.getInstance().pinpadVersion = PINPAD_INTERFACE_VERSION3
-        GlobalData.getInstance().area = 1
-        GlobalData.getInstance().tmkId = 1
-        GlobalData.getInstance().pinkeyFlag = true
-        ServiceManager.getInstence().pboc.setEmvParamSetBySdk(false)
         AsyncTask.execute {
+            /* Load Params of the terminal */
+            ServiceManager.getInstence().pinpad.loadProtectKeyByArea(1, "B0030345E0B41AE3AB93AA836BA5CE38")
+            ServiceManager.getInstence().pinpad.loadMainKeyWithKcvByArea(
+                    1,
+                    1,
+                    "F9FA6ED854CCCDB23E1B036F4B893AA5",
+                    "6D89EC94"
+            )
+            /* Set time to terminal */
+            ServiceManager.getInstence().deviceinfo.spTime = BCDHelper.StrToBCD(System.currentTimeMillis().toString())
+            ServiceManager.getInstence().pinpad.loadMacKeyByArea(1, 1, "585EEED9AEFEFDF2C7918E080B560D68", "BE0BDFA1")
+            ServiceManager.getInstence().pinpad.loadTDKeyByArea(1, 1, "585EEED9AEFEFDF2C7918E080B560D68", "BE0BDFA1")
+            ServiceManager.getInstence().pinpad.loadPinKeyByArea(1, 1, "F9FA6ED854CCCDB23E1B036F4B893AA5", "BE0BDFA1")
+            GlobalData.getInstance().pinpadVersion = PINPAD_INTERFACE_VERSION3
+            GlobalData.getInstance().area = 1
+            GlobalData.getInstance().tmkId = 1
+            GlobalData.getInstance().pinkeyFlag = true
+            ServiceManager.getInstence().pboc.setEmvParamSetBySdk(false)
             LoadParamManage.getInstance().DeleteAllTerParamFile()
             for (j in aid_data.indices) {
                 ServiceManager.getInstence().pboc.updateAID(0, CUPParam.aid_data[j])
@@ -108,21 +108,21 @@ object PaymentsTransfer : Interfaces.Contracts {
             for (i in CUPParam.ca_data.indices) {
                 ServiceManager.getInstence().pboc.updateRID(0, CUPParam.ca_data[i])
             }
+            var posEmvParam = ServiceManager.getInstence().pboc.posTermPara
+            System.arraycopy(byteArrayOf(0x04, 132.toByte()), 0, posEmvParam.TransCurrCode, 0, 2)
+            System.arraycopy(byteArrayOf(0x04, 132.toByte()), 0, posEmvParam.CountryCode, 0, 2)
+            posEmvParam.TerminalType =
+                    0x22  // https://www.emvco.com/wp-content/uploads/2017/05/EMV_v4.3_Book_4_Other_Interfaces_20120607062305603.pdf (Pag. 129)
+            posEmvParam.Capability[0] = 0xe0.toByte()
+            posEmvParam.Capability[1] = 0xb8.toByte()
+            posEmvParam.Capability[2] = 0xc8.toByte()
+            ServiceManager.getInstence().pboc.posTermPara = posEmvParam
+            posEmvParam = ServiceManager.getInstence().pboc.posTermPara
+            if (BuildConfig.DEBUG) {
+                Log.i(this.javaClass.simpleName, "posEmvParam:$posEmvParam")
+            }
+            GlobalData.getInstance().login = true
         }
-        var posEmvParam = ServiceManager.getInstence().pboc.posTermPara
-        System.arraycopy(byteArrayOf(0x04, 132.toByte()), 0, posEmvParam.TransCurrCode, 0, 2)
-        System.arraycopy(byteArrayOf(0x04, 132.toByte()), 0, posEmvParam.CountryCode, 0, 2)
-        posEmvParam.TerminalType =
-                0x22  // https://www.emvco.com/wp-content/uploads/2017/05/EMV_v4.3_Book_4_Other_Interfaces_20120607062305603.pdf (Pag. 129)
-        posEmvParam.Capability[0] = 0xe0.toByte()
-        posEmvParam.Capability[1] = 0xb8.toByte()
-        posEmvParam.Capability[2] = 0xc8.toByte()
-        ServiceManager.getInstence().pboc.posTermPara = posEmvParam
-        posEmvParam = ServiceManager.getInstence().pboc.posTermPara
-        if (BuildConfig.DEBUG) {
-            Log.i(this.javaClass.simpleName, "posEmvParam:$posEmvParam")
-        }
-        GlobalData.getInstance().login = true
         paymentsPreferences.saveDataBool(R.string.pt_sp_quetz_is_device_config, true)
     }
 

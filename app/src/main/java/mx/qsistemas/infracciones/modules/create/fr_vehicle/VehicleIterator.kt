@@ -47,10 +47,6 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
         return adapter
     }
 
-    override fun getYearAdapter(): ArrayAdapter<String> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun getTypeAdapter(): ArrayAdapter<String> {
         typeVehicleList = CatalogsAdapterManager.getTypeVehicleList()
         val strings = mutableListOf<String>()
@@ -130,5 +126,50 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
         val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, strings)
         adapter.setDropDownViewResource(R.layout.custom_spinner_item)
         return adapter
+    }
+
+    override fun getPositionIdentifiedDoc(obj: IdentifierDocument): Int {
+        for (i in 0 until identifierDocList.size) {
+            if (identifierDocList[i].id == obj.id) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    override fun getPositionState(obj: States): Int {
+        for (i in 0 until statesList.size) {
+            if (statesList[i].id == obj.id) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    override fun getPositionAuthority(obj: AuthorityIssues): Int {
+        for (i in 0 until authorityIssuesList.size) {
+            if (authorityIssuesList[i].id == obj.id) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    override fun getPositionBrand(obj: VehicleBrand): Int {
+        for (i in 0 until brandList.size) {
+            if (brandList[i].id == obj.id) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    override fun getPositionType(obj: VehicleType): Int {
+        for (i in 0 until typeVehicleList.size) {
+            if (typeVehicleList[i].id == obj.id) {
+                return i
+            }
+        }
+        return 0
     }
 }

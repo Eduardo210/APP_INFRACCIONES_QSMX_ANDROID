@@ -4,8 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -66,8 +65,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
         if (p1) {
             binding.lytOffender.root.visibility = GONE
+            binding.btnPay.visibility = INVISIBLE
         } else {
             binding.lytOffender.root.visibility = VISIBLE
+            binding.btnPay.visibility = VISIBLE
         }
     }
 

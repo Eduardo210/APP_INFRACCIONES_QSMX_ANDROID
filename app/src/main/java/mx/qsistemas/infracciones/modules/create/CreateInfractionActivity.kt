@@ -1,5 +1,7 @@
 package mx.qsistemas.infracciones.modules.create
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -13,6 +15,8 @@ import mx.qsistemas.infracciones.modules.create.fr_infraction.InfractionFragment
 import mx.qsistemas.infracciones.modules.create.fr_offender.OffenderFragment
 import mx.qsistemas.infracciones.modules.create.fr_vehicle.VehicleFragment
 import mx.qsistemas.infracciones.utils.EXTRA_OPTION_INFRACTION
+import mx.qsistemas.infracciones.utils.RC_INTENT_CAMERA_EV1
+import mx.qsistemas.infracciones.utils.RC_INTENT_CAMERA_EV2
 
 const val OPTION_CREATE_INFRACTION = 1
 const val OPTION_UPDATE_INFRACTION = 2
@@ -72,6 +76,17 @@ class CreateInfractionActivity : ActivityHelper(), CreateInfractionContracts.Pre
                 stepDown()
                 router.value.presentInfractionFragment(Direction.NONE)
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == RC_INTENT_CAMERA_EV1 || requestCode == RC_INTENT_CAMERA_EV2) {
+            if (resultCode == Activity.RESULT_OK) {
+                val fm = supportFragmentManager.findFragmentById(binding.containerInfraction.id)
+                fm!!.onActivityResult(requestCode, resultCode, data)
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 }

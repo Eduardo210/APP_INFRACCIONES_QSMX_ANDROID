@@ -2,8 +2,10 @@ package mx.qsistemas.infracciones.singletons
 
 import mx.qsistemas.infracciones.db.entities.*
 import mx.qsistemas.infracciones.net.catalogs.States
+import mx.qsistemas.infracciones.net.catalogs.Townships
 
 object SingletonInfraction {
+
     /* Vehicle Information */
     var identifierDocument: IdentifierDocument = IdentifierDocument(0, "")
     var noDocument: String = ""
@@ -17,11 +19,40 @@ object SingletonInfraction {
     var yearVehicle: String = ""
     var evidence1: String = ""
     var evidence2: String = ""
-    /* Infracion Information */
 
-    var idStateOffender: Int = 0
-    var idTownshipOffender: Int = 0
+    /* Infracion Information */
+    var colonnyInfraction: String = ""
+    var streetInfraction: String = ""
+    var betweenStreet1: String = ""
+    var betweenStreet2: String = ""
     var motivationList: MutableList<DtoMotivation> = mutableListOf()
+    var retainedDocument: RetainedDocument = RetainedDocument(0, "")
+    var isRemited: Boolean = false
+    var dispositionRemited: Disposition = Disposition(0, "")
+    var latitudeInfraction: Double = 0.0
+    var longitudeInfraction: Double = 0.0
+
+    /* Offender Information */
+    var isPersonAbstent: Boolean = true
+    var nameOffender: String = "QUIEN"
+    var lastFatherName: String = "RESULTE"
+    var lastMotherName: String = "RESPONSABLE"
+    var rfcOffenfer: String = ""
+    var stateOffender: States = States()
+    var townshipOffender: Townships = Townships()
+    var colonyOffender: String = ""
+    var noExtOffender: String = ""
+    var noIntOffender: String = ""
+    var noLicenseOffender: String = ""
+    var typeLicenseOffender: LicenseType = LicenseType(0, "")
+    var licenseExpOffender: String = ""
+
+    /* Calculated Variables */
+    var idNewInfraction: Long = 0L
+    var idPersonTownship: Long = 0L
+    var subTotalInfraction: String = ""
+    var discountInfraction: String = ""
+    var totalInfraction: String = ""
 
     fun cleanSingleton() {
         /* Vehicle Information Reset */
@@ -37,6 +68,40 @@ object SingletonInfraction {
         yearVehicle = ""
         evidence1 = ""
         evidence2 = ""
+
+        /* Infraction Information Reset */
+        colonnyInfraction = ""
+        streetInfraction = ""
+        betweenStreet1 = ""
+        betweenStreet2 = ""
+        motivationList = mutableListOf()
+        retainedDocument = RetainedDocument(0, "")
+        isRemited = false
+        dispositionRemited = Disposition(0, "")
+        latitudeInfraction = 0.0
+        longitudeInfraction = 0.0
+
+        /* Offender Information Reset */
+        isPersonAbstent = true
+        nameOffender = "QUIEN"
+        lastFatherName = "RESULTE"
+        lastMotherName = "RESPONSABLE"
+        rfcOffenfer = ""
+        stateOffender = States()
+        townshipOffender = Townships()
+        colonyOffender = ""
+        noExtOffender = ""
+        noIntOffender = ""
+        noLicenseOffender = ""
+        typeLicenseOffender = LicenseType(0, "")
+        licenseExpOffender = ""
+
+        /* Calculated Variables Reset */
+        idNewInfraction = 0L
+        idPersonTownship = 0L
+        subTotalInfraction = ""
+        totalInfraction = ""
+        discountInfraction = ""
     }
 
     class DtoMotivation(var article: Articles, var fraction: InfractionFraction, var motivation: String)

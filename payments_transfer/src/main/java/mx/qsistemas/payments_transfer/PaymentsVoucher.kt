@@ -6,6 +6,7 @@ import com.basewin.aidl.OnPrinterListener
 import com.basewin.services.PrinterBinder
 import com.basewin.services.ServiceManager
 import mx.qsistemas.payments_transfer.dtos.Voucher
+import mx.qsistemas.payments_transfer.utils.AlertDialogHelper
 import mx.qsistemas.payments_transfer.utils.DialogStatusHelper
 import mx.qsistemas.payments_transfer.utils.ENTRY_MODE_CHIP
 import mx.qsistemas.payments_transfer.utils.FLAG_TRANS_APPROVE
@@ -16,8 +17,15 @@ import org.json.JSONObject
 class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.TransactionListener) : OnPrinterListener {
 
     private var printJson = JSONObject()
+    private var hasPrintedCopy = false
+    private lateinit var activity: Activity
+    private lateinit var voucher: Voucher
+    private lateinit var entryMode: String
 
-    fun printVoucher(activity: Activity, voucherInfo: Voucher, entryMode: String) {
+    fun printVoucher(activity: Activity, voucherInfo: Voucher, entryMode: String, isCopy: Boolean) {
+        this.activity = activity
+        this.voucher = voucherInfo
+        this.entryMode = entryMode
         try {
             activity.runOnUiThread { DialogStatusHelper.showDialog(activity, activity.getString(R.string.pt_t_printing_voucher)) }
             ServiceManager.getInstence().printer.setPrintGray(1000)
@@ -31,6 +39,9 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
             printTest.put(getPrintObject("Afiliación: ${voucherInfo.afiliacion}", "2"))
             printTest.put(getPrintObject("Terminal ID: ${voucherInfo.terminalId}", "2"))
             printTest.put(getPrintObject("No. de control: ${voucherInfo.noControl}\n\n", "2"))
+            if (isCopy) {
+                printTest.put(getPrintObject("        Copia Cliente\n\n", "3"))
+            }
             printTest.put(getPrintObject("     Número de tarjeta     Vigencia", "2"))
             printTest.put(getPrintObject("     **** **** **** ${voucherInfo.noCard}        ${voucherInfo.caducity}\n\n", "2"))
             printTest.put(getPrintObject("             ${voucherInfo.flagTrans}\n\n", "3"))
@@ -56,6 +67,7 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
                 printTest.put(getPrintObject("TSI: ${voucherInfo.TSI}", "2"))
                 printTest.put(getPrintObject("APN: ${voucherInfo.APN}\n\n", "2"))
             }
+            printTest.put(getPrintObject("\n\n\n", "2"))
             printJson.put("spos", printTest)
             ServiceManager.getInstence().printer.print(printJson.toString(), null, this)
         } catch (e: JSONException) {
@@ -88,7 +100,18 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
 
     override fun onFinish() {
         DialogStatusHelper.closeDialog()
-        txListener.onTxVoucherPrinted()
+        if (!hasPrintedCopy && voucher.flagTrans == FLAG_TRANS_APPROVE) {
+            var builder = AlertDialogHelper.getGenericBuilder(
+                    activity.getString(R.string.pt_s_title_dialog_payment), activity.getString(R.string.pt_s_subtitle_dialog_payment), activity)
+            builder.setPositiveButton("Aceptar") { _, _ ->
+                hasPrintedCopy = true
+                printVoucher(activity, voucher, entryMode, true)
+            }
+            builder.setNegativeButton("Cancelar") { _, _ -> txListener.onTxVoucherPrinted() }
+            builder.show()
+        } else {
+            txListener.onTxVoucherPrinted()
+        }
     }
 
     override fun onError(errorCode: Int, p1: String?) {

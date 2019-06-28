@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@android:color/transparent"
+    android:background="@drawable/background"
               android:gravity="center"
               android:orientation="vertical">
 
@@ -123,7 +123,6 @@
             android:id="@+id/ll_keyboard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="20dp"
             android:layout_weight="1.1"
             android:background="@color/colorWhite"
             android:gravity="center_horizontal"

@@ -163,6 +163,24 @@
     <string name="e_circulation_card">Tarjeta de circulación obligatoria</string>
     <string name="e_year">Año obligatorio</string>
     <string name="e_year_invalid">Año inválido</string>
+    <!-- Infraction Information Errors -->
+    <string name="e_colonny">Colonia obligatoria</string>
+    <string name="e_street">Calle obligatoria</string>
+    <string name="e_articles_empty">Artículo obligatorio</string>
+    <string name="e_motivation_empty">Motivación obligatoria</string>
+    <string name="e_disposition_remitted">Disposición obligatoria</string>
+    <!-- Offender Information Errors -->
+    <string name="e_name_offender">Nombre obligatorio</string>
+    <string name="e_last_father_offender">Apellido paterno obligatorio</string>
+    <string name="e_last_mother_offender">Apellido materno obligatorio</string>
+    <string name="e_state_offender">Entidad obligatoria</string>
+    <string name="e_township_offender">Municipio obligatorio</string>
+    <string name="e_colony_offender">Colonia obligatoria</string>
+    <string name="e_no_ext_offender">No. exterior obligatorio</string>
+    <string name="e_no_int_offender">No. interior obligatorio</string>
+    <string name="e_no_license_offender">No. licencia obligatoria</string>
+    <string name="e_type_license_offender">Tipo obligatorio</string>
+    <string name="e_exp_license_offender">Expiración obligatoria</string>
     <!-- Network Errors -->
     <string name="e_without_internet">Favor de validar la conexión a internet</string>
     <string name="e_other_problem_internet">Ocurrió un problema al consultar la información</string>
@@ -173,7 +191,11 @@
 
     <!-- Warnings -->
     <string name="w_dialog_title">AVISO</string>
-    <string name="w_exit_without_save">No se han guardado cambios ¿Desea continuar?</string>
+    <string name="w_dialog_title_payment">PAGAR</string>
+    <string name="w_dialog_title_payment_failed">COBRO FALLIDO</string>
+    <string name="w_want_to_pay">¿Desea pagar la infracción en este momento?</string>
+    <string name="w_exit_without_save">Se perderán los cambios realizados, ¿Desea continuar?</string>
+    <string name="w_reintent_transaction">¿Desea volver a intentar realizar el cobro?</string>
     <string name="w_close_session">¿Desea cerrar sesión en el dispositivo?</string>
     <string name="w_date_time_zone_not_automatic">Favor de seleccionar fecha y zona horaria automática</string>
     <string name="w_min_photos_take">Favor de tomar por lo menos 1 foto</string>
@@ -181,6 +203,7 @@
     <string name="status_send">Enviado</string>
     <string name="status_pending">Pendiente</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Success -->
+    <string name="s_data_saved">Infracción guardada</string>
+    <string name="s_infraction_pay">Infracción pagada</string>
 </resources>

@@ -328,6 +328,7 @@
                         android:layout_marginEnd="5dp"
                         android:ems="10"
                         android:hint="@string/h_circulation_card"
+                        android:imeOptions="actionNext"
                         android:inputType="textNoSuggestions"
                         android:maxLength="15"
                         android:textColor="@color/colorLightBlack"

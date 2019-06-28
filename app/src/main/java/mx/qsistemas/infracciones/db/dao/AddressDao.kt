@@ -9,4 +9,7 @@ import mx.qsistemas.infracciones.db.entities.Address
 interface AddressDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: MutableList<Address>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(address: Address): Long
 }

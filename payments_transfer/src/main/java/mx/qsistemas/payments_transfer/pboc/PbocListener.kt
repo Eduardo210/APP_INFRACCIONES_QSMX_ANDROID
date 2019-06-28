@@ -461,7 +461,8 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
         }
         val map = HashMap<String, String>()
         map[CMD_TRANS] = "AUTH"
-        map[MERCHANT_ID] = Preferences(activity).loadData(R.string.pt_sp_banorte_merchant_id, "") ?: ""
+        map[MERCHANT_ID] = Preferences(activity).loadData(R.string.pt_sp_banorte_merchant_id, "")
+                ?: ""
         map[USER] = Preferences(activity).loadData(R.string.pt_sp_banorte_user, "") ?: ""
         map[PASSWORD] = Preferences(activity).loadData(R.string.pt_sp_banorte_black_box, "") ?: ""
         val idTownship = Preferences(activity).loadDataInt(R.string.pt_sp_quetz_id_township)
@@ -514,7 +515,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                                 }
                             }
                             txListener.onTxApproved(txInfo)
-                            paymentsVoucher.printVoucher(activity, voucher, entryMode)
+                            paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
                         }
                         PWR_DECLINADA -> {
                             DialogStatusHelper.closeDialog()
@@ -527,7 +528,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                             if (entryMode == ENTRY_MODE_BAND) {
                                 notifyTxFailToChip()
                             }
-                            paymentsVoucher.printVoucher(activity, voucher, entryMode)
+                            paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
                         }
                         PWR_RECHAZADA -> {
                             DialogStatusHelper.closeDialog()
@@ -540,7 +541,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                             if (entryMode == ENTRY_MODE_CHIP) {
                                 notifyTxFailToChip()
                             }
-                            paymentsVoucher.printVoucher(activity, voucher, entryMode)
+                            paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
                         }
                         PWR_SIN_RESPUESTA -> {
                             var voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate,
@@ -553,7 +554,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                             if (entryMode == ENTRY_MODE_CHIP) {
                                 notifyTxFailToChip()
                             }
-                            paymentsVoucher.printVoucher(activity, voucher, entryMode)
+                            paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
                         }
                     }
                 } else if (response.code() == HttpsURLConnection.HTTP_CLIENT_TIMEOUT) {
@@ -566,7 +567,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     var voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
                             "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
                             FLAG_TRANS_TIMEOUT, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!)
-                    paymentsVoucher.printVoucher(activity, voucher, entryMode)
+                    paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
                     if (entryMode == ENTRY_MODE_CHIP) {
                         notifyTxFailToChip()
                     }
@@ -589,7 +590,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                 var voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
                         "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
                         FLAG_TRANS_OFFLINE, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!)
-                paymentsVoucher.printVoucher(activity, voucher, entryMode)
+                paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
                 if (entryMode == ENTRY_MODE_CHIP) {
                     notifyTxFailToChip()
                 }

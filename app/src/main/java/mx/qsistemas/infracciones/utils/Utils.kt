@@ -170,5 +170,127 @@ class Utils {
             builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
             return builder
         }
+
+        /* Generate Banking Capture Lines */
+        fun generateCaptureLine(folio: String, expirationDate: String, import: String, constant: String): String {
+            var captureLine = ""
+            val firstPart = getIdCondensed(folio)
+            val secondPart = getDateCondensed(expirationDate)
+            val thirdPart = getImportCondensed(import)
+            val fourthPart = getVerificationNumbers(firstPart + secondPart + thirdPart + constant)
+            captureLine = firstPart + secondPart + thirdPart + constant + fourthPart
+            for (i in captureLine!!.length..19) {
+                captureLine = "0$captureLine"
+            }
+            return captureLine
+        }
+
+        private fun getIdCondensed(folio: String): String {
+            val idInfraction = folio.toUpperCase()
+            var c: String
+            var idCondensed = ""
+            for (i in 0 until idInfraction.length) {
+                c = idInfraction.substring(i, i + 1)
+                when (c) {
+                    "A" -> idCondensed += "2"
+                    "B" -> idCondensed += "2"
+                    "C" -> idCondensed += "2"
+                    "D" -> idCondensed += "3"
+                    "E" -> idCondensed += "3"
+                    "F" -> idCondensed += "3"
+                    "G" -> idCondensed += "4"
+                    "H" -> idCondensed += "4"
+                    "I" -> idCondensed += "4"
+                    "J" -> idCondensed += "5"
+                    "K" -> idCondensed += "5"
+                    "L" -> idCondensed += "5"
+                    "M" -> idCondensed += "6"
+                    "N" -> idCondensed += "6"
+                    "O" -> idCondensed += "6"
+                    "P" -> idCondensed += "7"
+                    "Q" -> idCondensed += "7"
+                    "R" -> idCondensed += "7"
+                    "S" -> idCondensed += "8"
+                    "T" -> idCondensed += "8"
+                    "U" -> idCondensed += "8"
+                    "V" -> idCondensed += "9"
+                    "W" -> idCondensed += "9"
+                    "X" -> idCondensed += "9"
+                    "Y" -> idCondensed += "0"
+                    "Z" -> idCondensed += "0"
+                    else -> idCondensed += c
+                }
+            }
+            return idCondensed
+        }
+
+        private fun getDateCondensed(date: String): String {
+            val splitDate = date.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            var day = Integer.parseInt(splitDate[0])
+            var month = Integer.parseInt(splitDate[1])
+            var year = Integer.parseInt(splitDate[2])
+            year = (year - 1988) * 372
+            month = (month - 1) * 31
+            day -= 1
+            return (year + month + day).toString()
+        }
+
+        private fun getImportCondensed(import: String): String {
+            val newImport = import.replace("0", "").replace(".", "").replace(",", "")
+            var x = 0
+            val array = IntArray(newImport.length)
+            var sum = 0
+            newImport.forEachIndexed { index, c ->
+                var digit = c.toInt()
+                when (x) {
+                    0 -> {
+                        digit *= 7
+                        x += 1
+                    }
+                    1 -> {
+                        digit *= 3
+                        x += 1
+                    }
+                    2 -> x = 0
+                }
+                array[index] = digit
+            }
+            array.forEach { sum += it }
+            return (sum % 10).toString()
+        }
+
+        private fun getVerificationNumbers(text: String): String {
+            var x = 0
+            val array = IntArray(text.length)
+            var sum = 0
+            text.forEachIndexed { index, c ->
+                var digit = c.toInt()
+                when (x) {
+                    0 -> {
+                        digit *= 11
+                        x += 1
+                    }
+                    1 -> {
+                        digit *= 13
+                        x += 1
+                    }
+                    2 -> {
+                        digit *= 17
+                        x += 1
+                    }
+                    3 -> {
+                        digit *= 19
+                        x += 1
+                    }
+                    4 -> {
+                        digit *= 23
+                        x = 0
+                    }
+                }
+                array[index] = digit
+            }
+            array.forEach { sum += it }
+            return (sum % 97 + 1).toString()
+        }
     }
 }

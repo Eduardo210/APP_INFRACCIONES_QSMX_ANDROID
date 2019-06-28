@@ -55,6 +55,8 @@ private const val DB_VERSION = 1
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun addressDao(): AddressDao
+    abstract fun addressInfringementDao(): AddressInfringementDao
+    abstract fun addressPersonDao(): AddressPersonDao
     abstract fun articlesDao(): ArticlesDao
     abstract fun ascriptionDao(): AscriptionDao
     abstract fun attributeDao(): AttributeDao
@@ -65,18 +67,21 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun identifierDocumentDao(): IdentifierDocumentDao
     abstract fun infractionDao(): InfractionDao
     abstract fun infractionFractionDao(): InfractionFractionDao
+    abstract fun infractionEvidenceDao(): InfractionEvidenceDao
     abstract fun licenseTypeDao(): LicenseTypeDao
     abstract fun moduleDao(): ModuleDao
     abstract fun nonWorkingDayDao(): NonWorkingDayDao
     abstract fun personAccountDao(): PersonAccountDao
     abstract fun personAttributeDao(): PersonAttributeDao
     abstract fun personDao(): PersonDao
+    abstract fun personInfringementDao(): PersonInfringementDao
     abstract fun personTownshipDao(): PersonTownshipDao
     abstract fun retainedDocumentDao(): RetainedDocumentDao
     abstract fun stateDao(): StateDao
     abstract fun submarkingVehicleDao(): SubmarkingVehicleDao
     abstract fun synchronizationDao(): SyncronizationDao
     abstract fun townSepomexDao(): TownSepomexDao
+    abstract fun trafficViolationDao(): TrafficViolationDao
     abstract fun vehicleBrandDao(): VehicleBrandDao
     abstract fun vehicleInfractionDao(): VehicleInfractionDao
     abstract fun vehicleTypeDao(): VehicleTypeDao

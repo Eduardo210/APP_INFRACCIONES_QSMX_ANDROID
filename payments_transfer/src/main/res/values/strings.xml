@@ -31,6 +31,10 @@
     <string name="pt_s_load_key2">El dispositivo ya cuenta con llave</string>
     <string name="pt_s_print_voucher">Se ha impreso el voucher</string>
 
+    <!-- Dialog Payment Strings -->
+    <string name="pt_s_title_dialog_payment">IMPRESIÓN</string>
+    <string name="pt_s_subtitle_dialog_payment">¿Desea imprimir una copia del voucher para el infractor?</string>
+
     <!-- Errors -->
     <string name="pt_e_unknown">Error desconocido</string>
     <string name="pt_e_declined">Operación declinada</string>

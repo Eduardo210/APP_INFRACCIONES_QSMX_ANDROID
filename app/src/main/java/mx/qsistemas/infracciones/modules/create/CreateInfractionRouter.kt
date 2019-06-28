@@ -16,7 +16,7 @@ class CreateInfractionRouter(val activity: ActivityHelper) : CreateInfractionCon
         activity.loadFragment(InfractionFragment.newInstance(true), R.id.container_infraction, direction, false)
     }
 
-    override fun presentOffenderFragment(direction: Direction) {
-        activity.loadFragment(OffenderFragment.newInstance(true), R.id.container_infraction, direction, false)
+    override fun presentOffenderFragment(isNewInfraction: Boolean, direction: Direction) {
+        activity.loadFragment(OffenderFragment.newInstance(isNewInfraction), R.id.container_infraction, direction, false)
     }
 }

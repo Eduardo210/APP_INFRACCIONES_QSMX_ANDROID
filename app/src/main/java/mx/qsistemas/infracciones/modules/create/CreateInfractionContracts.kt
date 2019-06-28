@@ -16,6 +16,6 @@ class CreateInfractionContracts {
     interface Router {
         fun presentVehicleFragment(direction: Direction)
         fun presentInfractionFragment(direction: Direction)
-        fun presentOffenderFragment(direction: Direction)
+        fun presentOffenderFragment(isNewInfraction: Boolean, direction: Direction)
     }
 }

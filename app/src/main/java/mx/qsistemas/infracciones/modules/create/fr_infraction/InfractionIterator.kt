@@ -80,4 +80,22 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
         SingletonInfraction.motivationList.add(SingletonInfraction.DtoMotivation(articlesList[posArticle],
                 fractionList[posFraction], ""))
     }
+
+    override fun getPositionRetainedDoc(obj: RetainedDocument): Int {
+        for (i in 0 until retainedDocList.size) {
+            if (retainedDocList[i].id == obj.id) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    override fun getPositionDisposition(obj: Disposition): Int {
+        for (i in 0 until dispositionList.size) {
+            if (dispositionList[i].id == obj.id) {
+                return i
+            }
+        }
+        return 0
+    }
 }

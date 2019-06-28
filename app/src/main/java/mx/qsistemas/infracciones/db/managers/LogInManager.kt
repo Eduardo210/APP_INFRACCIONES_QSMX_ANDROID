@@ -1,9 +1,11 @@
 package mx.qsistemas.infracciones.db.managers
 
+import android.annotation.SuppressLint
 import android.os.AsyncTask
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.db.dao.PersonAccountDao
 
+@SuppressLint("StaticFieldLeak")
 object LogInManager {
 
     fun getUser(userName: String): PersonAccountDao.LogInUser? {

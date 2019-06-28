@@ -11,6 +11,9 @@ interface ConfigDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: MutableList<Config>)
 
+    @Query("SELECT * FROM config ORDER BY id ASC LIMIT 1")
+    fun selectFirstConfig(): Config
+
     @Query("DELETE FROM config")
     fun deleteAll()
 }

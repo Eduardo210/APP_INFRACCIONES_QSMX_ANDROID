@@ -31,7 +31,8 @@ class MotivationAdapter : RecyclerView.Adapter<ViewHolderMotivation>() {
         holder.itemView.txt_article_item.text = SingletonInfraction.motivationList[position].article.article
         holder.itemView.txt_fraction_item.text = SingletonInfraction.motivationList[position].fraction.fraccion
         holder.itemView.txt_description_item.text = SingletonInfraction.motivationList[position].fraction.description
-        val spannable = SpannableString("U.M.A. ${SingletonInfraction.motivationList[position].fraction.minimum_wages.toString()}")
+        holder.itemView.edt_motivation_item.setText(SingletonInfraction.motivationList[position].motivation)
+        val spannable = SpannableString("U.M.A. ${SingletonInfraction.motivationList[position].fraction.minimum_wages}")
         spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(Application.getContext(), R.color.colorPrimaryDark)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(Application.getContext(), R.color.colorBlack)), 6, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         holder.itemView.txt_umas.text = spannable
@@ -40,7 +41,7 @@ class MotivationAdapter : RecyclerView.Adapter<ViewHolderMotivation>() {
             notifyDataSetChanged()
         }
         holder.itemView.edt_motivation_item.doOnTextChanged { text, start, count, after ->
-            SingletonInfraction.motivationList[position].motivation = text.toString()
+            SingletonInfraction.motivationList[position].motivation = text?.trim().toString().toUpperCase()
         }
     }
 }

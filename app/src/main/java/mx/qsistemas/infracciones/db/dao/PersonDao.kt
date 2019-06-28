@@ -9,4 +9,7 @@ import mx.qsistemas.infracciones.db.entities.Person
 interface PersonDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: MutableList<Person>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(person: Person): Long
 }

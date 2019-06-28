@@ -53,7 +53,7 @@
     <!-- Edit Infraction Strings -->
     <string name="t_toolbar_title_edit_infraction">Editar</string>
     <string name="t_toolbar_subtitle_edit_infraction">Edición de infracción</string>
-    
+
     <!-- Vehicle Fragment Strings -->
     <string name="t_vehicle">Vehículo</string>
     <string name="t_brand">Marca</string>
@@ -68,7 +68,7 @@
     <string name="t_issued_in">Expedido en</string>
     <string name="t_doc_type">Tipo de documento</string>
     <string name="t_circulation_card">Tarjeta de circulación</string>
-    
+
     <!-- Infraction Fragment Strings -->
     <string name="t_infraction">Infracción</string>
     <string name="t_location_infraction">Lugar de la infracción</string>

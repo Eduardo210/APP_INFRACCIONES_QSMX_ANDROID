@@ -7,7 +7,7 @@
         android:id="@+id/cdv_infraccion_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginBottom="7dp"
         card_view:cardCornerRadius="13dp"
         card_view:cardElevation="5dp"
         card_view:cardPreventCornerOverlap="false">
@@ -38,7 +38,7 @@
             <TextView
                 android:id="@+id/txt_folio"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 tool:text="26704d9832"
                 android:textColor="@color/colorBlack"
                 android:layout_width="wrap_content"
@@ -54,9 +54,9 @@
                 android:drawablePadding="5dp"
                 android:textColor="@color/colorGreen"
                 android:textSize="12sp"
+                android:layout_marginTop="10dp"
                 card_view:layout_constraintTop_toBottomOf="@+id/txt_resume_art_frac"
                 card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintBottom_toBottomOf="parent"
                 tool:text="Enviado" />
 
             <TextView
@@ -93,33 +93,35 @@
             <Button
                 android:text="Imprimir"
                 android:textColor="@color/colorWhite"
-                android:textSize="10sp"
+                android:textSize="15sp"
+                style="@style/SmallButton_Custom"
                 android:id="@+id/btn_print"
-                android:layout_width="100dp"
+                android:layout_width="115dp"
                 android:paddingLeft="15dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="5dp"
                 android:drawableStart="@drawable/ic_print"
                 android:layout_height="35dp"
                 android:background="@drawable/small_button_gradient"
-                card_view:layout_constraintTop_toBottomOf="@id/txt_resume_art_frac"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_date_infra"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintBottom_toBottomOf="parent"/>
 
             <Button
-                android:text="Pagar"
-                android:textColor="@color/colorWhite"
-                android:textSize="10sp"
                 android:id="@+id/btn_payment"
-                android:layout_width="100dp"
-                android:layout_marginTop="16dp"
-                android:paddingLeft="15dp"
+                android:layout_width="115dp"
+                style="@style/SmallButton_Custom"
                 android:layout_height="35dp"
-                android:drawableStart="@drawable/ic_currency"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/small_btn_gradient_orange"
-                card_view:layout_constraintTop_toBottomOf="@id/txt_resume_art_frac"
-                card_view:layout_constraintEnd_toStartOf="@id/btn_print"
-                card_view:layout_constraintBottom_toBottomOf="parent"/>
+                android:drawableStart="@drawable/ic_currency"
+                android:paddingLeft="15dp"
+                android:text="Pagar"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@id/txt_date_infra"
+                card_view:layout_constraintEnd_toStartOf="@id/btn_print" />
 
 
 
@@ -127,55 +129,5 @@
     </androidx.cardview.widget.CardView>
 
 
-    <!--
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                style="@style/TextViewHeaderItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tool:text="Ford Fiesta Rojo" />
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:text="@string/search_folio_title"
-                    android:layout_width="wrap_content"
-                    android:layout_marginEnd="3dp"
-                    style="@style/TextViewFolioTitle"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    tool:text="26704d9832"
-                    style="@style/TextViewFolio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                tool:text="Pendiente"
-                android:textColor="@color/colorYellow"
-                android:drawableLeft="@drawable/yellow_circle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-
-    </LinearLayout>
--->
 
 </layout>

@@ -3,7 +3,6 @@ package mx.qsistemas.infracciones.db.managers
 import android.os.AsyncTask
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.db.entities.IdentifierDocument
-import mx.qsistemas.infracciones.modules.search.adapters.ResumeInfraItem
 
 object SearchManager {
     fun getFilterDocIdent():MutableList<IdentifierDocument> {

@@ -7,6 +7,7 @@ class VehicleContracts {
         fun initAdapters()
         fun onError(msg: String)
         fun onIssuedInReady(adapter: ArrayAdapter<String>)
+
     }
 
     interface Iterator {

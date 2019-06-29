@@ -45,7 +45,7 @@ object SingletonInfraction {
     var noIntOffender: String = ""
     var noLicenseOffender: String = ""
     var typeLicenseOffender: LicenseType = LicenseType(0, "")
-    var licenseExpOffender: String = ""
+    var licenseIssuedInOffender: States = States()
 
     /* Calculated Variables */
     var idNewInfraction: Long = 0L
@@ -94,7 +94,7 @@ object SingletonInfraction {
         noIntOffender = ""
         noLicenseOffender = ""
         typeLicenseOffender = LicenseType(0, "")
-        licenseExpOffender = ""
+        licenseIssuedInOffender = States()
 
         /* Calculated Variables Reset */
         idNewInfraction = 0L

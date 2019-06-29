@@ -26,7 +26,6 @@ import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_RANDOM
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
-import java.util.*
 
 private const val ARG_IS_CREATION = "is_creation"
 
@@ -44,6 +43,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     private var isCreation: Boolean = true
     private var isPaid: Boolean = false
+    private var isTicketCopy: Boolean = false
     private val iterator = lazy { OffenderIterator(this) }
     private lateinit var binding: FragmentOffenderBinding
     private lateinit var activity: CreateInfractionActivity
@@ -73,6 +73,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.spnState.onItemSelectedListener = this
         binding.lytOffender.spnTownship.onItemSelectedListener = this
         binding.lytOffender.spnLicenseType.onItemSelectedListener = this
+        binding.lytOffender.spnLicenseIssuedIn.onItemSelectedListener = this
         binding.btnPay.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.lytOffender.edtOffenderName.doOnTextChanged { text, start, count, after -> SingletonInfraction.nameOffender = text?.trim().toString().toUpperCase() }
@@ -83,9 +84,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderNoExt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noExtOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderNoInt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noIntOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderLicenseNo.doOnTextChanged { text, start, count, after -> SingletonInfraction.noLicenseOffender = text?.trim().toString().toUpperCase() }
-        binding.lytOffender.edtOffenderLicenseExp.doOnTextChanged { text, start, count, after -> SingletonInfraction.licenseExpOffender = text?.trim().toString() }
         /* Init adapters */
         iterator.value.getStatesList()
+        iterator.value.getStatesIssuedList()
         binding.lytOffender.spnLicenseType.adapter = iterator.value.getTypeLicenseAdapter()
     }
 
@@ -98,7 +99,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderNoExt.setText(SingletonInfraction.noExtOffender)
         binding.lytOffender.edtOffenderNoInt.setText(SingletonInfraction.noIntOffender)
         binding.lytOffender.edtOffenderLicenseNo.setText(SingletonInfraction.noLicenseOffender)
-        binding.lytOffender.edtOffenderLicenseExp.setText(SingletonInfraction.licenseExpOffender)
         binding.lytOffender.spnLicenseType.setSelection(iterator.value.getPositionTypeLicense(SingletonInfraction.typeLicenseOffender))
     }
 
@@ -106,9 +106,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         SingletonInfraction.isPersonAbstent = p1
         if (p1) {
             binding.lytOffender.root.visibility = GONE
-            SingletonInfraction.nameOffender = "QUIEN"
-            SingletonInfraction.lastFatherName = "RESULTE"
-            SingletonInfraction.lastMotherName = "RESPONSABLE"
+            binding.lytOffender.edtOffenderName.setText("QUIEN")
+            binding.lytOffender.edtOffenderFln.setText("RESULTE")
+            binding.lytOffender.edtOffenderMln.setText("RESPONSABLE")
         } else {
             binding.lytOffender.root.visibility = VISIBLE
         }
@@ -117,6 +117,11 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun onStatesReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnState.adapter = adapter
         binding.lytOffender.spnState.setSelection(iterator.value.getPositionState(SingletonInfraction.stateOffender))
+    }
+
+    override fun onStatesIssuedReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnLicenseIssuedIn.adapter = adapter
+        binding.lytOffender.spnLicenseIssuedIn.setSelection(iterator.value.getPositionStateLicense(SingletonInfraction.licenseIssuedInOffender))
     }
 
     override fun onTownshipsReady(adapter: ArrayAdapter<String>) {
@@ -142,6 +147,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             }
             binding.lytOffender.spnLicenseType.id -> {
                 SingletonInfraction.typeLicenseOffender = iterator.value.licenseTypeList[p2]
+            }
+            binding.lytOffender.spnLicenseIssuedIn.id -> {
+                SingletonInfraction.licenseIssuedInOffender = iterator.value.stateIssuedLicenseList[p2]
             }
         }
     }
@@ -174,12 +182,12 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
                 }
                 builder.setNegativeButton("Cancelar") { _, _ ->
-                    // Imprimir boleta
+                    iterator.value.printTicket(activity)
                 }
                 builder.show()
             }, 2000)
         } else {
-            // Imprimir boleta
+            iterator.value.printTicket(activity)
         }
     }
 
@@ -203,48 +211,41 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     isValid = false
                     onError(getString(R.string.e_last_mother_offender))
                 }
-                isDirectionAnswered() -> {
-                    when {
-                        SingletonInfraction.stateOffender.id == 0 -> {
-                            isValid = false
-                            onError(getString(R.string.e_state_offender))
+                else -> {
+                    if (isDirectionAnswered()) {
+                        when {
+                            SingletonInfraction.stateOffender.id == 0 -> {
+                                isValid = false
+                                onError(getString(R.string.e_state_offender))
+                            }
+                            SingletonInfraction.townshipOffender.id_town == 0 -> {
+                                isValid = false
+                                onError(getString(R.string.e_township_offender))
+                            }
+                            SingletonInfraction.colonyOffender.isEmpty() -> {
+                                isValid = false
+                                onError(getString(R.string.e_colony_offender))
+                            }
+                            SingletonInfraction.noExtOffender.isEmpty() -> {
+                                isValid = false
+                                onError(getString(R.string.e_no_ext_offender))
+                            }
                         }
-                        SingletonInfraction.townshipOffender.id_town == 0 -> {
-                            isValid = false
-                            onError(getString(R.string.e_township_offender))
-                        }
-                        SingletonInfraction.colonyOffender.isEmpty() -> {
-                            isValid = false
-                            onError(getString(R.string.e_colony_offender))
-                        }
-                        SingletonInfraction.noExtOffender.isEmpty() -> {
-                            isValid = false
-                            onError(getString(R.string.e_no_ext_offender))
-                        }
-                        /*SingletonInfraction.noIntOffender.isEmpty() -> {
-                            isValid = false
-                            onError(getString(R.string.e_no_int_offender))
-                        }*/
                     }
-                }
-                isLicenseAnswered() -> {
-                    when {
-                        SingletonInfraction.noLicenseOffender.isEmpty() -> {
-                            isValid = false
-                            onError(getString(R.string.e_no_license_offender))
-                        }
-                        SingletonInfraction.typeLicenseOffender.id == 0 -> {
-                            isValid = false
-                            onError(getString(R.string.e_type_license_offender))
-                        }
-                        SingletonInfraction.licenseExpOffender.isEmpty() -> {
-                            isValid = false
-                            onError(getString(R.string.e_exp_license_offender))
-                        }
-                        SingletonInfraction.licenseExpOffender.toInt() > Calendar.getInstance().get(Calendar.YEAR) + 6
-                                || SingletonInfraction.licenseExpOffender.length < 4 -> {
-                            isValid = false
-                            onError(getString(R.string.e_year_invalid))
+                    if (isLicenseAnswered()) {
+                        when {
+                            SingletonInfraction.noLicenseOffender.isEmpty() -> {
+                                isValid = false
+                                onError(getString(R.string.e_no_license_offender))
+                            }
+                            SingletonInfraction.typeLicenseOffender.id == 0 -> {
+                                isValid = false
+                                onError(getString(R.string.e_type_license_offender))
+                            }
+                            SingletonInfraction.licenseIssuedInOffender.id == 0 -> {
+                                isValid = false
+                                onError(getString(R.string.e_issued_license_offender))
+                            }
                         }
                     }
                 }
@@ -269,7 +270,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         var isAnswered = false
         when {
             SingletonInfraction.noLicenseOffender.isNotEmpty() -> isAnswered = true
-            SingletonInfraction.licenseExpOffender.isNotEmpty() -> isAnswered = true
+            SingletonInfraction.licenseIssuedInOffender.id != 0 -> isAnswered = true
             SingletonInfraction.typeLicenseOffender.id != 0 -> isAnswered = true
         }
         return isAnswered
@@ -292,7 +293,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                 PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
-                // Imprimir boleta
+                iterator.value.printTicket(activity)
             }
             builder.show()
         }
@@ -304,6 +305,24 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxVoucherFailer(message: String) {
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
+    }
+
+    override fun onTicketPrinted() {
+        if (!isTicketCopy) {
+            var builder = AlertDialogHelper.getGenericBuilder(
+                    getString(R.string.w_dialog_title_reprint_ticket), getString(R.string.w_want_to_reprint_ticket), activity
+            )
+            builder.setPositiveButton("Aceptar") { _, _ ->
+                isTicketCopy = true
+                iterator.value.printTicket(activity)
+            }
+            builder.setNegativeButton("Cancelar") { _, _ ->
+                activity.finish()
+            }
+            builder.show()
+        } else {
+            activity.finish()
+        }
     }
 
     companion object {

@@ -178,6 +178,10 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                     }
                 }
             }
+            SingletonInfraction.retainedDocument.id == 0 -> {
+                isValid = false
+                onError(getString(R.string.e_retained_doc))
+            }
         }
         return isValid
     }

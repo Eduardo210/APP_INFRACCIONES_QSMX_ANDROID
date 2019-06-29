@@ -57,6 +57,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             Application.prefs?.saveData(R.string.sp_person_name, user.name)
             Application.prefs?.saveData(R.string.sp_person_f_last_name, user.fLastName)
             Application.prefs?.saveData(R.string.sp_person_m_last_name, user.mLastName)
+            Application.prefs?.saveData(R.string.sp_no_employee, user.employee)
             Application.prefs?.saveDataBool(R.string.sp_has_session, true)
             listener.onLoginSuccessful()
         }

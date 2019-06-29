@@ -268,12 +268,12 @@ class SearchFr : Fragment()
         infraction.infraction_fraction.forEach { art ->
             //TODO:SERVICIO
             printTest.put(getPrintObject(art.art_fracc + "\t\t\t" + art.minimum_wages + "\t\t\t" + art.penalty_points, normal_size, "center", "0"))
-            printTest.put(getPrintObject("\nCONDUCTA QUE MOTIVA LA INFRACCIÓN: ${art.motivation}", "1", "center", "0"))
+            printTest.put(getPrintObject("\nCONDUCTA QUE MOTIVA LA INFRACCIÓN: ${art.motivation}", "1", "left", "0"))
         }
-        address_infra.append("CALLE: " + infraction.address_street)
-        address_infra.append("ENTRE: " + infraction.address_between_street)
-        address_infra.append("Y: " + infraction.address_and_street)
-        address_infra.append("COLONIA: " + infraction.address_colony)
+        address_infra.append("\n\nCALLE: " + infraction.address_street)
+        address_infra.append("\nENTRE: " + infraction.address_between_street)
+        address_infra.append("\nY: " + infraction.address_and_street)
+        address_infra.append("\nCOLONIA: " + infraction.address_colony)
 
         printTest.put(getPrintObject(address_infra.toString(), normal_size, "left", "0"))
 

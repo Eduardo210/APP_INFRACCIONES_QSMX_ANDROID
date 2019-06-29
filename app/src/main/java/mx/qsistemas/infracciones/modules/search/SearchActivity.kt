@@ -21,6 +21,8 @@ class SearchActivity : ActivityHelper(), SearchContracts.Presenter, View.OnClick
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         initListeners()
+        //TODO: Colocar en el when cuando se tenga el histórico del día
+        router.value.presentSearchFragment(Direction.BACK)
         try{
             tab_layout_search?.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
                 override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -32,10 +34,11 @@ class SearchActivity : ActivityHelper(), SearchContracts.Presenter, View.OnClick
                 }
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    when(tab?.position){
+                    //TODO: Descomentar cuando se tenga el histórico
+                  /*  when(tab?.position){
                         0-> router.value.presentHistoricalFragment(Direction.FORDWARD)
                         1-> router.value.presentSearchFragment(Direction.BACK)
-                    }
+                    }*/
 
                 }
 

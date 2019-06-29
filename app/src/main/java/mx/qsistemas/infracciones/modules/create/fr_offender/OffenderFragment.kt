@@ -173,9 +173,13 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                 builder.setPositiveButton("Aceptar") { _, _ ->
                     PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
                 }
-                builder.setNegativeButton("Cancelar") { _, _ -> }
+                builder.setNegativeButton("Cancelar") { _, _ ->
+                    // Imprimir boleta
+                }
                 builder.show()
             }, 2000)
+        } else {
+            // Imprimir boleta
         }
     }
 
@@ -217,10 +221,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                             isValid = false
                             onError(getString(R.string.e_no_ext_offender))
                         }
-                        SingletonInfraction.noIntOffender.isEmpty() -> {
+                        /*SingletonInfraction.noIntOffender.isEmpty() -> {
                             isValid = false
                             onError(getString(R.string.e_no_int_offender))
-                        }
+                        }*/
                     }
                 }
                 isLicenseAnswered() -> {
@@ -273,9 +277,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-        /* Step 1. Save Infraction Payment */
-
-        /* Step 2. Save Payment Information */
+        iterator.value.savePayment(txInfo)
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
     }
 
@@ -289,12 +291,15 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             builder.setPositiveButton("Aceptar") { _, _ ->
                 PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
             }
-            builder.setNegativeButton("Cancelar") { _, _ -> activity.finish() }
+            builder.setNegativeButton("Cancelar") { _, _ ->
+                // Imprimir boleta
+            }
             builder.show()
         }
     }
 
     override fun onTxFailed(message: String) {
+        isPaid = false
     }
 
     override fun onTxVoucherFailer(message: String) {

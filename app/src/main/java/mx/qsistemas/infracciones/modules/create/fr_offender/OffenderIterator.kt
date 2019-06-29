@@ -13,6 +13,7 @@ import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.FS_COL_STATES
 import mx.qsistemas.infracciones.utils.FS_COL_TOWNSHIPS
 import mx.qsistemas.infracciones.utils.Utils
+import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -195,6 +196,21 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
     override fun updateData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun savePayment(info: TransactionInfo) {
+        /* Step 1. Save Payment Infraction */
+        val paymentInfringement = PaymentInfringement(0, SingletonInfraction.idNewInfraction.toInt(), 2, SingletonInfraction.subTotalInfraction.toFloat(), SingletonInfraction.discountInfraction.toFloat(),
+                SingletonInfraction.totalInfraction.toFloat(), info.authorization, "", SingletonInfraction.idPersonTownship, 0F)
+        SaveInfractionManager.savePaymentInfringement(paymentInfringement)
+        /* Step 2. Save Payment Transaction Information */
+        val paymentInfringementCard = PaymentInfringementCard(0, info.aid, info.appLabel, info.arqc, info.authorization, info.entryType, info.maskedPan,
+                info.txDate, "", info.txTime, "", SingletonInfraction.idPersonTownship, info.affiliation, info.expirationDate, "Aprobado", info.brandCard,
+                info.typeCard, info.bank, info.reference, SingletonInfraction.totalInfraction, info.tvr, info.tsi, info.noControl, info.cardOwner,
+                "", info.typeTx)
+        SaveInfractionManager.savePaymentInfringementCard(paymentInfringementCard)
+        /* Step 3. Update Infraction To Paid */
+        SaveInfractionManager.updateInfrationToPaid(SingletonInfraction.idNewInfraction)
     }
 
     private fun Boolean.toInt() = if (this) 1 else 0

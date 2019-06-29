@@ -76,6 +76,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun personDao(): PersonDao
     abstract fun personInfringementDao(): PersonInfringementDao
     abstract fun personTownshipDao(): PersonTownshipDao
+    abstract fun paymentInfringementDao(): PaymentInfringementDao
+    abstract fun paymentInfringementCardDao(): PaymentInfringementCardDao
     abstract fun retainedDocumentDao(): RetainedDocumentDao
     abstract fun stateDao(): StateDao
     abstract fun submarkingVehicleDao(): SubmarkingVehicleDao

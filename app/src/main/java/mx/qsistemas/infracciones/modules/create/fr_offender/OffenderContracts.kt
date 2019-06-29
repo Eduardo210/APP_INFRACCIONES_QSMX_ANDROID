@@ -4,6 +4,7 @@ import android.widget.ArrayAdapter
 import mx.qsistemas.infracciones.db.entities.LicenseType
 import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
 class OffenderContracts {
     interface Presenter {
@@ -27,6 +28,7 @@ class OffenderContracts {
         fun getPositionTownship(obj: Townships): Int
         fun getPositionTypeLicense(obj: LicenseType): Int
         fun saveData(notify: Boolean)
+        fun savePayment(info: TransactionInfo)
         fun updateData()
     }
 }

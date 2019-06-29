@@ -16,4 +16,7 @@ interface InfractionDao {
 
     @Query("SELECT FOLIO FROM infraction WHERE FOLIO LIKE :prefix ORDER BY ID_INFRACCION DESC LIMIT 1")
     fun selectLastFolio(prefix: String): String
+
+    @Query("UPDATE infraction SET BAN_PAGADA = 1 WHERE ID_INFRACCION = :idInfraction")
+    fun updateInfractionToPaid(idInfraction: Long)
 }

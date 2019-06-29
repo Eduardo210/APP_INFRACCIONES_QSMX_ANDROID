@@ -112,4 +112,22 @@ object SaveInfractionManager {
             Application.m_database?.infractionEvidenceDao()?.insert(infracionEvidence)
         }
     }
+
+    fun savePaymentInfringement(paymentInfringement: PaymentInfringement) {
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database?.paymentInfringementDao()?.insert(paymentInfringement)
+        }
+    }
+
+    fun savePaymentInfringementCard(paymentInfringementCard: PaymentInfringementCard) {
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database?.paymentInfringementCardDao()?.insert(paymentInfringementCard)
+        }
+    }
+
+    fun updateInfrationToPaid(idInfraction: Long) {
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database?.infractionDao()?.updateInfractionToPaid(idInfraction)
+        }
+    }
 }

@@ -12,8 +12,8 @@ import mx.qsistemas.infracciones.utils.*
 
 class Alarms {
 
-    constructor() {
-        //setAlarmSendReports()
+    init {
+        setAlarmSendReports()
         setAlarmSendGeos()
     }
 

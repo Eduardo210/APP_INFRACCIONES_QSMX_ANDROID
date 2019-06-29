@@ -10,7 +10,7 @@ data class Infraction(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "ID_IN
                       @ColumnInfo(name = "NUM_PERMISO_LICENCIA") val no_permiso_licencia: String, // Paso 3
                       @ColumnInfo(name = "ID_TIPO_LICENCIA") val id_license_type: Int, // Paso 3
                       @ColumnInfo(name = "EXPEDIDA_EN_LICENCIA") val issued_in: String, // Paso 1
-                      @ColumnInfo(name = "MOTIVO") val reason: String,
+                      @ColumnInfo(name = "MOTIVO") val reason: String = "",
                       @ColumnInfo(name = "BAN_REMITIDO_DEPOSITO") val forwarded_deposit: Int, // Paso 2
                       @ColumnInfo(name = "DOCUMENTO_RETENIDO") val retained_document: String,  // Paso 2
                       @ColumnInfo(name = "SALARIOS_MIN") val minimum_wage: Int, // Total de UMA's calculadas
@@ -23,7 +23,7 @@ data class Infraction(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "ID_IN
                       @ColumnInfo(name = "ID_SECTOR") val sector: Int = 4,
                       @ColumnInfo(name = "ID_OFICIAL") val id_officer: Int,  // Id Persona Ayuntamiento
                       @ColumnInfo(name = "ID_STATUS") val id_status: Int = 1,
-                      @ColumnInfo(name = "NUM_HOJAS_EXPEDIENTE") val number_sheets_expedient: Int,
+                      @ColumnInfo(name = "NUM_HOJAS_EXPEDIENTE") val number_sheets_expedient: Int = 0,
                       @ColumnInfo(name = "ID_AUTORIDAD_EXPIDE_PLACA") val emits_vehicular_plate: Int, // Tipo de documento
                       @ColumnInfo(name = "FOLIO_EVIDENCIA") val folio_evidence: String = "",
                       @ColumnInfo(name = "ID_DISPOSICION") val id_disposition: Int,

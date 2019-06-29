@@ -64,6 +64,31 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_offender, container, false)
         initAdapters()
         fillFields()
+        if (!isCreation) {
+            binding.textView.visibility = GONE
+            binding.rdgReferralDeposit.visibility = GONE
+            binding.lytOffender.root.visibility = VISIBLE
+            binding.lytOffender.textView7.visibility = GONE
+            binding.lytOffender.edtOffenderRfc.visibility = GONE
+            binding.lytOffender.textView8.visibility = GONE
+            binding.lytOffender.textView9.visibility = GONE
+            binding.lytOffender.spnState.visibility = GONE
+            binding.lytOffender.textView10.visibility = GONE
+            binding.lytOffender.spnTownship.visibility = GONE
+            binding.lytOffender.textView11.visibility = GONE
+            binding.lytOffender.edtColony.visibility = GONE
+            binding.lytOffender.textView12.visibility = GONE
+            binding.lytOffender.edtOffenderNoExt.visibility = GONE
+            binding.lytOffender.textView13.visibility = GONE
+            binding.lytOffender.edtOffenderNoInt.visibility = GONE
+            binding.lytOffender.textView14.visibility = GONE
+            binding.lytOffender.textView15.visibility = GONE
+            binding.lytOffender.edtOffenderLicenseNo.visibility = GONE
+            binding.lytOffender.textView16.visibility = GONE
+            binding.lytOffender.spnLicenseType.visibility = GONE
+            binding.lytOffender.textView17.visibility = GONE
+            binding.lytOffender.spnLicenseIssuedIn.visibility = GONE
+        }
         return binding.root
     }
 
@@ -111,6 +136,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             binding.lytOffender.edtOffenderMln.setText("RESPONSABLE")
         } else {
             binding.lytOffender.root.visibility = VISIBLE
+            binding.lytOffender.edtOffenderName.setText("")
+            binding.lytOffender.edtOffenderFln.setText("")
+            binding.lytOffender.edtOffenderMln.setText("")
         }
     }
 
@@ -192,7 +220,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     }
 
     override fun onDataUpdated() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_person_update), Snackbar.LENGTH_SHORT)
     }
 
     override fun validFields(): Boolean {

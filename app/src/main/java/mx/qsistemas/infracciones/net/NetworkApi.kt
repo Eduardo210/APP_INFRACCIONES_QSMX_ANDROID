@@ -9,6 +9,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
@@ -40,6 +41,11 @@ open class NetworkApi {
 
         @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Resultado_Busqueda_Infraccion")
         fun doSearchByIdInfraction(@Query("Json") json:String): Call<String>
-    }
 
+        @POST("ws/mobile/qsistemas/logininicial.asmx/Receptor_Infracciones_Moviles")
+        fun sendInfractionToServer(@Query("Json") json : String): Call<String>
+
+        @GET("ws/mobile/qsistemas/logininicial.asmx/UpdatePerson")
+        fun updatePerson(@Query("Json") json : String): Call<String>
+    }
 }

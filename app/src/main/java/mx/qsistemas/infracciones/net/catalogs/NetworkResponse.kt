@@ -161,10 +161,10 @@ data class InfractionSearch(@SerializedName("Flag") val flag: Boolean,
                             @SerializedName("InfraccionIdFuente") val source: Int,
                             @SerializedName("InfraccionIdSector") val sector: Int,
                             @SerializedName("InfraccionIdOficial") val id_official: Long,
-                            @SerializedName("InfraccionOficial") val official:String,
+                            @SerializedName("InfraccionOficial") val official: String,
                             @SerializedName("InfraccionIdEstatus") val status: Int,
                             @SerializedName("InfraccionNumHojasExpediente") val num_sheets: Int,
-                            @SerializedName("InfraccionAutoridadExpide") val authority_issue : String,
+                            @SerializedName("InfraccionAutoridadExpide") val authority_issue: String,
                             @SerializedName("InfraccionIdAutoridadExpidePlaca") val issues_vehicular_plate: Int,
                             @SerializedName("InfraccionFolioEvidencia") val folio_evidence: String,
                             @SerializedName("InfraccionIdDisposicion") val disposition: Int,
@@ -263,3 +263,7 @@ data class InfractionSearch(@SerializedName("Flag") val flag: Boolean,
                          @SerializedName("FraccionPuntosSancion") val penalty_points: Int,
                          @SerializedName("FraccionMotivacion") val motivation: String?)
 }
+
+data class UpdatePerson(@SerializedName("Flag") val flag: Boolean,
+                        @SerializedName("Mensaje") val message: String,
+                        @SerializedName("Ids") val ids: MutableList<Int>)

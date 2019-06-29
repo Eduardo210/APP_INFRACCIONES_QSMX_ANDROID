@@ -190,7 +190,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         captureLine1 = Utils.generateCaptureLine(newFolio.replace("-", ""), fifteenthDay, "%.2f".format(fiftiethDiscount), "2")
         captureLine2 = Utils.generateCaptureLine(newFolio.replace("-", ""), thirtythDay, "%.2f".format(totalImport), "2")
         /* Step 1. Save the infraction information */
-        val infraction = Infraction(0, newFolio, SingletonInfraction.noLicenseOffender, SingletonInfraction.typeLicenseOffender.id, SingletonInfraction.licenseIssuedInOffender.value,
+        val infraction = Infraction(0, newFolio, SingletonInfraction.noLicenseOffender, SingletonInfraction.typeLicenseOffender.id, SingletonInfraction.licenseIssuedInOffender.id.toString(),
                 "", SingletonInfraction.isRemited.toInt(), SingletonInfraction.retainedDocument.document, totalUmas, totalImport, config.minimum_salary,
                 SingletonInfraction.idPersonTownship, actualDay, false.toInt(), 1, 4, SingletonInfraction.idPersonTownship.toInt(), 1, 0,
                 SingletonInfraction.typeDocument.id, "", SingletonInfraction.dispositionRemited.id, SingletonInfraction.isPersonAbstent.toInt(), 0,
@@ -211,16 +211,16 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SaveInfractionManager.saveVehicleInfraction(vehicleInfraction)
         /* Step 4. Save Person Information */
         val person = Person(0, SingletonInfraction.nameOffender, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName, SingletonInfraction.rfcOffenfer)
-        val idNewPerson = SaveInfractionManager.savePersonInformation(person)
+        SingletonInfraction.idNewPersonInfraction = SaveInfractionManager.savePersonInformation(person)
         /* Step 5. Save Person-Infraction Relation */
-        SaveInfractionManager.savePersonInfractionRelation(PersonInfringement(SingletonInfraction.idNewInfraction.toInt(), idNewPerson))
+        SaveInfractionManager.savePersonInfractionRelation(PersonInfringement(SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.idNewPersonInfraction))
         /* Step 6. Save Person Address If Offender Was On The Moment */
         if (!SingletonInfraction.isPersonAbstent) {
             val personAddress = Address(0, 0, SingletonInfraction.stateOffender.id, SingletonInfraction.townshipOffender.id_town, SingletonInfraction.colonyOffender,
                     "", SingletonInfraction.noExtOffender, SingletonInfraction.noIntOffender, SingletonInfraction.idPersonTownship, "", "", 0.0, 0.0)
             val idNewPersonAddress = SaveInfractionManager.saveAddress(personAddress)
             /* Step 6:1. Save Person-Address Relation */
-            SaveInfractionManager.savePersonAddressRelation(AddressPerson(idNewPersonAddress.toInt(), idNewPerson))
+            SaveInfractionManager.savePersonAddressRelation(AddressPerson(idNewPersonAddress.toInt(), SingletonInfraction.idNewPersonInfraction))
         }
         /* Step 7. Save Address Information */
         val infractionAddress = Address(0, 1, 0, 0, SingletonInfraction.colonnyInfraction, SingletonInfraction.streetInfraction,
@@ -248,13 +248,13 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     override fun savePayment(info: TransactionInfo) {
         /* Step 1. Save Payment Infraction */
         val paymentInfringement = PaymentInfringement(0, SingletonInfraction.idNewInfraction.toInt(), 2, SingletonInfraction.subTotalInfraction.toFloat(), SingletonInfraction.discountInfraction.toFloat(),
-                SingletonInfraction.totalInfraction.toFloat(), info.authorization, "", SingletonInfraction.idPersonTownship, 0F)
+                SingletonInfraction.totalInfraction.toFloat(), info.authorization, "", SingletonInfraction.idNewPersonInfraction, 0F)
         SaveInfractionManager.savePaymentInfringement(paymentInfringement)
         /* Step 2. Save Payment Transaction Information */
         val paymentInfringementCard = PaymentInfringementCard(0, info.aid, info.appLabel, info.arqc, info.authorization, info.entryType, info.maskedPan,
-                info.txDate, "", info.txTime, Application.prefs?.loadData(R.string.sp_prefix, "")!!, SingletonInfraction.idPersonTownship, info.affiliation, info.expirationDate, "Aprobado", info.brandCard,
+                info.txDate, "", info.txTime, Application.prefs?.loadData(R.string.sp_prefix, "")!!, SingletonInfraction.idNewPersonInfraction, info.affiliation, info.expirationDate, "Aprobado", info.brandCard,
                 info.typeCard, info.bank, info.reference, SingletonInfraction.totalInfraction, info.tvr, info.tsi, info.noControl, info.cardOwner,
-                "", info.typeTx)
+                "", info.typeTx, SingletonInfraction.idNewInfraction)
         SaveInfractionManager.savePaymentInfringementCard(paymentInfringementCard)
         /* Step 3. Update Infraction To Paid */
         SaveInfractionManager.updateInfrationToPaid(SingletonInfraction.idNewInfraction)

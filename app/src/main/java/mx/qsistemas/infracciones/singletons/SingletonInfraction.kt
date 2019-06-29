@@ -49,6 +49,7 @@ object SingletonInfraction {
 
     /* Calculated Variables */
     var idNewInfraction: Long = 0L
+    var idNewPersonInfraction: Long = 0L
     var idPersonTownship: Long = 0L
     var subTotalInfraction: String = ""
     var discountInfraction: String = ""
@@ -98,6 +99,7 @@ object SingletonInfraction {
 
         /* Calculated Variables Reset */
         idNewInfraction = 0L
+        idNewPersonInfraction = 0L
         idPersonTownship = 0L
         subTotalInfraction = ""
         totalInfraction = ""

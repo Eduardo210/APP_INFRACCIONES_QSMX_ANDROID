@@ -8,7 +8,7 @@ const val RC_PERMISSION_CAMERA_VIDEO = 4
 const val RC_PERMISSION_STORAGE = 5
 
 /* ALARMS TIMING */
-const val ALARM_SEND_REPORT_TIME = 1000 * 60 * 30L // 30 min
+const val ALARM_SEND_REPORT_TIME = 1000 * 60 * 15L // 30 min
 const val ALARM_SEND_GEOS_TIME = 1000 * 60 * 15L // 15 min
 
 /* EXTRA's INTENTS */

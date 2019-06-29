@@ -139,7 +139,9 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                     listener?.onDialogError(Application.getContext().getString(R.string.e_empty_fields))
                 } else {
                     val township = townships[binding.spnTownship.selectedItemPosition]
+                    val state = states[binding.spnState.selectedItemPosition]
                     val prefix = township.prefix + (township.counter_prefix + 1)
+                    Application.prefs?.saveDataInt(R.string.sp_id_state, state.id)
                     Application.prefs?.saveDataInt(R.string.sp_id_township, township.id_town)
                     Application.prefs?.saveData(R.string.sp_prefix, prefix)
                     Application.prefs?.saveDataBool(R.string.sp_has_config_prefix, true)

@@ -6,6 +6,7 @@
     <string name="sp_has_config_prefix">has_config_prefix</string>
     <string name="sp_ip_address">ip_address</string>
     <string name="sp_firebase_token_push">firebase_token_push</string>
+    <string name="sp_id_state">id_state</string>
     <string name="sp_id_township">id_township</string>
     <string name="sp_prefix">prefix</string>
     <string name="sp_last_synch">last_synch</string>
@@ -210,5 +211,6 @@
 
     <!-- Success -->
     <string name="s_data_saved">Infracción guardada</string>
+    <string name="s_person_update">Datos personales actualizados</string>
     <string name="s_infraction_pay">Infracción pagada</string>
 </resources>

@@ -248,10 +248,10 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 isValid = false
                 onError(getString(R.string.e_type_vehicle))
             }
-            binding.edtNoCard.text.trim().isEmpty() -> {
+           /* binding.edtNoCard.text.trim().isEmpty() -> {
                 isValid = false
                 onError(getString(R.string.e_circulation_card))
-            }
+            }*/
             binding.edtYear.text.trim().isEmpty() -> {
                 isValid = false
                 onError(getString(R.string.e_year))

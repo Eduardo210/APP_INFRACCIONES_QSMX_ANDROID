@@ -6,167 +6,74 @@
     android:layout_height="match_parent"
     android:background="#EEEEEE"
     tools:context=".modules.search.SearchActivity">
-    <include
-        android:id="@+id/include_search"
-        layout="@layout/toolbar_search_infraction"
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_search"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:background="@drawable/toolbar_gradient"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Filtros de búsqueda"
-        android:textColor="#494949"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cdv_search_filter"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="13dp"
-        app:cardElevation="3dp"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include_search">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="14dp">
-            <TextView
-                android:id="@+id/txt_filter_folio"
-                style="@style/TextViewHeaderItem"
-                android:text="Folio: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-            <EditText
-                android:hint="Ingrese folio ..."
-                android:id="@+id/edt_filter_folio"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/guide_line_center_vertical"
-                app:layout_constraintTop_toBottomOf="@id/txt_filter_folio"/>
-
-            <TextView
-                android:id="@+id/txt_search_by_title"
-                style="@style/TextViewHeaderItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Búsqueda por"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edt_filter_folio" />
-
-            <Spinner
-                android:id="@+id/sp_search_filter"
-                style="@android:style/Widget.DeviceDefault.Light.Spinner"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dialog"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_search_by_title" />
-
-                <EditText
-                    android:id="@+id/et_filter_any"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:visibility="gone"
-                    app:layout_constraintTop_toTopOf="@+id/sp_search_filter"
-                    app:layout_constraintStart_toEndOf="@+id/sp_search_filter"
-                    app:layout_constraintBottom_toBottomOf="@+id/sp_search_filter"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    />
-
-            <Button
-                android:id="@+id/btn_show_infra"
-                android:layout_width="130dp"
-                android:layout_height="35dp"
-                android:background="@drawable/small_button_gradient"
-                android:text="Buscar"
-                android:textColor="@color/colorWhite"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide_line_center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent=".5" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_results"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cdv_search_filter">
-
-        <TextView
-            android:id="@+id/txt_total_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="3" />
-
-        <TextView
-            android:id="@+id/txt_title_total_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/txt_total_search"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Resultados para: " />
-
-        <TextView
-            android:id="@+id/txt_filter_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/txt_title_total_search"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Folio ATZ1-15" />
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_close"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back" />
+
+        <LinearLayout
+            android:layout_marginStart="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Buscar"
+                android:textColor="@color/colorWhite"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Búsqueda de infracción"
+                android:textColor="@color/colorWhite"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_search">
+
+        <!--<com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:text="Historico del día" />
+-->
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Búsqueda" />
+
+    </com.google.android.material.tabs.TabLayout>
+   <FrameLayout
+       android:id="@+id/frame_search"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@id/tab_layout_search"
+       app:layout_constraintBottom_toBottomOf="parent">
+   </FrameLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcl_results"
-        android:layout_margin="16dp"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/constraint_results"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/item_resume_infra"
-        app:layout_constraintStart_toStartOf="parent">
-
-    </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>

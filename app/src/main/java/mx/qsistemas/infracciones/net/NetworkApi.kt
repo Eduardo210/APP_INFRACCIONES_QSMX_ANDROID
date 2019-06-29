@@ -34,5 +34,12 @@ open class NetworkApi {
     interface ApiService {
         @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Catalogos_Infracciones")
         fun downloadCatalogs(@Query("FechaSincronizacion") date: String): Call<String>
+
+        @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Resultados_Previos_Busqueda_Infracciones_Mod")
+        fun doSearchByFilter(@Query("Json") json: String): Call<String>
+
+        @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Resultado_Busqueda_Infraccion")
+        fun doSearchByIdInfraction(@Query("Json") json:String): Call<String>
     }
+
 }

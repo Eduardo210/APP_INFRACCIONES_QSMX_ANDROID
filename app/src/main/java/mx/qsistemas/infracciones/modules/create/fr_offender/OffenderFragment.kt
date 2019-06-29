@@ -322,4 +322,5 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     }
                 }
     }
+
 }

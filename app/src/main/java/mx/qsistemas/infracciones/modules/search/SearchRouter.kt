@@ -1,4 +1,18 @@
 package mx.qsistemas.infracciones.modules.search
 
-class SearchRouter {
+import mx.qsistemas.infracciones.R
+import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
+import mx.qsistemas.infracciones.helpers.activity_helper.Direction
+import mx.qsistemas.infracciones.modules.search.fragments.HistoricalFr
+import mx.qsistemas.infracciones.modules.search.fragments.SearchFr
+
+class SearchRouter(val activity: ActivityHelper): SearchContracts.Router{
+    override fun presentHistoricalFragment(direction: Direction) {
+        activity.loadFragment(HistoricalFr.newInstance("",""), R.id.frame_search, direction, false)
+    }
+
+    override fun presentSearchFragment(direction: Direction) {
+        activity.loadFragment(SearchFr.newInstance("",""), R.id.frame_search, direction, false )
+    }
+
 }

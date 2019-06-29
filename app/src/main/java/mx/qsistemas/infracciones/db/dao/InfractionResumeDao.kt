@@ -2,11 +2,10 @@ package mx.qsistemas.infracciones.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import mx.qsistemas.infracciones.modules.search.adapters.ResumeInfraItem
 
 @Dao
 interface InfractionResumeDao {
-    @Query("SELECT \n" +
+    /*@Query("SELECT \n" +
             "\t(MARCA.MARCA_VEHICULO +' '+ SUBMARCA.SUBMARCA_VEHICULO +' '+ VEHICULO.COLOR) AS TITLE_VEHICLE\n" +
             "\t,INFRA.FOLIO AS FOLIO\n" +
             "\t,(ARTICULO.ARTICULO+'-'+FRACCION.FRACCION+': '+ARTICULO.DESCRIPCION+' '+FRACCION.DESCRIPCION) AS DESCRIPTION\n" +
@@ -20,5 +19,5 @@ interface InfractionResumeDao {
             "INNER JOIN traffic_violation_fraction INFRA_FRA ON INFRA.ID_INFRACCION = INFRA_FRA.ID_INFRACCION\n" +
             "INNER JOIN infraction_fraction FRACCION ON INFRA_FRA.ID_FRACCION = FRACCION.ID\n" +
             "INNER JOIN articles ARTICULO ON FRACCION.ID_ARTICULO = ARTICULO.ID")
-    fun getAllInfractions(): MutableList<ResumeInfraItem>
+    fun getAllInfractions(): MutableList<ResumeInfraItem>*/
 }

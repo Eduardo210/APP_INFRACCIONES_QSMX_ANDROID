@@ -69,7 +69,7 @@
     <!-- Edit Infraction Strings -->
     <string name="t_toolbar_title_edit_infraction">Editar</string>
     <string name="t_toolbar_subtitle_edit_infraction">Edición de infracción</string>
-
+    
     <!-- Vehicle Fragment Strings -->
     <string name="t_vehicle">Vehículo</string>
     <string name="t_brand">Marca*</string>
@@ -146,6 +146,7 @@
     <string name="e_mock_location">Favor de apagar la obtención de ubicaciones falsas</string>
     <string name="e_photo_not_taken">Fotografía no capturada</string>
     <string name="e_photo_not_loaded">Error al cargar la fotografía</string>
+    <string name="e_max_photo_taken">Máximo de fotografías tomadas</string>
     <string name="e_report_not_saved">No se pudo guardar el reporte</string>
     <string name="e_marker_too_distance">El marcador debe estar dentro del radio</string>
     <string name="e_without_address">Sin dirección obtenida</string>

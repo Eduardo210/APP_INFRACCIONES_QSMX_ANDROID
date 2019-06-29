@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.AsyncTask
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.db.entities.*
+import mx.qsistemas.infracciones.net.catalogs.InfractionList
 
 @SuppressLint("StaticFieldLeak")
 object CatalogsAdapterManager {
@@ -55,4 +56,15 @@ object CatalogsAdapterManager {
             }
         }.execute().get()
     }
+    /*fun getInfractionsList(): MutableList<InfractionList.Results>{
+        return object : AsyncTask<Void, Void, MutableList<InfractionList.Results>>(){
+            override fun doInBackground(vararg p0: Void?): MutableList<InfractionList.Results> {
+
+            }
+
+        }
+    }*/
+
+
+
 }

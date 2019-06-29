@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/h_user"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="textNoSuggestions"
                     android:lines="1">
 
                     <!--<requestFocus />-->
@@ -98,8 +98,8 @@
                 android:layout_gravity="center"
                 android:text="@string/t_btn_forgot_psw"
                 android:textColor="@color/colorGray"
-                android:visibility="gone"
-                android:textSize="13dp" />
+                android:textSize="13dp"
+                android:visibility="gone" />
 
         </LinearLayout>
 

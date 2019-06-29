@@ -11,6 +11,6 @@ interface ColourDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: MutableList<Colour>)
 
-    @Query("SELECT * FROM colour ORDER BY COLOR ASC")
+    @Query("SELECT * FROM colour WHERE ID_COLOR <> 0 ORDER BY COLOR ASC")
     fun selectAll(): MutableList<Colour>
 }

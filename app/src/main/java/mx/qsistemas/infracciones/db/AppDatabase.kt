@@ -17,6 +17,8 @@ private const val DB_VERSION = 1
 
 @Database(entities = [
     Address::class,
+    AddressInfringement::class,
+    AddressPerson::class,
     Articles::class,
     Ascription::class,
     Attribute::class,
@@ -25,20 +27,25 @@ private const val DB_VERSION = 1
     Config::class,
     Disposition::class,
     Infraction::class,
+    InfractionEvidence::class,
     IdentifierDocument::class,
     InfractionFraction::class,
     LicenseType::class,
     Module::class,
     NonWorkingDay::class,
+    PaymentInfringement::class,
+    PaymentInfringementCard::class,
     Person::class,
     PersonAccount::class,
     PersonAttibute::class,
+    PersonInfringement::class,
     PersonTownship::class,
     RetainedDocument::class,
     State::class,
     SubmarkingVehicle::class,
     Syncronization::class,
     TownSepoMex::class,
+    TrafficViolationFraction::class,
     VehicleBrand::class,
     VehicleType::class,
     VehicleInfraction::class
@@ -48,6 +55,8 @@ private const val DB_VERSION = 1
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun addressDao(): AddressDao
+    abstract fun addressInfringementDao(): AddressInfringementDao
+    abstract fun addressPersonDao(): AddressPersonDao
     abstract fun articlesDao(): ArticlesDao
     abstract fun ascriptionDao(): AscriptionDao
     abstract fun attributeDao(): AttributeDao
@@ -58,18 +67,21 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun identifierDocumentDao(): IdentifierDocumentDao
     abstract fun infractionDao(): InfractionDao
     abstract fun infractionFractionDao(): InfractionFractionDao
+    abstract fun infractionEvidenceDao(): InfractionEvidenceDao
     abstract fun licenseTypeDao(): LicenseTypeDao
     abstract fun moduleDao(): ModuleDao
     abstract fun nonWorkingDayDao(): NonWorkingDayDao
     abstract fun personAccountDao(): PersonAccountDao
     abstract fun personAttributeDao(): PersonAttributeDao
     abstract fun personDao(): PersonDao
+    abstract fun personInfringementDao(): PersonInfringementDao
     abstract fun personTownshipDao(): PersonTownshipDao
     abstract fun retainedDocumentDao(): RetainedDocumentDao
     abstract fun stateDao(): StateDao
     abstract fun submarkingVehicleDao(): SubmarkingVehicleDao
     abstract fun synchronizationDao(): SyncronizationDao
     abstract fun townSepomexDao(): TownSepomexDao
+    abstract fun trafficViolationDao(): TrafficViolationDao
     abstract fun vehicleBrandDao(): VehicleBrandDao
     abstract fun vehicleInfractionDao(): VehicleInfractionDao
     abstract fun vehicleTypeDao(): VehicleTypeDao

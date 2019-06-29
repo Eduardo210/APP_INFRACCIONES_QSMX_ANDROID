@@ -15,8 +15,9 @@ const val ALARM_SEND_GEOS_TIME = 1000 * 60 * 15L // 15 min
 const val EXTRA_OPTION_INFRACTION = "extra_option_infraction"
 
 /* INTENT REQUEST CODES */
-const val RC_INTENT_CAMERA = 11
-const val RC_INTENT_VIDEO = 12
+const val RC_INTENT_CAMERA_EV1 = 11
+const val RC_INTENT_CAMERA_EV2 = 12
+const val RC_INTENT_VIDEO = 13
 
 /* MAPS CONSTANTS */
 const val MAX_ACCURACY = 100.0

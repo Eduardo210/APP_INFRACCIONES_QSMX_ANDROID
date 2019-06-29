@@ -1,18 +1,34 @@
 package mx.qsistemas.infracciones.modules.create.fr_offender
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.CompoundButton
+import androidx.core.widget.doOnTextChanged
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
+import mx.qsistemas.infracciones.databinding.FragmentOffenderBinding
+import mx.qsistemas.infracciones.helpers.AlertDialogHelper
+import mx.qsistemas.infracciones.helpers.SnackbarHelper
+import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
+import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.payments_transfer.IPaymentsTransfer
+import mx.qsistemas.payments_transfer.PaymentsTransfer
+import mx.qsistemas.payments_transfer.dtos.TransactionInfo
+import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_RANDOM
+import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_IS_CREATION = "is_creation"
 
 /**
  * A simple [Fragment] subclass.
@@ -23,59 +39,266 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class OffenderFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener,
+        OnClickListener, IPaymentsTransfer.TransactionListener {
+
+    private var isCreation: Boolean = true
+    private var isPaid: Boolean = false
+    private val iterator = lazy { OffenderIterator(this) }
+    private lateinit var binding: FragmentOffenderBinding
+    private lateinit var activity: CreateInfractionActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        activity = context as CreateInfractionActivity
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            isCreation = it.getBoolean(ARG_IS_CREATION)
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_offender, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_offender, container, false)
+        initAdapters()
+        fillFields()
+        return binding.root
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
+    override fun initAdapters() {
+        /* Init listeners */
+        binding.rdbAbsentYes.setOnCheckedChangeListener(this)
+        binding.lytOffender.spnState.onItemSelectedListener = this
+        binding.lytOffender.spnTownship.onItemSelectedListener = this
+        binding.lytOffender.spnLicenseType.onItemSelectedListener = this
+        binding.btnPay.setOnClickListener(this)
+        binding.btnSave.setOnClickListener(this)
+        binding.lytOffender.edtOffenderName.doOnTextChanged { text, start, count, after -> SingletonInfraction.nameOffender = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtOffenderFln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastFatherName = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtOffenderMln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastMotherName = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtOffenderRfc.doOnTextChanged { text, start, count, after -> SingletonInfraction.rfcOffenfer = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtColony.doOnTextChanged { text, start, count, after -> SingletonInfraction.colonyOffender = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtOffenderNoExt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noExtOffender = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtOffenderNoInt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noIntOffender = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtOffenderLicenseNo.doOnTextChanged { text, start, count, after -> SingletonInfraction.noLicenseOffender = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtOffenderLicenseExp.doOnTextChanged { text, start, count, after -> SingletonInfraction.licenseExpOffender = text?.trim().toString() }
+        /* Init adapters */
+        iterator.value.getStatesList()
+        binding.lytOffender.spnLicenseType.adapter = iterator.value.getTypeLicenseAdapter()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            listener = context
+    override fun fillFields() {
+        binding.rdbAbsentNo.isChecked = !SingletonInfraction.isPersonAbstent
+        binding.lytOffender.edtOffenderName.setText(SingletonInfraction.nameOffender)
+        binding.lytOffender.edtOffenderFln.setText(SingletonInfraction.lastFatherName)
+        binding.lytOffender.edtOffenderMln.setText(SingletonInfraction.lastMotherName)
+        binding.lytOffender.edtOffenderRfc.setText(SingletonInfraction.rfcOffenfer)
+        binding.lytOffender.edtOffenderNoExt.setText(SingletonInfraction.noExtOffender)
+        binding.lytOffender.edtOffenderNoInt.setText(SingletonInfraction.noIntOffender)
+        binding.lytOffender.edtOffenderLicenseNo.setText(SingletonInfraction.noLicenseOffender)
+        binding.lytOffender.edtOffenderLicenseExp.setText(SingletonInfraction.licenseExpOffender)
+        binding.lytOffender.spnLicenseType.setSelection(iterator.value.getPositionTypeLicense(SingletonInfraction.typeLicenseOffender))
+    }
+
+    override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+        SingletonInfraction.isPersonAbstent = p1
+        if (p1) {
+            binding.lytOffender.root.visibility = GONE
+            SingletonInfraction.nameOffender = "QUIEN"
+            SingletonInfraction.lastFatherName = "RESULTE"
+            SingletonInfraction.lastMotherName = "RESPONSABLE"
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            binding.lytOffender.root.visibility = VISIBLE
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
+    override fun onStatesReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnState.adapter = adapter
+        binding.lytOffender.spnState.setSelection(iterator.value.getPositionState(SingletonInfraction.stateOffender))
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+    override fun onTownshipsReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnTownship.adapter = adapter
+        binding.lytOffender.spnTownship.setSelection(iterator.value.getPositionTownship(SingletonInfraction.townshipOffender))
+    }
+
+    override fun onError(msg: String) {
+        SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        when (p0?.id) {
+            binding.lytOffender.spnState.id -> {
+                SingletonInfraction.stateOffender = iterator.value.statesList[p2]
+                iterator.value.getTownshipsList(binding.lytOffender.spnState.selectedItemPosition)
+            }
+            binding.lytOffender.spnTownship.id -> {
+                SingletonInfraction.townshipOffender = iterator.value.townshipsList[p2]
+            }
+            binding.lytOffender.spnLicenseType.id -> {
+                SingletonInfraction.typeLicenseOffender = iterator.value.licenseTypeList[p2]
+            }
+        }
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            /*binding.btnPay.id -> {
+                if (validFields()) {
+                    if (isCreation) iterator.value.saveData(false) else iterator.value.updateData()
+                    isPayment = true
+                    PaymentsTransfer.runTransaction(activity, SingletonInfraction.subTotalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+                }
+            }*/
+            binding.btnSave.id -> {
+                if (validFields()) {
+                    if (isCreation) iterator.value.saveData(true) else iterator.value.updateData()
+                }
+            }
+        }
+    }
+
+    override fun onDataSaved() {
+        SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_data_saved), Snackbar.LENGTH_SHORT)
+        if (!SingletonInfraction.isPersonAbstent) {
+            Handler().postDelayed({
+                var builder = AlertDialogHelper.getGenericBuilder(
+                        getString(R.string.w_dialog_title_payment), getString(R.string.w_want_to_pay), activity
+                )
+                builder.setPositiveButton("Aceptar") { _, _ ->
+                    PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+                }
+                builder.setNegativeButton("Cancelar") { _, _ -> }
+                builder.show()
+            }, 2000)
+        }
+    }
+
+    override fun onDataUpdated() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun validFields(): Boolean {
+        var isValid = true
+        if (!SingletonInfraction.isPersonAbstent) {
+            when {
+                SingletonInfraction.nameOffender.isEmpty() -> {
+                    isValid = false
+                    onError(getString(R.string.e_name_offender))
+                }
+                SingletonInfraction.lastFatherName.isEmpty() -> {
+                    isValid = false
+                    onError(getString(R.string.e_last_father_offender))
+                }
+                SingletonInfraction.lastMotherName.isEmpty() -> {
+                    isValid = false
+                    onError(getString(R.string.e_last_mother_offender))
+                }
+                isDirectionAnswered() -> {
+                    when {
+                        SingletonInfraction.stateOffender.id == 0 -> {
+                            isValid = false
+                            onError(getString(R.string.e_state_offender))
+                        }
+                        SingletonInfraction.townshipOffender.id_town == 0 -> {
+                            isValid = false
+                            onError(getString(R.string.e_township_offender))
+                        }
+                        SingletonInfraction.colonyOffender.isEmpty() -> {
+                            isValid = false
+                            onError(getString(R.string.e_colony_offender))
+                        }
+                        SingletonInfraction.noExtOffender.isEmpty() -> {
+                            isValid = false
+                            onError(getString(R.string.e_no_ext_offender))
+                        }
+                        SingletonInfraction.noIntOffender.isEmpty() -> {
+                            isValid = false
+                            onError(getString(R.string.e_no_int_offender))
+                        }
+                    }
+                }
+                isLicenseAnswered() -> {
+                    when {
+                        SingletonInfraction.noLicenseOffender.isEmpty() -> {
+                            isValid = false
+                            onError(getString(R.string.e_no_license_offender))
+                        }
+                        SingletonInfraction.typeLicenseOffender.id == 0 -> {
+                            isValid = false
+                            onError(getString(R.string.e_type_license_offender))
+                        }
+                        SingletonInfraction.licenseExpOffender.isEmpty() -> {
+                            isValid = false
+                            onError(getString(R.string.e_exp_license_offender))
+                        }
+                        SingletonInfraction.licenseExpOffender.toInt() > Calendar.getInstance().get(Calendar.YEAR) + 6
+                                || SingletonInfraction.licenseExpOffender.length < 4 -> {
+                            isValid = false
+                            onError(getString(R.string.e_year_invalid))
+                        }
+                    }
+                }
+            }
+        }
+        return isValid
+    }
+
+    override fun isDirectionAnswered(): Boolean {
+        var isAnswered = false
+        when {
+            SingletonInfraction.stateOffender.id != 0 -> isAnswered = true
+            SingletonInfraction.townshipOffender.id_town != 0 -> isAnswered = true
+            SingletonInfraction.colonyOffender.isNotEmpty() -> isAnswered = true
+            SingletonInfraction.noExtOffender.isNotEmpty() -> isAnswered = true
+            SingletonInfraction.noIntOffender.isNotEmpty() -> isAnswered = true
+        }
+        return isAnswered
+    }
+
+    override fun isLicenseAnswered(): Boolean {
+        var isAnswered = false
+        when {
+            SingletonInfraction.noLicenseOffender.isNotEmpty() -> isAnswered = true
+            SingletonInfraction.licenseExpOffender.isNotEmpty() -> isAnswered = true
+            SingletonInfraction.typeLicenseOffender.id != 0 -> isAnswered = true
+        }
+        return isAnswered
+    }
+
+    override fun onTxApproved(txInfo: TransactionInfo) {
+        isPaid = true
+        /* Step 1. Save Infraction Payment */
+
+        /* Step 2. Save Payment Information */
+        SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
+    }
+
+    override fun onTxVoucherPrinted() {
+        if (isPaid) {
+            activity.finish()
+        } else {
+            var builder = AlertDialogHelper.getGenericBuilder(
+                    getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
+            )
+            builder.setPositiveButton("Aceptar") { _, _ ->
+                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+            }
+            builder.setNegativeButton("Cancelar") { _, _ -> activity.finish() }
+            builder.show()
+        }
+    }
+
+    override fun onTxFailed(message: String) {
+    }
+
+    override fun onTxVoucherFailer(message: String) {
+        SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
     }
 
     companion object {
@@ -83,17 +306,14 @@ class OffenderFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
+         * @param isCreation Parameter 1.
          * @return A new instance of fragment OffenderFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(isCreation: Boolean) =
                 OffenderFragment().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
+                        putBoolean(ARG_IS_CREATION, isCreation)
                     }
                 }
     }

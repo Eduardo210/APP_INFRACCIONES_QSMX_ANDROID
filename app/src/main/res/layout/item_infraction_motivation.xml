@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/colorGray3"
+            app:cardCornerRadius="15dp"
+            app:cardElevation="3dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_article"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_article_item"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/t_article"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/t_fraction"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toEndOf="@+id/txt_article_item"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_fraction_item"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/t_article"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toEndOf="@+id/textView2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_close_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_close"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/t_description"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                <TextView
+                    android:id="@+id/txt_description_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/qfont"
+                    android:maxHeight="80dp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/text_size_lmicro"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textView5"
+            style="@style/TextView_TitleItem2_Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/t_motivation"
+            android:textAlignment="textStart"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/edt_motivation_item"
+            style="@style/EditText_InputItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:gravity="top|left"
+            android:hint="@string/h_motivation"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:lines="3"
+            android:maxLength="200"
+            android:maxLines="5"
+            android:scrollbars="vertical"
+            android:textColor="@color/colorLightBlack"
+            android:textSize="@dimen/font_size_small" />
+
+        <TextView
+            android:id="@+id/txt_umas"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/blue_square"
+            android:fontFamily="@font/qfont"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/t_uma"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/font_size_small"
+            android:textStyle="bold" />
+    </LinearLayout>
+</layout>

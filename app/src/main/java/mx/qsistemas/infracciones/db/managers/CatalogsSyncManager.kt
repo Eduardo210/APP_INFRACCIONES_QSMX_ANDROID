@@ -209,7 +209,7 @@ object CatalogsSyncManager {
     fun savePerson(person: MutableList<DownloadCatalogs.C_Person>) {
         val map = mutableListOf<Person>()
         person.forEach {
-            map.add(Person(it.idPerson.toInt(), it.name, it.fatherLastName, it.motherLastName))
+            map.add(Person(it.idPerson.toInt(), it.name, it.fatherLastName, it.motherLastName, ""))
         }
         Executors.newSingleThreadExecutor().execute {
             Application.m_database?.personDao()?.insertList(map)

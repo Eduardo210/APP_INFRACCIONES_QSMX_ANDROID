@@ -9,4 +9,7 @@ import mx.qsistemas.infracciones.db.entities.VehicleInfraction
 interface VehicleInfractionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: MutableList<VehicleInfraction>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(vehicleInfraction: VehicleInfraction): Long
 }

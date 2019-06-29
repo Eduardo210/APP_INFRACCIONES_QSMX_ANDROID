@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.AsyncTask
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.db.entities.*
-import mx.qsistemas.infracciones.net.catalogs.InfractionList
 
 @SuppressLint("StaticFieldLeak")
 object CatalogsAdapterManager {
@@ -56,15 +55,44 @@ object CatalogsAdapterManager {
             }
         }.execute().get()
     }
-    /*fun getInfractionsList(): MutableList<InfractionList.Results>{
-        return object : AsyncTask<Void, Void, MutableList<InfractionList.Results>>(){
-            override fun doInBackground(vararg p0: Void?): MutableList<InfractionList.Results> {
 
+    fun getArticlesList(): MutableList<Articles> {
+        return object : AsyncTask<Void, Void, MutableList<Articles>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<Articles> {
+                return Application.m_database?.articlesDao()?.selectAll()!!
             }
+        }.execute().get()
+    }
 
-        }
-    }*/
+    fun getFractionsList(idArticle: Int): MutableList<InfractionFraction> {
+        return object : AsyncTask<Void, Void, MutableList<InfractionFraction>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<InfractionFraction> {
+                return Application.m_database?.infractionFractionDao()?.selectByArticle(idArticle)!!
+            }
+        }.execute().get()
+    }
 
+    fun getRetainedDocList(): MutableList<RetainedDocument> {
+        return object : AsyncTask<Void, Void, MutableList<RetainedDocument>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<RetainedDocument> {
+                return Application.m_database?.retainedDocumentDao()?.selectAll()!!
+            }
+        }.execute().get()
+    }
 
+    fun getDispositionList(): MutableList<Disposition> {
+        return object : AsyncTask<Void, Void, MutableList<Disposition>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<Disposition> {
+                return Application.m_database?.dispositionDao()?.selectAll()!!
+            }
+        }.execute().get()
+    }
 
+    fun getLicenseTypeList(): MutableList<LicenseType> {
+        return object : AsyncTask<Void, Void, MutableList<LicenseType>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<LicenseType> {
+                return Application.m_database?.licenseTypeDao()?.selectAll()!!
+            }
+        }.execute().get()
+    }
 }

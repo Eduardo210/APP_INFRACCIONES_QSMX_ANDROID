@@ -88,9 +88,41 @@ object SendInfractionManager {
         }.execute().get()
     }
 
-    fun updateInfractionToSend(folio: String){
+    fun updateInfractionToSend(folio: String) {
         Executors.newSingleThreadExecutor().execute {
             Application.m_database?.infractionDao()?.updateSendByFolio(folio)
+        }
+    }
+
+    fun getPhotosToSend(): MutableList<InfractionEvidence> {
+        return object : AsyncTask<Void, Void, MutableList<InfractionEvidence>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<InfractionEvidence> {
+                return Application.m_database?.infractionEvidenceDao()?.selectPhotosToSend()
+                        ?: mutableListOf()
+            }
+        }.execute().get()
+    }
+
+    fun getFolioOfInfraction(idInfraction: Long): String {
+        return object : AsyncTask<Void, Void, String>() {
+            override fun doInBackground(vararg p0: Void?): String {
+                return Application.m_database?.infractionDao()?.selectFolioByIdInfraction(idInfraction)
+                        ?: ""
+            }
+        }.execute().get()
+    }
+
+    fun getInfractionById(idInfraction: Long): Infraction {
+        return object : AsyncTask<Void, Void, Infraction>() {
+            override fun doInBackground(vararg p0: Void?): Infraction {
+                return Application.m_database?.infractionDao()?.selectByIdInfraction(idInfraction)!!
+            }
+        }.execute().get()
+    }
+
+    fun updateImageToSend(idInfraction: Long) {
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database?.infractionEvidenceDao()?.updateSendByIdInfraction(idInfraction)
         }
     }
 }

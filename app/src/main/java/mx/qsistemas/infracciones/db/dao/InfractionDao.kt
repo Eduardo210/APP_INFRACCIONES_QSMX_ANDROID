@@ -17,6 +17,12 @@ interface InfractionDao {
     @Query("SELECT FOLIO FROM infraction WHERE FOLIO LIKE :prefix ORDER BY ID_INFRACCION DESC LIMIT 1")
     fun selectLastFolio(prefix: String): String
 
+    @Query("SELECT DISTINCT FOLIO FROM infraction WHERE ID_INFRACCION = :idInfraction")
+    fun selectFolioByIdInfraction(idInfraction: Long): String
+
+    @Query("SELECT DISTINCT * FROM infraction WHERE ID_INFRACCION = :idInfraction")
+    fun selectByIdInfraction(idInfraction: Long): Infraction
+
     @Query(" SELECT * FROM infraction WHERE SYNC = 0")
     fun selectInfractionsToSend(): MutableList<Infraction>
 

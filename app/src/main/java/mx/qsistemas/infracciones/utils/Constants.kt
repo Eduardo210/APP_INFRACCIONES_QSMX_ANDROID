@@ -34,3 +34,4 @@ const val CHANNEL_ID = "channelId"
 /* NOTIFICATION ID's */
 const val NOTIF_SEND_REPORTS = 0x1
 const val NOTIF_SEND_GEOS = 0x2
+const val NOTIF_SEND_IMAGES = 0x3

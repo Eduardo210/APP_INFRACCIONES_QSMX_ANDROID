@@ -190,6 +190,7 @@
     <string name="e_other_problem_internet">Ocurrió un problema al consultar la información</string>
     <string name="e_send_infractions">Ocurrió un error al conectar con servidor</string>
     <string name="e_send_infractions_incomplete">Infracciones no enviadas: </string>
+    <string name="e_send_images_incomplete">Imágenes no enviadas: </string>
     <!-- Firebase Errors -->
     <string name="e_firestore_not_available">Ocurrió un problema con la obtención del catálogo</string>
     <string name="e_firestore_not_saved">Ocurrió un problema al guardar la información</string>

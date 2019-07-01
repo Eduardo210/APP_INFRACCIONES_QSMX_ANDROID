@@ -46,5 +46,8 @@ open class NetworkApi {
 
         @GET("ws/mobile/qsistemas/logininicial.asmx/UpdatePerson")
         fun updatePerson(@Query("Json") json: String): Call<String>
+
+        @GET("ws/mobile/qsistemas/LoginInicial.asmx/savePayment")
+        fun savePayment(@Query("Json") json:String): Call<String>
     }
 }

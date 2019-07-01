@@ -1,22 +1,36 @@
 package mx.qsistemas.infracciones.modules.search.fragments
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.opengl.Visibility
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
 import android.widget.AdapterView
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search.*
+import mx.qsistemas.infracciones.BuildConfig
+
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
+import mx.qsistemas.infracciones.databinding.FragmentVehicleBinding
+import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
+import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
+import mx.qsistemas.infracciones.modules.create.OPTION_UPDATE_INFRACTION
+import mx.qsistemas.infracciones.modules.create.fr_vehicle.VehicleIterator
 import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.modules.search.SearchIterator
@@ -24,12 +38,23 @@ import mx.qsistemas.infracciones.modules.search.adapters.ID_INFRACTION
 import mx.qsistemas.infracciones.modules.search.adapters.SearchAdapter
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
+import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.infracciones.utils.EXTRA_OPTION_INFRACTION
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
+import mx.qsistemas.payments_transfer.dtos.TransactionInfo
+import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_RANDOM
+import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
+import okhttp3.internal.Util
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.lang.Exception
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -51,12 +76,31 @@ class SearchFr : Fragment()
         , SearchContracts.Presenter
         , AdapterView.OnItemSelectedListener
         , SearchContracts.OnInfractionClick
-        , IPaymentsTransfer.PrintListener {
+        , IPaymentsTransfer.PrintListener
+        , IPaymentsTransfer.TransactionListener {
+
+
     private var printJson = JSONObject()
     private lateinit var binding: FragmentSearchBinding
     private val iterator = lazy { SearchIterator(this) }
     private var idDocIdent: Int = 0
+
+    private var dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
+
+    private val PRINT: Int = 100
+    private val PAYMENT: Int = 200
+    private val CURRENT_DATE = Date()
+    private var isPaid: Boolean = false
+    private var amountToPay = "0"
+    private var discountPayment = "0"
+    private var totalPayment = "0"
+
+    private var idPerson:Long = 0
+
+
     private lateinit var activity: SearchActivity
+
+    private var INFRACTOR_IS_ABSENT: Int = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -151,8 +195,8 @@ class SearchFr : Fragment()
 
     override fun onPrintClick(view: View, position: Int) {
         activity.showLoader("Espere ...")
-        iterator.value.doSearchByIdInfraction(ID_INFRACTION)
-        Log.d("PRINT", "IMPRIMIENDO ...")
+        iterator.value.doSearchByIdInfraction(ID_INFRACTION, PRINT)
+        //Log.d("PRINT", "IMPRIMIENDO ...")
     }
 
     fun printInfraction(infraction: InfractionSearch): String {
@@ -184,6 +228,9 @@ class SearchFr : Fragment()
         val footer1 = "QSISTEMAS_VII"
         val footer2 = "QSISTEMAS_VIII"
         val footer3 = "QSISTEMAS_IX"
+
+        INFRACTOR_IS_ABSENT = infraction.is_absent
+
 
         //Impresión de encabezados
         printTest.put(getPrintObject(header1 + header2 + header3 + header4 + header5 + header6, normal_size, "center", "1"))
@@ -219,21 +266,21 @@ class SearchFr : Fragment()
             }
             printTest.put(getPrintObject(card_data.toString(), normal_size, "left", "0"))
 
-        } else if (infraction.is_absent == 2) {
+        } else if (infraction.is_absent == 1) {
             printTest.put(getPrintObject(infraction.name.toUpperCase() + " " + infraction.last_name.toUpperCase() + " " + infraction.mother_last_name.toUpperCase() + "\n\n", normal_size, "center", "0"))
         }
         //Características del vehículo
         vehicle.append("\nCARACTERÍSTICAS DEL VEHÍCULO: ")
-        vehicle.append("\nMARCA: " + infraction.brand)
+        vehicle.append("\nMARCA: " + infraction.brand) //TODO:SERVICIO
         if (!infraction.sub_brand.equals("")) {
             vehicle.append("\nSUBMARCA: " + infraction.sub_brand)
         }
         vehicle.append("\nTIPO: " + infraction.vehicle_type)
         vehicle.append("\nCOLOR: " + infraction.vehicle_color)
         vehicle.append("\nMODELO: " + infraction.vehicle_model)
-        vehicle.append("\nIDENTIFICADOR: " + infraction.ident_document)
+        vehicle.append("\nIDENTIFICADOR: " + infraction.ident_document) //TODO:SERVICIIO
         vehicle.append("\nNUMERO: " + infraction.num_doc_ident)
-        vehicle.append("\nAUTORIDAD QUE EXPIDE: " + infraction.authority_issue)
+        vehicle.append("\nAUTORIDAD QUE EXPIDE: " + infraction.authority_issue) //TODO:SERVICIO
         vehicle.append("\nEXPEDIDO: " + infraction.doc_ident_issued)
         vehicle.append("\nARTICULOS DEL REGLAMENTO DE TRÁNSITO DEL ESTADO DE MÉXICO: ")
 
@@ -242,6 +289,7 @@ class SearchFr : Fragment()
         printTest.put(getPrintObject("\n\nARTICULO/FRACCION\t\t\tU.M.A.\t\t\tPUNTOS\n*******************", "1", "center", "1"))
 
         infraction.infraction_fraction.forEach { art ->
+            //TODO:SERVICIO
             printTest.put(getPrintObject(art.art_fracc + "\t\t\t" + art.minimum_wages + "\t\t\t" + art.penalty_points, normal_size, "center", "0"))
             printTest.put(getPrintObject("\nCONDUCTA QUE MOTIVA LA INFRACCIÓN: ${art.motivation}", "1", "left", "0"))
         }
@@ -262,13 +310,13 @@ class SearchFr : Fragment()
         }
         if (infraction.referred == 1) {
             retained_doc.append("\nREMISION DEL VEHICULO: SI")
-            retained_doc.append("\n" + infraction.disposition)
+            retained_doc.append("\n" + infraction.disposition) //TODO: reemplazar
         }
         printTest.put(getPrintObject(retained_doc.toString(), normal_size, "left", "0"))
 
         //Responsable del vehpiculo
         printTest.put(getPrintObject("RESPONSABLE DEL VEHÍCULO", normal_size, "center", "1"))
-        if (infraction.is_absent == 0 || infraction.is_absent == 2) {
+        if (infraction.is_absent == 0 || infraction.is_absent == 1) {
             responsible.append("\n\n" + infraction.name + " " + infraction.last_name + " " + infraction.mother_last_name + "\n")
         } else {
             responsible.append("\n\nQ R R \n")
@@ -312,7 +360,48 @@ class SearchFr : Fragment()
         return printJson.toString()
     }
 
+
+    fun doPaymentProcess(infraction: InfractionSearch) {
+        var compare_date: Int
+        var haveToPay: Boolean = true
+        val expDate50: Date = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_ii) }
+        val expDateFull: Date = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_iii) }
+
+        compare_date = CURRENT_DATE.compareTo(expDate50)//expDate50.compareTo(CURRENT_DATE)
+
+        if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
+            //Tiene el descuento del 50%
+            amountToPay = "%.2f".format(infraction.amount_capture_line_ii)
+            discountPayment = ( infraction.amount_capture_line_ii.toDouble() - infraction.amount_capture_line_iii.toDouble()).toString()
+        } else {
+            //No tiene descuento
+            discountPayment = "0"
+            compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
+            if (compare_date <= 0) {
+                amountToPay = "#.2f".format(infraction.amount_capture_line_iii)
+            } else {
+                haveToPay=false
+            }
+        }
+        if (amountToPay.toDouble()>0){
+            totalPayment = "%.2f".format(amountToPay.toDouble() - discountPayment.toDouble())
+        }
+
+
+        if(haveToPay){
+            PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+        }else{
+            SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
+        }
+
+
+
+    }
+
     override fun onPaymentClick(view: View, position: Int) {
+        activity.showLoader("Espere ...")
+        iterator.value.doSearchByIdInfraction(ID_INFRACTION, PAYMENT)
+
         Log.d("PAYMENT", "PAGANDO ...")
     }
 
@@ -322,6 +411,8 @@ class SearchFr : Fragment()
 
     override fun onError(var1: Int, var2: String) {
         Log.e("PRINT", var2)
+        SnackbarHelper.showErrorSnackBar(activity, var2, Snackbar.LENGTH_LONG)
+        //activity.hideLoader()
     }
 
     override fun onFinish() {
@@ -362,9 +453,24 @@ class SearchFr : Fragment()
         } else idDocIdent > 0 && binding.etFilterAny.text != null
     }
 
-    override fun onResultInfractionById(infraction: InfractionSearch) {
+    override fun onResultInfractionById(infraction: InfractionSearch, origin: Int) {
         activity.hideLoader()
-        PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
+
+        when (origin) {
+            PRINT -> PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
+            PAYMENT ->
+                if (infraction.is_absent == 0) {
+                    doPaymentProcess(infraction)
+                    idPerson = infraction.id_person
+                } else {
+                    //mandar a pantalla de actualizacion
+                    val intent = Intent(activity, CreateInfractionActivity::class.java)
+                    intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
+                    startActivity(intent)
+                }
+        }
+
+
     }
 
     override fun onResultSearch(listInfractions: MutableList<InfractionList.Results>) {
@@ -411,6 +517,47 @@ class SearchFr : Fragment()
         binding.constraintResults.visibility = View.GONE
         binding.rclResults.adapter = null
 
+    }
+
+    override fun onResultSavePayment(msg: String, flag:Boolean) {
+        activity.hideLoader()
+        if (flag){
+            SnackbarHelper.showSuccessSnackBar(activity, "El pago se guardó satisfactoriamente.", Snackbar.LENGTH_SHORT)
+        }else{
+            SnackbarHelper.showErrorSnackBar(activity, "Error al guardar datos de pago en servidor.", Snackbar.LENGTH_SHORT)
+        }
+
+
+    }
+    override fun onTxApproved(txInfo: TransactionInfo) {
+        isPaid = true
+        iterator.value.savePaymentToService(ID_INFRACTION,txInfo, amountToPay, discountPayment,totalPayment ,idPerson)
+        SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
+    }
+
+    override fun onTxVoucherPrinted() {
+        if (isPaid) {
+            activity.finish()
+        } else {
+            var builder = AlertDialogHelper.getGenericBuilder(
+                    getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
+            )
+            builder.setPositiveButton("Aceptar") { _, _ ->
+                PaymentsTransfer.runTransaction(activity, amountToPay, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+            }
+            builder.setNegativeButton("Cancelar") { _, _ ->
+                // Imprimir boleta
+            }
+            builder.show()
+        }
+    }
+
+    override fun onTxFailed(message: String) {
+        isPaid = false
+    }
+
+    override fun onTxVoucherFailer(message: String) {
+        SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
     }
 
     companion object {

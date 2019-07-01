@@ -113,7 +113,7 @@ class ReportsService : JobService() {
                                 }
                                 // When done, update the notification one more time to remove the progress bar
                                 builderInfraction.setContentText(getString(R.string.s_infraction_send))
-                                        .setProgress(0, 0, true)
+                                        .setProgress(0, 0, false)
                                 notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                             } else {
                                 Log.e(this.javaClass.simpleName, "Items that weren't saved: ${result.folios}")
@@ -184,7 +184,7 @@ class ReportsService : JobService() {
                             }
                             // When done, update the notification one more time to remove the progress bar
                             builderPhotos.setContentText(getString(R.string.s_infraction_send))
-                                    .setProgress(0, 0, true)
+                                    .setProgress(0, 0, false)
                             notificationPhotos.notify(NOTIF_SEND_IMAGES, builderPhotos.build())
                         } else {
                             val folios = mutableListOf<String>()

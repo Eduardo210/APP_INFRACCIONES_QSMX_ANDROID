@@ -29,7 +29,8 @@ const val FS_COL_TOWNSHIPS = "townships"
 const val FS_COL_TERMINALS = "terminals"
 
 /* JOB CHANNELS */
-const val CHANNEL_ID = "channelId"
+const val CHANNEL_ID_REPORT = "infractionChannelId"
+const val CHANNEL_ID_IMAGES = "imageChannelId"
 
 /* NOTIFICATION ID's */
 const val NOTIF_SEND_REPORTS = 0x1

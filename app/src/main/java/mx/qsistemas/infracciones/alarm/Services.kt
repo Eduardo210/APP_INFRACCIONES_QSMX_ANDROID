@@ -36,7 +36,7 @@ class ReportsService : JobService() {
 
     override fun onStartJob(params: JobParameters?): Boolean {
         /* Create Infraction Notification Builder */
-        val builderInfraction = NotificationCompat.Builder(this, CHANNEL_ID).apply {
+        val builderInfraction = NotificationCompat.Builder(this, CHANNEL_ID_REPORT).apply {
             setContentTitle(getString(R.string.app_name))
             setContentText("Enviando infracciones...")
             setSmallIcon(R.mipmap.ic_launcher)
@@ -151,7 +151,7 @@ class ReportsService : JobService() {
 
     private fun sendPhotos() {
         /* Create Photos Notification Builder */
-        val builderPhotos = NotificationCompat.Builder(this, CHANNEL_ID).apply {
+        val builderPhotos = NotificationCompat.Builder(this, CHANNEL_ID_IMAGES).apply {
             setContentTitle(getString(R.string.app_name))
             setContentText("Enviando imágenes...")
             setSmallIcon(R.mipmap.ic_launcher)

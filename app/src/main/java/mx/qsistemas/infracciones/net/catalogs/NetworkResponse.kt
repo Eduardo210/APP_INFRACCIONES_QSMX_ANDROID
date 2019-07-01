@@ -1,6 +1,7 @@
 package mx.qsistemas.infracciones.net.catalogs
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class DownloadCatalogs(@SerializedName("Flag") val flag: Boolean,
                             @SerializedName("ultimaFechaSincronizacion") val lastUpdate: String,
@@ -254,7 +255,8 @@ data class InfractionSearch(@SerializedName("Flag") val flag: Boolean,
                             @SerializedName("PagoInfraccionObservacion") val payment_observation: String,
                             @SerializedName("PagoInfraccionRecargos") val payment_surcharges: Float,
                             @SerializedName("SincronizarIdUsuario") val sync_id_user: Long,
-                            @SerializedName("Empleado") val employee: String
+                            @SerializedName("Empleado") val employee: String,
+                            @SerializedName("idPersona") val id_person: Long
 ) {
 
     data class Fractions(@SerializedName("FraccionIdFraccion") val id_fraction: Int,
@@ -263,3 +265,7 @@ data class InfractionSearch(@SerializedName("Flag") val flag: Boolean,
                          @SerializedName("FraccionPuntosSancion") val penalty_points: Int,
                          @SerializedName("FraccionMotivacion") val motivation: String?)
 }
+
+data class ServiceResponse(@SerializedName("Flag") val flag:Boolean,
+                    @SerializedName("Mensaje") val message: String,
+                    @SerializedName("Ids") val data: Unit)

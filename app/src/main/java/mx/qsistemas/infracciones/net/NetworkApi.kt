@@ -40,6 +40,10 @@ open class NetworkApi {
 
         @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Resultado_Busqueda_Infraccion")
         fun doSearchByIdInfraction(@Query("Json") json:String): Call<String>
+
+        @GET("ws/mobile/qsistemas/LoginInicial.asmx/savePayment")
+        fun savePayment(@Query("Json") json:String): Call<String>
+
     }
 
 }

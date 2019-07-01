@@ -31,8 +31,9 @@ class InfractionListFr : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_infraction_list, container, false)
-        binding.rcvInfractions.layoutManager = GridLayoutManager(activity, 1)
+        //binding.rcvInfractions.layoutManager = GridLayoutManager(activity, 1)
         binding.btnAddInfraction.setOnClickListener(this)
+        binding.btnSearchInfraction.setOnClickListener(this)
         binding.include.imgSearchInfraction.setOnClickListener(this)
         return binding.root
     }
@@ -55,7 +56,7 @@ class InfractionListFr : Fragment(), View.OnClickListener {
                     }
                 }
             }
-            binding.include.imgSearchInfraction.id -> {
+            binding.btnSearchInfraction.id -> {
                 activity.router.value.presentSearchInfraction()
             }
         }

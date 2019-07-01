@@ -20,18 +20,163 @@
             android:id="@+id/TextView1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/qfont"
-            android:text="@string/t_last_infractions"
+            android:text="Infracciones"
             android:textColor="@color/colorLightBlack"
             android:textSize="@dimen/font_size_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cdv_new_infraction"
+            android:layout_width="match_parent"
+            android:layout_margin="16dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintTop_toBottomOf="@id/TextView1"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_parent"
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide_line_vertical_icons"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".60"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txt_title_new_infraction"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="15dp"
+                    android:text="Nueva Infracción"
+                    android:textSize="22sp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+                <TextView
+                    android:id="@+id/txt_subtitle_new_infraction"
+                    android:text="Genera una nueva infracción, imprimirla y pagarla."
+                    android:layout_width="0dp"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:lines="2"
+                    app:layout_constraintStart_toStartOf="@id/txt_title_new_infraction"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@id/guide_line_vertical_icons"
+                    app:layout_constraintTop_toBottomOf="@id/txt_title_new_infraction" />
+
+
+                <ImageView
+                    android:id="@+id/img_ticket"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_ticket"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/btn_add_infraction"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <Button
+                    android:text="Infracción"
+                    android:textColor="@color/colorWhite"
+                    android:id="@+id/btn_add_infraction"
+                    android:layout_width="110dp"
+                    android:textSize="12sp"
+                    android:background="@drawable/small_btn_gradient_orange"
+                    android:layout_height="35dp"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons"
+                    app:layout_constraintTop_toBottomOf="@id/img_ticket"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cdv_search_infraction"
+            android:layout_width="match_parent"
+            android:layout_margin="16dp"
+            android:layout_height="wrap_content"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="15dp"
+            app:layout_constraintTop_toBottomOf="@id/cdv_new_infraction"
+            app:layout_constraintStart_toStartOf="parent"
+            >
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint_parent_search"
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide_line_vertical_icons_new"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".60"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txt_title_search_infraction"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginStart="15dp"
+                    android:text="Buscar infracción"
+                    android:textSize="22sp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+                <TextView
+                    android:id="@+id/txt_subtitle_search_infraction"
+                    android:text="Busca una infracción, puedes reimprimirla y pagarla"
+                    android:layout_width="0dp"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:lines="2"
+                    app:layout_constraintStart_toStartOf="@id/txt_title_search_infraction"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="@id/guide_line_vertical_icons_new"
+                    app:layout_constraintTop_toBottomOf="@id/txt_title_search_infraction" />
+
+
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_search"
+                    android:tint="@color/app_gray_text_color"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/btn_search_infraction"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <Button
+                    android:text="Buscar"
+                    android:textColor="@color/colorWhite"
+                    android:id="@+id/btn_search_infraction"
+                    android:layout_width="110dp"
+                    android:textSize="12sp"
+                    android:background="@drawable/small_btn_gradient_orange"
+                    android:layout_height="35dp"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new"
+                    app:layout_constraintTop_toBottomOf="@id/img_search"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+       <!-- <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rcv_infractions"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -42,9 +187,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TextView1" />
+            app:layout_constraintTop_toBottomOf="@+id/TextView1" />-->
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+       <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_add_infraction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +199,7 @@
             android:src="@drawable/ic_add"
             android:tint="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

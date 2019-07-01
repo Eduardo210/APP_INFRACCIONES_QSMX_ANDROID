@@ -14,6 +14,13 @@ import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
 
 class SearchActivity : ActivityHelper(), SearchContracts.Presenter, View.OnClickListener {
+    override fun onResultSavePayment(msg: String, flag: Boolean) {
+
+    }
+
+    override fun onResultInfractionById(infraction: InfractionSearch, origin: Int) {
+
+    }
 
     val router = lazy { SearchRouter(this) }
 
@@ -54,9 +61,6 @@ class SearchActivity : ActivityHelper(), SearchContracts.Presenter, View.OnClick
         img_back.setOnClickListener(this)
     }
 
-    override fun onResultInfractionById(infraction: InfractionSearch) {
-
-    }
 
     override fun onResultSearch(listInfractions: MutableList<InfractionList.Results>) {
 

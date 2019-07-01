@@ -127,7 +127,7 @@ object SaveInfractionManager {
 
     fun updateInfrationToPaid(idInfraction: Long) {
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.infractionDao()?.updateInfractionToPaid(idInfraction)
+            Application.m_database?.infractionDao()?.updatePaidById(idInfraction)
         }
     }
 }

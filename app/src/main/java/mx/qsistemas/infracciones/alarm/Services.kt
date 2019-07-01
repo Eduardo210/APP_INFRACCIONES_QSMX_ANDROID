@@ -5,6 +5,8 @@ import android.app.job.JobParameters
 import android.app.job.JobService
 import android.location.Location
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -16,12 +18,14 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.managers.SendInfractionManager
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.SaveInfractionRequest
+import mx.qsistemas.infracciones.net.catalogs.SendInfractionResponse
 import mx.qsistemas.infracciones.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
+
 
 class ReportsService : JobService() {
 
@@ -30,11 +34,23 @@ class ReportsService : JobService() {
     }
 
     override fun onStartJob(params: JobParameters?): Boolean {
+        /* Create Notification Builder */
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID).apply {
+            setContentTitle(getString(R.string.app_name))
+            setContentText("Enviando infracciones...")
+            setSmallIcon(R.mipmap.ic_launcher)
+            priority = NotificationCompat.PRIORITY_HIGH
+        }
         if (Validator.isNetworkEnable(Application.getContext())) {
             /* Get the reports to send */
             val reportsToSend = SendInfractionManager.getInfractionsToSend()
             var infractionsList = mutableListOf<SaveInfractionRequest.InfractionRequest>()
             if (reportsToSend.size > 0) {
+                /* Launch Notification */
+                val notification = NotificationManagerCompat.from(this).apply {
+                    builder.setProgress(0, 0, true)
+                    notify(NOTIF_SEND_REPORTS, builder.build())
+                }
                 /* Generate each infraction object to send */
                 reportsToSend.forEach {
                     /* Get address of the infraction */
@@ -76,7 +92,7 @@ class ReportsService : JobService() {
                             paymentInfringement.folio, transactionInfo.numero_control, transactionInfo.referencia, transactionInfo.serial_paypda,
                             transactionInfo.tsi, transactionInfo.tvr, transactionInfo.tarjetahabiente, transactionInfo.tipo, transactionInfo.tipo_tarjeta,
                             transactionInfo.tipo_transaccion, transactionInfo.trx_date, transactionInfo.trx_nb, transactionInfo.trx_time,
-                            transactionInfo.vigencia_tarjeta, Application.prefs?.loadData(R.string.sp_id_township_person, "")!!,
+                            transactionInfo.vigencia_tarjeta, it.id_reg_user.toString(),
                             vehicleInfraction.barcode, vehicleInfraction.colour, vehicleInfraction.id_identifier_document,
                             vehicleInfraction.id_brand, vehicleInfraction.model, vehicleInfraction.no_ident_document,
                             vehicleInfraction.sub_brand, vehicleInfraction.circulation_card, vehicleInfraction.type)
@@ -87,14 +103,43 @@ class ReportsService : JobService() {
                 /* Send the infractions list */
                 NetworkApi().getNetworkService().sendInfractionToServer(Gson().toJson(saveInfractionRequest)).enqueue(object : Callback<String> {
                     override fun onResponse(call: Call<String>, response: Response<String>) {
-                        Log.e(this.javaClass.simpleName, "Send Infractions Http Stattus: ${response.code()}")
-                        if (response.code() == HttpsURLConnection.HTTP_OK){
-
+                        if (response.code() == HttpsURLConnection.HTTP_OK) {
+                            val result = Gson().fromJson(response.body(), SendInfractionResponse::class.java)
+                            if (result.flag) {
+                                Log.e(this.javaClass.simpleName, "All items were saved!!!")
+                                reportsToSend.forEach {
+                                    SendInfractionManager.updateInfractionToSend(it.folio)
+                                }
+                                // When done, update the notification one more time to remove the progress bar
+                                builder.setContentText(getString(R.string.s_infraction_send))
+                                        .setProgress(0, 0, false)
+                                notification.notify(NOTIF_SEND_REPORTS, builder.build())
+                            } else {
+                                Log.e(this.javaClass.simpleName, "Items that weren't saved: ${result.folios}")
+                                reportsToSend.forEach {
+                                    if (it.folio !in result.folios) {
+                                        SendInfractionManager.updateInfractionToSend(it.folio)
+                                    }
+                                }
+                                // When done, update the notification one more time to remove the progress bar
+                                builder.setContentText(getString(R.string.e_send_infractions_incomplete) + result.folios.size)
+                                        .setProgress(0, 0, false)
+                                notification.notify(NOTIF_SEND_REPORTS, builder.build())
+                            }
+                        } else {
+                            // When done, update the notification one more time to remove the progress bar
+                            builder.setContentText(getString(R.string.e_send_infractions))
+                                    .setProgress(0, 0, false)
+                            notification.notify(NOTIF_SEND_REPORTS, builder.build())
                         }
                     }
 
                     override fun onFailure(call: Call<String>, t: Throwable) {
                         Log.e(this.javaClass.simpleName, "Send Infractions Failed: ${t.message}")
+                        // When done, update the notification one more time to remove the progress bar
+                        builder.setContentText(getString(R.string.e_send_infractions))
+                                .setProgress(0, 0, false)
+                        notification.notify(NOTIF_SEND_REPORTS, builder.build())
                     }
                 })
             }

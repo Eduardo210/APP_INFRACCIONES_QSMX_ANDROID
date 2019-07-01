@@ -192,10 +192,10 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /* Step 1. Save the infraction information */
         val infraction = Infraction(0, newFolio, SingletonInfraction.noLicenseOffender, SingletonInfraction.typeLicenseOffender.id, SingletonInfraction.licenseIssuedInOffender.id.toString(),
                 "", SingletonInfraction.isRemited.toInt(), SingletonInfraction.retainedDocument.document, totalUmas, totalImport, config.minimum_salary,
-                SingletonInfraction.idPersonTownship, actualDay, false.toInt(), 1, 4, SingletonInfraction.idPersonTownship.toInt(), 1, 0,
+                Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong(), actualDay, false.toInt(), 1, 4, SingletonInfraction.idPersonTownship.toInt(), 1, 0,
                 SingletonInfraction.typeDocument.id, "", SingletonInfraction.dispositionRemited.id, SingletonInfraction.isPersonAbstent.toInt(), 0,
-                "", "", captureLine1, captureLine2, "", fifteenthDay, thirtythDay, "", fiftiethDiscount.toFloat(),
-                totalImport, 0F, 1, "", "", 0F, false)
+                "", "", "", captureLine1, captureLine2, "", fifteenthDay, thirtythDay, 0F, fiftiethDiscount.toFloat(),
+                totalImport, 1, "", "", 0F, false)
         SingletonInfraction.idNewInfraction = SaveInfractionManager.insertInfraction(infraction)
         /* Step 2. Validate that sub brand doesn't exists */
         val brandExisting = SaveInfractionManager.getSubBrandExist(SingletonInfraction.subBrandVehicle, SingletonInfraction.brandVehicle.id)

@@ -267,3 +267,7 @@ data class InfractionSearch(@SerializedName("Flag") val flag: Boolean,
 data class UpdatePerson(@SerializedName("Flag") val flag: Boolean,
                         @SerializedName("Mensaje") val message: String,
                         @SerializedName("Ids") val ids: MutableList<Int>)
+
+data class SendInfractionResponse(@SerializedName("Flag") val flag: Boolean,
+                                  @SerializedName("Mensaje") val message: String,
+                                  @SerializedName("Ids") val folios: MutableList<String>)

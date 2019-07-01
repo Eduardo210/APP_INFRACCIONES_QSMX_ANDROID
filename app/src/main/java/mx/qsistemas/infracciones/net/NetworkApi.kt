@@ -8,9 +8,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 open class NetworkApi {
@@ -40,12 +38,13 @@ open class NetworkApi {
         fun doSearchByFilter(@Query("Json") json: String): Call<String>
 
         @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Resultado_Busqueda_Infraccion")
-        fun doSearchByIdInfraction(@Query("Json") json:String): Call<String>
+        fun doSearchByIdInfraction(@Query("Json") json: String): Call<String>
 
+        @FormUrlEncoded
         @POST("ws/mobile/qsistemas/logininicial.asmx/Receptor_Infracciones_Moviles")
-        fun sendInfractionToServer(@Query("Json") json : String): Call<String>
+        fun sendInfractionToServer(@Field("Json") json: String): Call<String>
 
         @GET("ws/mobile/qsistemas/logininicial.asmx/UpdatePerson")
-        fun updatePerson(@Query("Json") json : String): Call<String>
+        fun updatePerson(@Query("Json") json: String): Call<String>
     }
 }

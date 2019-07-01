@@ -21,8 +21,8 @@ interface InfractionDao {
     fun selectInfractionsToSend(): MutableList<Infraction>
 
     @Query("UPDATE infraction SET BAN_PAGADA = 1 WHERE ID_INFRACCION = :idInfraction")
-    fun updateInfractionToPaid(idInfraction: Long)
+    fun updatePaidById(idInfraction: Long)
 
-    @Query("UPDATE infraction SET SYNC = 1 WHERE ID_INFRACCION = :idInfraction")
-    fun updateInfractionToSend(idInfraction: Long)
+    @Query("UPDATE infraction SET SYNC = 1 WHERE FOLIO = :folio")
+    fun updateSendByFolio(folio: String)
 }

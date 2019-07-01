@@ -16,7 +16,7 @@ data class Infraction(@PrimaryKey(autoGenerate = true) @ColumnInfo(name = "ID_IN
                       @ColumnInfo(name = "SALARIOS_MIN") val minimum_wage: Int, // Total de UMA's calculadas
                       @ColumnInfo(name = "IMPORTE") val amount: Float,  // UMA x Total calculadas
                       @ColumnInfo(name = "TAZA_SALARIO_MIN") val minimum_wage_rate: Float, // UMA's
-                      @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user: Long, // Id Persona Ayuntamiento
+                      @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user: Long, // Id Persona De Tabla Persona
                       @ColumnInfo(name = "REGISTRO_FECHA") val registration_date: String, // Fecha/Hora infracción
                       @ColumnInfo(name = "BAN_PAGADA") val is_paid: Int, // 1 = Si 0 = No
                       @ColumnInfo(name = "ID_INFRACCION_FUENTE") val source_infra: Int = 1,

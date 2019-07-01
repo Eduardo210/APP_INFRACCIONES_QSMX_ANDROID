@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.AsyncTask
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.db.entities.*
+import java.util.concurrent.Executors
 
 @SuppressLint("StaticFieldLeak")
 object SendInfractionManager {
@@ -85,5 +86,11 @@ object SendInfractionManager {
                                 "", 0, "", "", idInfraction.toInt())
             }
         }.execute().get()
+    }
+
+    fun updateInfractionToSend(folio: String){
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database?.infractionDao()?.updateSendByFolio(folio)
+        }
     }
 }

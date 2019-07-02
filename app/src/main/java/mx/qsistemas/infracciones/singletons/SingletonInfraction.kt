@@ -3,6 +3,7 @@ package mx.qsistemas.infracciones.singletons
 import mx.qsistemas.infracciones.db.entities.*
 import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.net.catalogs.Townships
+import java.util.*
 
 object SingletonInfraction {
 
@@ -54,6 +55,10 @@ object SingletonInfraction {
     var subTotalInfraction: String = ""
     var discountInfraction: String = ""
     var totalInfraction: String = ""
+    var captureLineii: Date? = null
+    var captureLineiii: Date?=null
+    var amountCaptureLineii:Float = 0.0f
+    var amountCaptureLineiii:Float = 0.0f
 
     fun cleanSingleton() {
         /* Vehicle Information Reset */

@@ -72,6 +72,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
+val OK_PAYMENT = 100
 class SearchFr : Fragment()
         , SearchContracts.Presenter
         , AdapterView.OnItemSelectedListener
@@ -91,11 +92,13 @@ class SearchFr : Fragment()
     private val PAYMENT: Int = 200
     private val CURRENT_DATE = Date()
     private var isPaid: Boolean = false
+
     private var amountToPay = "0"
     private var discountPayment = "0"
     private var totalPayment = "0"
+    private var totalAmount = "0"
 
-    private var idPerson:Long = 0
+    private var idPerson: Long = 0
 
 
     private lateinit var activity: SearchActivity
@@ -360,6 +363,15 @@ class SearchFr : Fragment()
         return printJson.toString()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode== OK_PAYMENT){
+            clearData()
+        }
+
+
+
+    }
+
 
     fun doPaymentProcess(infraction: InfractionSearch) {
         var compare_date: Int
@@ -368,11 +380,11 @@ class SearchFr : Fragment()
         val expDateFull: Date = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_iii) }
 
         compare_date = CURRENT_DATE.compareTo(expDate50)//expDate50.compareTo(CURRENT_DATE)
-
+        totalAmount = infraction.amount_capture_line_iii.toString()
         if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
             //Tiene el descuento del 50%
             amountToPay = "%.2f".format(infraction.amount_capture_line_ii)
-            discountPayment = ( infraction.amount_capture_line_ii.toDouble() - infraction.amount_capture_line_iii.toDouble()).toString()
+            discountPayment = (infraction.amount_capture_line_iii.toDouble() - infraction.amount_capture_line_ii.toDouble()).toString()
         } else {
             //No tiene descuento
             discountPayment = "0"
@@ -380,20 +392,20 @@ class SearchFr : Fragment()
             if (compare_date <= 0) {
                 amountToPay = "#.2f".format(infraction.amount_capture_line_iii)
             } else {
-                haveToPay=false
+                haveToPay = false
             }
         }
-        if (amountToPay.toDouble()>0){
-            totalPayment = "%.2f".format(amountToPay.toDouble() - discountPayment.toDouble())
-        }
+        totalPayment = amountToPay
+        /* if (discountPayment.toDouble()>0){
+             totalPayment = "%.2f".format(amountToPay.toDouble() - discountPayment.toDouble())
+         }*/
 
 
-        if(haveToPay){
+        if (haveToPay) {
             PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
-        }else{
+        } else {
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }
-
 
 
     }
@@ -401,7 +413,6 @@ class SearchFr : Fragment()
     override fun onPaymentClick(view: View, position: Int) {
         activity.showLoader("Espere ...")
         iterator.value.doSearchByIdInfraction(ID_INFRACTION, PAYMENT)
-
         Log.d("PAYMENT", "PAGANDO ...")
     }
 
@@ -464,9 +475,19 @@ class SearchFr : Fragment()
                     idPerson = infraction.id_person
                 } else {
                     //mandar a pantalla de actualizacion
+                    SingletonInfraction.idNewInfraction = ID_INFRACTION.toLong()
+                    //SingletonInfraction.subTotalInfraction = infraction.subtotal.toString()
+                    //SingletonInfraction.discountInfraction = infraction.payment_discount.toString()
+                    //SingletonInfraction.totalInfraction = infraction.payment_total.toString()
+                    SingletonInfraction.captureLineii = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_ii) }// infraction.capture_line_ii
+                    SingletonInfraction.captureLineiii = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_iii) }// infraction.capture_line_ii
+                    SingletonInfraction.amountCaptureLineii = infraction.amount_capture_line_ii
+                    SingletonInfraction.amountCaptureLineiii = infraction.amount_capture_line_iii
+
                     val intent = Intent(activity, CreateInfractionActivity::class.java)
                     intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
-                    startActivity(intent)
+                    startActivityForResult(intent, OK_PAYMENT)
+
                 }
         }
 
@@ -519,19 +540,20 @@ class SearchFr : Fragment()
 
     }
 
-    override fun onResultSavePayment(msg: String, flag:Boolean) {
+    override fun onResultSavePayment(msg: String, flag: Boolean) {
         activity.hideLoader()
-        if (flag){
+        if (flag) {
             SnackbarHelper.showSuccessSnackBar(activity, "El pago se guardó satisfactoriamente.", Snackbar.LENGTH_SHORT)
-        }else{
+        } else {
             SnackbarHelper.showErrorSnackBar(activity, "Error al guardar datos de pago en servidor.", Snackbar.LENGTH_SHORT)
         }
 
 
     }
+
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-        iterator.value.savePaymentToService(ID_INFRACTION,txInfo, amountToPay, discountPayment,totalPayment ,idPerson)
+        iterator.value.savePaymentToService(ID_INFRACTION, txInfo, totalAmount, discountPayment, totalPayment, idPerson)
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
     }
 
@@ -543,7 +565,7 @@ class SearchFr : Fragment()
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, amountToPay, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 // Imprimir boleta

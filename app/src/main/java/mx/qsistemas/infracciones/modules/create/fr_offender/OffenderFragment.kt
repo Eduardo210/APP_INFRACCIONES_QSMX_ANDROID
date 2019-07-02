@@ -330,6 +330,19 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxFailed(message: String) {
         isPaid = false
+        if (message == getString(mx.qsistemas.payments_transfer.R.string.pt_e_card_input_incorrect)){
+            SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
+            var builder = AlertDialogHelper.getGenericBuilder(
+                    getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
+            )
+            builder.setPositiveButton("Aceptar") { _, _ ->
+                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+            }
+            builder.setNegativeButton("Cancelar") { _, _ ->
+                iterator.value.printTicket(activity)
+            }
+            builder.show()
+        }
     }
 
     override fun onTxVoucherFailer(message: String) {

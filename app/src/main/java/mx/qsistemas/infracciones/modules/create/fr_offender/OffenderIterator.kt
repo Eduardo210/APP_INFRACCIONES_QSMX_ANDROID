@@ -13,12 +13,14 @@ import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.FS_COL_STATES
 import mx.qsistemas.infracciones.utils.FS_COL_TOWNSHIPS
+import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintBarCode
+import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintObject
+import mx.qsistemas.infracciones.utils.Ticket.Companion.getTicketHeader
 import mx.qsistemas.infracciones.utils.Utils
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
@@ -284,7 +286,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
         //Impresión de encabezados
         printTest.put(getPrintObject(header1 + header2 + header3 + header4 + header5 + header6, normal_size, "center", "1"))
-        printTest.put(getPrintObject("\n\nDETECCION Y LEVANTAMIENTO ELECTRONICO DE INFRACCIONES A CONDUCTORES DE VEHICULOS QUE CONTRAVENGAN LAS DISPOSICIONES EN MATERIA DE TRANSITO, EQUILIBRIO ECOLOGICO, PROTECCIÓN AL AMBIENTE Y PARA LA PREVENCION Y CONTROL DE LA CONTAMINACION, ASI COMO PAGO DE SANCIONES Y APLICACION DE MEDIDAS DE SEGURIDAD.\n\nEL C. AGENTE QUE SUSCRIBE LA PRESENTE BOLETA DE INFRACCION, ESTA FACULTADO EN TERMINOS DE LOS QUE SE ESTABLECE EN LOS ARTICULOS 21 Y 115, FRACCION III, INCISO H), DE LA CONSTITUCION  POLITICA DE LOS ESTADOS UNIDOS MEXICANOS DE ACUERDO A LO ESTABLECIDO EN LOS ARTICULOS 8.3, 8.10, 8.18, 8.19 BIS, 8.19 TERCERO Y 8.19 CUARTO, DEL CODIGO ADMINISTRATIVO DEL ESTADO DE MEXICO. ASI COMO HACER CONSTAR LOS HECHOS QUE MOTIVAN LA INFRACCION EN TERMINOS DEL ARTICULO 16 DE NUESTRA CARTA MAGNA.\n\n\n", normal_size, "left", "0"))
+        printTest.put(getTicketHeader())
         printTest.put(getPrintObject("$actualDay\nFOLIO: $newFolio\n\n\n", normal_size, "right", "0"))
 
         //Datos del infractor
@@ -436,39 +438,5 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         }
         datestring = dateFormat.format(calendar.time)
         return datestring
-    }
-
-    private fun getPrintObject(text: String, size: String, position: String, bold: String): JSONObject {
-        val json = JSONObject()
-        try {
-            json.put("content-type", "txt")
-            json.put("content", text)
-            json.put("size", size)
-            json.put("position", position)
-            json.put("offset", "0")
-            json.put("bold", bold)
-            json.put("italic", "0")
-            json.put("height", "-1")
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return json
-    }
-
-    private fun getPrintBarCode(text: String): JSONObject {
-        val json = JSONObject()
-        try {
-            json.put("content-type", "one-dimension")
-            json.put("content", text)
-            json.put("size", "3")
-            json.put("position", "center")
-            json.put("offset", "0")
-            json.put("bold", "0")
-            json.put("italic", "0")
-            json.put("height", "2")
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return json
     }
 }

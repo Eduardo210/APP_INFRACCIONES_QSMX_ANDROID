@@ -1,36 +1,27 @@
 package mx.qsistemas.infracciones.modules.search.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.AdapterView
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search.*
 import mx.qsistemas.infracciones.BuildConfig
-
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
-import mx.qsistemas.infracciones.databinding.FragmentVehicleBinding
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.modules.create.OPTION_UPDATE_INFRACTION
-import mx.qsistemas.infracciones.modules.create.fr_vehicle.VehicleIterator
 import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.modules.search.SearchIterator
@@ -38,23 +29,17 @@ import mx.qsistemas.infracciones.modules.search.adapters.ID_INFRACTION
 import mx.qsistemas.infracciones.modules.search.adapters.SearchAdapter
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
-import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.EXTRA_OPTION_INFRACTION
+import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintBarCode
+import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintObject
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_RANDOM
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
-import okhttp3.internal.Util
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
-import java.lang.Exception
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -95,7 +80,7 @@ class SearchFr : Fragment()
     private var discountPayment = "0"
     private var totalPayment = "0"
 
-    private var idPerson:Long = 0
+    private var idPerson: Long = 0
 
 
     private lateinit var activity: SearchActivity
@@ -159,40 +144,6 @@ class SearchFr : Fragment()
 
     }
 
-    private fun getPrintObject(text: String, size: String, position: String, bold: String): JSONObject {
-        val json = JSONObject()
-        try {
-            json.put("content-type", "txt")
-            json.put("content", text)
-            json.put("size", size)
-            json.put("position", position)
-            json.put("offset", "0")
-            json.put("bold", bold)
-            json.put("italic", "0")
-            json.put("height", "-1")
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return json
-    }
-
-    private fun getPrintBarCode(text: String): JSONObject {
-        val json = JSONObject()
-        try {
-            json.put("content-type", "one-dimension")
-            json.put("content", text)
-            json.put("size", "3")
-            json.put("position", "center")
-            json.put("offset", "0")
-            json.put("bold", "0")
-            json.put("italic", "0")
-            json.put("height", "2")
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return json
-    }
-
     override fun onPrintClick(view: View, position: Int) {
         activity.showLoader("Espere ...")
         iterator.value.doSearchByIdInfraction(ID_INFRACTION, PRINT)
@@ -231,10 +182,9 @@ class SearchFr : Fragment()
 
         INFRACTOR_IS_ABSENT = infraction.is_absent
 
-
         //Impresión de encabezados
         printTest.put(getPrintObject(header1 + header2 + header3 + header4 + header5 + header6, normal_size, "center", "1"))
-        printTest.put(getPrintObject("\n\nDETECCION Y LEVANTAMIENTO ELECTRONICO DE INFRACCIONES A CONDUCTORES DE VEHICULOS QUE CONTRAVENGAN LAS DISPOSICIONES EN MATERIA DE TRANSITO, EQUILIBRIO ECOLOGICO, PROTECCIÓN AL AMBIENTE Y PARA LA PREVENCION Y CONTROL DE LA CONTAMINACION, ASI COMO PAGO DE SANCIONES Y APLICACION DE MEDIDAS DE SEGURIDAD.\n\nEL C. AGENTE QUE SUSCRIBE LA PRESENTE BOLETA DE INFRACCION, ESTA FACULTADO EN TERMINOS DE LOS QUE SE ESTABLECE EN LOS ARTICULOS 21 Y 115, FRACCION III, INCISO H), DE LA CONSTITUCION  POLITICA DE LOS ESTADOS UNIDOS MEXICANOS DE ACUERDO A LO ESTABLECIDO EN LOS ARTICULOS 8.3, 8.10, 8.18, 8.19 BIS, 8.19 TERCERO Y 8.19 CUARTO, DEL CODIGO ADMINISTRATIVO DEL ESTADO DE MEXICO. ASI COMO HACER CONSTAR LOS HECHOS QUE MOTIVAN LA INFRACCION EN TERMINOS DEL ARTICULO 16 DE NUESTRA CARTA MAGNA.\n\n\n", normal_size, "left", "0"))
+        printTest.put(getPrintObject("\n\nDETECCION    Y   LEVANTAMIENTO\nELECTRONICO DE INFRACCIONES A\nCONDUCTORES DE VEHICULOS QUE\nCONTRAVENGAN LAS DISPOSICIO-\nNES EN MATERIA DE TRANSITO, EQUI-\nLIBRIO  ECOLOGICO,  PROTECCIÓN\nAL AMBIENTE Y PARA LA  PREVEN-\nCION Y CONTROL DE LA CONTAMI-\nNACION,  ASI COMO PAGO DE SAN-\nCIONES  Y  APLICACION  DE  MEDI-\nDAS DE SEGURIDAD.\n\nEL C. AGENTE  QUE SUSCRIBE  LA\nPRESENTE  BOLETA   DE   INFRAC-\nCION, ESTA FACULTADO EN TER-\nMINOS DE LOS QUE SE ESTABLECE EN\nLOS ARTICULOS 21 Y 115, FRACCION\nIII,  INCISO H), DE LA CONSTITU-\nCION  POLITICA  DE LOS ESTADOS\nUNIDOS  MEXICANOS DE ACUERDO\nA LO ESTABLECIDO EN LOS ARTI-\nCULOS  8.3,  8.10,  8.18, 8.19\nBIS, 8.19 TERCERO Y 8.19 CUAR-\nTO, DEL  CODIGO ADMINISTRATIVO\nDEL ESTADO DE MEXICO. ASI COMO\nHACER CONSTAR LOS  HECHOS  QUE\nMOTIVAN LA INFRACCION EN TER-\nMINOS DEL ARTICULO 16 DE NUES-\nTRA CARTA MAGNA.\n\n\n", normal_size, "left", "0"))
         printTest.put(getPrintObject(infraction.date + "\n" + "FOLIO: " + infraction.folio + "\n\n\n", normal_size, "right", "0"))
 
         //Datos del infractor
@@ -372,7 +322,7 @@ class SearchFr : Fragment()
         if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
             //Tiene el descuento del 50%
             amountToPay = "%.2f".format(infraction.amount_capture_line_ii)
-            discountPayment = ( infraction.amount_capture_line_ii.toDouble() - infraction.amount_capture_line_iii.toDouble()).toString()
+            discountPayment = (infraction.amount_capture_line_ii.toDouble() - infraction.amount_capture_line_iii.toDouble()).toString()
         } else {
             //No tiene descuento
             discountPayment = "0"
@@ -380,20 +330,19 @@ class SearchFr : Fragment()
             if (compare_date <= 0) {
                 amountToPay = "#.2f".format(infraction.amount_capture_line_iii)
             } else {
-                haveToPay=false
+                haveToPay = false
             }
         }
-        if (amountToPay.toDouble()>0){
+        if (amountToPay.toDouble() > 0) {
             totalPayment = "%.2f".format(amountToPay.toDouble() - discountPayment.toDouble())
         }
 
 
-        if(haveToPay){
+        if (haveToPay) {
             PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
-        }else{
+        } else {
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }
-
 
 
     }
@@ -519,19 +468,20 @@ class SearchFr : Fragment()
 
     }
 
-    override fun onResultSavePayment(msg: String, flag:Boolean) {
+    override fun onResultSavePayment(msg: String, flag: Boolean) {
         activity.hideLoader()
-        if (flag){
+        if (flag) {
             SnackbarHelper.showSuccessSnackBar(activity, "El pago se guardó satisfactoriamente.", Snackbar.LENGTH_SHORT)
-        }else{
+        } else {
             SnackbarHelper.showErrorSnackBar(activity, "Error al guardar datos de pago en servidor.", Snackbar.LENGTH_SHORT)
         }
 
 
     }
+
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-        iterator.value.savePaymentToService(ID_INFRACTION,txInfo, amountToPay, discountPayment,totalPayment ,idPerson)
+        iterator.value.savePaymentToService(ID_INFRACTION, txInfo, amountToPay, discountPayment, totalPayment, idPerson)
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
     }
 

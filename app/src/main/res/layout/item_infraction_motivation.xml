@@ -124,7 +124,7 @@
             android:gravity="top|left"
             android:hint="@string/h_motivation"
             android:imeOptions="actionDone"
-            android:inputType="textMultiLine|textNoSuggestions"
+            android:inputType="textMultiLine"
             android:lines="3"
             android:maxLength="200"
             android:maxLines="5"

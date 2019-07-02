@@ -348,6 +348,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxVoucherPrinted() {
         if (isPaid) {
+            SingletonInfraction.cleanSingleton()
             activity.finish()
         } else {
             var builder = AlertDialogHelper.getGenericBuilder(
@@ -381,11 +382,13 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                 iterator.value.printTicket(activity)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
+                SingletonInfraction.cleanSingleton()
                 activity.finish()
 
             }
             builder.show()
         } else {
+            SingletonInfraction.cleanSingleton()
             activity.finish()
         }
     }

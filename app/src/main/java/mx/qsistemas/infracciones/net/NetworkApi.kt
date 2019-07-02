@@ -44,12 +44,14 @@ open class NetworkApi {
         @POST("ws/mobile/qsistemas/logininicial.asmx/Receptor_Infracciones_Moviles")
         fun sendInfractionToServer(@Field("Json") json: String): Call<String>
 
+        @FormUrlEncoded
+        @POST("ws/mobile/qsistemas/logininicial.asmx/Receptor_Imagenes")
+        fun sendImagesToServer(@Field("Json") json: String): Call<String>
+
         @GET("ws/mobile/qsistemas/logininicial.asmx/UpdatePerson")
         fun updatePerson(@Query("Json") json: String): Call<String>
 
         @GET("ws/mobile/qsistemas/LoginInicial.asmx/savePayment")
         fun savePayment(@Query("Json") json:String): Call<String>
-
     }
-
 }

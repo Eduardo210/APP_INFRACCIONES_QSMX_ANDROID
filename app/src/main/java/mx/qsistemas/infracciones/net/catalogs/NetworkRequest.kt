@@ -110,3 +110,12 @@ data class SaveInfractionRequest(@SerializedName("Infracciones") val infractions
         )
     }
 }
+
+data class InfractionPhotoRequest(@SerializedName("LoteImagenes") val images: List<PhotoData>,
+                                  @SerializedName("password") val password: String,
+                                  @SerializedName("username") val username: String) {
+
+    data class PhotoData(@SerializedName("Tipo") val type: Int,
+                         @SerializedName("ArchivoNombre") val fileName: String,
+                         @SerializedName("ArchivoBase64") val file64: String)
+}

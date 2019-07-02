@@ -17,6 +17,7 @@ import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.managers.SendInfractionManager
 import mx.qsistemas.infracciones.net.NetworkApi
+import mx.qsistemas.infracciones.net.catalogs.InfractionPhotoRequest
 import mx.qsistemas.infracciones.net.catalogs.SaveInfractionRequest
 import mx.qsistemas.infracciones.net.catalogs.SendInfractionResponse
 import mx.qsistemas.infracciones.utils.*
@@ -34,8 +35,8 @@ class ReportsService : JobService() {
     }
 
     override fun onStartJob(params: JobParameters?): Boolean {
-        /* Create Notification Builder */
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID).apply {
+        /* Create Infraction Notification Builder */
+        val builderInfraction = NotificationCompat.Builder(this, CHANNEL_ID_REPORT).apply {
             setContentTitle(getString(R.string.app_name))
             setContentText("Enviando infracciones...")
             setSmallIcon(R.mipmap.ic_launcher)
@@ -48,8 +49,8 @@ class ReportsService : JobService() {
             if (reportsToSend.size > 0) {
                 /* Launch Notification */
                 val notification = NotificationManagerCompat.from(this).apply {
-                    builder.setProgress(0, 0, true)
-                    notify(NOTIF_SEND_REPORTS, builder.build())
+                    builderInfraction.setProgress(0, 0, true)
+                    notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                 }
                 /* Generate each infraction object to send */
                 reportsToSend.forEach {
@@ -111,9 +112,9 @@ class ReportsService : JobService() {
                                     SendInfractionManager.updateInfractionToSend(it.folio)
                                 }
                                 // When done, update the notification one more time to remove the progress bar
-                                builder.setContentText(getString(R.string.s_infraction_send))
+                                builderInfraction.setContentText(getString(R.string.s_infraction_send))
                                         .setProgress(0, 0, false)
-                                notification.notify(NOTIF_SEND_REPORTS, builder.build())
+                                notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                             } else {
                                 Log.e(this.javaClass.simpleName, "Items that weren't saved: ${result.folios}")
                                 reportsToSend.forEach {
@@ -122,29 +123,103 @@ class ReportsService : JobService() {
                                     }
                                 }
                                 // When done, update the notification one more time to remove the progress bar
-                                builder.setContentText(getString(R.string.e_send_infractions_incomplete) + result.folios.size)
+                                builderInfraction.setContentText(getString(R.string.e_send_infractions_incomplete) + result.folios.size)
                                         .setProgress(0, 0, false)
-                                notification.notify(NOTIF_SEND_REPORTS, builder.build())
+                                notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                             }
                         } else {
                             // When done, update the notification one more time to remove the progress bar
-                            builder.setContentText(getString(R.string.e_send_infractions))
+                            builderInfraction.setContentText(getString(R.string.e_send_infractions))
                                     .setProgress(0, 0, false)
-                            notification.notify(NOTIF_SEND_REPORTS, builder.build())
+                            notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                         }
                     }
 
                     override fun onFailure(call: Call<String>, t: Throwable) {
                         Log.e(this.javaClass.simpleName, "Send Infractions Failed: ${t.message}")
                         // When done, update the notification one more time to remove the progress bar
-                        builder.setContentText(getString(R.string.e_send_infractions))
+                        builderInfraction.setContentText(getString(R.string.e_send_infractions))
                                 .setProgress(0, 0, false)
-                        notification.notify(NOTIF_SEND_REPORTS, builder.build())
+                        notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                     }
                 })
             }
+            sendPhotos()
         }
         return true
+    }
+
+    private fun sendPhotos() {
+        /* Create Photos Notification Builder */
+        val builderPhotos = NotificationCompat.Builder(this, CHANNEL_ID_IMAGES).apply {
+            setContentTitle(getString(R.string.app_name))
+            setContentText("Enviando imágenes...")
+            setSmallIcon(R.mipmap.ic_launcher)
+            priority = NotificationCompat.PRIORITY_HIGH
+        }
+        /* Send photos of infractions */
+        val photos = SendInfractionManager.getPhotosToSend()
+        if (photos.size > 0) {
+            /* Launch Photos Notification */
+            val notificationPhotos = NotificationManagerCompat.from(this).apply {
+                builderPhotos.setProgress(0, 0, true)
+                notify(NOTIF_SEND_IMAGES, builderPhotos.build())
+            }
+            val photosToSend = mutableListOf<InfractionPhotoRequest.PhotoData>()
+            photos.forEach {
+                val vehicleInfraction = SendInfractionManager.getVehileInformation(it.idInfraction.toLong())
+                val folioInfraction = SendInfractionManager.getFolioOfInfraction(it.idInfraction.toLong())
+                photosToSend.add(InfractionPhotoRequest.PhotoData(4, "${vehicleInfraction.id_identifier_document}_${vehicleInfraction.no_ident_document}_${folioInfraction}_I.bmp", it.evidence1))
+                photosToSend.add(InfractionPhotoRequest.PhotoData(4, "${vehicleInfraction.id_identifier_document}_${vehicleInfraction.no_ident_document}_${folioInfraction}_II.bmp", it.evidence2))
+            }
+            /* Create request header */
+            val request = InfractionPhotoRequest(photosToSend, "CF2E3EF25C90EB567243ADFACD4AA868", "Mobile")
+            NetworkApi().getNetworkService().sendImagesToServer(Gson().toJson(request)).enqueue(object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if (response.code() == HttpsURLConnection.HTTP_OK) {
+                        val result = Gson().fromJson(response.body(), SendInfractionResponse::class.java)
+                        if (result.flag) {
+                            photos.forEach {
+                                SendInfractionManager.updateImageToSend(it.idInfraction.toLong())
+                            }
+                            // When done, update the notification one more time to remove the progress bar
+                            builderPhotos.setContentText(getString(R.string.s_infraction_send))
+                                    .setProgress(0, 0, false)
+                            notificationPhotos.notify(NOTIF_SEND_IMAGES, builderPhotos.build())
+                        } else {
+                            val folios = mutableListOf<String>()
+                            result.folios.forEach {
+                                folios.add(it.split("_")[2])
+                            }
+                            photos.forEach {
+                                val infraction = SendInfractionManager.getInfractionById(it.idInfraction.toLong())
+                                if (infraction.folio !in folios) {
+                                    SendInfractionManager.updateImageToSend(it.idInfraction.toLong())
+                                }
+                            }
+                            // When done, update the notification one more time to remove the progress bar
+                            builderPhotos.setContentText(getString(R.string.e_send_images_incomplete) + result.folios.size)
+                                    .setProgress(0, 0, false)
+                            notificationPhotos.notify(NOTIF_SEND_IMAGES, builderPhotos.build())
+                        }
+                    } else {
+                        Log.e(this.javaClass.simpleName, "Send Images Fail")
+                        // When done, update the notification one more time to remove the progress bar
+                        builderPhotos.setContentText(getString(R.string.e_send_infractions))
+                                .setProgress(0, 0, false)
+                        notificationPhotos.notify(NOTIF_SEND_IMAGES, builderPhotos.build())
+                    }
+                }
+
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Log.e(this.javaClass.simpleName, "Send Images Fail")
+                    // When done, update the notification one more time to remove the progress bar
+                    builderPhotos.setContentText(getString(R.string.e_send_infractions))
+                            .setProgress(0, 0, false)
+                    notificationPhotos.notify(NOTIF_SEND_IMAGES, builderPhotos.build())
+                }
+            })
+        }
     }
 }
 

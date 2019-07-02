@@ -244,7 +244,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             SaveInfractionManager.saveTrafficViolation(trafficViolation)
         }
         /* Step 9. Save Evidence Photos */
-        val evidencePhoto = InfractionEvidence(0, SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.evidence1, SingletonInfraction.evidence2)
+        val evidencePhoto = InfractionEvidence(0, SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.evidence1, SingletonInfraction.evidence2, false)
         SaveInfractionManager.saveInfractionEvidence(evidencePhoto)
         /* Notify View That All Data Was Saved */
         if (notify) listener.onDataSaved()

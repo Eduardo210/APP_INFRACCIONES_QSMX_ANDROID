@@ -59,6 +59,7 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 val OK_PAYMENT = 100
+
 class SearchFr : Fragment()
         , SearchContracts.Presenter
         , AdapterView.OnItemSelectedListener
@@ -189,166 +190,175 @@ class SearchFr : Fragment()
 
         //Impresión de encabezados
         printTest.put(getPrintObject(header1 + header2 + header3 + header4 + header5 + header6, normal_size, "center", "1"))
-        printTest.put(getPrintObject("DETECCIÓN    Y   LEVANTAMIENTO", "2", "left", "0"))
+        printTest.put(getPrintObject("\n\nDETECCIÓN   Y   LEVANTAMIENTO", "2", "center", "0"))
+        //printTest.put(getPrintObject("\n", "2", "left", "0"))
+        printTest.put(getPrintObject("ELECTRÓNICO     DE     INFRACCIO-", "2", "center", "0"))
+        printTest.put(getPrintObject("NES  A CONDUCTORES   DE   VEHÍ-", "2", "center", "0"))
+        printTest.put(getPrintObject("CULOS     QUE     CONTRAVENGAN", "2", "center", "0"))
+        printTest.put(getPrintObject("LAS   DISPOSICIONES    EN   MATE-", "2", "center", "0"))
+        printTest.put(getPrintObject("RIA   DE  TRÁNSITO,  EQUILIBRIO  E-", "2", "center", "0"))
+        printTest.put(getPrintObject("COLÓGICO       PROTECCIÓN       AL", "2", "center", "0"))
+        printTest.put(getPrintObject("AMBIENTE    Y     PARA    LA    PRE-", "2", "left", "0"))
+        printTest.put(getPrintObject("VENCIÓN    Y    CONTROL    DE    LA", "2", "left", "0"))
+        printTest.put(getPrintObject("CONTAMINACIÓN,   ASI   COMO  PA-", "2", "left", "0"))
+        printTest.put(getPrintObject("GO   DE   SANCIONES    Y    APLICA-", "2", "left", "0"))
+        printTest.put(getPrintObject("CIÓN    DE   MEDIDAS   DE   SEGURI-", "2", "left", "0"))
+        printTest.put(getPrintObject("DAD.", "2", "left", "0"))
         printTest.put(getPrintObject("\n\n", "2", "left", "0"))
-        printTest.put(getPrintObject("ELECTRÓNICO DE INFRACCIONES  A", "2", "left", "0"))
-        printTest.put(getPrintObject("CONDUCTORES  DE VEHÍCULOS  QUE", "2", "left", "0"))
-        printTest.put(getPrintObject("CONTRAVENGAN LAS DISPOSICIONES", "2", "left", "0"))
-        printTest.put(getPrintObject("EN MATERIA DE TRÁNSITO,  EQUI-", "2", "left", "0"))
-        printTest.put(getPrintObject("LIBRIO  ECOLÓGICO,  PROTECCIÓN", "2", "left", "0"))
-        printTest.put(getPrintObject("AL AMBIENTE Y PARA LA  PREVEN-", "2", "left", "0"))
-        printTest.put(getPrintObject("CIÓN  Y CONTROL DE LA CONTAMI-", "2", "left", "0"))
-        printTest.put(getPrintObject("NACIÓN,  ASI COMO PAGO DE SAN-", "2", "left", "0"))
-        printTest.put(getPrintObject("CIONES Y APLICACIÓN  DE  MEDI-", "2", "left", "0"))
-        printTest.put(getPrintObject("DAS DE SEGURIDAD.", "2", "left", "0"))
-        printTest.put(getPrintObject("\n\n", "2", "left", "0"))
-        printTest.put(getPrintObject("EL C. AGENTE  QUE SUSCRIBE  LA", "2", "left", "0"))
-        printTest.put(getPrintObject("PRESENTE  BOLETA   DE  INFRAC-", "2", "left", "0"))
-        printTest.put(getPrintObject("CIÓN, ESTA  FACULTADO EN  TÉR-", "2", "left", "0"))
-        printTest.put(getPrintObject("MINOS DE LOS QUE SE  ESTABLECE", "2", "left", "0"))
-        printTest.put(getPrintObject("EN  LOS  ARTÍCULOS  21 Y  115,", "2", "left", "0"))
-        printTest.put(getPrintObject("FRACCIÓN III, INCISO H), DE LA", "2", "left", "0"))
-        printTest.put(getPrintObject("CONSTITUCION  POLÍTICA  DE LOS", "2", "left", "0"))
-        printTest.put(getPrintObject("ESTADOS  UNIDOS  MEXICANOS  DE", "2", "left", "0"))
-        printTest.put(getPrintObject("ACUERDO A LO ESTABLECIDO EN LOS", "2", "left", "0"))
-        printTest.put(getPrintObject("ARTÍCULOS   8.3,  8.10,  8.18,", "2", "left", "0"))
-        printTest.put(getPrintObject("8.19 BIS, 8.19  TERCERO Y 8.19", "2", "left", "0"))
-        printTest.put(getPrintObject("CUARTO, DEL CÓDIGO ADMINISTRA-", "2", "left", "0"))
-        printTest.put(getPrintObject("TIVO DEL ESTADO DE MÉXICO. ASÍ", "2", "left", "0"))
-        printTest.put(getPrintObject("COMO HACER CONSTAR LOS  HECHOS", "2", "left", "0"))
-        printTest.put(getPrintObject("QUE MOTIVAN  LA INFRACCIÓN  EN", "2", "left", "0"))
-        printTest.put(getPrintObject("TÉRMINOS  DEL  ARTÍCULO  16 DE", "2", "left", "0"))
-        printTest.put(getPrintObject("NUESTRA CARTA MAGNA.", "2", "left", "0"))
-        printTest.put(getPrintObject("\n\n\n", "2", "left", "0"))
+        printTest.put(getPrintObject("EL C. AGENTE  QUE  SUSCRIBE  LA", "2", "left", "0"))
+        printTest.put(getPrintObject("PRESENTE      BOLETA       DE      IN-", "2", "left", "0"))
+        printTest.put(getPrintObject("FRACCIÓN,  ESTA  FACULTADO   EN", "2", "left", "0"))
+        printTest.put(getPrintObject("TÉRMINOS   DE   LOS  QUE  SE   ES-", "2", "left", "0"))
+        printTest.put(getPrintObject("TABLECE     EN     LOS   ARTÍCULOS", "2", "left", "0"))
+        printTest.put(getPrintObject("21   Y  115,  FRACCIÓN  III,   INCISO,", "2", "left", "0"))
+        printTest.put(getPrintObject("H)   DE   LA  CONSTITUCION    POLÍ-", "2", "left", "0"))
+        printTest.put(getPrintObject("TICA   DE  LOS  ESTADOS   UNIDOS", "2", "left", "0"))
+        printTest.put(getPrintObject("MEXICANOS     DE     ACUERDO     A", "2", "left", "0"))
+        printTest.put(getPrintObject("LO   ESTABLECIDO   EN   LOS   ARTÍ-", "2", "left", "0"))
+        printTest.put(getPrintObject("CULOS   8.3,  8.10,  8.18,  8.19   BIS", "2", "left", "0"))
+        printTest.put(getPrintObject(",8.19   TERCERO   Y   8.19 CUARTO", "2", "left", "0"))
+        printTest.put(getPrintObject("DEL     CÓDIGO     ADMINISTRATIVO", "2", "left", "0"))
+        printTest.put(getPrintObject("DEL    ESTADO    DE    MÉXICO.  ASÍ", "2", "left", "0"))
+        printTest.put(getPrintObject("COMO HACER  CONSTAR  LOS  HE-", "2", "left", "0"))
+        printTest.put(getPrintObject("CHOS     QUE     MOTIVAN    LA    IN", "2", "left", "0"))
+        printTest.put(getPrintObject("FRACCIÓN    EN    TÉRMINOS    DEL", "2", "left", "0"))
+        printTest.put(getPrintObject("ARTÍCULO   16  DENUESTRA   CAR-", "2", "left", "0"))
+        printTest.put(getPrintObject("TA MAGNA.\n\n\n", "2", "left", "0"))
         printTest.put(getPrintObject(infraction.date + "\n" + "FOLIO: " + infraction.folio + "\n\n\n", normal_size, "right", "0"))
+        try {
 
-        //Datos del infractor
-        if (infraction.is_absent == 0) {
 
-            infractor_data.append(infraction.name.toUpperCase() + " " + infraction.last_name.toUpperCase() + " " + infraction.mother_last_name.toUpperCase())
-            if (!infraction.rfc.equals("")) {
-                infractor_data.append("\n" + infraction.rfc)
+            //Datos del infractor
+            if (infraction.is_absent == 0) {
+
+                infractor_data.append(infraction.name.toUpperCase() + " " + infraction.last_name.toUpperCase() + " " + infraction.mother_last_name.toUpperCase())
+                if (!infraction.rfc.equals("")) {
+                    infractor_data.append("\n" + infraction.rfc)
+                }
+                if (!infraction.infractor_external_number.equals("")) {
+                    infractor_data.append("\n" + infraction.infractor_external_number)
+                }
+                if (!infraction.infractor_internal_number.equals("")) {
+                    infractor_data.append("\n" + infraction.infractor_internal_number)
+                }
+                if (!infraction.infractor_colony.equals("")) {
+                    infractor_data.append("\n" + infraction.infractor_colony)
+                }
+                printTest.put(getPrintObject(infractor_data.toString(), normal_size, "center", "0"))
+
+                if (!infraction.circulation_card.equals("")) {
+                    card_data.append("\n" + "LICENCIA/PERMISO: " + infraction.circulation_card)
+                }
+                if (infraction.card_type_type.equals("")) {
+                    card_data.append("\n" + "TIPO LICENCIA: " + infraction.card_type_type)
+                }
+                if (infraction.issued_in.equals("")) {
+                    card_data.append("\n" + "EXPEDIDA: " + infraction.issued_in)
+                }
+                printTest.put(getPrintObject(card_data.toString(), normal_size, "left", "0"))
+
+            } else if (infraction.is_absent == 1) {
+                printTest.put(getPrintObject(infraction.name.toUpperCase() + " " + infraction.last_name.toUpperCase() + " " + infraction.mother_last_name.toUpperCase() + "\n\n", normal_size, "center", "0"))
             }
-            if (!infraction.infractor_external_number.equals("")) {
-                infractor_data.append("\n" + infraction.infractor_external_number)
+            //Características del vehículo
+            vehicle.append("\nCARACTERÍSTICAS DEL VEHÍCULO: ")
+            vehicle.append("\nMARCA: " + infraction.brand) //TODO:SERVICIO
+            if (!infraction.sub_brand.equals("")) {
+                vehicle.append("\nSUBMARCA: " + infraction.sub_brand)
             }
-            if (!infraction.infractor_internal_number.equals("")) {
-                infractor_data.append("\n" + infraction.infractor_internal_number)
+            vehicle.append("\nTIPO: " + infraction.vehicle_type)
+            vehicle.append("\nCOLOR: " + infraction.vehicle_color)
+            vehicle.append("\nMODELO: " + infraction.vehicle_model)
+            vehicle.append("\nIDENTIFICADOR: " + infraction.ident_document) //TODO:SERVICIIO
+            vehicle.append("\nNÚMERO: " + infraction.num_doc_ident)
+            vehicle.append("\nAUTORIDAD QUE EXPIDE: " + infraction.authority_issue) //TODO:SERVICIO
+            vehicle.append("\nEXPEDIDO: " + infraction.doc_ident_issued)
+            vehicle.append("\nARTÍCULOS DEL REGLAMENTO DE TRÁNSITO DEL ESTADO DE MÉXICO: ")
+
+            printTest.put(getPrintObject(vehicle.toString(), normal_size, "left", "0"))
+            //Artículos y fracciones
+            printTest.put(getPrintObject("\n\nARTÍCULO/FRACCIÓN\t\t\tU.M.A.\t\t\tPUNTOS\n*******************", "1", "center", "1"))
+
+            infraction.infraction_fraction.forEach { art ->
+                printTest.put(getPrintObject(art.art_fracc + "\t\t\t" + art.minimum_wages + "\t\t\t" + art.penalty_points, normal_size, "center", "0"))
+                printTest.put(getPrintObject("\nCONDUCTA QUE MOTIVA LA INFRACCIÓN: ${art.motivation}", "1", "left", "0"))
             }
-            if (!infraction.infractor_colony.equals("")) {
-                infractor_data.append("\n" + infraction.infractor_colony)
+            address_infra.append("\n\nCALLE: " + infraction.address_street)
+            address_infra.append("\nENTRE: " + infraction.address_between_street)
+            address_infra.append("\nY: " + infraction.address_and_street)
+            address_infra.append("\nCOLONIA: " + infraction.address_colony)
+
+            printTest.put(getPrintObject(address_infra.toString(), normal_size, "left", "0"))
+
+            //Documento que se retiene
+
+            retained_doc.append("\n\nDOCUMENTO QUE SE RETIENE: ")
+            if (!infraction.retained_document.equals("")) {
+                retained_doc.append("\n" + infraction.retained_document)
+            } else {
+                retained_doc.append("\nNINGUNO\n")
             }
-            printTest.put(getPrintObject(infractor_data.toString(), normal_size, "center", "0"))
-
-            if (!infraction.circulation_card.equals("")) {
-                card_data.append("\n" + "LICENCIA/PERMISO: " + infraction.circulation_card)
+            if (infraction.referred == 1) {
+                retained_doc.append("\nREMISIÓN DEL VEHÍCULO: SI")
+                retained_doc.append("\n" + infraction.disposition) //TODO: reemplazar
             }
-            if (infraction.card_type_type.equals("")) {
-                card_data.append("\n" + "TIPO LICENCIA: " + infraction.card_type_type)
+            printTest.put(getPrintObject(retained_doc.toString(), normal_size, "left", "0"))
+
+            //Responsable del vehpiculo
+            printTest.put(getPrintObject("RESPONSABLE DEL VEHÍCULO", normal_size, "center", "1"))
+            if (infraction.is_absent == 0 || infraction.is_absent == 1) {
+                responsible.append("\n\n" + infraction.name + " " + infraction.last_name + " " + infraction.mother_last_name + "\n")
+            } else {
+                responsible.append("\n\nQ R R \n")
             }
-            if (infraction.issued_in.equals("")) {
-                card_data.append("\n" + "EXPEDIDA: " + infraction.issued_in)
-            }
-            printTest.put(getPrintObject(card_data.toString(), normal_size, "left", "0"))
+            responsible.append("\nRECIBO DE CONFORMIDAD\n\n\n\n")
+            responsible.append("\nFIRMA\n")
+            responsible.append("\nAGENTE: \n")
+            responsible.append(infraction.official) //TODO: reemplazar
+            responsible.append("\nEMPLEADO: ${infraction.employee}\n\n") //TODO: reemplazar
 
-        } else if (infraction.is_absent == 1) {
-            printTest.put(getPrintObject(infraction.name.toUpperCase() + " " + infraction.last_name.toUpperCase() + " " + infraction.mother_last_name.toUpperCase() + "\n\n", normal_size, "center", "0"))
-        }
-        //Características del vehículo
-        vehicle.append("\nCARACTERÍSTICAS DEL VEHÍCULO: ")
-        vehicle.append("\nMARCA: " + infraction.brand) //TODO:SERVICIO
-        if (!infraction.sub_brand.equals("")) {
-            vehicle.append("\nSUBMARCA: " + infraction.sub_brand)
-        }
-        vehicle.append("\nTIPO: " + infraction.vehicle_type)
-        vehicle.append("\nCOLOR: " + infraction.vehicle_color)
-        vehicle.append("\nMODELO: " + infraction.vehicle_model)
-        vehicle.append("\nIDENTIFICADOR: " + infraction.ident_document) //TODO:SERVICIIO
-        vehicle.append("\nNÚMERO: " + infraction.num_doc_ident)
-        vehicle.append("\nAUTORIDAD QUE EXPIDE: " + infraction.authority_issue) //TODO:SERVICIO
-        vehicle.append("\nEXPEDIDO: " + infraction.doc_ident_issued)
-        vehicle.append("\nARTÍCULOS DEL REGLAMENTO DE TRÁNSITO DEL ESTADO DE MÉXICO: ")
+            printTest.put(getPrintObject(responsible.toString(), normal_size, "center", "0"))
+            printTest.put(getPrintObject("\nFIRMA\n\n", normal_size, "center", "0"))
+            printTest.put(getPrintObject("\n\n\n", normal_size, "center", "0"))
+            printTest.put(getPrintObject("\n\n\n", normal_size, "center", "0"))
 
-        printTest.put(getPrintObject(vehicle.toString(), normal_size, "left", "0"))
-        //Artículos y fracciones
-        printTest.put(getPrintObject("\n\nARTÍCULO/FRACCIÓN\t\t\tU.M.A.\t\t\tPUNTOS\n*******************", "1", "center", "1"))
+            //Descuento con el 70%
 
-        infraction.infraction_fraction.forEach { art ->
-            printTest.put(getPrintObject(art.art_fracc + "\t\t\t" + art.minimum_wages + "\t\t\t" + art.penalty_points, normal_size, "center", "0"))
-            printTest.put(getPrintObject("\nCONDUCTA QUE MOTIVA LA INFRACCIÓN: ${art.motivation}", "1", "left", "0"))
-        }
-        address_infra.append("\n\nCALLE: " + infraction.address_street)
-        address_infra.append("\nENTRE: " + infraction.address_between_street)
-        address_infra.append("\nY: " + infraction.address_and_street)
-        address_infra.append("\nCOLONIA: " + infraction.address_colony)
-
-        printTest.put(getPrintObject(address_infra.toString(), normal_size, "left", "0"))
-
-        //Documento que se retiene
-
-        retained_doc.append("\n\nDOCUMENTO QUE SE RETIENE: ")
-        if (!infraction.retained_document.equals("")) {
-            retained_doc.append("\n" + infraction.retained_document)
-        } else {
-            retained_doc.append("\nNINGUNO\n")
-        }
-        if (infraction.referred == 1) {
-            retained_doc.append("\nREMISIÓN DEL VEHÍCULO: SI")
-            retained_doc.append("\n" + infraction.disposition) //TODO: reemplazar
-        }
-        printTest.put(getPrintObject(retained_doc.toString(), normal_size, "left", "0"))
-
-        //Responsable del vehpiculo
-        printTest.put(getPrintObject("RESPONSABLE DEL VEHÍCULO", normal_size, "center", "1"))
-        if (infraction.is_absent == 0 || infraction.is_absent == 1) {
-            responsible.append("\n\n" + infraction.name + " " + infraction.last_name + " " + infraction.mother_last_name + "\n")
-        } else {
-            responsible.append("\n\nQ R R \n")
-        }
-        responsible.append("\nRECIBO DE CONFORMIDAD\n\n\n\n")
-        responsible.append("\nFIRMA\n")
-        responsible.append("\nAGENTE: \n")
-        responsible.append(infraction.official) //TODO: reemplazar
-        responsible.append("\nEMPLEADO: ${infraction.employee}\n\n") //TODO: reemplazar
-
-        printTest.put(getPrintObject(responsible.toString(), normal_size, "center", "0"))
-        printTest.put(getPrintObject("\nFIRMA\n\n", normal_size, "center", "0"))
-        printTest.put(getPrintObject("\n\n\n", normal_size, "center", "0"))
-        printTest.put(getPrintObject("\n\n\n", normal_size, "center", "0"))
-
-        //Descuento con el 70%
-
-        /*printTest.put(getPrintBarCode(infraction.capture_line_i))
-        printTest.put(getPrintObject(infraction.capture_line_i, normal_size, "center","0"))
-        printTest.put(getPrintObject("\nCON 70% DE DESCUENTO\nVIGENCIA: $current \nIMPORTE: ${infraction.total}\n", normal_size, "center","0"))
+           /* printTest.put(getPrintBarCode(infraction.capture_line_i))
+            printTest.put(getPrintObject(infraction.capture_line_i, normal_size, "center", "0"))
+            printTest.put(getPrintObject("\nCON 70% DE DESCUENTO\nVIGENCIA: $current \nIMPORTE: ${infraction.total}\n", normal_size, "center", "0"))
 */
-        //Descuento con el 50%
-        printTest.put(getPrintBarCode(infraction.capture_line_ii))
-        printTest.put(getPrintObject(infraction.capture_line_ii, normal_size, "center", "0"))
-        printTest.put(getPrintObject("\nCON 50% DE DESCUENTO\nVIGENCIA: ${infraction.date_capture_line_ii} \nIMPORTE: ${infraction.amount_capture_line_ii}\n\n", normal_size, "center", "0"))
+            //Descuento con el 50%
+            printTest.put(getPrintBarCode(infraction.capture_line_ii))
+            printTest.put(getPrintObject(infraction.capture_line_ii, normal_size, "center", "0"))
+            printTest.put(getPrintObject("\nCON 50% DE DESCUENTO\nVIGENCIA: ${infraction.date_capture_line_ii} \nIMPORTE: ${infraction.amount_capture_line_ii}\n\n", normal_size, "center", "0"))
 
-        //Sin descuento
-        printTest.put(getPrintBarCode(infraction.capture_line_iii))
-        printTest.put(getPrintObject(infraction.capture_line_iii, normal_size, "center", "0"))
-        printTest.put(getPrintObject("\nSIN DESCUENTO\nVIGENCIA: ${infraction.date_capture_line_iii} \nIMPORTE: ${infraction.amount_capture_line_iii}\n", normal_size, "center", "0"))
+            //Sin descuento
+            printTest.put(getPrintBarCode(infraction.capture_line_iii))
+            printTest.put(getPrintObject(infraction.capture_line_iii, normal_size, "center", "0"))
+            printTest.put(getPrintObject("\nSIN DESCUENTO\nVIGENCIA: ${infraction.date_capture_line_iii} \nIMPORTE: ${infraction.amount_capture_line_iii}\n", normal_size, "center", "0"))
 
-        data_footer.append("\n\n\n$footer1")
-        data_footer.append("\n$footer2")
-        data_footer.append("\n$footer3")
-        data_footer.append("\n\n-AVISO DE PRIVACIDAD-\n\n")
-        data_footer.append("\nFUENTE DE CAPTURA: SIIP\n\n\n")
+            data_footer.append("\n\n\n$footer1")
+            data_footer.append("\n$footer2")
+            data_footer.append("\n$footer3")
+            data_footer.append("\n\n-AVISO DE PRIVACIDAD-\n\n")
+            data_footer.append("\nFUENTE DE CAPTURA: SIIP\n\n\n")
 
-        printTest.put(getPrintObject(data_footer.toString(), normal_size, "center", "0"))
+            printTest.put(getPrintObject(data_footer.toString(), normal_size, "center", "0"))
+            printJson.put("spos", printTest)
+            return printJson.toString()
 
-        printJson.put("spos", printTest)
-        return printJson.toString()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            Log.d("PRINT", ex.toString())
+            return ""
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode== OK_PAYMENT){
+        if (requestCode == OK_PAYMENT) {
             clearData()
         }
-
 
 
     }
@@ -468,11 +478,8 @@ class SearchFr : Fragment()
                     val intent = Intent(activity, CreateInfractionActivity::class.java)
                     intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
                     startActivityForResult(intent, OK_PAYMENT)
-
                 }
         }
-
-
     }
 
     override fun onResultSearch(listInfractions: MutableList<InfractionList.Results>) {

@@ -1,36 +1,27 @@
 package mx.qsistemas.infracciones.modules.search.fragments
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.opengl.Visibility
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.AdapterView
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search.*
 import mx.qsistemas.infracciones.BuildConfig
-
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
-import mx.qsistemas.infracciones.databinding.FragmentVehicleBinding
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.modules.create.OPTION_UPDATE_INFRACTION
-import mx.qsistemas.infracciones.modules.create.fr_vehicle.VehicleIterator
 import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.modules.search.SearchIterator
@@ -40,21 +31,16 @@ import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.EXTRA_OPTION_INFRACTION
+import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintBarCode
+import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintObject
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_RANDOM
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
-import okhttp3.internal.Util
 import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
-import java.lang.Exception
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -162,40 +148,6 @@ class SearchFr : Fragment()
 
     }
 
-    private fun getPrintObject(text: String, size: String, position: String, bold: String): JSONObject {
-        val json = JSONObject()
-        try {
-            json.put("content-type", "txt")
-            json.put("content", text)
-            json.put("size", size)
-            json.put("position", position)
-            json.put("offset", "0")
-            json.put("bold", bold)
-            json.put("italic", "0")
-            json.put("height", "-1")
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return json
-    }
-
-    private fun getPrintBarCode(text: String): JSONObject {
-        val json = JSONObject()
-        try {
-            json.put("content-type", "one-dimension")
-            json.put("content", text)
-            json.put("size", "3")
-            json.put("position", "center")
-            json.put("offset", "0")
-            json.put("bold", "0")
-            json.put("italic", "0")
-            json.put("height", "2")
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-        return json
-    }
-
     override fun onPrintClick(view: View, position: Int) {
         activity.showLoader("Espere ...")
         iterator.value.doSearchByIdInfraction(ID_INFRACTION, PRINT)
@@ -237,7 +189,37 @@ class SearchFr : Fragment()
 
         //Impresión de encabezados
         printTest.put(getPrintObject(header1 + header2 + header3 + header4 + header5 + header6, normal_size, "center", "1"))
-        printTest.put(getPrintObject("\n\nDETECCION Y LEVANTAMIENTO ELECTRONICO DE INFRACCIONES A CONDUCTORES DE VEHICULOS QUE CONTRAVENGAN LAS DISPOSICIONES EN MATERIA DE TRANSITO, EQUILIBRIO ECOLOGICO, PROTECCIÓN AL AMBIENTE Y PARA LA PREVENCION Y CONTROL DE LA CONTAMINACION, ASI COMO PAGO DE SANCIONES Y APLICACION DE MEDIDAS DE SEGURIDAD.\n\nEL C. AGENTE QUE SUSCRIBE LA PRESENTE BOLETA DE INFRACCION, ESTA FACULTADO EN TERMINOS DE LOS QUE SE ESTABLECE EN LOS ARTICULOS 21 Y 115, FRACCION III, INCISO H), DE LA CONSTITUCION  POLITICA DE LOS ESTADOS UNIDOS MEXICANOS DE ACUERDO A LO ESTABLECIDO EN LOS ARTICULOS 8.3, 8.10, 8.18, 8.19 BIS, 8.19 TERCERO Y 8.19 CUARTO, DEL CODIGO ADMINISTRATIVO DEL ESTADO DE MEXICO. ASI COMO HACER CONSTAR LOS HECHOS QUE MOTIVAN LA INFRACCION EN TERMINOS DEL ARTICULO 16 DE NUESTRA CARTA MAGNA.\n\n\n", normal_size, "left", "0"))
+        printTest.put(getPrintObject("DETECCIÓN    Y   LEVANTAMIENTO", "2", "left", "0"))
+        printTest.put(getPrintObject("\n\n", "2", "left", "0"))
+        printTest.put(getPrintObject("ELECTRÓNICO DE INFRACCIONES  A", "2", "left", "0"))
+        printTest.put(getPrintObject("CONDUCTORES  DE VEHÍCULOS  QUE", "2", "left", "0"))
+        printTest.put(getPrintObject("CONTRAVENGAN LAS DISPOSICIONES", "2", "left", "0"))
+        printTest.put(getPrintObject("EN MATERIA DE TRÁNSITO,  EQUI-", "2", "left", "0"))
+        printTest.put(getPrintObject("LIBRIO  ECOLÓGICO,  PROTECCIÓN", "2", "left", "0"))
+        printTest.put(getPrintObject("AL AMBIENTE Y PARA LA  PREVEN-", "2", "left", "0"))
+        printTest.put(getPrintObject("CIÓN  Y CONTROL DE LA CONTAMI-", "2", "left", "0"))
+        printTest.put(getPrintObject("NACIÓN,  ASI COMO PAGO DE SAN-", "2", "left", "0"))
+        printTest.put(getPrintObject("CIONES Y APLICACIÓN  DE  MEDI-", "2", "left", "0"))
+        printTest.put(getPrintObject("DAS DE SEGURIDAD.", "2", "left", "0"))
+        printTest.put(getPrintObject("\n\n", "2", "left", "0"))
+        printTest.put(getPrintObject("EL C. AGENTE  QUE SUSCRIBE  LA", "2", "left", "0"))
+        printTest.put(getPrintObject("PRESENTE  BOLETA   DE  INFRAC-", "2", "left", "0"))
+        printTest.put(getPrintObject("CIÓN, ESTA  FACULTADO EN  TÉR-", "2", "left", "0"))
+        printTest.put(getPrintObject("MINOS DE LOS QUE SE  ESTABLECE", "2", "left", "0"))
+        printTest.put(getPrintObject("EN  LOS  ARTÍCULOS  21 Y  115,", "2", "left", "0"))
+        printTest.put(getPrintObject("FRACCIÓN III, INCISO H), DE LA", "2", "left", "0"))
+        printTest.put(getPrintObject("CONSTITUCION  POLÍTICA  DE LOS", "2", "left", "0"))
+        printTest.put(getPrintObject("ESTADOS  UNIDOS  MEXICANOS  DE", "2", "left", "0"))
+        printTest.put(getPrintObject("ACUERDO A LO ESTABLECIDO EN LOS", "2", "left", "0"))
+        printTest.put(getPrintObject("ARTÍCULOS   8.3,  8.10,  8.18,", "2", "left", "0"))
+        printTest.put(getPrintObject("8.19 BIS, 8.19  TERCERO Y 8.19", "2", "left", "0"))
+        printTest.put(getPrintObject("CUARTO, DEL CÓDIGO ADMINISTRA-", "2", "left", "0"))
+        printTest.put(getPrintObject("TIVO DEL ESTADO DE MÉXICO. ASÍ", "2", "left", "0"))
+        printTest.put(getPrintObject("COMO HACER CONSTAR LOS  HECHOS", "2", "left", "0"))
+        printTest.put(getPrintObject("QUE MOTIVAN  LA INFRACCIÓN  EN", "2", "left", "0"))
+        printTest.put(getPrintObject("TÉRMINOS  DEL  ARTÍCULO  16 DE", "2", "left", "0"))
+        printTest.put(getPrintObject("NUESTRA CARTA MAGNA.", "2", "left", "0"))
+        printTest.put(getPrintObject("\n\n\n", "2", "left", "0"))
         printTest.put(getPrintObject(infraction.date + "\n" + "FOLIO: " + infraction.folio + "\n\n\n", normal_size, "right", "0"))
 
         //Datos del infractor
@@ -282,17 +264,16 @@ class SearchFr : Fragment()
         vehicle.append("\nCOLOR: " + infraction.vehicle_color)
         vehicle.append("\nMODELO: " + infraction.vehicle_model)
         vehicle.append("\nIDENTIFICADOR: " + infraction.ident_document) //TODO:SERVICIIO
-        vehicle.append("\nNUMERO: " + infraction.num_doc_ident)
+        vehicle.append("\nNÚMERO: " + infraction.num_doc_ident)
         vehicle.append("\nAUTORIDAD QUE EXPIDE: " + infraction.authority_issue) //TODO:SERVICIO
         vehicle.append("\nEXPEDIDO: " + infraction.doc_ident_issued)
-        vehicle.append("\nARTICULOS DEL REGLAMENTO DE TRÁNSITO DEL ESTADO DE MÉXICO: ")
+        vehicle.append("\nARTÍCULOS DEL REGLAMENTO DE TRÁNSITO DEL ESTADO DE MÉXICO: ")
 
         printTest.put(getPrintObject(vehicle.toString(), normal_size, "left", "0"))
         //Artículos y fracciones
-        printTest.put(getPrintObject("\n\nARTICULO/FRACCION\t\t\tU.M.A.\t\t\tPUNTOS\n*******************", "1", "center", "1"))
+        printTest.put(getPrintObject("\n\nARTÍCULO/FRACCIÓN\t\t\tU.M.A.\t\t\tPUNTOS\n*******************", "1", "center", "1"))
 
         infraction.infraction_fraction.forEach { art ->
-            //TODO:SERVICIO
             printTest.put(getPrintObject(art.art_fracc + "\t\t\t" + art.minimum_wages + "\t\t\t" + art.penalty_points, normal_size, "center", "0"))
             printTest.put(getPrintObject("\nCONDUCTA QUE MOTIVA LA INFRACCIÓN: ${art.motivation}", "1", "left", "0"))
         }
@@ -312,7 +293,7 @@ class SearchFr : Fragment()
             retained_doc.append("\nNINGUNO\n")
         }
         if (infraction.referred == 1) {
-            retained_doc.append("\nREMISION DEL VEHICULO: SI")
+            retained_doc.append("\nREMISIÓN DEL VEHÍCULO: SI")
             retained_doc.append("\n" + infraction.disposition) //TODO: reemplazar
         }
         printTest.put(getPrintObject(retained_doc.toString(), normal_size, "left", "0"))

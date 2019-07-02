@@ -6,12 +6,6 @@ import org.json.JSONObject
 class Ticket {
     companion object {
 
-        fun getTicketHeader(): MutableList<JSONObject> {
-            val headerList = mutableListOf<JSONObject>()
-            headerList.add(getPrintObject("\\n\\nDETECCION    Y   LEVANTAMIENTO", "2", "left", "0"))
-            return headerList
-        }
-
         fun getPrintObject(text: String, size: String, position: String, bold: String): JSONObject {
             val json = JSONObject()
             try {

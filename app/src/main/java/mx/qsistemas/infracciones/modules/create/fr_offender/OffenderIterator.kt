@@ -20,7 +20,6 @@ import mx.qsistemas.infracciones.utils.FS_COL_STATES
 import mx.qsistemas.infracciones.utils.FS_COL_TOWNSHIPS
 import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintBarCode
 import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintObject
-import mx.qsistemas.infracciones.utils.Ticket.Companion.getTicketHeader
 import mx.qsistemas.infracciones.utils.Utils
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
@@ -253,7 +252,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun updateData() {
-        val rootObj= JSONObject()
+        val rootObj = JSONObject()
         val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong()
 
 
@@ -267,24 +266,26 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
         Log.d("JSON-UPDATE_PERSON", rootObj.toString())
 
-        NetworkApi().getNetworkService().updatePerson(rootObj.toString()).enqueue(object : Callback<String>{
+        NetworkApi().getNetworkService().updatePerson(rootObj.toString()).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                if(response.code()== HttpURLConnection.HTTP_OK){
+                if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), ServiceResponsePerson::class.java)
                     Log.d("UPDATE-PERSON", "${data.ids[0]}")
-                    if(data.flag){
+                    if (data.flag) {
                         listener.onDataUpdated(data.ids[0])
-                    }else{
-                        listener.onError(data.message )
+                    } else {
+                        listener.onError(data.message)
                     }
 
                 }
             }
+
             override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
         })
     }
+
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
         val rootObj = JSONObject()
         val jPayment = JSONObject()
@@ -305,7 +306,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         jPaymentCard.put("trx_date", txInfo.txDate)
         jPaymentCard.put("trx_nb", "")
         jPaymentCard.put("trx_time", txInfo.txTime)
-        jPaymentCard.put("serial_payda", "" )
+        jPaymentCard.put("serial_payda", "")
         jPaymentCard.put("id_registro_usuario", idRegUser.toString())
         jPaymentCard.put("afiliacion", txInfo.affiliation)
         jPaymentCard.put("vigencia_tarjeta", txInfo.expirationDate)
@@ -323,22 +324,23 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         jPaymentCard.put("tipo_transaccion", txInfo.typeTx)
         rootObj.put("paymentCard", jPaymentCard)
 
-        jPayment.put("id_forma_pago",2)
+        jPayment.put("id_forma_pago", 2)
         jPayment.put("subtotal", amount)
-        jPayment.put("descuento",discount)
-        jPayment.put("total",totalPayment)
-        jPayment.put("folio",txInfo.authorization)
-        jPayment.put("observacion","")
-        jPayment.put("id_registro_usuario",idPerson)
+        jPayment.put("descuento", discount)
+        jPayment.put("total", totalPayment)
+        jPayment.put("folio", txInfo.authorization)
+        jPayment.put("observacion", "")
+        jPayment.put("id_registro_usuario", idPerson)
         rootObj.put("payment", jPayment)
         Log.d("JSON-SAVE-PAYMENT", rootObj.toString())
-        NetworkApi().getNetworkService().savePayment(rootObj.toString()).enqueue(object: Callback<String>{
+        NetworkApi().getNetworkService().savePayment(rootObj.toString()).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                if(response.code() == HttpURLConnection.HTTP_OK){
+                if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
                     listener.onResultSavePayment(data.message, data.flag)
                 }
             }
+
             override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
@@ -385,7 +387,37 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
         //Impresión de encabezados
         printTest.put(getPrintObject(header1 + header2 + header3 + header4 + header5 + header6, normal_size, "center", "1"))
-        printTest.put(getTicketHeader())
+        printTest.put(getPrintObject("DETECCIÓN    Y   LEVANTAMIENTO", "2", "left", "0"))
+        printTest.put(getPrintObject("\n\n", "2", "left", "0"))
+        printTest.put(getPrintObject("ELECTRÓNICO DE INFRACCIONES  A", "2", "left", "0"))
+        printTest.put(getPrintObject("CONDUCTORES  DE VEHÍCULOS  QUE", "2", "left", "0"))
+        printTest.put(getPrintObject("CONTRAVENGAN LAS DISPOSICIONES", "2", "left", "0"))
+        printTest.put(getPrintObject("EN MATERIA DE TRÁNSITO,  EQUI-", "2", "left", "0"))
+        printTest.put(getPrintObject("LIBRIO  ECOLÓGICO,  PROTECCIÓN", "2", "left", "0"))
+        printTest.put(getPrintObject("AL AMBIENTE Y PARA LA  PREVEN-", "2", "left", "0"))
+        printTest.put(getPrintObject("CIÓN  Y CONTROL DE LA CONTAMI-", "2", "left", "0"))
+        printTest.put(getPrintObject("NACIÓN,  ASI COMO PAGO DE SAN-", "2", "left", "0"))
+        printTest.put(getPrintObject("CIONES Y APLICACIÓN  DE  MEDI-", "2", "left", "0"))
+        printTest.put(getPrintObject("DAS DE SEGURIDAD.", "2", "left", "0"))
+        printTest.put(getPrintObject("\n\n", "2", "left", "0"))
+        printTest.put(getPrintObject("EL C. AGENTE  QUE SUSCRIBE  LA", "2", "left", "0"))
+        printTest.put(getPrintObject("PRESENTE  BOLETA   DE  INFRAC-", "2", "left", "0"))
+        printTest.put(getPrintObject("CIÓN, ESTA  FACULTADO EN  TÉR-", "2", "left", "0"))
+        printTest.put(getPrintObject("MINOS DE LOS QUE SE  ESTABLECE", "2", "left", "0"))
+        printTest.put(getPrintObject("EN  LOS  ARTÍCULOS  21 Y  115,", "2", "left", "0"))
+        printTest.put(getPrintObject("FRACCIÓN III, INCISO H), DE LA", "2", "left", "0"))
+        printTest.put(getPrintObject("CONSTITUCION  POLÍTICA  DE LOS", "2", "left", "0"))
+        printTest.put(getPrintObject("ESTADOS  UNIDOS  MEXICANOS  DE", "2", "left", "0"))
+        printTest.put(getPrintObject("ACUERDO A LO ESTABLECIDO EN LOS", "2", "left", "0"))
+        printTest.put(getPrintObject("ARTÍCULOS   8.3,  8.10,  8.18,", "2", "left", "0"))
+        printTest.put(getPrintObject("8.19 BIS, 8.19  TERCERO Y 8.19", "2", "left", "0"))
+        printTest.put(getPrintObject("CUARTO, DEL CÓDIGO ADMINISTRA-", "2", "left", "0"))
+        printTest.put(getPrintObject("TIVO DEL ESTADO DE MÉXICO. ASÍ", "2", "left", "0"))
+        printTest.put(getPrintObject("COMO HACER CONSTAR LOS  HECHOS", "2", "left", "0"))
+        printTest.put(getPrintObject("QUE MOTIVAN  LA INFRACCIÓN  EN", "2", "left", "0"))
+        printTest.put(getPrintObject("TÉRMINOS  DEL  ARTÍCULO  16 DE", "2", "left", "0"))
+        printTest.put(getPrintObject("NUESTRA CARTA MAGNA.", "2", "left", "0"))
+        printTest.put(getPrintObject("\n\n\n", "2", "left", "0"))
         printTest.put(getPrintObject("$actualDay\nFOLIO: $newFolio\n\n\n", normal_size, "right", "0"))
 
         //Datos del infractor

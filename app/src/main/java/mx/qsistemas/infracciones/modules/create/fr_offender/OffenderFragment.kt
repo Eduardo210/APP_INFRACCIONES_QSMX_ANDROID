@@ -1,6 +1,8 @@
 package mx.qsistemas.infracciones.modules.create.fr_offender
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,14 +23,25 @@ import mx.qsistemas.infracciones.databinding.FragmentOffenderBinding
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
+import mx.qsistemas.infracciones.modules.search.adapters.ID_INFRACTION
+import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_RANDOM
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val ARG_IS_CREATION = "is_creation"
+
+/*
+var AMOUNT_TO_PAY: String = "0"
+var DISCOUNT_TO_PAY: String = "0"
+var TOTAL_TO_PAY: String = "0"
+var ID_PERSON_PAYMENT = "0"
+*/
 
 /**
  * A simple [Fragment] subclass.
@@ -40,9 +54,16 @@ private const val ARG_IS_CREATION = "is_creation"
  */
 class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener,
         OnClickListener, IPaymentsTransfer.TransactionListener {
-
     private var isCreation: Boolean = true
+
+    private val CURRENT_DATE = Date()
     private var isPaid: Boolean = false
+
+    private var amountToPay = "0"
+    private var discountPayment = "0"
+    private var totalPayment = "0"
+    private var totalAmount = "0"
+
     private var isTicketCopy: Boolean = false
     private val iterator = lazy { OffenderIterator(this) }
     private lateinit var binding: FragmentOffenderBinding
@@ -193,7 +214,13 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             }*/
             binding.btnSave.id -> {
                 if (validFields()) {
-                    if (isCreation) iterator.value.saveData(true) else iterator.value.updateData()
+
+                    if (isCreation) {
+                        iterator.value.saveData(true)
+                    } else {
+                        SingletonInfraction.idNewInfraction = ID_INFRACTION.toLong()
+                        iterator.value.updateData()
+                    }
                 }
             }
         }
@@ -207,7 +234,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         getString(R.string.w_dialog_title_payment), getString(R.string.w_want_to_pay), activity
                 )
                 builder.setPositiveButton("Aceptar") { _, _ ->
-                    PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+                    PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
                 }
                 builder.setNegativeButton("Cancelar") { _, _ ->
                     iterator.value.printTicket(activity)
@@ -219,8 +246,12 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         }
     }
 
-    override fun onDataUpdated() {
+    override fun onDataUpdated(idPerson: Long) {
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_person_update), Snackbar.LENGTH_SHORT)
+
+        //ID_PERSON_PAYMENT = idPerson.toString()
+        SingletonInfraction.idNewPersonInfraction =idPerson
+        doPaymentProcess()
     }
 
     override fun validFields(): Boolean {
@@ -306,8 +337,13 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-        iterator.value.savePayment(txInfo)
-        SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
+        if (isCreation) {
+            iterator.value.savePayment(txInfo)
+            SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
+        } else {
+            //TODO: Cambiar los montos por el correspondiente
+            iterator.value.savePaymentToService(SingletonInfraction.idNewInfraction.toString(), txInfo, totalAmount, discountPayment, totalPayment, SingletonInfraction.idNewPersonInfraction)
+        }
     }
 
     override fun onTxVoucherPrinted() {
@@ -319,7 +355,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 iterator.value.printTicket(activity)
@@ -327,7 +363,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             builder.show()
         }
     }
-
     override fun onTxFailed(message: String) {
         isPaid = false
         if (message == getString(mx.qsistemas.payments_transfer.R.string.pt_e_card_input_incorrect)){
@@ -350,6 +385,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     }
 
     override fun onTicketPrinted() {
+        Activity.RESULT_OK
         if (!isTicketCopy) {
             var builder = AlertDialogHelper.getGenericBuilder(
                     getString(R.string.w_dialog_title_reprint_ticket), getString(R.string.w_want_to_reprint_ticket), activity
@@ -361,11 +397,52 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             builder.setNegativeButton("Cancelar") { _, _ ->
                 SingletonInfraction.cleanSingleton()
                 activity.finish()
+
             }
             builder.show()
         } else {
             SingletonInfraction.cleanSingleton()
             activity.finish()
+        }
+    }
+    fun doPaymentProcess() {
+        var compare_date: Int
+        var haveToPay: Boolean = true
+        val expDate50: Date? = SingletonInfraction.captureLineii
+        val expDateFull: Date? = SingletonInfraction.captureLineiii
+
+        compare_date = CURRENT_DATE.compareTo(expDate50)//expDate50.compareTo(CURRENT_DATE)
+        totalAmount = SingletonInfraction.amountCaptureLineiii.toString()
+        if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
+            //Tiene el descuento del 50%
+            amountToPay = "%.2f".format(SingletonInfraction.amountCaptureLineii)
+            discountPayment = ( SingletonInfraction.amountCaptureLineiii - SingletonInfraction.amountCaptureLineii).toString()
+        } else {
+            //No tiene descuento
+            discountPayment = "0"
+            compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
+            if (compare_date <= 0) {
+                amountToPay = "#.2f".format(SingletonInfraction.amountCaptureLineiii)
+            } else {
+                haveToPay=false
+            }
+        }
+        totalPayment = amountToPay
+
+        //TODO: llenar los datos coorrespondietnes para los datos del pago en server
+
+        if(haveToPay){
+            PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+        }else{
+            SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
+        }
+    }
+    override fun onResultSavePayment(msg: String, flag: Boolean) {
+        activity.hideLoader()
+        if (flag) {
+            SnackbarHelper.showSuccessSnackBar(activity, "El pago se guardó satisfactoriamente.", Snackbar.LENGTH_SHORT)
+        } else {
+            SnackbarHelper.showErrorSnackBar(activity, "Error al guardar datos de pago en servidor.", Snackbar.LENGTH_SHORT)
         }
     }
 

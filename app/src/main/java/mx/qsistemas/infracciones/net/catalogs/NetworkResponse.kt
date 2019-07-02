@@ -2,6 +2,7 @@ package mx.qsistemas.infracciones.net.catalogs
 
 import com.google.gson.annotations.SerializedName
 import java.util.*
+import kotlin.collections.ArrayList
 
 data class DownloadCatalogs(@SerializedName("Flag") val flag: Boolean,
                             @SerializedName("ultimaFechaSincronizacion") val lastUpdate: String,
@@ -277,3 +278,7 @@ data class SendInfractionResponse(@SerializedName("Flag") val flag: Boolean,
 data class ServiceResponse(@SerializedName("Flag") val flag:Boolean,
                            @SerializedName("Mensaje") val message: String,
                            @SerializedName("Ids") val data: Unit)
+
+data class ServiceResponsePerson(@SerializedName("Flag") val flag:Boolean,
+                           @SerializedName("Mensaje") val message: String,
+                           @SerializedName("Ids") val ids: MutableList<Long>)

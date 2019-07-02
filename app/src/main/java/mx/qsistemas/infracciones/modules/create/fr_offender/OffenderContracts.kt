@@ -19,8 +19,9 @@ class OffenderContracts {
         fun isDirectionAnswered(): Boolean
         fun isLicenseAnswered(): Boolean
         fun onDataSaved()
-        fun onDataUpdated()
+        fun onDataUpdated(idPerson: Long)
         fun onTicketPrinted()
+        fun onResultSavePayment(msg:String, flag: Boolean)
     }
 
     interface Iterator {
@@ -36,5 +37,6 @@ class OffenderContracts {
         fun savePayment(info: TransactionInfo)
         fun updateData()
         fun printTicket(activity: Activity)
+        fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount:String, discount:String, totalPayment: String, idPerson:Long)
     }
 }

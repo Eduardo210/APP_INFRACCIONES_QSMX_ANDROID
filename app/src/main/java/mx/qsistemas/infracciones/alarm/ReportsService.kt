@@ -178,7 +178,7 @@ class ReportsService : JobService() {
                                 SendInfractionManager.updateImageToSend(it.idInfraction.toLong())
                             }
                             // When done, update the notification one more time to remove the progress bar
-                            builderPhotos.setContentText(getString(R.string.s_infraction_send))
+                            builderPhotos.setContentText(getString(R.string.s_images_send))
                                     .setProgress(0, 0, false)
                             notificationPhotos.notify(NOTIF_SEND_IMAGES, builderPhotos.build())
                         } else {

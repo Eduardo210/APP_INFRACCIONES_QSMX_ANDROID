@@ -57,7 +57,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     private var amountToPay = "0"
     private var discountPayment = "0"
-    private var totalPayment = "0"
     private var totalAmount = "0"
 
     private var isTicketCopy: Boolean = false
@@ -230,7 +229,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         getString(R.string.w_dialog_title_payment), getString(R.string.w_want_to_pay), activity
                 )
                 builder.setPositiveButton("Aceptar") { _, _ ->
-                    PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+                    PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
                 }
                 builder.setNegativeButton("Cancelar") { _, _ ->
                     iterator.value.printTicket(activity)
@@ -246,7 +245,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_person_update), Snackbar.LENGTH_SHORT)
 
         //ID_PERSON_PAYMENT = idPerson.toString()
-        SingletonInfraction.idNewPersonInfraction =idPerson
+        SingletonInfraction.idNewPersonInfraction = idPerson
         doPaymentProcess()
     }
 
@@ -338,7 +337,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
         } else {
             //TODO: Cambiar los montos por el correspondiente
-            iterator.value.savePaymentToService(SingletonInfraction.idNewInfraction.toString(), txInfo, totalAmount, discountPayment, totalPayment, SingletonInfraction.idNewPersonInfraction)
+            iterator.value.savePaymentToService(SingletonInfraction.idNewInfraction.toString(), txInfo, totalAmount, discountPayment, SingletonInfraction.totalInfraction, SingletonInfraction.idNewPersonInfraction)
         }
     }
 
@@ -351,7 +350,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 iterator.value.printTicket(activity)
@@ -359,9 +358,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             builder.show()
         }
     }
+
     override fun onTxFailed(message: String) {
         isPaid = false
-        if (message == getString(mx.qsistemas.payments_transfer.R.string.pt_e_card_input_incorrect)){
+        if (message == getString(mx.qsistemas.payments_transfer.R.string.pt_e_card_input_incorrect)) {
             SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
             var builder = AlertDialogHelper.getGenericBuilder(
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
@@ -401,6 +401,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             activity.finish()
         }
     }
+
     fun doPaymentProcess() {
         var compare_date: Int
         var haveToPay: Boolean = true
@@ -412,7 +413,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
             //Tiene el descuento del 50%
             amountToPay = "%.2f".format(SingletonInfraction.amountCaptureLineii)
-            discountPayment = ( SingletonInfraction.amountCaptureLineiii - SingletonInfraction.amountCaptureLineii).toString()
+            discountPayment = (SingletonInfraction.amountCaptureLineiii - SingletonInfraction.amountCaptureLineii).toString()
         } else {
             //No tiene descuento
             discountPayment = "0"
@@ -420,19 +421,18 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             if (compare_date <= 0) {
                 amountToPay = "#.2f".format(SingletonInfraction.amountCaptureLineiii)
             } else {
-                haveToPay=false
+                haveToPay = false
             }
         }
-        totalPayment = amountToPay
-
+        SingletonInfraction.totalInfraction = amountToPay
         //TODO: llenar los datos coorrespondietnes para los datos del pago en server
-
-        if(haveToPay){
-            PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
-        }else{
+        if (haveToPay) {
+            PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+        } else {
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }
     }
+
     override fun onResultSavePayment(msg: String, flag: Boolean) {
         activity.hideLoader()
         if (flag) {

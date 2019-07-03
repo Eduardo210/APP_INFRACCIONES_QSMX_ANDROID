@@ -11,6 +11,6 @@ interface InfractionFractionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertList(list: MutableList<InfractionFraction>)
 
-    @Query("SELECT DISTINCT * FROM infraction_fraction INNER JOIN articles ON articles.ID = ID_ARTICULO AND ID_ARTICULO = :idArticle ORDER BY FRACCION ASC")
+    @Query("SELECT DISTINCT infraction_fraction.* FROM infraction_fraction INNER JOIN articles ON articles.ID = ID_ARTICULO AND ID_ARTICULO = :idArticle ORDER BY FRACCION ASC")
     fun selectByArticle(idArticle: Int): MutableList<InfractionFraction>
 }

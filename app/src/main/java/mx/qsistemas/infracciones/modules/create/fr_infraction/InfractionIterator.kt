@@ -77,7 +77,7 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     }
 
     override fun saveNewArticle(posArticle: Int, posFraction: Int) {
-        SingletonInfraction.motivationList.add(SingletonInfraction.DtoMotivation(articlesList[posArticle],
+        SingletonInfraction.motivationList.add(0, SingletonInfraction.DtoMotivation(articlesList[posArticle],
                 fractionList[posFraction], ""))
     }
 

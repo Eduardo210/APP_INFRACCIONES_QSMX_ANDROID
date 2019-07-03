@@ -217,4 +217,5 @@
     <string name="s_person_update">Datos personales actualizados</string>
     <string name="s_infraction_pay">Infracción pagada</string>
     <string name="s_infraction_send">Infracciones enviadas exitosamente</string>
+    <string name="s_images_send">Imágenes enviadas exitosamente</string>
 </resources>

@@ -55,10 +55,10 @@
             android:value="false" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@mipmap/ic_launcher" />
+            android:resource="@drawable/transparent_launcher" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent" />
+            android:resource="@color/colorPrimary" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

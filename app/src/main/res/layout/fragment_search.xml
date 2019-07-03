@@ -55,8 +55,12 @@
                         android:id="@+id/edt_filter_folio"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:hint="Ingrese folio ..."
                         android:layout_marginEnd="8dp"
+                        android:hint="Ingrese folio ..."
+                        android:imeOptions="actionDone"
+                        android:inputType="textNoSuggestions"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/font_size_small"
                         app:layout_constraintEnd_toEndOf="@id/guide_line_center_vertical"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txt_filter_folio" />
@@ -87,23 +91,27 @@
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:hint="Ingrese ..."
+                        android:imeOptions="actionDone"
+                        android:inputType="textNoSuggestions"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/font_size_small"
                         android:visibility="visible"
+                        app:layout_constraintBottom_toTopOf="@id/btn_show_infra"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guide_line_center_vertical"
-                        app:layout_constraintBottom_toTopOf="@id/btn_show_infra"
                         app:layout_constraintTop_toBottomOf="@+id/guide_line_center_horizontal" />
 
                     <Button
                         android:id="@+id/btn_show_infra"
                         android:layout_width="130dp"
                         android:layout_height="35dp"
+                        android:layout_marginTop="40dp"
                         android:background="@drawable/small_button_gradient"
                         android:text="Buscar"
                         android:textColor="@color/colorWhite"
                         android:textSize="12sp"
-                        app:layout_constraintTop_toBottomOf="@id/guide_line_center_horizontal"
-                        android:layout_marginTop="40dp"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/guide_line_center_horizontal" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guide_line_center_vertical"
@@ -120,7 +128,6 @@
                         app:layout_constraintGuide_percent=".4" />
 
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -129,10 +136,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint_results"
                 android:layout_width="0dp"
-                android:visibility="gone"
-                android:animateLayoutChanges="true"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:animateLayoutChanges="true"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/cdv_search_filter"
                 app:layout_constraintStart_toStartOf="@id/cdv_search_filter"
                 app:layout_constraintTop_toBottomOf="@id/cdv_search_filter">
@@ -151,10 +158,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:text="Resultados para: "
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/txt_total_search"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:text="Resultados para: " />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txt_filter_search"

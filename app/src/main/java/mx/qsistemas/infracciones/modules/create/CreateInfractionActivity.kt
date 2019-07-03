@@ -15,6 +15,7 @@ import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.fr_infraction.InfractionFragment
 import mx.qsistemas.infracciones.modules.create.fr_offender.OffenderFragment
 import mx.qsistemas.infracciones.modules.create.fr_vehicle.VehicleFragment
+import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.EXTRA_OPTION_INFRACTION
 import mx.qsistemas.infracciones.utils.RC_INTENT_CAMERA_EV1
@@ -79,6 +80,7 @@ class CreateInfractionActivity : ActivityHelper(), CreateInfractionContracts.Pre
                 )
                 builder.setPositiveButton("Aceptar") { _, _ ->
                     SingletonInfraction.cleanSingleton()
+                    FirebaseEvents.registerInfractionCancelled()
                     super.onBackPressed()
                 }
                 builder.setNegativeButton("Cancelar") { _, _ -> }

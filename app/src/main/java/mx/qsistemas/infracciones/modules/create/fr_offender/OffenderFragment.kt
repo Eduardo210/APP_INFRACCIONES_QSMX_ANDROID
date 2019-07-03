@@ -2,7 +2,6 @@ package mx.qsistemas.infracciones.modules.create.fr_offender
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
-import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -24,14 +22,12 @@ import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.modules.search.adapters.ID_INFRACTION
-import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
-import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_RANDOM
+import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_AUTH_ALWAYS
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
-import java.text.SimpleDateFormat
 import java.util.*
 
 private const val ARG_IS_CREATION = "is_creation"
@@ -234,7 +230,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         getString(R.string.w_dialog_title_payment), getString(R.string.w_want_to_pay), activity
                 )
                 builder.setPositiveButton("Aceptar") { _, _ ->
-                    PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+                    PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
                 }
                 builder.setNegativeButton("Cancelar") { _, _ ->
                     iterator.value.printTicket(activity)
@@ -355,7 +351,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 iterator.value.printTicket(activity)
@@ -371,7 +367,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 iterator.value.printTicket(activity)
@@ -432,7 +428,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         //TODO: llenar los datos coorrespondietnes para los datos del pago en server
 
         if(haveToPay){
-            PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
+            PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
         }else{
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }

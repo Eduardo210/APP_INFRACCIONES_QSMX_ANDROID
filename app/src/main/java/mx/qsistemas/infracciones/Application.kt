@@ -11,6 +11,7 @@ import androidx.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.iid.FirebaseInstanceId
@@ -34,6 +35,7 @@ class Application : MultiDexApplication() {
         var prefs: Preferences? = null
         var firestore: FirebaseFirestore? = null
         var remoteConfig: FirebaseRemoteConfig? = null
+        var firebaseAnalytics: FirebaseAnalytics? = null
 
         fun getContext(): Context {
             return instance!!.applicationContext
@@ -77,6 +79,8 @@ class Application : MultiDexApplication() {
         val settings = FirebaseFirestoreSettings.Builder().setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED).setPersistenceEnabled(true).build()
         firestore = FirebaseFirestore.getInstance()
         firestore?.firestoreSettings = settings
+        /* Initialize Firebase Analytics Events */
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         /* Initialize Firebase Remote Config */
         remoteConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder()

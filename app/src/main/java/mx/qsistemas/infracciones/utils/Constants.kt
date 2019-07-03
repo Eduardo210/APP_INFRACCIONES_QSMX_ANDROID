@@ -36,3 +36,12 @@ const val CHANNEL_ID_IMAGES = "imageChannelId"
 const val NOTIF_SEND_REPORTS = 0x1
 const val NOTIF_SEND_GEOS = 0x2
 const val NOTIF_SEND_IMAGES = 0x3
+
+/* Event Names */
+const val EVENT_INFRACTION_CANCELLED = "infraction_cancelled"
+
+/* Event Bundle Items */
+const val EV_PERSON_NAME = "person_name"
+const val EV_DEVICE_PREFIX = "device_prefix"
+const val EV_DEVICE_IMEI = "device_imei"
+

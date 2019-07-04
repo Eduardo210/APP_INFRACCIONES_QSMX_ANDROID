@@ -520,7 +520,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                         PWR_DECLINADA -> {
                             DialogStatusHelper.closeDialog()
                             txListener.onTxFailed(activity.getString(R.string.pt_e_declined))
-                            var voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate,
+                            val voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate,
                                     result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut,
                                     result.reference, amount, nombreTarjetahabiente, date, hour,
                                     "", "", "", "", FLAG_TRANS_DECLINE,
@@ -533,7 +533,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                         PWR_RECHAZADA -> {
                             DialogStatusHelper.closeDialog()
                             txListener.onTxFailed(activity.getString(R.string.pt_e_rejected))
-                            var voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
+                            val voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
                                     expirationDate, result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut,
                                     result.reference, amount, nombreTarjetahabiente, date,
                                     hour, "", "", "", "", FLAG_TRANS_REJECTED,
@@ -544,7 +544,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                             paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
                         }
                         PWR_SIN_RESPUESTA -> {
-                            var voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate,
+                            val voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate,
                                     result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut, result.reference,
                                     amount, nombreTarjetahabiente, date, hour, "",
                                     "", "", "", FLAG_TRANS_TIMEOUT,
@@ -564,7 +564,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     val c = Calendar.getInstance().time
                     val date = SimpleDateFormat("dd-MM-yyyy").format(c)
                     val hour = SimpleDateFormat("HH:mm:SS").format(c)
-                    var voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
+                    val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
                             "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
                             FLAG_TRANS_TIMEOUT, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!)
                     paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
@@ -587,7 +587,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                 val c = Calendar.getInstance().time
                 val date = SimpleDateFormat("dd-MM-yyyy").format(c)
                 val hour = SimpleDateFormat("HH:mm:SS").format(c)
-                var voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
+                val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
                         "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
                         FLAG_TRANS_OFFLINE, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!)
                 paymentsVoucher.printVoucher(activity, voucher, entryMode, false)

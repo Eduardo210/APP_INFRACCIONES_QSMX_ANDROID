@@ -8,6 +8,8 @@ class InfractionContracts {
     interface Presenter {
         fun initAdapters()
         fun fillFields()
+        fun startLocationListener()
+        fun onAddressLocated(colony: String, street: String, betweenStreet: String, andStreet: String)
         fun validFields(): Boolean
         fun onError(msg: String)
     }
@@ -20,5 +22,6 @@ class InfractionContracts {
         fun saveNewArticle(posArticle: Int, posFraction: Int)
         fun getPositionRetainedDoc(obj: RetainedDocument): Int
         fun getPositionDisposition(obj: Disposition): Int
+        fun getAddressFromCoordinates(lat: Double, lon: Double)
     }
 }

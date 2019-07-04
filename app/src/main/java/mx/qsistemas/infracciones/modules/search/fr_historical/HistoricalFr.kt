@@ -1,6 +1,5 @@
-package mx.qsistemas.infracciones.modules.search.fragments
+package mx.qsistemas.infracciones.modules.search.fr_historical
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment

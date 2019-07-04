@@ -1,5 +1,6 @@
 package mx.qsistemas.infracciones.modules.create.fr_infraction
 
+import android.location.Geocoder
 import android.widget.ArrayAdapter
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
@@ -9,6 +10,8 @@ import mx.qsistemas.infracciones.db.entities.InfractionFraction
 import mx.qsistemas.infracciones.db.entities.RetainedDocument
 import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.infracciones.utils.Validator
+import java.util.*
 
 class InfractionIterator(val listener: InfractionContracts.Presenter) : InfractionContracts.Iterator {
     internal lateinit var articlesList: MutableList<Articles>
@@ -97,5 +100,15 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
             }
         }
         return 0
+    }
+
+    override fun getAddressFromCoordinates(lat: Double, lon: Double) {
+        if (Validator.isNetworkEnable(Application.getContext())) {
+            val geocoder = Geocoder(Application.getContext(), Locale.getDefault())
+            val addresses = geocoder.getFromLocation(lat, lon, 1)
+            if (addresses.isNotEmpty()) {
+                listener.onAddressLocated(addresses[0].subLocality, addresses[0].subThoroughfare, addresses[0].locality, "")
+            }
+        }
     }
 }

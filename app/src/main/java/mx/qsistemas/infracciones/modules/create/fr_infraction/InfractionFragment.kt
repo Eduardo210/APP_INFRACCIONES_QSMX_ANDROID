@@ -1,6 +1,8 @@
 package mx.qsistemas.infracciones.modules.create.fr_infraction
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,18 +11,26 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.CompoundButton
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
+import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentInfractionBinding
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.infracciones.utils.Utils.Companion.bitmapDescriptorFromVector
 
 private const val ARG_IS_CREATION = "is_creation"
 
@@ -34,9 +44,15 @@ private const val ARG_IS_CREATION = "is_creation"
  *
  */
 class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterView.OnItemSelectedListener, View.OnClickListener,
-        CompoundButton.OnCheckedChangeListener {
+        CompoundButton.OnCheckedChangeListener, OnMapReadyCallback {
     private var isCreation: Boolean = true
     private val iterator = lazy { InfractionIterator(this) }
+    private var map: GoogleMap? = null
+    private var hasObtainedMaxAccuracy = false
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var lastLocation: Location
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
     private lateinit var activity: CreateInfractionActivity
     private lateinit var binding: FragmentInfractionBinding
 
@@ -55,8 +71,11 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_infraction, container, false)
+        /*val map = childFragmentManager.findFragmentById(R.id.map_infraction_location) as SupportMapFragment
+        map.getMapAsync(this)*/
         initAdapters()
         fillFields()
+        startLocationListener()
         return binding.root
     }
 
@@ -95,6 +114,82 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         binding.spnDisposition.setSelection(iterator.value.getPositionDisposition(SingletonInfraction.dispositionRemited))
     }
 
+    @SuppressLint("MissingPermission")
+    override fun startLocationListener() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
+        locationRequest = LocationRequest.create().apply {
+            interval = 5000
+            fastestInterval = 2500
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+        locationCallback = object : LocationCallback(), GoogleMap.OnMarkerDragListener {
+            override fun onMarkerDragEnd(p0: Marker?) {
+                if (p0 != null) {
+                    var newLocation = Location("newLocation")
+                    newLocation.latitude = p0.position.latitude
+                    newLocation.longitude = p0.position.longitude
+                    val distanceBetween = lastLocation.distanceTo(newLocation)
+                    if (distanceBetween <= lastLocation.accuracy) {
+                        lastLocation.latitude = p0.position.latitude
+                        lastLocation.longitude = p0.position.longitude
+                        iterator.value.getAddressFromCoordinates(lastLocation.latitude, lastLocation.longitude)
+                    } else {
+                        onError(getString(R.string.e_marker_too_distance))
+                        val latlng = LatLng(lastLocation.latitude, lastLocation.longitude)
+                        val circlePos = CircleOptions().center(latlng).radius(lastLocation.accuracy.toDouble())
+                                .fillColor(ContextCompat.getColor(Application.getContext(), R.color.colorPrimaryTransparent))
+                                .strokeColor(ContextCompat.getColor(Application.getContext(), R.color.colorPrimaryDark))
+                        circlePos.strokeWidth(5F)
+                        map?.clear()
+                        map?.addMarker(
+                                MarkerOptions().position(latlng).title("Mi Ubicación")
+                                        .icon(bitmapDescriptorFromVector(activity, R.drawable.ic_place))
+                        )?.isDraggable = true
+                        map?.setOnMarkerDragListener(this)
+                        map?.addCircle(circlePos)
+                        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18F))
+                        iterator.value.getAddressFromCoordinates(lastLocation.latitude, lastLocation.longitude)
+                    }
+                }
+            }
+
+            override fun onMarkerDragStart(p0: Marker?) {
+            }
+
+            override fun onMarkerDrag(p0: Marker?) {
+            }
+
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                lastLocation = locationResult.lastLocation
+                SingletonInfraction.latitudeInfraction = lastLocation.latitude
+                SingletonInfraction.longitudeInfraction = lastLocation.longitude
+                iterator.value.getAddressFromCoordinates(lastLocation.latitude, lastLocation.longitude)
+                /*if (map != null) {
+                    val latlng = LatLng(lastLocation.latitude, lastLocation.longitude)
+                    if (lastLocation.accuracy in MIN_ACCURACY..MAX_ACCURACY && !hasObtainedMaxAccuracy) {
+                        *//* Change value of hasObtainedMaxAccuracy to validate that max accuracy is already obtained *//*
+                        hasObtainedMaxAccuracy = true
+                        fusedLocationClient.removeLocationUpdates(this)
+                        map?.clear()
+                        val circlePos = CircleOptions().center(latlng).radius(lastLocation.accuracy.toDouble())
+                                .fillColor(ContextCompat.getColor(Application.getContext(), R.color.colorLightBlueTransparent))
+                                .strokeColor(ContextCompat.getColor(Application.getContext(), R.color.colorPrimary))
+                        circlePos.strokeWidth(5F)
+                        map?.addMarker(MarkerOptions().position(latlng).title("Mi Ubicación")
+                                .icon(bitmapDescriptorFromVector(activity, R.drawable.ic_place))
+                        )?.isDraggable = true
+                        map?.setOnMarkerDragListener(this)
+                        map?.addCircle(circlePos)
+                        map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18F))
+                        iterator.value.getAddressFromCoordinates(lastLocation.latitude, lastLocation.longitude)
+                    }
+                }*/
+            }
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+    }
+
     override fun onNothingSelected(p0: AdapterView<*>?) {
     }
 
@@ -110,6 +205,26 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                 SingletonInfraction.dispositionRemited = iterator.value.dispositionList[p2]
             }
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onResume() {
+        super.onResume()
+        if (!hasObtainedMaxAccuracy) {
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    override fun onAddressLocated(colony: String, street: String, betweenStreet: String, andStreet: String) {
+        if (binding.edtColony.text.isEmpty()) binding.edtColony.setText(colony)
+        if (binding.edtStreet.text.isEmpty()) binding.edtStreet.setText(street)
+        if (binding.edtBetweenStreet1.text.isEmpty()) binding.edtBetweenStreet1.setText(betweenStreet)
+        if (binding.edtBetweenStreet2.text.isEmpty()) binding.edtBetweenStreet2.setText(andStreet)
     }
 
     override fun onClick(p0: View?) {
@@ -143,6 +258,24 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
             binding.txtDispositionTitle.visibility = GONE
             binding.spnDisposition.setSelection(0)
             binding.spnDisposition.visibility = GONE
+        }
+    }
+
+    override fun onMapReady(p0: GoogleMap?) {
+        if (p0 != null) {
+            map = p0
+            map?.setMapStyle(MapStyleOptions.loadRawResourceStyle(activity, R.raw.map_style))
+            map?.uiSettings?.isZoomControlsEnabled = false
+            map?.uiSettings?.isMyLocationButtonEnabled = false
+            map?.uiSettings?.isMapToolbarEnabled = false
+            map?.setMinZoomPreference(17F)
+            map?.setMaxZoomPreference(20F)
+            /* If Singleton already has the location of incidence, then show in google map */
+            if (SingletonInfraction.latitudeInfraction != 0.0 && SingletonInfraction.longitudeInfraction != 0.0) {
+                val latlng = LatLng(SingletonInfraction.latitudeInfraction, SingletonInfraction.longitudeInfraction)
+                map?.addMarker(MarkerOptions().position(latlng).icon(bitmapDescriptorFromVector(activity, R.drawable.ic_place)))
+                map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 19F))
+            }
         }
     }
 

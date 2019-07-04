@@ -55,9 +55,8 @@ class Application : MultiDexApplication() {
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
         /* Initialize crashlytics */
-        if (!BuildConfig.DEBUG) {
-            Fabric.with(this, Crashlytics())
-        } else {
+        Fabric.with(this, Crashlytics())
+        if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(getContext())
         }
         /* Create the NotificationChannel, but only on API 26+ because the NotificationChannel class is new and not in the support library*/

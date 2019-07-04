@@ -81,7 +81,6 @@ object PaymentsTransfer : Interfaces.Contracts {
         /* Save the control number of initialize */
         paymentsPreferences.saveDataInt(R.string.pt_sp_quetz_id_township, idTownship)
         paymentsPreferences.saveData(R.string.pt_sp_quetz_id_terminal, terminalCode)
-        paymentsPreferences.saveDataInt(R.string.pt_sp_quetz_id_township, 0)
         AsyncTask.execute {
             /* Load Params of the terminal */
             ServiceManager.getInstence().pinpad.loadProtectKeyByArea(1, "B0030345E0B41AE3AB93AA836BA5CE38")

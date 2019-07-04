@@ -20,6 +20,7 @@ const val RC_INTENT_CAMERA_EV2 = 12
 const val RC_INTENT_VIDEO = 13
 
 /* MAPS CONSTANTS */
+const val MIN_ACCURACY = 1.0
 const val MAX_ACCURACY = 100.0
 const val TIME_OUT_OF_GEO = 1000 * 60L
 

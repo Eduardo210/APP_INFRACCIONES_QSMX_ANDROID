@@ -1,4 +1,4 @@
-package mx.qsistemas.infracciones.modules.search.fragments
+package mx.qsistemas.infracciones.modules.search.fr_search
 
 import android.content.Context
 import android.content.Intent
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search.*
-import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
@@ -36,7 +35,6 @@ import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintObject
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
-import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_AUTH_ALWAYS
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
 import org.json.JSONArray
 import org.json.JSONObject
@@ -393,7 +391,7 @@ class SearchFr : Fragment()
 
 
         if (haveToPay) {
-            PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+            PaymentsTransfer.runTransaction(activity, "1.00"/*totalPayment*/, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else */MODE_TX_PROD, this)
         } else {
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }
@@ -553,7 +551,7 @@ class SearchFr : Fragment()
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, "1.00"/*totalPayment*/, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else */MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 // Imprimir boleta

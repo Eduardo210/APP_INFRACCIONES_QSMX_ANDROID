@@ -15,7 +15,6 @@ import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
-import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentOffenderBinding
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
@@ -26,7 +25,6 @@ import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
-import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_AUTH_ALWAYS
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
 import java.util.*
 
@@ -229,7 +227,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         getString(R.string.w_dialog_title_payment), getString(R.string.w_want_to_pay), activity
                 )
                 builder.setPositiveButton("Aceptar") { _, _ ->
-                    PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+                    PaymentsTransfer.runTransaction(activity, "1.00"/*SingletonInfraction.totalInfraction*/, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else*/ MODE_TX_PROD, this)
                 }
                 builder.setNegativeButton("Cancelar") { _, _ ->
                     iterator.value.printTicket(activity)
@@ -350,7 +348,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, "1.00"/*SingletonInfraction.totalInfraction*/, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else*/ MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 iterator.value.printTicket(activity)
@@ -367,7 +365,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, "1.00"/*SingletonInfraction.totalInfraction*/, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else*/ MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 iterator.value.printTicket(activity)
@@ -427,7 +425,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         SingletonInfraction.totalInfraction = amountToPay
         //TODO: llenar los datos coorrespondietnes para los datos del pago en server
         if (haveToPay) {
-            PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+            PaymentsTransfer.runTransaction(activity, "1.00"/*SingletonInfraction.totalInfraction*/, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else */MODE_TX_PROD, this)
         } else {
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }

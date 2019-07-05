@@ -171,12 +171,7 @@ object PaymentsTransfer : Interfaces.Contracts {
         }
     }
 
-    override fun runTransaction(
-            activity: Activity,
-            amount: String,
-            modeTx: String,
-            listener: IPaymentsTransfer.TransactionListener
-    ) {
+    override fun runTransaction(activity: Activity, amount: String, modeTx: String, listener: IPaymentsTransfer.TransactionListener) {
         this.activity = activity
         this.modeTx = modeTx
         txListener = listener
@@ -204,12 +199,7 @@ object PaymentsTransfer : Interfaces.Contracts {
         }
     }
 
-    override fun print(
-            activity: Activity,
-            json: String,
-            bitmap: Array<Bitmap>?,
-            listener: IPaymentsTransfer.PrintListener
-    ) {
+    override fun print(activity: Activity, json: String, bitmap: Array<Bitmap>?, listener: IPaymentsTransfer.PrintListener) {
         ServiceManager.getInstence().printer.print(json, bitmap, object : OnPrinterListener {
             override fun onStart() {
                 activity.runOnUiThread {

@@ -27,18 +27,30 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         binding = DataBindingUtil.setContentView(this, R.layout.activity_log_in)
         binding.btnLogIn.setOnClickListener(this)
         iterator.registerAlarm()
+        /* Validate internet connection */
         if (Validator.isNetworkEnable(Application.getContext())) {
+            /* If user doesn't config the device, open Configuration Dialog */
             if (!Application.prefs?.loadDataBoolean(R.string.sp_has_config_prefix, false)!!) {
                 val dialog = InitialConfigurationDialog()
                 dialog.listener = this
                 dialog.isCancelable = false
                 dialog.show(supportFragmentManager, InitialConfigurationDialog::class.java.simpleName)
-            } else {
+            } else if (!Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
+                /* If the user has config the device, check if he has already session. If hasn't session then,
+                 * must need to download catalogs */
                 showLoader(getString(R.string.l_download_catalogs))
                 iterator.downloadCatalogs()
+            } else {
+                /* If user alrady has session then only start downloading catalogs and present Main Activity */
+                iterator.downloadCatalogs()
+                router.presentMainActivity()
             }
         } else {
             onError(Application.getContext().getString(R.string.e_without_internet))
+            /* If user already has session then present Main Activity */
+            if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
+                router.presentMainActivity()
+            }
         }
     }
 
@@ -56,7 +68,9 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         val loadKeyData = LoadKeyData("88888888", "7455440", "a7455440", "quet5440")
         PaymentsTransfer.loadKeyDevice(this, loadKeyData, object : IPaymentsTransfer.LoadKeyListener {
             override fun onLoadKey(success: Boolean, value: String) {
-                if (!success){onError(value) }else {
+                if (!success) {
+                    onError(value)
+                } else {
                     showLoader(getString(R.string.l_download_catalogs))
                     iterator.downloadCatalogs()
                 }
@@ -70,9 +84,6 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
 
     override fun onCatalogsDownloaded() {
         hideLoader()
-        if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
-            router.presentMainActivity()
-        }
     }
 
     override fun onClick(v: View?) {

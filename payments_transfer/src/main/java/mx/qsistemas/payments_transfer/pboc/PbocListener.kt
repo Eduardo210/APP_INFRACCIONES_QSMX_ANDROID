@@ -241,7 +241,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     val panSeq = "5F3401" + BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_PAN_SEQ))
                     chipIcData = /*Utils.translateTlv(*/out.icData + panSeq
                     processTx(ENTRY_MODE_CHIP, "", value,
-                            chipIcData, chipCardNumber, chipExpDate, chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn)
+                            chipIcData, chipMaskedPan, chipExpDate, chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn)
                 } else {
                     DialogStatusHelper.closeDialog()
                     txListener.onTxFailed(value)
@@ -382,7 +382,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     override fun onCipherData(success: Boolean, value: String) {
                         if (success) {
                             processTx(ENTRY_MODE_CHIP, "", value,
-                                    chipIcData, chipCardNumber, chipExpDate, chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn)
+                                    chipIcData, chipMaskedPan, chipExpDate, chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn)
                         } else {
                             DialogStatusHelper.closeDialog()
                             txListener.onTxFailed(value)
@@ -467,7 +467,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
         map[PASSWORD] = Preferences(activity).loadData(R.string.pt_sp_banorte_black_box, "") ?: ""
         val idTownship = Preferences(activity).loadDataInt(R.string.pt_sp_quetz_id_township)
         val terminalCode = Preferences(activity).loadData(R.string.pt_sp_quetz_id_terminal, "")
-        var controlCounter = Preferences(activity).loadDataInt(R.string.pt_sp_banorte_counter_control) + 1
+        val controlCounter = Preferences(activity).loadDataInt(R.string.pt_sp_banorte_counter_control) + 1
         map[CONTROL_NUMBER] =
                 CONTROL_NUMBER_TOWNSHIP + idTownship + CONTROL_NUMBER_TERMINAL + terminalCode + CONTROL_NUMBER_ID + controlCounter.toString()
         map[TERMINAL_ID] = Preferences(activity).loadData(R.string.pt_sp_banorte_serial_number, "")

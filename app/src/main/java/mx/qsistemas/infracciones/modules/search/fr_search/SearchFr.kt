@@ -331,12 +331,12 @@ class SearchFr : Fragment()
             //Descuento con el 50%
             printTest.put(getPrintBarCode(infraction.capture_line_ii))
             printTest.put(getPrintObject(infraction.capture_line_ii, normal_size, "center", "0"))
-            printTest.put(getPrintObject("\nCON 50% DE DESCUENTO\nVIGENCIA: ${infraction.date_capture_line_ii} \nIMPORTE: ${infraction.amount_capture_line_ii}\n\n", normal_size, "center", "0"))
+            printTest.put(getPrintObject("\nCON 50% DE DESCUENTO\nVIGENCIA: ${infraction.date_capture_line_ii} \nIMPORTE: ${"%.2f".format(infraction.amount_capture_line_ii)}\n\n", normal_size, "center", "0"))
 
             //Sin descuento
             printTest.put(getPrintBarCode(infraction.capture_line_iii))
             printTest.put(getPrintObject(infraction.capture_line_iii, normal_size, "center", "0"))
-            printTest.put(getPrintObject("\nSIN DESCUENTO\nVIGENCIA: ${infraction.date_capture_line_iii} \nIMPORTE: ${infraction.amount_capture_line_iii}\n", normal_size, "center", "0"))
+            printTest.put(getPrintObject("\nSIN DESCUENTO\nVIGENCIA: ${infraction.date_capture_line_iii} \nIMPORTE: ${"%.2f".format(infraction.amount_capture_line_iii)}\n", normal_size, "center", "0"))
 
             data_footer.append("\n\n\n$footer1")
             data_footer.append("\n$footer2")

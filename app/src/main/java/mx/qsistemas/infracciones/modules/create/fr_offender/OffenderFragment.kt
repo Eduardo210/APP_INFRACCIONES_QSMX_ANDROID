@@ -387,7 +387,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun onTicketPrinted() {
         Activity.RESULT_OK
         if (!isTicketCopy) {
-            var builder = AlertDialogHelper.getGenericBuilder(
+            val builder = AlertDialogHelper.getGenericBuilder(
                     getString(R.string.w_dialog_title_reprint_ticket), getString(R.string.w_want_to_reprint_ticket), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->

@@ -214,6 +214,9 @@ class ReportsService : JobService() {
                     notificationPhotos.notify(NOTIF_SEND_IMAGES, builderPhotos.build())
                 }
             })
+        } else {
+            /* If there aren't any images to send, proceed to delete the send images from DB */
+            SendInfractionManager.deleteSendImages()
         }
     }
 }

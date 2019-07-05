@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search.*
+import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
@@ -35,6 +36,7 @@ import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintObject
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
+import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_AUTH_ALWAYS
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
 import org.json.JSONArray
 import org.json.JSONObject
@@ -322,10 +324,10 @@ class SearchFr : Fragment()
 
             //Descuento con el 70%
 
-           /* printTest.put(getPrintBarCode(infraction.capture_line_i))
-            printTest.put(getPrintObject(infraction.capture_line_i, normal_size, "center", "0"))
-            printTest.put(getPrintObject("\nCON 70% DE DESCUENTO\nVIGENCIA: $current \nIMPORTE: ${infraction.total}\n", normal_size, "center", "0"))
-*/
+            /* printTest.put(getPrintBarCode(infraction.capture_line_i))
+             printTest.put(getPrintObject(infraction.capture_line_i, normal_size, "center", "0"))
+             printTest.put(getPrintObject("\nCON 70% DE DESCUENTO\nVIGENCIA: $current \nIMPORTE: ${infraction.total}\n", normal_size, "center", "0"))
+ */
             //Descuento con el 50%
             printTest.put(getPrintBarCode(infraction.capture_line_ii))
             printTest.put(getPrintObject(infraction.capture_line_ii, normal_size, "center", "0"))
@@ -391,7 +393,7 @@ class SearchFr : Fragment()
 
 
         if (haveToPay) {
-            PaymentsTransfer.runTransaction(activity, "1.00"/*totalPayment*/, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else */MODE_TX_PROD, this)
+            PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
         } else {
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }
@@ -412,7 +414,6 @@ class SearchFr : Fragment()
     override fun onError(var1: Int, var2: String) {
         Log.e("PRINT", var2)
         SnackbarHelper.showErrorSnackBar(activity, var2, Snackbar.LENGTH_LONG)
-        //activity.hideLoader()
     }
 
     override fun onFinish() {
@@ -457,7 +458,10 @@ class SearchFr : Fragment()
         activity.hideLoader()
 
         when (origin) {
-            PRINT -> PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
+            PRINT -> {
+                activity.showLoader(getString(R.string.l_preparing_printer))
+                PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
+            }
             PAYMENT ->
                 if (infraction.is_absent == 0) {
                     doPaymentProcess(infraction)
@@ -551,7 +555,7 @@ class SearchFr : Fragment()
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, "1.00"/*totalPayment*/, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else */MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 // Imprimir boleta

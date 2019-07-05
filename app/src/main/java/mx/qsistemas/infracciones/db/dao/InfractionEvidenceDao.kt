@@ -16,4 +16,7 @@ interface InfractionEvidenceDao {
 
     @Query("UPDATE infraction_evidence SET SYNC = 1 WHERE ID_INFRACCION = :idInfraction")
     fun updateSendByIdInfraction(idInfraction: Long)
+
+    @Query("DELETE FROM infraction_evidence WHERE SYNC = 1")
+    fun deleteSendImages()
 }

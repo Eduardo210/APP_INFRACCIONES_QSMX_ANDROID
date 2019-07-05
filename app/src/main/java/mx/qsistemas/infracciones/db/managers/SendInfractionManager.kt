@@ -125,4 +125,10 @@ object SendInfractionManager {
             Application.m_database?.infractionEvidenceDao()?.updateSendByIdInfraction(idInfraction)
         }
     }
+
+    fun deleteSendImages() {
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database?.infractionEvidenceDao()?.deleteSendImages()
+        }
+    }
 }

@@ -136,6 +136,7 @@
 
     <!-- Loader Strings -->
     <string name="l_download_catalogs">Descargando catálogos</string>
+    <string name="l_preparing_printer">Preparando impresión</string>
 
     <!-- Errors -->
     <string name="e_empty_fields">Favor de validar campos</string>

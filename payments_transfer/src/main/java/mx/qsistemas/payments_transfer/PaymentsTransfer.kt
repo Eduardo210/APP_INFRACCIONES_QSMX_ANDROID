@@ -81,20 +81,25 @@ object PaymentsTransfer : Interfaces.Contracts {
         /* Save the control number of initialize */
         paymentsPreferences.saveDataInt(R.string.pt_sp_quetz_id_township, idTownship)
         paymentsPreferences.saveData(R.string.pt_sp_quetz_id_terminal, terminalCode)
+        val keyValue1 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)
+        val keyValue2 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)
+        val keyValue3 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)
+        val checkValue1 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(120)
+        val checkValue2 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(120)
         AsyncTask.execute {
             /* Load Params of the terminal */
-            ServiceManager.getInstence().pinpad.loadProtectKeyByArea(1, "B0030345E0B41AE3AB93AA836BA5CE38")
+            ServiceManager.getInstence().pinpad.loadProtectKeyByArea(1, keyValue1)
             ServiceManager.getInstence().pinpad.loadMainKeyWithKcvByArea(
                     1,
                     1,
-                    "F9FA6ED854CCCDB23E1B036F4B893AA5",
-                    "6D89EC94"
+                    keyValue2,
+                    checkValue1
             )
             /* Set time to terminal */
             ServiceManager.getInstence().deviceinfo.spTime = BCDHelper.StrToBCD(System.currentTimeMillis().toString())
-            ServiceManager.getInstence().pinpad.loadMacKeyByArea(1, 1, "585EEED9AEFEFDF2C7918E080B560D68", "BE0BDFA1")
-            ServiceManager.getInstence().pinpad.loadTDKeyByArea(1, 1, "585EEED9AEFEFDF2C7918E080B560D68", "BE0BDFA1")
-            ServiceManager.getInstence().pinpad.loadPinKeyByArea(1, 1, "F9FA6ED854CCCDB23E1B036F4B893AA5", "BE0BDFA1")
+            ServiceManager.getInstence().pinpad.loadMacKeyByArea(1, 1, keyValue3, checkValue2)
+            ServiceManager.getInstence().pinpad.loadTDKeyByArea(1, 1, keyValue3, checkValue2)
+            ServiceManager.getInstence().pinpad.loadPinKeyByArea(1, 1, keyValue2, checkValue2)
             GlobalData.getInstance().pinpadVersion = PINPAD_INTERFACE_VERSION3
             GlobalData.getInstance().area = 1
             GlobalData.getInstance().tmkId = 1

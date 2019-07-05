@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.InputFilter
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
@@ -87,7 +88,14 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         binding.autxtColor.doOnTextChanged { text, start, count, after -> SingletonInfraction.colorVehicle = text?.trim().toString().toUpperCase() }
         binding.edtNoDoc.doOnTextChanged { text, start, count, after -> SingletonInfraction.noDocument = text?.trim().toString().toUpperCase() }
         binding.edtNoCard.doOnTextChanged { text, start, count, after -> SingletonInfraction.noCirculationCard = text?.trim().toString().toUpperCase() }
-        binding.edtYear.doOnTextChanged { text, start, count, after -> SingletonInfraction.yearVehicle = text?.trim().toString() }
+        binding.edtYear.doOnTextChanged { text, start, count, after ->
+            when {
+                text?.toString()!!.contentEquals("-") -> binding.edtYear.filters = arrayOf(InputFilter.LengthFilter(1))
+                text.isEmpty() -> binding.edtYear.filters = arrayOf(InputFilter.LengthFilter(4))
+                else -> binding.edtYear.filters = arrayOf(InputFilter.LengthFilter(4), InputFilter { charSequence, i1, i2, spanned, i3, i4 -> if (charSequence == "-") "" else charSequence })
+            }
+            SingletonInfraction.yearVehicle = text.trim().toString()
+        }
         binding.imgEvidence1.setOnClickListener(this)
         binding.imgEvidence2.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
@@ -248,16 +256,16 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 isValid = false
                 onError(getString(R.string.e_type_vehicle))
             }
-           /* binding.edtNoCard.text.trim().isEmpty() -> {
-                isValid = false
-                onError(getString(R.string.e_circulation_card))
-            }*/
+            /* binding.edtNoCard.text.trim().isEmpty() -> {
+                 isValid = false
+                 onError(getString(R.string.e_circulation_card))
+             }*/
             binding.edtYear.text.trim().isEmpty() -> {
                 isValid = false
                 onError(getString(R.string.e_year))
             }
-            binding.edtYear.text.toString().toInt() > Calendar.getInstance().get(Calendar.YEAR) + 1
-                    || binding.edtYear.text.trim().length < 4 -> {
+            (!binding.edtYear.text.toString().contentEquals("-") && binding.edtYear.text.trim().length < 4)
+                    || binding.edtYear.text.toString().toInt() > Calendar.getInstance().get(Calendar.YEAR) + 1 -> {
                 isValid = false
                 onError(getString(R.string.e_year_invalid))
             }

@@ -264,8 +264,8 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 isValid = false
                 onError(getString(R.string.e_year))
             }
-            (!binding.edtYear.text.toString().contentEquals("-") && binding.edtYear.text.trim().length < 4)
-                    || binding.edtYear.text.toString().toInt() > Calendar.getInstance().get(Calendar.YEAR) + 1 -> {
+            !binding.edtYear.text.toString().contentEquals("-") && (binding.edtYear.text.trim().length < 4
+                    || binding.edtYear.text.toString().toInt() > Calendar.getInstance().get(Calendar.YEAR) + 1) -> {
                 isValid = false
                 onError(getString(R.string.e_year_invalid))
             }

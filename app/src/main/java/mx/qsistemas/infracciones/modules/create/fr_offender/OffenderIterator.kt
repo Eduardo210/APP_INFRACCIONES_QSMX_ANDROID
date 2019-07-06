@@ -16,15 +16,12 @@ import mx.qsistemas.infracciones.net.catalogs.ServiceResponsePerson
 import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.FS_COL_STATES
 import mx.qsistemas.infracciones.utils.FS_COL_TOWNSHIPS
-import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintBarCode
-import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintObject
+import mx.qsistemas.infracciones.utils.Ticket
 import mx.qsistemas.infracciones.utils.Utils
-import mx.qsistemas.payments_transfer.IPaymentsTransfer
-import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
-import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -344,7 +341,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
-
         })
     }
 
@@ -364,179 +360,67 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun printTicket(activity: Activity) {
-        val printJson = JSONObject()
-        val normal_size = "2"
-        val printTest = JSONArray()
-        val infractor_data = StringBuilder()
-        val card_data = StringBuilder()
-        val vehicle = StringBuilder()
-        val address_infra = StringBuilder()
-        val retained_doc = StringBuilder()
-        val responsible = StringBuilder()
-        val data_footer = StringBuilder()
-
-        val header1 = "QSISTEMAS_I\n"
-        val header2 = "QSISTEMAS_II\n"
-        val header3 = "QSISTEMAS_III\n"
-        val header4 = "QSISTEMAS_IV\n"
-        val header5 = "QSISTEMAS_V\n"
-        val header6 = "QSISTEMAS_VI\n"
-        val footer1 = "QSISTEMAS_VII"
-        val footer2 = "QSISTEMAS_VIII"
-        val footer3 = "QSISTEMAS_IX"
-
-        //Impresión de encabezados
-        printTest.put(getPrintObject(header1 + header2 + header3 + header4 + header5 + header6, normal_size, "center", "1"))
-        printTest.put(getPrintObject("\n\nDETECCIÓN   Y   LEVANTAMIENTO", "2", "center", "0"))
-        //printTest.put(getPrintObject("\n", "2", "left", "0"))
-        printTest.put(getPrintObject("ELECTRÓNICO     DE     INFRACCIO-", "2", "center", "0"))
-        printTest.put(getPrintObject("NES  A CONDUCTORES   DE   VEHÍ-", "2", "center", "0"))
-        printTest.put(getPrintObject("CULOS     QUE     CONTRAVENGAN", "2", "center", "0"))
-        printTest.put(getPrintObject("LAS   DISPOSICIONES    EN   MATE-", "2", "center", "0"))
-        printTest.put(getPrintObject("RIA   DE  TRÁNSITO,  EQUILIBRIO  E-", "2", "center", "0"))
-        printTest.put(getPrintObject("COLÓGICO       PROTECCIÓN       AL", "2", "center", "0"))
-        printTest.put(getPrintObject("AMBIENTE    Y     PARA    LA    PRE-", "2", "left", "0"))
-        printTest.put(getPrintObject("VENCIÓN    Y    CONTROL    DE    LA", "2", "left", "0"))
-        printTest.put(getPrintObject("CONTAMINACIÓN,   ASI   COMO  PA-", "2", "left", "0"))
-        printTest.put(getPrintObject("GO   DE   SANCIONES    Y    APLICA-", "2", "left", "0"))
-        printTest.put(getPrintObject("CIÓN    DE   MEDIDAS   DE   SEGURI-", "2", "left", "0"))
-        printTest.put(getPrintObject("DAD.", "2", "left", "0"))
-        printTest.put(getPrintObject("\n\n", "2", "left", "0"))
-        printTest.put(getPrintObject("EL C. AGENTE  QUE  SUSCRIBE  LA", "2", "left", "0"))
-        printTest.put(getPrintObject("PRESENTE      BOLETA       DE      IN-", "2", "left", "0"))
-        printTest.put(getPrintObject("FRACCIÓN,  ESTA  FACULTADO   EN", "2", "left", "0"))
-        printTest.put(getPrintObject("TÉRMINOS   DE   LOS  QUE  SE   ES-", "2", "left", "0"))
-        printTest.put(getPrintObject("TABLECE     EN     LOS   ARTÍCULOS", "2", "left", "0"))
-        printTest.put(getPrintObject("21   Y  115,  FRACCIÓN  III,   INCISO,", "2", "left", "0"))
-        printTest.put(getPrintObject("H)   DE   LA  CONSTITUCION    POLÍ-", "2", "left", "0"))
-        printTest.put(getPrintObject("TICA   DE  LOS  ESTADOS   UNIDOS", "2", "left", "0"))
-        printTest.put(getPrintObject("MEXICANOS     DE     ACUERDO     A", "2", "left", "0"))
-        printTest.put(getPrintObject("LO   ESTABLECIDO   EN   LOS   ARTÍ-", "2", "left", "0"))
-        printTest.put(getPrintObject("CULOS   8.3,  8.10,  8.18,  8.19   BIS", "2", "left", "0"))
-        printTest.put(getPrintObject(",8.19   TERCERO   Y   8.19 CUARTO", "2", "left", "0"))
-        printTest.put(getPrintObject("DEL     CÓDIGO     ADMINISTRATIVO", "2", "left", "0"))
-        printTest.put(getPrintObject("DEL    ESTADO    DE    MÉXICO.  ASÍ", "2", "left", "0"))
-        printTest.put(getPrintObject("COMO HACER  CONSTAR  LOS  HE-", "2", "left", "0"))
-        printTest.put(getPrintObject("CHOS     QUE     MOTIVAN    LA    IN", "2", "left", "0"))
-        printTest.put(getPrintObject("FRACCIÓN    EN    TÉRMINOS    DEL", "2", "left", "0"))
-        printTest.put(getPrintObject("ARTÍCULO   16  DENUESTRA   CAR-", "2", "left", "0"))
-        printTest.put(getPrintObject("TA MAGNA.\n\n\n", "2", "left", "0"))
-        printTest.put(getPrintObject("$actualDay\nFOLIO: $newFolio\n\n\n", normal_size, "right", "0"))
-
-        //Datos del infractor
-        if (!SingletonInfraction.isPersonAbstent) {
-            infractor_data.append(SingletonInfraction.nameOffender + " " + SingletonInfraction.lastFatherName + " " + SingletonInfraction.lastMotherName)
-            if (SingletonInfraction.rfcOffenfer.isNotEmpty()) {
-                infractor_data.append("\n" + SingletonInfraction.rfcOffenfer)
-            }
-            if (SingletonInfraction.noExtOffender.isNotEmpty()) {
-                infractor_data.append("\n" + SingletonInfraction.noExtOffender)
-            }
-            if (SingletonInfraction.noIntOffender.isNotEmpty()) {
-                infractor_data.append("\n" + SingletonInfraction.noIntOffender)
-            }
-            if (SingletonInfraction.colonyOffender.isNotEmpty()) {
-                infractor_data.append("\n" + SingletonInfraction.colonyOffender)
-            }
-            printTest.put(getPrintObject(infractor_data.toString(), normal_size, "center", "0"))
-            if (SingletonInfraction.noCirculationCard.isNotEmpty()) {
-                card_data.append("\n" + "LICENCIA/PERMISO: " + SingletonInfraction.noCirculationCard)
-            }
-            if (SingletonInfraction.typeLicenseOffender.id != 0) {
-                card_data.append("\n" + "TIPO LICENCIA: " + SingletonInfraction.typeLicenseOffender.license_type)
-            }
-            if (SingletonInfraction.licenseIssuedInOffender.id != 0) {
-                card_data.append("\n" + "EXPEDIDA: " + SingletonInfraction.licenseIssuedInOffender.value)
-            }
-            printTest.put(getPrintObject(card_data.toString(), normal_size, "left", "0"))
-        } else {
-            printTest.put(getPrintObject(SingletonInfraction.nameOffender + " " + SingletonInfraction.lastFatherName + " " + SingletonInfraction.lastMotherName + "\n\n", normal_size, "center", "0"))
+        SingletonTicket.dateTicket = actualDay
+        SingletonTicket.folioTicket = newFolio
+        SingletonTicket.completeNameOffender = SingletonInfraction.nameOffender + " " + SingletonInfraction.lastFatherName + " " + SingletonInfraction.lastMotherName
+        if (SingletonInfraction.rfcOffenfer.isNotEmpty()) {
+            SingletonTicket.rfcOffender = SingletonInfraction.rfcOffenfer
         }
-        //Características del vehículo
-        vehicle.append("\nCARACTERÍSTICAS DEL VEHÍCULO: ")
-        vehicle.append("\nMARCA: " + SingletonInfraction.brandVehicle.vehicle_brand)
+        if (SingletonInfraction.noExtOffender.isNotEmpty()) {
+            SingletonTicket.noExtOffender = SingletonInfraction.noExtOffender
+        }
+        if (SingletonInfraction.noIntOffender.isNotEmpty()) {
+            SingletonTicket.noIntOffender = SingletonInfraction.noIntOffender
+        }
+        if (SingletonInfraction.colonyOffender.isNotEmpty()) {
+            SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender
+        }
+        if (SingletonInfraction.stateOffender.id != 0) {
+            SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
+        }
+        if (SingletonInfraction.noCirculationCard.isNotEmpty()) {
+            SingletonTicket.noLicenseOffender = SingletonInfraction.noCirculationCard
+        }
+        if (SingletonInfraction.typeLicenseOffender.id != 0) {
+            SingletonTicket.typeLicenseOffender = SingletonInfraction.typeLicenseOffender.license_type
+        }
+        if (SingletonInfraction.licenseIssuedInOffender.id != 0) {
+            SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
+        }
+        SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.vehicle_brand
         if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
-            vehicle.append("\nSUBMARCA: " + SingletonInfraction.subBrandVehicle)
+            SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle
         }
-        vehicle.append("\nTIPO: " + SingletonInfraction.typeVehicle.type_string)
-        vehicle.append("\nCOLOR: " + SingletonInfraction.colorVehicle)
-        vehicle.append("\nMODELO: " + SingletonInfraction.yearVehicle)
-        vehicle.append("\nIDENTIFICADOR: " + SingletonInfraction.identifierDocument.document)
-        vehicle.append("\nNUMERO: " + SingletonInfraction.noDocument)
-        vehicle.append("\nAUTORIDAD QUE EXPIDE: " + SingletonInfraction.typeDocument.authority)
-        vehicle.append("\nEXPEDIDO: " + SingletonInfraction.stateIssuedIn.value)
-        vehicle.append("\nARTICULOS DEL REGLAMENTO DE TRÁNSITO DEL ESTADO DE MÉXICO: ")
-
-        printTest.put(getPrintObject(vehicle.toString(), normal_size, "left", "0"))
-        //Artículos y fracciones
-        printTest.put(getPrintObject("\n\nARTICULO/FRACCION\t\t\tU.M.A.\t\t\tPUNTOS\n*******************", "1", "center", "1"))
-
+        SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.type_string
+        SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle
+        SingletonTicket.modelVehicle = SingletonInfraction.yearVehicle
+        SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
+        SingletonTicket.noIdentifierVehicle = SingletonInfraction.noDocument
+        SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
+        SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value
         SingletonInfraction.motivationList.forEach { art ->
-            printTest.put(getPrintObject(art.article.article + "/" + art.fraction.fraccion + "\t\t\t" + art.fraction.minimum_wages + "\t\t\t" + art.fraction.penalty_points, normal_size, "center", "0"))
-            printTest.put(getPrintObject("\nCONDUCTA QUE MOTIVA LA INFRACCIÓN: ${art.motivation}", "1", "left", "0"))
+            val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),
+                    art.fraction.penalty_points.toString(), art.motivation)
+            SingletonTicket.fractionsList.add(article)
         }
-        address_infra.append("\n\nCALLE: " + SingletonInfraction.streetInfraction)
-        address_infra.append("\nENTRE: " + SingletonInfraction.betweenStreet1)
-        address_infra.append("\nY: " + SingletonInfraction.betweenStreet2)
-        address_infra.append("\nCOLONIA: " + SingletonInfraction.colonnyInfraction)
-
-        printTest.put(getPrintObject(address_infra.toString(), normal_size, "left", "0"))
-
-        //Documento que se retiene
-
-        retained_doc.append("\n\nDOCUMENTO QUE SE RETIENE: ")
-        retained_doc.append("\n" + SingletonInfraction.retainedDocument.document)
+        SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
+        SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
+        SingletonTicket.andStreetInfraction = SingletonInfraction.betweenStreet2
+        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction
+        SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.document
+        SingletonTicket.isRemitedInfraction = SingletonInfraction.isRemited
         if (SingletonInfraction.isRemited) {
-            retained_doc.append("\nREMISION DEL VEHICULO: SI")
-            retained_doc.append("\n" + SingletonInfraction.dispositionRemited.disposition)
+            SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.disposition
         }
-        printTest.put(getPrintObject(retained_doc.toString(), normal_size, "left", "0"))
-
-        //Responsable del vehíiculo
-        printTest.put(getPrintObject("RESPONSABLE DEL VEHÍCULO", normal_size, "center", "1"))
-        responsible.append("\n\n" + SingletonInfraction.nameOffender + " " + SingletonInfraction.lastFatherName + " " + SingletonInfraction.lastMotherName + "\n")
-        responsible.append("\nRECIBO DE CONFORMIDAD\n\n\n\n")
-        responsible.append("\nFIRMA\n")
-        responsible.append("\nAGENTE: \n")
-        responsible.append("${Application.prefs?.loadData(R.string.sp_person_f_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_m_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_name, "")}")
-        responsible.append("\nEMPLEADO: ${Application.prefs?.loadData(R.string.sp_no_employee, "")}\n\n") //TODO: reemplazar
-
-        printTest.put(getPrintObject(responsible.toString(), normal_size, "center", "0"))
-        printTest.put(getPrintObject("\nFIRMA\n\n", normal_size, "center", "0"))
-        printTest.put(getPrintObject("\n\n\n", normal_size, "center", "0"))
-        printTest.put(getPrintObject("\n\n\n", normal_size, "center", "0"))
-
-        //Descuento con el 70%
-        /* printTest.put(getPrintBarCode(captureLine1))
-         printTest.put(getPrintObject(captureLine1, normal_size, "center", "0"))
-         printTest.put(getPrintObject("\nCON 70% DE DESCUENTO\nVIGENCIA: $fifteenthDay \nIMPORTE: ${SingletonInfraction.totalInfraction}\n", normal_size, "center", "0"))*/
-
-        //Descuento con el 50%
-        printTest.put(getPrintBarCode(captureLine1))
-        printTest.put(getPrintObject(captureLine1, normal_size, "center", "0"))
-        printTest.put(getPrintObject("\nCON 50% DE DESCUENTO\nVIGENCIA: $fifteenthDay \nIMPORTE: ${SingletonInfraction.totalInfraction}\n\n", normal_size, "center", "0"))
-
-        //Sin descuento
-        printTest.put(getPrintBarCode(captureLine2))
-        printTest.put(getPrintObject(captureLine2, normal_size, "center", "0"))
-        printTest.put(getPrintObject("\nSIN DESCUENTO\nVIGENCIA: $thirtythDay \nIMPORTE: ${SingletonInfraction.subTotalInfraction}\n", normal_size, "center", "0"))
-
-        data_footer.append("\n\n\n$footer1")
-        data_footer.append("\n$footer2")
-        data_footer.append("\n$footer3")
-        data_footer.append("\n\n-AVISO DE PRIVACIDAD-\n\n")
-        data_footer.append("\nFUENTE DE CAPTURA: SIIP\n\n\n")
-        printTest.put(getPrintObject(data_footer.toString(), normal_size, "center", "0"))
-        printJson.put("spos", printTest)
-        PaymentsTransfer.print(activity, printJson.toString(), null, object : IPaymentsTransfer.PrintListener {
-            override fun onStart() {
-            }
-
-            override fun onError(var1: Int, var2: String) {
-            }
-
-            override fun onFinish() {
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1,"CON 50% DE DESCUENTO",fifteenthDay,SingletonInfraction.totalInfraction))
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2,"SIN DESCUENTO",thirtythDay,SingletonInfraction.subTotalInfraction))
+        Ticket.printTicket(activity, object : Ticket.TicketListener{
+            override fun onTicketPrint() {
                 listener.onTicketPrinted()
+            }
+
+            override fun onTicketError() {
+                listener.onError(Application.getContext().getString(R.string.pt_e_print_other_error))
             }
         })
     }

@@ -200,13 +200,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            /*binding.btnPay.id -> {
-                if (validFields()) {
-                    if (isCreation) iterator.value.saveData(false) else iterator.value.updateData()
-                    isPayment = true
-                    PaymentsTransfer.runTransaction(activity, SingletonInfraction.subTotalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_RANDOM else MODE_TX_PROD, this)
-                }
-            }*/
             binding.btnSave.id -> {
                 if (validFields()) {
 
@@ -245,7 +238,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onDataUpdated(idPerson: Long) {
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_person_update), Snackbar.LENGTH_SHORT)
-
         //ID_PERSON_PAYMENT = idPerson.toString()
         SingletonInfraction.idNewPersonInfraction = idPerson
         doPaymentProcess()

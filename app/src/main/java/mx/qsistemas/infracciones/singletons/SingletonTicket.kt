@@ -33,7 +33,6 @@ object SingletonTicket {
     var betweenStreetInfraction: String = "-"
     var andStreetInfraction: String = "-"
     var colonyInfraction: String = "-"
-    var townshipInfraction: String = "-"
 
     var retainedDocumentInfraction: String = "NINGUNO"
     var isRemitedInfraction: Boolean = false
@@ -79,7 +78,6 @@ object SingletonTicket {
         betweenStreetInfraction = "-"
         andStreetInfraction = "-"
         colonyInfraction = "-"
-        townshipInfraction = "-"
 
         retainedDocumentInfraction = "NINGUNO"
         isRemitedInfraction = false

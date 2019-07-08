@@ -117,6 +117,7 @@
     <string name="t_offender_state">Entidad</string>
     <string name="t_offender_township">Municipio</string>
     <string name="t_offender_colony">Colonia</string>
+    <string name="t_offender_street">Calle</string>
     <string name="t_offender_no_ext">No. exterior</string>
     <string name="t_offender_no_int">No. interior</string>
     <string name="t_offender_license">Licencia del infractor</string>
@@ -181,6 +182,7 @@
     <string name="e_state_offender">Entidad obligatoria</string>
     <string name="e_township_offender">Municipio obligatorio</string>
     <string name="e_colony_offender">Colonia obligatoria</string>
+    <string name="e_street_offender">Calle obligatoria</string>
     <string name="e_no_ext_offender">No. exterior obligatorio</string>
     <string name="e_no_int_offender">No. interior obligatorio</string>
     <string name="e_no_license_offender">No. licencia obligatoria</string>

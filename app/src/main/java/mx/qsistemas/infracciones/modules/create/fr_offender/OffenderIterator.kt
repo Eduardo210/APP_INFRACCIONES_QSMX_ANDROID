@@ -224,7 +224,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /* Step 6. Save Person Address If Offender Was On The Moment */
         if (!SingletonInfraction.isPersonAbstent) {
             val personAddress = Address(0, 0, SingletonInfraction.stateOffender.id, SingletonInfraction.townshipOffender.id_town, SingletonInfraction.colonyOffender,
-                    "", SingletonInfraction.noExtOffender, SingletonInfraction.noIntOffender, SingletonInfraction.idPersonTownship, "", "", 0.0, 0.0)
+                    SingletonInfraction.streetOffender, SingletonInfraction.noExtOffender, SingletonInfraction.noIntOffender, SingletonInfraction.idPersonTownship, "", "", 0.0, 0.0)
             val idNewPersonAddress = SaveInfractionManager.saveAddress(personAddress)
             /* Step 6:1. Save Person-Address Relation */
             SaveInfractionManager.savePersonAddressRelation(AddressPerson(idNewPersonAddress.toInt(), SingletonInfraction.idNewPersonInfraction))
@@ -366,6 +366,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.rfcOffenfer.isNotEmpty()) {
             SingletonTicket.rfcOffender = SingletonInfraction.rfcOffenfer
         }
+        if (SingletonInfraction.streetOffender.isNotEmpty()) {
+            SingletonTicket.streetOffender = SingletonInfraction.streetOffender
+        }
         if (SingletonInfraction.noExtOffender.isNotEmpty()) {
             SingletonTicket.noExtOffender = SingletonInfraction.noExtOffender
         }
@@ -412,9 +415,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.disposition
         }
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1,"CON 50% DE DESCUENTO",fifteenthDay,SingletonInfraction.totalInfraction))
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2,"SIN DESCUENTO",thirtythDay,SingletonInfraction.subTotalInfraction))
-        Ticket.printTicket(activity, object : Ticket.TicketListener{
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
+        Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 listener.onTicketPrinted()
             }

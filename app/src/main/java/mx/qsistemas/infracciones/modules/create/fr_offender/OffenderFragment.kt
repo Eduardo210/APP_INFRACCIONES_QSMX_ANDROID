@@ -122,6 +122,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderMln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastMotherName = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderRfc.doOnTextChanged { text, start, count, after -> SingletonInfraction.rfcOffenfer = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtColony.doOnTextChanged { text, start, count, after -> SingletonInfraction.colonyOffender = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtStreet.doOnTextChanged { text, start, count, after -> SingletonInfraction.streetOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderNoExt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noExtOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderNoInt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noIntOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderLicenseNo.doOnTextChanged { text, start, count, after -> SingletonInfraction.noLicenseOffender = text?.trim().toString().toUpperCase() }
@@ -137,6 +138,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderFln.setText(SingletonInfraction.lastFatherName)
         binding.lytOffender.edtOffenderMln.setText(SingletonInfraction.lastMotherName)
         binding.lytOffender.edtOffenderRfc.setText(SingletonInfraction.rfcOffenfer)
+        binding.lytOffender.edtStreet.setText(SingletonInfraction.streetOffender)
         binding.lytOffender.edtOffenderNoExt.setText(SingletonInfraction.noExtOffender)
         binding.lytOffender.edtOffenderNoInt.setText(SingletonInfraction.noIntOffender)
         binding.lytOffender.edtOffenderLicenseNo.setText(SingletonInfraction.noLicenseOffender)
@@ -202,7 +204,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when (p0?.id) {
             binding.btnSave.id -> {
                 if (validFields()) {
-
                     if (isCreation) {
                         iterator.value.saveData(true)
                     } else {
@@ -274,6 +275,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 isValid = false
                                 onError(getString(R.string.e_colony_offender))
                             }
+                            SingletonInfraction.streetOffender.isEmpty() -> {
+                                isValid = false
+                                onError(getString(R.string.e_street_offender))
+                            }
                             SingletonInfraction.noExtOffender.isEmpty() -> {
                                 isValid = false
                                 onError(getString(R.string.e_no_ext_offender))
@@ -308,6 +313,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             SingletonInfraction.stateOffender.id != 0 -> isAnswered = true
             SingletonInfraction.townshipOffender.id_town != 0 -> isAnswered = true
             SingletonInfraction.colonyOffender.isNotEmpty() -> isAnswered = true
+            SingletonInfraction.streetOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noExtOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noIntOffender.isNotEmpty() -> isAnswered = true
         }

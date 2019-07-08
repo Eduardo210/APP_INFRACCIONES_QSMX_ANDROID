@@ -42,6 +42,7 @@ object SingletonInfraction {
     var stateOffender: States = States()
     var townshipOffender: Townships = Townships()
     var colonyOffender: String = ""
+    var streetOffender: String = ""
     var noExtOffender: String = ""
     var noIntOffender: String = ""
     var noLicenseOffender: String = ""
@@ -56,9 +57,9 @@ object SingletonInfraction {
     var discountInfraction: String = ""
     var totalInfraction: String = ""
     var captureLineii: Date? = null
-    var captureLineiii: Date?=null
-    var amountCaptureLineii:Float = 0.0f
-    var amountCaptureLineiii:Float = 0.0f
+    var captureLineiii: Date? = null
+    var amountCaptureLineii: Float = 0.0f
+    var amountCaptureLineiii: Float = 0.0f
 
     fun cleanSingleton() {
         /* Vehicle Information Reset */
@@ -96,6 +97,7 @@ object SingletonInfraction {
         stateOffender = States()
         townshipOffender = Townships()
         colonyOffender = ""
+        streetOffender = ""
         noExtOffender = ""
         noIntOffender = ""
         noLicenseOffender = ""

@@ -125,7 +125,15 @@ class Ticket {
             printTest.put(getPrintObject("AGENTE:\n", "2", "center", "0"))
             printTest.put(getPrintObject("${Application.prefs?.loadData(R.string.sp_person_f_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_m_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_name, "")}\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("EMPLEADO: ${Application.prefs?.loadData(R.string.sp_no_employee, "")}\n\n\n\n\n\n", "2", "center", "0"))
-            printTest.put(getPrintObject("FIRMA\n\n\n\n", "2", "center", "0"))
+            printTest.put(getPrintObject("FIRMA\n\n", "2", "center", "0"))
+
+            // Referencia de pago
+            if (SingletonTicket.paymentAuthCode.isNotEmpty()) {
+                printTest.put(getPrintObject("REFERENCIA DE PAGO:\n", "2", "center", "1"))
+                printTest.put(getPrintObject("${SingletonTicket.paymentAuthCode}\n\n\n\n", "2", "center", "0"))
+            } else {
+                printTest.put(getPrintObject("\n\n\n\n", "2", "center", "0"))
+            }
 
             // Descuentos
             SingletonTicket.captureLineList.forEach {
@@ -133,7 +141,7 @@ class Ticket {
                 printTest.put(getPrintObject("${it.captureLine}\n", "2", "center", "0"))
                 printTest.put(getPrintObject("${it.labelDiscount}\n", "2", "center", "0"))
                 printTest.put(getPrintObject("VIGENCIA: ${it.expirationDiscount}\n", "2", "center", "0"))
-                printTest.put(getPrintObject("IMPORTE: ${it.importInfraction}\n\n", "2", "center", "0"))
+                printTest.put(getPrintObject("IMPORTE: ${it.importInfraction}\n\n\n\n", "2", "center", "0"))
             }
 
             // Pie de página

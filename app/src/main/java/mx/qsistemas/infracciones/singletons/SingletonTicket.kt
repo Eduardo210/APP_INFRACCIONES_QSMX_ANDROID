@@ -38,6 +38,7 @@ object SingletonTicket {
     var isRemitedInfraction: Boolean = false
     var remitedDispositionInfraction: String = ""
 
+    var paymentAuthCode: String = ""
     var captureLineList: MutableList<CaptureLine> = mutableListOf()
 
     class ArticleFraction(var article: String = "-", var fraction: String = "-", var umas: String = "-",
@@ -83,6 +84,7 @@ object SingletonTicket {
         isRemitedInfraction = false
         remitedDispositionInfraction = ""
 
+        paymentAuthCode = ""
         captureLineList = mutableListOf()
     }
 }

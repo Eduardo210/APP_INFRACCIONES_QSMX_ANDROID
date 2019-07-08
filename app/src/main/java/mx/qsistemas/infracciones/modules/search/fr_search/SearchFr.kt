@@ -226,8 +226,6 @@ class SearchFr : Fragment()
         printTest.put(getPrintObject("TA MAGNA.\n\n\n", "2", "left", "0"))
         printTest.put(getPrintObject(infraction.date + "\n" + "FOLIO: " + infraction.folio + "\n\n\n", normal_size, "right", "0"))
         try {
-
-
             //Datos del infractor
             if (infraction.is_absent == 0) {
 
@@ -381,7 +379,7 @@ class SearchFr : Fragment()
             discountPayment = "0"
             compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
             if (compare_date <= 0) {
-                amountToPay = "#.2f".format(infraction.amount_capture_line_iii)
+                amountToPay = "%.2f".format(infraction.amount_capture_line_iii)
             } else {
                 haveToPay = false
             }

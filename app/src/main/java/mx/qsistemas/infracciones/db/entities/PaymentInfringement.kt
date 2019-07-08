@@ -14,4 +14,5 @@ data class PaymentInfringement(@PrimaryKey(autoGenerate = true) val id: Int,
                                @ColumnInfo(name = "FOLIO") val folio: String = "",
                                @ColumnInfo(name = "OBSERVACION") val observation: String = "",
                                @ColumnInfo(name = "ID_REGISTRO_USUARIO") val id_reg_user: Long,
-                               @ColumnInfo(name = "RECARGOS") val surcharge: Float = 0F)
+                               @ColumnInfo(name = "RECARGOS") val surcharge: Float = 0F,
+                               @ColumnInfo(name = "SYNC") val sync: Boolean = false)

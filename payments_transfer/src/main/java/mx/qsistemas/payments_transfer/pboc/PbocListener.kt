@@ -253,7 +253,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     override fun onRequestAmount() {
         Looper.prepare()
         try {
-            ServiceManager.getInstence().pboc.setAmount(Integer.parseInt(StringHelper.changeAmout(amount).replace(".", "")))
+            ServiceManager.getInstence().pboc.setAmount(Integer.parseInt(StringHelper.changeAmout(amount).replace(".", "").replace(",", "")))
         } catch (e: Exception) {
             e.printStackTrace()
         }

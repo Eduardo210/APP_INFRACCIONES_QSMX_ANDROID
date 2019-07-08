@@ -58,8 +58,9 @@ object SingletonInfraction {
     var totalInfraction: String = ""
     var captureLineii: Date? = null
     var captureLineiii: Date? = null
-    var amountCaptureLineii: Float = 0.0f
-    var amountCaptureLineiii: Float = 0.0f
+    var amountCaptureLineii: Float = 0F
+    var amountCaptureLineiii: Float = 0F
+    var paymentAuthCode: String = ""
 
     fun cleanSingleton() {
         /* Vehicle Information Reset */
@@ -109,8 +110,13 @@ object SingletonInfraction {
         idNewPersonInfraction = 0L
         idPersonTownship = 0L
         subTotalInfraction = ""
-        totalInfraction = ""
         discountInfraction = ""
+        totalInfraction = ""
+        captureLineii =  null
+        captureLineiii =  null
+        amountCaptureLineii = 0F
+        amountCaptureLineiii = 0F
+        paymentAuthCode = ""
     }
 
     class DtoMotivation(var article: Articles, var fraction: InfractionFraction, var motivation: String)

@@ -180,13 +180,13 @@ object PaymentsTransfer : Interfaces.Contracts {
         this.activity = activity
         this.modeTx = modeTx
         txListener = listener
-        this.amount = amount
+        this.amount = amount.replace(",", ".")
         activity.runOnUiThread {
             DialogStatusHelper.showDialog(activity, paymentsContext.getString(R.string.pt_t_waiting_card))
         }
         if (paymentsPreferences.loadData(R.string.pt_sp_banorte_aes_key, "") != "") {
             val intent = Intent()
-            intent.putExtra(InputPBOCInitData.AMOUNT_FLAG, formatAmount(amount))
+            intent.putExtra(InputPBOCInitData.AMOUNT_FLAG, formatAmount(this.amount))
             intent.putExtra(InputPBOCInitData.IS_PBOC_FORCE_ONLINE, false)
             intent.putExtra(
                     InputPBOCInitData.USE_DEVICE_FLAG,
@@ -196,7 +196,7 @@ object PaymentsTransfer : Interfaces.Contracts {
             ServiceManager.getInstence().pboc.startTransfer(
                     TransactionType.ONLINE_PAY,
                     intent,
-                    PbocListener(amount, activity, txListener)
+                    PbocListener(this.amount, activity, txListener)
             )
         } else {
             DialogStatusHelper.closeDialog()
@@ -258,7 +258,7 @@ object PaymentsTransfer : Interfaces.Contracts {
     }
 
     private fun formatAmount(amount: String): Int? {
-        return Integer.parseInt(StringHelper.changeAmout(amount).replace(".", ""))
+        return Integer.parseInt(StringHelper.changeAmout(amount).replace(".", "").replace(",", ""))
     }
 }
 

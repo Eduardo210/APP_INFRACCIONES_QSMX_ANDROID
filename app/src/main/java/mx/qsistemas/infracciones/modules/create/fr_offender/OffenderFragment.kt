@@ -343,8 +343,13 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxVoucherPrinted() {
         if (isPaid) {
-            SingletonInfraction.cleanSingleton()
-            activity.finish()
+            if (isCreation) {
+                activity.showLoader(getString(R.string.l_preparing_printer))
+                iterator.value.printTicket(activity)
+            } else {
+                SingletonInfraction.cleanSingleton()
+                activity.finish()
+            }
         } else {
             var builder = AlertDialogHelper.getGenericBuilder(
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
@@ -422,12 +427,12 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             discountPayment = "0"
             compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
             if (compare_date <= 0) {
-                amountToPay = "#.2f".format(SingletonInfraction.amountCaptureLineiii)
+                amountToPay = "%.2f".format(SingletonInfraction.amountCaptureLineiii)
             } else {
                 haveToPay = false
             }
         }
-        SingletonInfraction.totalInfraction = amountToPay
+        SingletonInfraction.totalInfraction = amountToPay.replace(",", ".")
         //TODO: llenar los datos coorrespondietnes para los datos del pago en server
         if (haveToPay) {
             PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)

@@ -184,10 +184,10 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             totalPoints += it.fraction.penalty_points
             totalUmas += it.fraction.minimum_wages
         }
-        SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport)
+        SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport).replace(",", ".")
         val fiftiethDiscount = totalImport * .5
-        SingletonInfraction.discountInfraction = "%.2f".format(fiftiethDiscount)
-        SingletonInfraction.totalInfraction = "%.2f".format(totalImport - fiftiethDiscount)
+        SingletonInfraction.discountInfraction = "%.2f".format(fiftiethDiscount).replace(",", ".")
+        SingletonInfraction.totalInfraction = "%.2f".format(totalImport - fiftiethDiscount).replace(",", ".")
         /* Get future working days */
         nonWorkingDays = SaveInfractionManager.getNonWorkingDays()
         fifteenthDay = getFutureWorkingDay(15)
@@ -357,6 +357,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SaveInfractionManager.savePaymentInfringementCard(paymentInfringementCard)
         /* Step 3. Update Infraction To Paid */
         SaveInfractionManager.updateInfrationToPaid(SingletonInfraction.idNewInfraction)
+        /* Step 4. Save Authorization Code into Singleton */
+        SingletonInfraction.paymentAuthCode = info.authorization
     }
 
     override fun printTicket(activity: Activity) {
@@ -415,6 +417,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.disposition
         }
+        SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
         SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
         SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
         Ticket.printTicket(activity, object : Ticket.TicketListener {

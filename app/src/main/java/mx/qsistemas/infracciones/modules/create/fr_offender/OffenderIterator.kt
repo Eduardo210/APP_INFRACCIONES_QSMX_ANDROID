@@ -11,10 +11,7 @@ import mx.qsistemas.infracciones.db.entities.*
 import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
 import mx.qsistemas.infracciones.db.managers.SaveInfractionManager
 import mx.qsistemas.infracciones.net.NetworkApi
-import mx.qsistemas.infracciones.net.catalogs.ServiceResponse
-import mx.qsistemas.infracciones.net.catalogs.ServiceResponsePerson
-import mx.qsistemas.infracciones.net.catalogs.States
-import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.catalogs.*
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.FS_COL_STATES
@@ -284,53 +281,17 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
-        val rootObj = JSONObject()
-        val jPayment = JSONObject()
-        val jPaymentCard = JSONObject()
         val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
-        //val totalPayment =totalToPay
-
-        rootObj.put("IdInfraccion", idInfraction)
-        rootObj.put("username", "InfraMobile")
-        rootObj.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-
-        jPaymentCard.put("aid", txInfo.aid)
-        jPaymentCard.put("app_label", txInfo.appLabel)
-        jPaymentCard.put("arqc", txInfo.arqc)
-        jPaymentCard.put("auth_nb", txInfo.authorization)
-        jPaymentCard.put("entry_type", txInfo.entryType)
-        jPaymentCard.put("masked_pan", txInfo.maskedPan)
-        jPaymentCard.put("trx_date", txInfo.txDate)
-        jPaymentCard.put("trx_nb", "")
-        jPaymentCard.put("trx_time", txInfo.txTime)
-        jPaymentCard.put("serial_payda", "")
-        jPaymentCard.put("id_registro_usuario", idRegUser.toString())
-        jPaymentCard.put("afiliacion", txInfo.affiliation)
-        jPaymentCard.put("vigencia_tarjeta", txInfo.expirationDate)
-        jPaymentCard.put("mensaje", "Aprobado")
-        jPaymentCard.put("tipo_tarjeta", txInfo.brandCard)
-        jPaymentCard.put("tipo", txInfo.typeCard)
-        jPaymentCard.put("banco_emisor", txInfo.bank)
-        jPaymentCard.put("referencia", txInfo.reference)
-        jPaymentCard.put("importe", totalPayment)
-        jPaymentCard.put("tvr", txInfo.tvr)
-        jPaymentCard.put("tsi", txInfo.tsi)
-        jPaymentCard.put("numero_control", txInfo.noControl)
-        jPaymentCard.put("tarjetahabiente", txInfo.cardOwner)
-        jPaymentCard.put("emv_data", "")
-        jPaymentCard.put("tipo_transaccion", txInfo.typeTx)
-        rootObj.put("paymentCard", jPaymentCard)
-
-        jPayment.put("id_forma_pago", 2)
-        jPayment.put("subtotal", amount)
-        jPayment.put("descuento", discount)
-        jPayment.put("total", totalPayment)
-        jPayment.put("folio", txInfo.authorization)
-        jPayment.put("observacion", "")
-        jPayment.put("id_registro_usuario", idPerson)
-        rootObj.put("payment", jPayment)
-        Log.d("JSON-SAVE-PAYMENT", rootObj.toString())
-        NetworkApi().getNetworkService().savePayment(rootObj.toString()).enqueue(object : Callback<String> {
+        val paymentCardData = UpdatePaymentRequest.UpdatePaymentCardData(txInfo.aid, txInfo.appLabel, txInfo.arqc, txInfo.authorization,
+                txInfo.entryType, txInfo.maskedPan, txInfo.txDate, "", txInfo.txTime, "", idRegUser.toString(),
+                txInfo.affiliation, txInfo.expirationDate, "Aprobado", txInfo.brandCard, txInfo.typeCard,
+                txInfo.bank, txInfo.reference, totalPayment, txInfo.tvr, txInfo.tsi, txInfo.noControl,
+                txInfo.cardOwner, "", txInfo.typeTx)
+        val paymentData = UpdatePaymentRequest.UpdatePaymentData(2, amount, discount, totalPayment,
+                txInfo.authorization, "", idPerson)
+        val request = UpdatePaymentRequest(idInfraction,"", "InfraMobile", "CF2E3EF25C90EB567243ADFACD4AA868", paymentCardData,
+                paymentData)
+        NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), Gson().toJson(request)).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), ServiceResponse::class.java)

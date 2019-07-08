@@ -205,6 +205,8 @@ object PaymentsTransfer : Interfaces.Contracts {
     }
 
     override fun print(activity: Activity, json: String, bitmap: Array<Bitmap>?, listener: IPaymentsTransfer.PrintListener) {
+        ServiceManager.getInstence().printer.setPrintGray(1000)
+        ServiceManager.getInstence().printer.setPrintFontByAsserts("catamaran_medium.ttf")
         ServiceManager.getInstence().printer.print(json, bitmap, object : OnPrinterListener {
             override fun onStart() {
                 activity.runOnUiThread {

@@ -119,3 +119,45 @@ data class InfractionPhotoRequest(@SerializedName("LoteImagenes") val images: Li
                          @SerializedName("ArchivoNombre") val fileName: String,
                          @SerializedName("ArchivoBase64") val file64: String)
 }
+
+data class UpdatePaymentRequest(@SerializedName("IdInfraccion") val idInfraction: String,
+                                @SerializedName("folio") val folio: String,
+                                @SerializedName("username") val username: String,
+                                @SerializedName("password") val password: String,
+                                @SerializedName("paymentCard") val paymentCard: UpdatePaymentCardData,
+                                @SerializedName("payment") val payment: UpdatePaymentData) {
+
+    data class UpdatePaymentCardData(@SerializedName("aid") val aid: String,
+                                     @SerializedName("app_label") val appLabel: String,
+                                     @SerializedName("arqc") val arqc: String,
+                                     @SerializedName("auth_nb") val authNb: String,
+                                     @SerializedName("entry_type") val entryType: String,
+                                     @SerializedName("masked_pan") val maskedPan: String,
+                                     @SerializedName("trx_date") val trxDate: String,
+                                     @SerializedName("trx_nb") val trxNb: String,
+                                     @SerializedName("trx_time") val trxTime: String,
+                                     @SerializedName("serial_payda") val serialPayda: String,
+                                     @SerializedName("id_registro_usuario") val idUserRegister: String,
+                                     @SerializedName("afiliacion") val affiliation: String,
+                                     @SerializedName("vigencia_tarjeta") val cardExpiration: String,
+                                     @SerializedName("mensaje") val message: String,
+                                     @SerializedName("tipo_tarjeta") val cardType: String,
+                                     @SerializedName("tipo") val type: String,
+                                     @SerializedName("banco_emisor") val issuerBank: String,
+                                     @SerializedName("referencia") val reference: String,
+                                     @SerializedName("importe") val import: String,
+                                     @SerializedName("tvr") val tvr: String,
+                                     @SerializedName("tsi") val tsi: String,
+                                     @SerializedName("numero_control") val noControl: String,
+                                     @SerializedName("tarjetahabiente") val cardHolder: String,
+                                     @SerializedName("emv_data") val emvData: String,
+                                     @SerializedName("tipo_transaccion") val typeTransaction: String)
+
+    data class UpdatePaymentData(@SerializedName("id_forma_pago") val idPaymentForm: Int,
+                                 @SerializedName("subtotal") val subtotal: String,
+                                 @SerializedName("descuento") val discount: String,
+                                 @SerializedName("total") val total: String,
+                                 @SerializedName("folio") val folio: String,
+                                 @SerializedName("observacion") val observation: String,
+                                 @SerializedName("id_registro_usuario") val idUserRegister: Long)
+}

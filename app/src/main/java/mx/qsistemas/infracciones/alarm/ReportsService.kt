@@ -11,13 +11,12 @@ import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.managers.SendInfractionManager
 import mx.qsistemas.infracciones.net.NetworkApi
-import mx.qsistemas.infracciones.net.catalogs.InfractionPhotoRequest
-import mx.qsistemas.infracciones.net.catalogs.SaveInfractionRequest
-import mx.qsistemas.infracciones.net.catalogs.SendInfractionResponse
+import mx.qsistemas.infracciones.net.catalogs.*
 import mx.qsistemas.infracciones.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.HttpURLConnection
 import javax.net.ssl.HttpsURLConnection
 
 
@@ -228,6 +227,37 @@ class ReportsService : JobService() {
     }
 
     private fun sendPayments() {
+        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
+        val idPerson = Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong()
+        val payments = SendInfractionManager.getPaymentsToSend()
+        if (payments.size > 0) {
+            payments.forEach {
+                val transaction = SendInfractionManager.getTransactionToSend(it.id_infringement.toLong())
+                val folio = SendInfractionManager.getFolioOfInfraction(it.id_infringement.toLong())
+                val paymentCardData = UpdatePaymentRequest.UpdatePaymentCardData(transaction.aid, transaction.app_label, transaction.arqc, transaction.auth_nb,
+                        transaction.entry_type, transaction.masked_pan, transaction.trx_date, transaction.trx_nb, transaction.trx_time, transaction.serial_paypda, idRegUser.toString(),
+                        transaction.afiliacion, transaction.vigencia_tarjeta, transaction.mensaje, transaction.tipo_tarjeta, transaction.tipo,
+                        transaction.banco_emisor, transaction.referencia, it.total.toString(), transaction.tvr, transaction.tsi, transaction.numero_control,
+                        transaction.tarjetahabiente, transaction.emv_data, transaction.tipo_transaccion)
+                val paymentData = UpdatePaymentRequest.UpdatePaymentData(it.id_payment_method, it.subtotal.toString(), it.discount.toString(), it.total.toString(),
+                        transaction.auth_nb, it.observation, idPerson)
+                val request = UpdatePaymentRequest("", folio, "InfraMobile", "CF2E3EF25C90EB567243ADFACD4AA868", paymentCardData,
+                        paymentData)
+                NetworkApi().getNetworkService().savePayment(it.id_infringement.toLong(), Gson().toJson(request)).enqueue(object : Callback<String> {
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        if (response.code() == HttpURLConnection.HTTP_OK) {
+                            val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
+                            if (data.flag) {
+                                val idInfraction = call.request().header("id_infraction")!!.toLong()
+                                SendInfractionManager.updatePaymentToSend(idInfraction)
+                            }
+                        }
+                    }
 
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                    }
+                })
+            }
+        }
     }
 }

@@ -13,4 +13,7 @@ interface PaymentInfringementCardDao {
 
     @Query("SELECT pic.* FROM payment_infringement_card pic INNER JOIN payment_infringement pi ON pi.ID_INFRACCION = pic.ID_INFRACCION INNER JOIN infraction i ON i.ID_INFRACCION = pic.ID_INFRACCION AND i.ID_INFRACCION = :idInfraction")
     fun selectTransactionInfo(idInfraction: Long): PaymentInfringementCard
+
+    @Query("SELECT pic.* FROM payment_infringement_card pic INNER JOIN payment_infringement pi ON pi.ID_INFRACCION = pic.ID_INFRACCION AND pi.SYNC = 0 INNER JOIN infraction i ON i.ID_INFRACCION = pic.ID_INFRACCION AND i.SYNC = 1 AND i.ID_INFRACCION = :idInfraction")
+    fun selectTransactionsToSend(idInfraction: Long): PaymentInfringementCard
 }

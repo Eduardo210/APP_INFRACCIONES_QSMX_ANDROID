@@ -8,7 +8,6 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.IdentifierDocument
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
 import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
-import mx.qsistemas.infracciones.db.managers.SaveInfractionManager
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
@@ -19,9 +18,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.HttpURLConnection
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class SearchIterator(private val listener: SearchContracts.Presenter) : SearchContracts.Iterator {
@@ -88,7 +84,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         })
     }
 
-    override fun doSearchByIdInfraction(id: String, origin:Int) {
+    override fun doSearchByIdInfraction(id: String, origin: Int) {
         val rootObject = JSONObject()
         rootObject.put("IdInfraccion", id)
         rootObject.put("username", "InfraMobile")
@@ -109,7 +105,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             }
         })
     }
-    override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount:String, discount:String, totalPayment: String, idPerson:Long) {
+
+    override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
         val rootObj = JSONObject()
         val jPayment = JSONObject()
         val jPaymentCard = JSONObject()
@@ -129,7 +126,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         jPaymentCard.put("trx_date", txInfo.txDate)
         jPaymentCard.put("trx_nb", "")
         jPaymentCard.put("trx_time", txInfo.txTime)
-        jPaymentCard.put("serial_payda", "" )
+        jPaymentCard.put("serial_payda", "")
         jPaymentCard.put("id_registro_usuario", idRegUser.toString())
         jPaymentCard.put("afiliacion", txInfo.affiliation)
         jPaymentCard.put("vigencia_tarjeta", txInfo.expirationDate)
@@ -145,24 +142,25 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         jPaymentCard.put("tarjetahabiente", txInfo.cardOwner)
         jPaymentCard.put("emv_data", "")
         jPaymentCard.put("tipo_transaccion", txInfo.typeTx)
-        rootObj.put("paymentCard", jPaymentCard)
+        rootObj.put("paymentCardCard", jPaymentCard)
 
-        jPayment.put("id_forma_pago",2)
+        jPayment.put("id_forma_pago", 2)
         jPayment.put("subtotal", amount)
-        jPayment.put("descuento",discount)
-        jPayment.put("total",totalPayment)
-        jPayment.put("folio",txInfo.authorization)
-        jPayment.put("observacion","")
-        jPayment.put("id_registro_usuario",idPerson)
+        jPayment.put("descuento", discount)
+        jPayment.put("total", totalPayment)
+        jPayment.put("folio", txInfo.authorization)
+        jPayment.put("observacion", "")
+        jPayment.put("id_registro_usuario", idPerson)
         rootObj.put("payment", jPayment)
         Log.d("JSON-SAVE-PAYMENT", rootObj.toString())
-        NetworkApi().getNetworkService().savePayment(rootObj.toString()).enqueue(object: Callback<String>{
+        NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), rootObj.toString()).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                if(response.code() == HttpURLConnection.HTTP_OK){
+                if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
                     listener.onResultSavePayment(data.message, data.flag)
                 }
             }
+
             override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
@@ -170,6 +168,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         })
     }
 }
+
 class NewIdentDocument {
     var id: Int = 0
     var value: String = ""

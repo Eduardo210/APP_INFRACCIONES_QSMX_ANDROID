@@ -93,6 +93,8 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             binding.lytOffender.spnTownship.visibility = GONE
             binding.lytOffender.textView11.visibility = GONE
             binding.lytOffender.edtColony.visibility = GONE
+            binding.lytOffender.textView18.visibility = GONE
+            binding.lytOffender.edtStreet.visibility = GONE
             binding.lytOffender.textView12.visibility = GONE
             binding.lytOffender.edtOffenderNoExt.visibility = GONE
             binding.lytOffender.textView13.visibility = GONE
@@ -385,6 +387,19 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxVoucherFailer(message: String) {
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
+        val builder = AlertDialogHelper.getGenericBuilder(
+                getString(R.string.w_dialog_title_print_ticket), getString(R.string.w_want_to_reprint_ticket), activity
+        )
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            activity.showLoader(getString(R.string.l_preparing_printer))
+            iterator.value.printTicket(activity)
+        }
+        builder.setNegativeButton("Cancelar") { _, _ ->
+            SingletonInfraction.cleanSingleton()
+            activity.finish()
+
+        }
+        builder.show()
     }
 
     override fun onTicketPrinted() {

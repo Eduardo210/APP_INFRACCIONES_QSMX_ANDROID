@@ -204,6 +204,7 @@
     <string name="w_dialog_title">AVISO</string>
     <string name="w_dialog_title_payment">PAGAR</string>
     <string name="w_dialog_title_payment_failed">COBRO FALLIDO</string>
+    <string name="w_dialog_title_print_ticket">IMPRESIÓN FALLIDA</string>
     <string name="w_dialog_title_reprint_ticket">REIMPRESIÓN BOLETA</string>
     <string name="w_want_to_reprint_ticket">¿Desea reimprimir la boleta?</string>
     <string name="w_want_to_pay">¿Desea pagar la infracción en este momento?</string>

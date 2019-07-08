@@ -94,6 +94,12 @@ object SendInfractionManager {
         }
     }
 
+    fun updatePaymentToSend(idInfraction: Long) {
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database?.paymentInfringementDao()?.updateToSend(idInfraction)
+        }
+    }
+
     fun getPhotosToSend(): MutableList<InfractionEvidence> {
         return object : AsyncTask<Void, Void, MutableList<InfractionEvidence>>() {
             override fun doInBackground(vararg p0: Void?): MutableList<InfractionEvidence> {

@@ -104,6 +104,9 @@ class ReportsService : JobService() {
                                 Log.e(this.javaClass.simpleName, "All items were saved!!!")
                                 reportsToSend.forEach {
                                     SendInfractionManager.updateInfractionToSend(it.folio)
+                                    if (it.is_paid == 1) {
+                                        SendInfractionManager.updatePaymentToSend(it.id.toLong())
+                                    }
                                 }
                                 // When done, update the notification one more time to remove the progress bar
                                 builderInfraction.setContentText(getString(R.string.s_infraction_send))
@@ -114,6 +117,9 @@ class ReportsService : JobService() {
                                 reportsToSend.forEach {
                                     if (it.folio !in result.folios) {
                                         SendInfractionManager.updateInfractionToSend(it.folio)
+                                        if (it.is_paid == 1) {
+                                            SendInfractionManager.updatePaymentToSend(it.id.toLong())
+                                        }
                                     }
                                 }
                                 // When done, update the notification one more time to remove the progress bar
@@ -138,6 +144,7 @@ class ReportsService : JobService() {
                     }
                 })
             }
+            sendPayments()
             sendPhotos()
         }
         return true
@@ -218,5 +225,9 @@ class ReportsService : JobService() {
             /* If there aren't any images to send, proceed to delete the send images from DB */
             SendInfractionManager.deleteSendImages()
         }
+    }
+
+    private fun sendPayments() {
+
     }
 }

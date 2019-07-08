@@ -9,7 +9,6 @@ import mx.qsistemas.infracciones.databinding.ActivityMainBinding
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
-import mx.qsistemas.infracciones.utils.Ticket
 
 class MainActivity : ActivityHelper(), MainContracts.Presenter {
 

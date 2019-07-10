@@ -6,9 +6,8 @@ import android.widget.ArrayAdapter
 import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.db.entities.InfractionItem
 import mx.qsistemas.infracciones.db.entities.IdentifierDocument
-import mx.qsistemas.infracciones.db.entities.InfractionLocal
+import mx.qsistemas.infracciones.db.entities.InfractionItem
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
 import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
 import mx.qsistemas.infracciones.db.managers.SearchManager
@@ -24,7 +23,6 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.StringBuilder
 import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
@@ -197,7 +195,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (itemInfraOffLine.size > 0) {
             listener.onResultSearchOffLine(itemInfraOffLine)
         } else {
-            listener.onError("Error al obtener datos locales.")
+            listener.onError("No se encontraron infracciones")
         }
     }
 

@@ -18,7 +18,8 @@ import kotlinx.android.synthetic.main.fragment_search.*
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
-import mx.qsistemas.infracciones.db.entities.*
+import mx.qsistemas.infracciones.db.entities.InfractionItem
+import mx.qsistemas.infracciones.db.entities.InfractionLocal
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
@@ -29,24 +30,18 @@ import mx.qsistemas.infracciones.modules.search.SearchIterator
 import mx.qsistemas.infracciones.modules.search.adapters.*
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
-import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.EXTRA_OPTION_INFRACTION
 import mx.qsistemas.infracciones.utils.Ticket
-import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintBarCode
-import mx.qsistemas.infracciones.utils.Ticket.Companion.getPrintObject
 import mx.qsistemas.infracciones.utils.Validator
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_AUTH_ALWAYS
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
-import org.json.JSONArray
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.annotation.meta.When
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -251,7 +246,6 @@ class SearchFr : Fragment()
         }
 
         SingletonTicket.colonyInfraction = infraction.COL_INFRA.toString()
-        SingletonTicket.townshipInfraction = infraction.TOWN_INFRA.toString()
         SingletonTicket.retainedDocumentInfraction = infraction.DOCUMENTO_RETENIDO.toString()
 
         if (infraction.ID_DISPOSICION != 0) {
@@ -332,7 +326,6 @@ class SearchFr : Fragment()
         SingletonTicket.betweenStreetInfraction = infraction.address_between_street
         SingletonTicket.andStreetInfraction = infraction.address_and_street
         SingletonTicket.colonyInfraction = infraction.address_colony
-        SingletonTicket.townshipInfraction = infraction.infraction_township
         SingletonTicket.retainedDocumentInfraction = infraction.retained_document
 
         if (infraction.id_disposition != 0) {

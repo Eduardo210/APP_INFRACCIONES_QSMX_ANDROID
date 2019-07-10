@@ -94,6 +94,12 @@ object SendInfractionManager {
         }
     }
 
+    fun updatePaymentToSend(idInfraction: Long) {
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database?.paymentInfringementDao()?.updateToSend(idInfraction)
+        }
+    }
+
     fun getPhotosToSend(): MutableList<InfractionEvidence> {
         return object : AsyncTask<Void, Void, MutableList<InfractionEvidence>>() {
             override fun doInBackground(vararg p0: Void?): MutableList<InfractionEvidence> {
@@ -130,5 +136,27 @@ object SendInfractionManager {
         Executors.newSingleThreadExecutor().execute {
             Application.m_database?.infractionEvidenceDao()?.deleteSendImages()
         }
+    }
+
+    fun getPaymentsToSend(): MutableList<PaymentInfringement> {
+        return object : AsyncTask<Void, Void, MutableList<PaymentInfringement>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<PaymentInfringement> {
+                return Application.m_database?.paymentInfringementDao()?.seletPaymentToSend()
+                        ?: mutableListOf()
+            }
+        }.execute().get()
+    }
+
+    fun getTransactionToSend(idInfraction: Long): PaymentInfringementCard {
+        return object : AsyncTask<Void, Void, PaymentInfringementCard>() {
+            override fun doInBackground(vararg p0: Void?): PaymentInfringementCard {
+                return Application.m_database?.paymentInfringementCardDao()?.selectTransactionsToSend(idInfraction)
+                        ?: PaymentInfringementCard(0, "", "", "", "", "",
+                                "", "", "", "", "", 0,
+                                "", "", "", "", "", "",
+                                "", "", "", "", "", "", "",
+                                "", 0)
+            }
+        }.execute().get()
     }
 }

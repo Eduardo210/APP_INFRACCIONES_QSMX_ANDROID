@@ -180,13 +180,13 @@ object PaymentsTransfer : Interfaces.Contracts {
         this.activity = activity
         this.modeTx = modeTx
         txListener = listener
-        this.amount = amount
+        this.amount = amount.replace(",", ".")
         activity.runOnUiThread {
             DialogStatusHelper.showDialog(activity, paymentsContext.getString(R.string.pt_t_waiting_card))
         }
         if (paymentsPreferences.loadData(R.string.pt_sp_banorte_aes_key, "") != "") {
             val intent = Intent()
-            intent.putExtra(InputPBOCInitData.AMOUNT_FLAG, formatAmount(amount))
+            intent.putExtra(InputPBOCInitData.AMOUNT_FLAG, formatAmount(this.amount))
             intent.putExtra(InputPBOCInitData.IS_PBOC_FORCE_ONLINE, false)
             intent.putExtra(
                     InputPBOCInitData.USE_DEVICE_FLAG,
@@ -196,7 +196,7 @@ object PaymentsTransfer : Interfaces.Contracts {
             ServiceManager.getInstence().pboc.startTransfer(
                     TransactionType.ONLINE_PAY,
                     intent,
-                    PbocListener(amount, activity, txListener)
+                    PbocListener(this.amount, activity, txListener)
             )
         } else {
             DialogStatusHelper.closeDialog()
@@ -205,6 +205,8 @@ object PaymentsTransfer : Interfaces.Contracts {
     }
 
     override fun print(activity: Activity, json: String, bitmap: Array<Bitmap>?, listener: IPaymentsTransfer.PrintListener) {
+        ServiceManager.getInstence().printer.setPrintGray(1000)
+        ServiceManager.getInstence().printer.setPrintFontByAsserts("catamaran_medium.ttf")
         ServiceManager.getInstence().printer.print(json, bitmap, object : OnPrinterListener {
             override fun onStart() {
                 activity.runOnUiThread {
@@ -257,8 +259,13 @@ object PaymentsTransfer : Interfaces.Contracts {
         })
     }
 
+    override fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener, voucher: Voucher) {
+        val paymentsVoucher = PaymentsVoucher(activity, listener)
+        paymentsVoucher.printVoucher(activity, voucher, false)
+    }
+
     private fun formatAmount(amount: String): Int? {
-        return Integer.parseInt(StringHelper.changeAmout(amount).replace(".", ""))
+        return Integer.parseInt(StringHelper.changeAmout(amount).replace(".", "").replace(",", ""))
     }
 }
 
@@ -278,6 +285,7 @@ internal class Interfaces {
         fun print(activity: Activity, json: String, bitmap: Array<Bitmap>?, listener: IPaymentsTransfer.PrintListener)
         fun scanCard(activity: Activity, timeout: Int, listener: IPaymentsTransfer.ScanCardListener)
         fun scanCode(activity: Activity, timeout: Long, listener: IPaymentsTransfer.ScanCodeListener)
+        fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener, voucher: Voucher)
     }
 
     interface CipherDataListener {

@@ -20,12 +20,10 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
     private var hasPrintedCopy = false
     private lateinit var activity: Activity
     private lateinit var voucher: Voucher
-    private lateinit var entryMode: String
 
-    fun printVoucher(activity: Activity, voucherInfo: Voucher, entryMode: String, isCopy: Boolean) {
+    fun printVoucher(activity: Activity, voucherInfo: Voucher, isCopy: Boolean) {
         this.activity = activity
         this.voucher = voucherInfo
-        this.entryMode = entryMode
         try {
             activity.runOnUiThread { DialogStatusHelper.showDialog(activity, activity.getString(R.string.pt_t_printing_voucher)) }
             ServiceManager.getInstence().printer.setPrintGray(1000)
@@ -61,7 +59,7 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
             }
             printTest.put(getPrintObject("          Fecha: ${voucherInfo.date}", "2"))
             printTest.put(getPrintObject("          Hora: ${voucherInfo.hour}\n\n", "2"))
-            if (entryMode == ENTRY_MODE_CHIP && voucherInfo.flagTrans == FLAG_TRANS_APPROVE) {
+            if (voucher.entryMode == ENTRY_MODE_CHIP && voucherInfo.flagTrans == FLAG_TRANS_APPROVE) {
                 printTest.put(getPrintObject("AID: ${voucherInfo.AID}", "2"))
                 printTest.put(getPrintObject("TVR: ${voucherInfo.TVR}", "2"))
                 printTest.put(getPrintObject("TSI: ${voucherInfo.TSI}", "2"))
@@ -101,11 +99,11 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
     override fun onFinish() {
         DialogStatusHelper.closeDialog()
         if (!hasPrintedCopy && voucher.flagTrans == FLAG_TRANS_APPROVE) {
-            var builder = AlertDialogHelper.getGenericBuilder(
+            val builder = AlertDialogHelper.getGenericBuilder(
                     activity.getString(R.string.pt_s_title_dialog_payment), activity.getString(R.string.pt_s_subtitle_dialog_payment), activity)
             builder.setPositiveButton("Aceptar") { _, _ ->
                 hasPrintedCopy = true
-                printVoucher(activity, voucher, entryMode, true)
+                printVoucher(activity, voucher, true)
             }
             builder.setNegativeButton("Cancelar") { _, _ -> txListener.onTxVoucherPrinted() }
             builder.show()

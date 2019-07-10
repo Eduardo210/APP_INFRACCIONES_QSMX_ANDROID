@@ -178,7 +178,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         jPayment.put("id_registro_usuario", idPerson)
         rootObj.put("payment", jPayment)
         Log.d("JSON-SAVE-PAYMENT", rootObj.toString())
-        NetworkApi().getNetworkService().savePayment(rootObj.toString()).enqueue(object : Callback<String> {
+        NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), rootObj.toString()).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), ServiceResponse::class.java)

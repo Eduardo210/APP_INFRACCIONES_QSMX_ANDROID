@@ -8,6 +8,7 @@
     <string name="sp_firebase_token_push">firebase_token_push</string>
     <string name="sp_id_state">id_state</string>
     <string name="sp_id_township">id_township</string>
+    <string name="sp_township_name">township_name</string>
     <string name="sp_prefix">prefix</string>
     <string name="sp_last_synch">last_synch</string>
     <string name="sp_id_person">id_person</string>
@@ -117,6 +118,7 @@
     <string name="t_offender_state">Entidad</string>
     <string name="t_offender_township">Municipio</string>
     <string name="t_offender_colony">Colonia</string>
+    <string name="t_offender_street">Calle</string>
     <string name="t_offender_no_ext">No. exterior</string>
     <string name="t_offender_no_int">No. interior</string>
     <string name="t_offender_license">Licencia del infractor</string>
@@ -181,6 +183,7 @@
     <string name="e_state_offender">Entidad obligatoria</string>
     <string name="e_township_offender">Municipio obligatorio</string>
     <string name="e_colony_offender">Colonia obligatoria</string>
+    <string name="e_street_offender">Calle obligatoria</string>
     <string name="e_no_ext_offender">No. exterior obligatorio</string>
     <string name="e_no_int_offender">No. interior obligatorio</string>
     <string name="e_no_license_offender">No. licencia obligatoria</string>
@@ -201,11 +204,14 @@
     <string name="w_dialog_title">AVISO</string>
     <string name="w_dialog_title_payment">PAGAR</string>
     <string name="w_dialog_title_payment_failed">COBRO FALLIDO</string>
+    <string name="w_dialog_title_print_ticket">IMPRESIÓN FALLIDA</string>
     <string name="w_dialog_title_reprint_ticket">REIMPRESIÓN BOLETA</string>
     <string name="w_want_to_reprint_ticket">¿Desea reimprimir la boleta?</string>
+    <string name="w_options_reprint">Por favor verifique que la impresora contenga papel y seleccione opción de reimpresión</string>
     <string name="w_want_to_pay">¿Desea pagar la infracción en este momento?</string>
     <string name="w_exit_without_save">Se perderán los cambios realizados, ¿Desea continuar?</string>
     <string name="w_reintent_transaction">¿Desea reintentar hacer el cobro?</string>
+    <string name="w_verify_printer">Asegúrate de contar con papel suficiente para imprimir</string>
     <string name="w_close_session">¿Desea cerrar sesión en el dispositivo?</string>
     <string name="w_date_time_zone_not_automatic">Favor de seleccionar fecha y zona horaria automática</string>
     <string name="w_min_photos_take">Favor de tomar por lo menos 1 foto</string>

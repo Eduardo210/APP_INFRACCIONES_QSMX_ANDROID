@@ -5,6 +5,7 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivityLogInBinding
 import mx.qsistemas.infracciones.dialogs.InitialConfigurationCallback
@@ -65,7 +66,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
 
     override fun onConfigurationSuccessful(idTownship: Int, prefix: String) {
         PaymentsTransfer.configDevice(idTownship, prefix)
-        val loadKeyData = LoadKeyData("88888888", "7455440", "a7455440", "quet5440")
+        val loadKeyData = LoadKeyData(BuildConfig.PTX_SERIAL_NUMBER, BuildConfig.PTX_MERCHANT_ID, BuildConfig.PTX_USER, BuildConfig.PTX_PSW)
         PaymentsTransfer.loadKeyDevice(this, loadKeyData, object : IPaymentsTransfer.LoadKeyListener {
             override fun onLoadKey(success: Boolean, value: String) {
                 if (!success) {

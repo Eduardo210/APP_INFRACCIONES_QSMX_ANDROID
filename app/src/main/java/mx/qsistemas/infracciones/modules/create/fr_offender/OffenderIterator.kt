@@ -6,22 +6,23 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.*
 import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
 import mx.qsistemas.infracciones.db.managers.SaveInfractionManager
 import mx.qsistemas.infracciones.net.NetworkApi
-import mx.qsistemas.infracciones.net.catalogs.ServiceResponse
-import mx.qsistemas.infracciones.net.catalogs.ServiceResponsePerson
-import mx.qsistemas.infracciones.net.catalogs.States
-import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.catalogs.*
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.FS_COL_STATES
 import mx.qsistemas.infracciones.utils.FS_COL_TOWNSHIPS
 import mx.qsistemas.infracciones.utils.Ticket
 import mx.qsistemas.infracciones.utils.Utils
+import mx.qsistemas.payments_transfer.IPaymentsTransfer
+import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
+import mx.qsistemas.payments_transfer.dtos.Voucher
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,6 +38,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     internal lateinit var stateIssuedLicenseList: MutableList<States>
     internal lateinit var townshipsList: MutableList<Townships>
     internal lateinit var licenseTypeList: MutableList<LicenseType>
+    internal lateinit var txInfo: TransactionInfo
 
     /* Variable From Saved Infraction */
     private val actualDay = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date())
@@ -184,10 +186,10 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             totalPoints += it.fraction.penalty_points
             totalUmas += it.fraction.minimum_wages
         }
-        SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport)
+        SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport).replace(",", ".")
         val fiftiethDiscount = totalImport * .5
-        SingletonInfraction.discountInfraction = "%.2f".format(fiftiethDiscount)
-        SingletonInfraction.totalInfraction = "%.2f".format(totalImport - fiftiethDiscount)
+        SingletonInfraction.discountInfraction = "%.2f".format(fiftiethDiscount).replace(",", ".")
+        SingletonInfraction.totalInfraction = "%.2f".format(totalImport - fiftiethDiscount).replace(",", ".")
         /* Get future working days */
         nonWorkingDays = SaveInfractionManager.getNonWorkingDays()
         fifteenthDay = getFutureWorkingDay(15)
@@ -224,7 +226,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /* Step 6. Save Person Address If Offender Was On The Moment */
         if (!SingletonInfraction.isPersonAbstent) {
             val personAddress = Address(0, 0, SingletonInfraction.stateOffender.id, SingletonInfraction.townshipOffender.id_town, SingletonInfraction.colonyOffender,
-                    "", SingletonInfraction.noExtOffender, SingletonInfraction.noIntOffender, SingletonInfraction.idPersonTownship, "", "", 0.0, 0.0)
+                    SingletonInfraction.streetOffender, SingletonInfraction.noExtOffender, SingletonInfraction.noIntOffender, SingletonInfraction.idPersonTownship, "", "", 0.0, 0.0)
             val idNewPersonAddress = SaveInfractionManager.saveAddress(personAddress)
             /* Step 6:1. Save Person-Address Relation */
             SaveInfractionManager.savePersonAddressRelation(AddressPerson(idNewPersonAddress.toInt(), SingletonInfraction.idNewPersonInfraction))
@@ -284,53 +286,18 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
-        val rootObj = JSONObject()
-        val jPayment = JSONObject()
-        val jPaymentCard = JSONObject()
+        this.txInfo = txInfo
         val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
-        //val totalPayment =totalToPay
-
-        rootObj.put("IdInfraccion", idInfraction)
-        rootObj.put("username", "InfraMobile")
-        rootObj.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-
-        jPaymentCard.put("aid", txInfo.aid)
-        jPaymentCard.put("app_label", txInfo.appLabel)
-        jPaymentCard.put("arqc", txInfo.arqc)
-        jPaymentCard.put("auth_nb", txInfo.authorization)
-        jPaymentCard.put("entry_type", txInfo.entryType)
-        jPaymentCard.put("masked_pan", txInfo.maskedPan)
-        jPaymentCard.put("trx_date", txInfo.txDate)
-        jPaymentCard.put("trx_nb", "")
-        jPaymentCard.put("trx_time", txInfo.txTime)
-        jPaymentCard.put("serial_payda", "")
-        jPaymentCard.put("id_registro_usuario", idRegUser.toString())
-        jPaymentCard.put("afiliacion", txInfo.affiliation)
-        jPaymentCard.put("vigencia_tarjeta", txInfo.expirationDate)
-        jPaymentCard.put("mensaje", "Aprobado")
-        jPaymentCard.put("tipo_tarjeta", txInfo.brandCard)
-        jPaymentCard.put("tipo", txInfo.typeCard)
-        jPaymentCard.put("banco_emisor", txInfo.bank)
-        jPaymentCard.put("referencia", txInfo.reference)
-        jPaymentCard.put("importe", totalPayment)
-        jPaymentCard.put("tvr", txInfo.tvr)
-        jPaymentCard.put("tsi", txInfo.tsi)
-        jPaymentCard.put("numero_control", txInfo.noControl)
-        jPaymentCard.put("tarjetahabiente", txInfo.cardOwner)
-        jPaymentCard.put("emv_data", "")
-        jPaymentCard.put("tipo_transaccion", txInfo.typeTx)
-        rootObj.put("paymentCard", jPaymentCard)
-
-        jPayment.put("id_forma_pago", 2)
-        jPayment.put("subtotal", amount)
-        jPayment.put("descuento", discount)
-        jPayment.put("total", totalPayment)
-        jPayment.put("folio", txInfo.authorization)
-        jPayment.put("observacion", "")
-        jPayment.put("id_registro_usuario", idPerson)
-        rootObj.put("payment", jPayment)
-        Log.d("JSON-SAVE-PAYMENT", rootObj.toString())
-        NetworkApi().getNetworkService().savePayment(rootObj.toString()).enqueue(object : Callback<String> {
+        val paymentCardData = UpdatePaymentRequest.UpdatePaymentCardData(txInfo.aid, txInfo.appLabel, txInfo.arqc, txInfo.authorization,
+                txInfo.entryType, txInfo.maskedPan, txInfo.txDate, "", txInfo.txTime, "", idRegUser.toString(),
+                txInfo.affiliation, txInfo.expirationDate, "Aprobado", txInfo.brandCard, txInfo.typeCard,
+                txInfo.bank, txInfo.reference, totalPayment, txInfo.tvr, txInfo.tsi, txInfo.noControl,
+                txInfo.cardOwner, "", txInfo.typeTx)
+        val paymentData = UpdatePaymentRequest.UpdatePaymentData(2, amount, discount, totalPayment,
+                txInfo.authorization, "", idPerson)
+        val request = UpdatePaymentRequest(idInfraction, "", "InfraMobile", "CF2E3EF25C90EB567243ADFACD4AA868", paymentCardData,
+                paymentData)
+        NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), Gson().toJson(request)).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
@@ -345,18 +312,21 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun savePayment(info: TransactionInfo) {
+        this.txInfo = info
         /* Step 1. Save Payment Infraction */
         val paymentInfringement = PaymentInfringement(0, SingletonInfraction.idNewInfraction.toInt(), 2, SingletonInfraction.subTotalInfraction.toFloat(), SingletonInfraction.discountInfraction.toFloat(),
                 SingletonInfraction.totalInfraction.toFloat(), info.authorization, "", SingletonInfraction.idNewPersonInfraction, 0F)
         SaveInfractionManager.savePaymentInfringement(paymentInfringement)
         /* Step 2. Save Payment Transaction Information */
         val paymentInfringementCard = PaymentInfringementCard(0, info.aid, info.appLabel, info.arqc, info.authorization, info.entryType, info.maskedPan,
-                info.txDate, "", info.txTime, Application.prefs?.loadData(R.string.sp_prefix, "")!!, SingletonInfraction.idNewPersonInfraction, info.affiliation, info.expirationDate, "Aprobado", info.brandCard,
+                info.txDate, "", info.txTime, Application.prefs?.loadData(R.string.sp_prefix, "")!!, SingletonInfraction.idNewPersonInfraction, info.affiliation, info.expirationDate, info.flagTransaction, info.brandCard,
                 info.typeCard, info.bank, info.reference, SingletonInfraction.totalInfraction, info.tvr, info.tsi, info.noControl, info.cardOwner,
                 "", info.typeTx, SingletonInfraction.idNewInfraction)
         SaveInfractionManager.savePaymentInfringementCard(paymentInfringementCard)
         /* Step 3. Update Infraction To Paid */
         SaveInfractionManager.updateInfrationToPaid(SingletonInfraction.idNewInfraction)
+        /* Step 4. Save Authorization Code into Singleton */
+        SingletonInfraction.paymentAuthCode = info.authorization
     }
 
     override fun printTicket(activity: Activity) {
@@ -365,6 +335,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SingletonTicket.completeNameOffender = SingletonInfraction.nameOffender + " " + SingletonInfraction.lastFatherName + " " + SingletonInfraction.lastMotherName
         if (SingletonInfraction.rfcOffenfer.isNotEmpty()) {
             SingletonTicket.rfcOffender = SingletonInfraction.rfcOffenfer
+        }
+        if (SingletonInfraction.streetOffender.isNotEmpty()) {
+            SingletonTicket.streetOffender = SingletonInfraction.streetOffender
         }
         if (SingletonInfraction.noExtOffender.isNotEmpty()) {
             SingletonTicket.noExtOffender = SingletonInfraction.noExtOffender
@@ -412,9 +385,10 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.disposition
         }
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1,"CON 50% DE DESCUENTO",fifteenthDay,SingletonInfraction.totalInfraction))
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2,"SIN DESCUENTO",thirtythDay,SingletonInfraction.subTotalInfraction))
-        Ticket.printTicket(activity, object : Ticket.TicketListener{
+        SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
+        Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 listener.onTicketPrinted()
             }
@@ -423,6 +397,14 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 listener.onError(Application.getContext().getString(R.string.pt_e_print_other_error))
             }
         })
+    }
+
+    override fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener) {
+        val voucher = Voucher(txInfo.noControl, txInfo.maskedPan.substring(txInfo.maskedPan.length - 4, txInfo.maskedPan.length), txInfo.expirationDate, txInfo.brandCard,
+                txInfo.typeCard, txInfo.bank, txInfo.authorization, txInfo.reference, txInfo.amount, txInfo.cardOwner,
+                txInfo.txDate, txInfo.txTime, txInfo.aid, txInfo.tvr, txInfo.tsi, txInfo.appLabel, txInfo.flagTransaction,
+                txInfo.needSign, BuildConfig.PTX_MERCHANT_ID, Utils.getImeiDevice(activity), txInfo.entryType)
+        PaymentsTransfer.reprintVoucher(activity, listener, voucher)
     }
 
     private fun Boolean.toInt() = if (this) 1 else 0

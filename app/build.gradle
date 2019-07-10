@@ -26,6 +26,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "default"
+    productFlavors {
+        // Flavor de Quetzalcoatl Desarrollo
+        development {
+            applicationId "mx.qsistemas.infracciones"
+            buildConfigField("String", "PTX_SERIAL_NUMBER", "\"8888888\"")
+            buildConfigField("String", "PTX_MERCHANT_ID", "\"7455440\"")
+            buildConfigField("String", "PTX_USER", "\"a7455440\"")
+            buildConfigField("String", "PTX_PSW", "\"quet5440\"")
+        }
+        // Flavor de Tultitlán
+        tultitlan {
+            applicationId "mx.qsistemas.infracciones_tultitlan"
+            buildConfigField("String", "PTX_SERIAL_NUMBER", "\"8888888\"")
+            buildConfigField("String", "PTX_MERCHANT_ID", "\"8166045\"")
+            buildConfigField("String", "PTX_USER", "\"a7455440\"")
+            buildConfigField("String", "PTX_PSW", "\"quet5440\"")
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

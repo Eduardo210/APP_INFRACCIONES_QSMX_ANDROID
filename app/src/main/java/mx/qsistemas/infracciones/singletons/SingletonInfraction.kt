@@ -44,6 +44,7 @@ object SingletonInfraction {
     var stateOffender: States = States()
     var townshipOffender: Townships = Townships()
     var colonyOffender: String = ""
+    var streetOffender: String = ""
     var noExtOffender: String = ""
     var noIntOffender: String = ""
     var noLicenseOffender: String = ""
@@ -58,9 +59,10 @@ object SingletonInfraction {
     var discountInfraction: String = ""
     var totalInfraction: String = ""
     var captureLineii: Date? = null
-    var captureLineiii: Date?=null
-    var amountCaptureLineii:Float = 0.0f
-    var amountCaptureLineiii:Float = 0.0f
+    var captureLineiii: Date? = null
+    var amountCaptureLineii: Float = 0F
+    var amountCaptureLineiii: Float = 0F
+    var paymentAuthCode: String = ""
 
     fun cleanSingleton() {
         /* Vehicle Information Reset */
@@ -100,6 +102,7 @@ object SingletonInfraction {
         stateOffender = States()
         townshipOffender = Townships()
         colonyOffender = ""
+        streetOffender = ""
         noExtOffender = ""
         noIntOffender = ""
         noLicenseOffender = ""
@@ -111,13 +114,13 @@ object SingletonInfraction {
         idNewPersonInfraction = 0L
         idPersonTownship = 0L
         subTotalInfraction = ""
-        totalInfraction = ""
         discountInfraction = ""
-        totalInfraction= ""
-        captureLineii = null
-        captureLineiii=null
-        amountCaptureLineii =0.0f
-        amountCaptureLineiii= 0.0f
+        totalInfraction = ""
+        captureLineii =  null
+        captureLineiii =  null
+        amountCaptureLineii = 0F
+        amountCaptureLineiii = 0F
+        paymentAuthCode = ""
     }
 
     class DtoMotivation(var article: Articles, var fraction: InfractionFraction, var motivation: String)

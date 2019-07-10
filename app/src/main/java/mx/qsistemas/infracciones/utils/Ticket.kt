@@ -34,7 +34,7 @@ class Ticket {
             printTest.put(getPrintObject("NES  A CONDUCTORES   DE   VEHÍ-", "2", "center", "0"))
             printTest.put(getPrintObject("CULOS     QUE     CONTRAVENGAN", "2", "center", "0"))
             printTest.put(getPrintObject("LAS   DISPOSICIONES    EN   MATE-", "2", "center", "0"))
-            printTest.put(getPrintObject("RIA   DE  TRÁNSITO,  EQUILIBRIO  E-", "2", "center", "0"))
+            printTest.put(getPrintObject("RIA  DE  TRÁNSITO, EQUILIBRIO  E-", "2", "center", "0"))
             printTest.put(getPrintObject("COLÓGICO       PROTECCIÓN       AL", "2", "center", "0"))
             printTest.put(getPrintObject("AMBIENTE    Y     PARA    LA    PRE-", "2", "left", "0"))
             printTest.put(getPrintObject("VENCIÓN    Y    CONTROL    DE    LA", "2", "left", "0"))
@@ -53,8 +53,8 @@ class Ticket {
             printTest.put(getPrintObject("TICA   DE  LOS  ESTADOS   UNIDOS", "2", "left", "0"))
             printTest.put(getPrintObject("MEXICANOS     DE     ACUERDO     A", "2", "left", "0"))
             printTest.put(getPrintObject("LO   ESTABLECIDO   EN   LOS   ARTÍ-", "2", "left", "0"))
-            printTest.put(getPrintObject("CULOS   8.3,  8.10,  8.18,  8.19   BIS", "2", "left", "0"))
-            printTest.put(getPrintObject(",8.19   TERCERO   Y   8.19 CUARTO", "2", "left", "0"))
+            printTest.put(getPrintObject("CULOS   8.3,  8.10,  8.18,  8.19   BIS,", "2", "left", "0"))
+            printTest.put(getPrintObject("8.19   TERCERO   Y    8.19   CUARTO", "2", "left", "0"))
             printTest.put(getPrintObject("DEL     CÓDIGO     ADMINISTRATIVO", "2", "left", "0"))
             printTest.put(getPrintObject("DEL    ESTADO    DE    MÉXICO.  ASÍ", "2", "left", "0"))
             printTest.put(getPrintObject("COMO HACER  CONSTAR  LOS  HE-", "2", "left", "0"))
@@ -69,16 +69,25 @@ class Ticket {
             printTest.put(getPrintObject("DATOS DEL INFRACTOR:\n\n", "2", "left", "1"))
             printTest.put(getPrintObject("${SingletonTicket.completeNameOffender}\n", "2", "center", "0"))
             printTest.put(getPrintObject("${SingletonTicket.rfcOffender}\n\n", "2", "center", "0"))
-            printTest.put(getPrintObject("DOMICILIO: ${SingletonTicket.streetOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("EXTERIOR: ${SingletonTicket.noExtOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("INTERIOR: ${SingletonTicket.noIntOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("COLONIA: ${SingletonTicket.colonyOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("ENTIDAD: ${SingletonTicket.stateOffender}\n\n", "2", "left", "0"))
+            if (SingletonTicket.streetOffender != "-")
+                printTest.put(getPrintObject("DOMICILIO: ${SingletonTicket.streetOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.noExtOffender != "-")
+                printTest.put(getPrintObject("EXTERIOR: ${SingletonTicket.noExtOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.noIntOffender != "-")
+                printTest.put(getPrintObject("INTERIOR: ${SingletonTicket.noIntOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.colonyOffender != "-")
+                printTest.put(getPrintObject("COLONIA: ${SingletonTicket.colonyOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.stateOffender != "-")
+                printTest.put(getPrintObject("ENTIDAD: ${SingletonTicket.stateOffender}\n\n", "2", "left", "0"))
 
             // Datos de licencia
             printTest.put(getPrintObject("LICENCIA/PERMISO: ${SingletonTicket.noLicenseOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("TIPO LICENCIA: ${SingletonTicket.typeLicenseOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("EXPEDIDA: ${SingletonTicket.stateLicenseOffender}\n\n", "2", "left", "0"))
+            if (SingletonTicket.typeLicenseOffender != "-")
+                printTest.put(getPrintObject("TIPO LICENCIA: ${SingletonTicket.typeLicenseOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.stateLicenseOffender != "-")
+                printTest.put(getPrintObject("EXPEDIDA: ${SingletonTicket.stateLicenseOffender}\n\n", "2", "left", "0"))
+            else
+                printTest.put(getPrintObject("\n\n", "2", "left", "0"))
 
             // Características del vehículo
             printTest.put(getPrintObject("CARACTERÍSTICAS DEL VEHÍCULO:\n\n", "2", "left", "1"))
@@ -109,7 +118,7 @@ class Ticket {
             printTest.put(getPrintObject("ENTRE: ${SingletonTicket.betweenStreetInfraction}\n", "2", "left", "0"))
             printTest.put(getPrintObject("Y: ${SingletonTicket.andStreetInfraction}\n", "2", "left", "0"))
             printTest.put(getPrintObject("COLONIA: ${SingletonTicket.colonyInfraction}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("MUNICIPIO: ${SingletonTicket.townshipInfraction}\n\n", "2", "left", "0"))
+            printTest.put(getPrintObject("MUNICIPIO: ${Application.prefs?.loadData(R.string.sp_township_name, "")}\n\n", "2", "left", "0"))
 
             // Datos de infracción
             printTest.put(getPrintObject("DOCUMENTO QUE SE RETIENE:\n", "2", "left", "0"))
@@ -125,7 +134,15 @@ class Ticket {
             printTest.put(getPrintObject("AGENTE:\n", "2", "center", "0"))
             printTest.put(getPrintObject("${Application.prefs?.loadData(R.string.sp_person_f_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_m_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_name, "")}\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("EMPLEADO: ${Application.prefs?.loadData(R.string.sp_no_employee, "")}\n\n\n\n\n\n", "2", "center", "0"))
-            printTest.put(getPrintObject("FIRMA\n\n\n\n", "2", "center", "0"))
+            printTest.put(getPrintObject("FIRMA\n\n", "2", "center", "0"))
+
+            // Referencia de pago
+            if (SingletonTicket.paymentAuthCode.isNotEmpty()) {
+                printTest.put(getPrintObject("REFERENCIA DE PAGO:\n", "2", "center", "1"))
+                printTest.put(getPrintObject("${SingletonTicket.paymentAuthCode}\n\n\n\n", "2", "center", "0"))
+            } else {
+                printTest.put(getPrintObject("\n\n\n\n", "2", "center", "0"))
+            }
 
             // Descuentos
             SingletonTicket.captureLineList.forEach {
@@ -133,7 +150,7 @@ class Ticket {
                 printTest.put(getPrintObject("${it.captureLine}\n", "2", "center", "0"))
                 printTest.put(getPrintObject("${it.labelDiscount}\n", "2", "center", "0"))
                 printTest.put(getPrintObject("VIGENCIA: ${it.expirationDiscount}\n", "2", "center", "0"))
-                printTest.put(getPrintObject("IMPORTE: ${it.importInfraction}\n\n", "2", "center", "0"))
+                printTest.put(getPrintObject("IMPORTE: ${it.importInfraction}\n\n\n\n", "2", "center", "0"))
             }
 
             // Pie de página

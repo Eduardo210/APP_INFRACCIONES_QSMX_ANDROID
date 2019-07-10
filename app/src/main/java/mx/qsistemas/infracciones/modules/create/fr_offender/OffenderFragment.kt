@@ -32,13 +32,6 @@ import java.util.*
 
 private const val ARG_IS_CREATION = "is_creation"
 
-/*
-var AMOUNT_TO_PAY: String = "0"
-var DISCOUNT_TO_PAY: String = "0"
-var TOTAL_TO_PAY: String = "0"
-var ID_PERSON_PAYMENT = "0"
-*/
-
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
@@ -93,6 +86,8 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             binding.lytOffender.spnTownship.visibility = GONE
             binding.lytOffender.textView11.visibility = GONE
             binding.lytOffender.edtColony.visibility = GONE
+            binding.lytOffender.textView18.visibility = GONE
+            binding.lytOffender.edtStreet.visibility = GONE
             binding.lytOffender.textView12.visibility = GONE
             binding.lytOffender.edtOffenderNoExt.visibility = GONE
             binding.lytOffender.textView13.visibility = GONE
@@ -122,6 +117,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderMln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastMotherName = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderRfc.doOnTextChanged { text, start, count, after -> SingletonInfraction.rfcOffenfer = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtColony.doOnTextChanged { text, start, count, after -> SingletonInfraction.colonyOffender = text?.trim().toString().toUpperCase() }
+        binding.lytOffender.edtStreet.doOnTextChanged { text, start, count, after -> SingletonInfraction.streetOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderNoExt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noExtOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderNoInt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noIntOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderLicenseNo.doOnTextChanged { text, start, count, after -> SingletonInfraction.noLicenseOffender = text?.trim().toString().toUpperCase() }
@@ -137,6 +133,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderFln.setText(SingletonInfraction.lastFatherName)
         binding.lytOffender.edtOffenderMln.setText(SingletonInfraction.lastMotherName)
         binding.lytOffender.edtOffenderRfc.setText(SingletonInfraction.rfcOffenfer)
+        binding.lytOffender.edtStreet.setText(SingletonInfraction.streetOffender)
         binding.lytOffender.edtOffenderNoExt.setText(SingletonInfraction.noExtOffender)
         binding.lytOffender.edtOffenderNoInt.setText(SingletonInfraction.noIntOffender)
         binding.lytOffender.edtOffenderLicenseNo.setText(SingletonInfraction.noLicenseOffender)
@@ -175,6 +172,16 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
+        if (msg == getString(R.string.pt_e_print_other_error)) {
+            val builder = AlertDialogHelper.getGenericBuilder(
+                    getString(R.string.w_dialog_title_print_ticket), getString(R.string.w_options_reprint), activity
+            )
+            builder.setPositiveButton("Boleta") { _, _ ->
+                activity.showLoader(getString(R.string.l_preparing_printer))
+                iterator.value.printTicket(activity)
+            }
+            builder.show()
+        }
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -202,13 +209,18 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when (p0?.id) {
             binding.btnSave.id -> {
                 if (validFields()) {
-
-                    if (isCreation) {
-                        iterator.value.saveData(true)
-                    } else {
-                        SingletonInfraction.idNewInfraction = ID_INFRACTION.toLong()
-                        iterator.value.updateData()
+                    val builder = AlertDialogHelper.getGenericBuilder(
+                            getString(R.string.w_dialog_title), getString(R.string.w_verify_printer), activity
+                    )
+                    builder.setPositiveButton("Aceptar") { _, _ ->
+                        if (isCreation) {
+                            iterator.value.saveData(true)
+                        } else {
+                            SingletonInfraction.idNewInfraction = ID_INFRACTION.toLong()
+                            iterator.value.updateData()
+                        }
                     }
+                    builder.show()
                 }
             }
         }
@@ -274,6 +286,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 isValid = false
                                 onError(getString(R.string.e_colony_offender))
                             }
+                            SingletonInfraction.streetOffender.isEmpty() -> {
+                                isValid = false
+                                onError(getString(R.string.e_street_offender))
+                            }
                             SingletonInfraction.noExtOffender.isEmpty() -> {
                                 isValid = false
                                 onError(getString(R.string.e_no_ext_offender))
@@ -308,6 +324,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             SingletonInfraction.stateOffender.id != 0 -> isAnswered = true
             SingletonInfraction.townshipOffender.id_town != 0 -> isAnswered = true
             SingletonInfraction.colonyOffender.isNotEmpty() -> isAnswered = true
+            SingletonInfraction.streetOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noExtOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noIntOffender.isNotEmpty() -> isAnswered = true
         }
@@ -330,15 +347,19 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             iterator.value.savePayment(txInfo)
             SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
         } else {
-            //TODO: Cambiar los montos por el correspondiente
             iterator.value.savePaymentToService(SingletonInfraction.idNewInfraction.toString(), txInfo, totalAmount, discountPayment, SingletonInfraction.totalInfraction, SingletonInfraction.idNewPersonInfraction)
         }
     }
 
     override fun onTxVoucherPrinted() {
         if (isPaid) {
-            SingletonInfraction.cleanSingleton()
-            activity.finish()
+            if (isCreation) {
+                activity.showLoader(getString(R.string.l_preparing_printer))
+                iterator.value.printTicket(activity)
+            } else {
+                SingletonInfraction.cleanSingleton()
+                activity.finish()
+            }
         } else {
             var builder = AlertDialogHelper.getGenericBuilder(
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
@@ -374,6 +395,24 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxVoucherFailer(message: String) {
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
+        val builder = AlertDialogHelper.getGenericBuilder(
+                getString(R.string.w_dialog_title_print_ticket), getString(R.string.w_options_reprint), activity
+        )
+        builder.setPositiveButton("Boleta") { _, _ ->
+            activity.showLoader(getString(R.string.l_preparing_printer))
+            iterator.value.printTicket(activity)
+        }
+        if (isPaid) {
+            builder.setNegativeButton("Voucher Banc.") { _, _ ->
+                iterator.value.reprintVoucher(activity, this)
+            }
+        } /*else {
+            builder.setNegativeButton("Cancelar") { _, _ ->
+                SingletonInfraction.cleanSingleton()
+                activity.finish()
+            }
+        }*/
+        builder.show()
     }
 
     override fun onTicketPrinted() {
@@ -416,12 +455,12 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             discountPayment = "0"
             compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
             if (compare_date <= 0) {
-                amountToPay = "#.2f".format(SingletonInfraction.amountCaptureLineiii)
+                amountToPay = "%.2f".format(SingletonInfraction.amountCaptureLineiii)
             } else {
                 haveToPay = false
             }
         }
-        SingletonInfraction.totalInfraction = amountToPay
+        SingletonInfraction.totalInfraction = amountToPay.replace(",", ".")
         //TODO: llenar los datos coorrespondietnes para los datos del pago en server
         if (haveToPay) {
             PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)

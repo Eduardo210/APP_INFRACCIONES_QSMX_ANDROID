@@ -395,7 +395,7 @@ class SearchFr : Fragment()
             discountPayment = "0"
             compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
             if (compare_date <= 0) {
-                amountToPay = "#.2f".format(infraction.amount_capture_line_iii)
+                amountToPay = "%.2f".format(infraction.amount_capture_line_iii)
             } else {
                 haveToPay = false
             }

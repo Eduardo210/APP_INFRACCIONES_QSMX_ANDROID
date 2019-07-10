@@ -10,4 +10,4 @@ data class TransactionInfo(var aid: String, var appLabel: String, var arqc: Stri
                            val brandCard: String, val typeCard: String, val bank: String,
                            val reference: String, val amount: String, var tvr: String,
                            var tsi: String, val noControl: String, val cardOwner: String,
-                           val typeTx: String)
+                           val typeTx: String, val flagTransaction: String, val needSign: Boolean)

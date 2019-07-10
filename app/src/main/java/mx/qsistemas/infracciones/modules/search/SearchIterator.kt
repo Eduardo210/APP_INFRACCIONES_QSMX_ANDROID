@@ -142,7 +142,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         jPaymentCard.put("tarjetahabiente", txInfo.cardOwner)
         jPaymentCard.put("emv_data", "")
         jPaymentCard.put("tipo_transaccion", txInfo.typeTx)
-        rootObj.put("paymentCardCard", jPaymentCard)
+        rootObj.put("paymentCard", jPaymentCard)
 
         jPayment.put("id_forma_pago", 2)
         jPayment.put("subtotal", amount)

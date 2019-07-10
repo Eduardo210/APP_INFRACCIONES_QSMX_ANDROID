@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter
 import mx.qsistemas.infracciones.db.entities.LicenseType
 import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
 class OffenderContracts {
@@ -21,7 +22,7 @@ class OffenderContracts {
         fun onDataSaved()
         fun onDataUpdated(idPerson: Long)
         fun onTicketPrinted()
-        fun onResultSavePayment(msg:String, flag: Boolean)
+        fun onResultSavePayment(msg: String, flag: Boolean)
     }
 
     interface Iterator {
@@ -37,6 +38,7 @@ class OffenderContracts {
         fun savePayment(info: TransactionInfo)
         fun updateData()
         fun printTicket(activity: Activity)
-        fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount:String, discount:String, totalPayment: String, idPerson:Long)
+        fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener)
+        fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long)
     }
 }

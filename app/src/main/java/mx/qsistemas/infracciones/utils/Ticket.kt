@@ -69,16 +69,25 @@ class Ticket {
             printTest.put(getPrintObject("DATOS DEL INFRACTOR:\n\n", "2", "left", "1"))
             printTest.put(getPrintObject("${SingletonTicket.completeNameOffender}\n", "2", "center", "0"))
             printTest.put(getPrintObject("${SingletonTicket.rfcOffender}\n\n", "2", "center", "0"))
-            printTest.put(getPrintObject("DOMICILIO: ${SingletonTicket.streetOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("EXTERIOR: ${SingletonTicket.noExtOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("INTERIOR: ${SingletonTicket.noIntOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("COLONIA: ${SingletonTicket.colonyOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("ENTIDAD: ${SingletonTicket.stateOffender}\n\n", "2", "left", "0"))
+            if (SingletonTicket.streetOffender != "-")
+                printTest.put(getPrintObject("DOMICILIO: ${SingletonTicket.streetOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.noExtOffender != "-")
+                printTest.put(getPrintObject("EXTERIOR: ${SingletonTicket.noExtOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.noIntOffender != "-")
+                printTest.put(getPrintObject("INTERIOR: ${SingletonTicket.noIntOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.colonyOffender != "-")
+                printTest.put(getPrintObject("COLONIA: ${SingletonTicket.colonyOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.stateOffender != "-")
+                printTest.put(getPrintObject("ENTIDAD: ${SingletonTicket.stateOffender}\n\n", "2", "left", "0"))
 
             // Datos de licencia
             printTest.put(getPrintObject("LICENCIA/PERMISO: ${SingletonTicket.noLicenseOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("TIPO LICENCIA: ${SingletonTicket.typeLicenseOffender}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("EXPEDIDA: ${SingletonTicket.stateLicenseOffender}\n\n", "2", "left", "0"))
+            if (SingletonTicket.typeLicenseOffender != "-")
+                printTest.put(getPrintObject("TIPO LICENCIA: ${SingletonTicket.typeLicenseOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.stateLicenseOffender != "-")
+                printTest.put(getPrintObject("EXPEDIDA: ${SingletonTicket.stateLicenseOffender}\n\n", "2", "left", "0"))
+            else
+                printTest.put(getPrintObject("\n\n", "2", "left", "0"))
 
             // Características del vehículo
             printTest.put(getPrintObject("CARACTERÍSTICAS DEL VEHÍCULO:\n\n", "2", "left", "1"))

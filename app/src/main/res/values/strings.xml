@@ -219,4 +219,6 @@
     <string name="s_infraction_pay">Infracción pagada</string>
     <string name="s_infraction_send">Infracciones enviadas exitosamente</string>
     <string name="s_images_send">Imágenes enviadas exitosamente</string>
+    <string name="paid">Pagado</string>
+    <string name="status_pending_local">Envio pendiente</string>
 </resources>

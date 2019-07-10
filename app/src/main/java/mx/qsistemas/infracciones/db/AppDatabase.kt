@@ -10,6 +10,7 @@ import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.db.dao.*
 import mx.qsistemas.infracciones.db.entities.*
+import mx.qsistemas.infracciones.db.managers.SearchManager
 import mx.qsistemas.infracciones.utils.Utils
 
 private const val DB_NAME = "infracciones"

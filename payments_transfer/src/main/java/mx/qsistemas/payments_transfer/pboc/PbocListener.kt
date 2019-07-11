@@ -413,7 +413,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
         chipMaskedPan = data.maskedPan
         chipTrack = data.track
         chipExpDate = data.expiredDate
-        var tagOwner = kernel.getDataTlv("5F20") ?: ""
+        val tagOwner = kernel.getDataTlv("5F20") ?: ""
         if (tagOwner.isNotEmpty()) {
             chipCardOwner = Utils.hexToAscii(tagOwner)
         }
@@ -495,14 +495,14 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     Preferences(activity).saveDataInt(R.string.pt_sp_banorte_counter_control, controlCounter)
                     when (result.resultadoPayW) {
                         PWR_APROBADA -> {
-                            var txInfo = TransactionInfo(aid, apn, arqc, result.codigoAut, entryMode, maskedPan, date,
+                            val txInfo = TransactionInfo(aid, apn, arqc, result.codigoAut, entryMode, maskedPan, date,
                                     hour, result.idAfiliacion, expirationDate, result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor,
                                     result.reference, amount, tvr, tsi, result.noControl,
-                                    nombreTarjetahabiente, TRANSACTION_TYPE)
-                            var voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, result.marcaTarjeta,
+                                    nombreTarjetahabiente, TRANSACTION_TYPE, FLAG_TRANS_APPROVE, needSign)
+                            val voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, result.marcaTarjeta,
                                     result.tipoTarjeta, result.bancoEmisor, result.codigoAut, result.reference,
                                     amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
-                                    FLAG_TRANS_APPROVE, needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!)
+                                    FLAG_TRANS_APPROVE, needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!, entryMode)
                             if (entryMode == ENTRY_MODE_CHIP) {
                                 val onlineData = InputPBOCOnlineData()
                                 onlineData.responseCode = "00"
@@ -515,7 +515,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                                 }
                             }
                             txListener.onTxApproved(txInfo)
-                            paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
+                            paymentsVoucher.printVoucher(activity, voucher, false)
                         }
                         PWR_DECLINADA -> {
                             DialogStatusHelper.closeDialog()
@@ -524,11 +524,11 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                                     result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut,
                                     result.reference, amount, nombreTarjetahabiente, date, hour,
                                     "", "", "", "", FLAG_TRANS_DECLINE,
-                                    needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!)
+                                    needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!, entryMode)
                             if (entryMode == ENTRY_MODE_BAND) {
                                 notifyTxFailToChip()
                             }
-                            paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
+                            paymentsVoucher.printVoucher(activity, voucher, false)
                         }
                         PWR_RECHAZADA -> {
                             DialogStatusHelper.closeDialog()
@@ -537,24 +537,24 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                                     expirationDate, result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut,
                                     result.reference, amount, nombreTarjetahabiente, date,
                                     hour, "", "", "", "", FLAG_TRANS_REJECTED,
-                                    needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!)
+                                    needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!, entryMode)
                             if (entryMode == ENTRY_MODE_CHIP) {
                                 notifyTxFailToChip()
                             }
-                            paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
+                            paymentsVoucher.printVoucher(activity, voucher, false)
                         }
                         PWR_SIN_RESPUESTA -> {
                             val voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate,
                                     result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut, result.reference,
                                     amount, nombreTarjetahabiente, date, hour, "",
                                     "", "", "", FLAG_TRANS_TIMEOUT,
-                                    needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!)
+                                    needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!, entryMode)
                             DialogStatusHelper.closeDialog()
                             txListener.onTxFailed(activity.getString(R.string.pt_e_no_response))
                             if (entryMode == ENTRY_MODE_CHIP) {
                                 notifyTxFailToChip()
                             }
-                            paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
+                            paymentsVoucher.printVoucher(activity, voucher, false)
                         }
                     }
                 } else if (response.code() == HttpsURLConnection.HTTP_CLIENT_TIMEOUT) {
@@ -566,8 +566,8 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     val hour = SimpleDateFormat("HH:mm:SS").format(c)
                     val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
                             "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
-                            FLAG_TRANS_TIMEOUT, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!)
-                    paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
+                            FLAG_TRANS_TIMEOUT, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!, entryMode)
+                    paymentsVoucher.printVoucher(activity, voucher, false)
                     if (entryMode == ENTRY_MODE_CHIP) {
                         notifyTxFailToChip()
                     }
@@ -589,8 +589,8 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                 val hour = SimpleDateFormat("HH:mm:SS").format(c)
                 val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
                         "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
-                        FLAG_TRANS_OFFLINE, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!)
-                paymentsVoucher.printVoucher(activity, voucher, entryMode, false)
+                        FLAG_TRANS_OFFLINE, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!, entryMode)
+                paymentsVoucher.printVoucher(activity, voucher, false)
                 if (entryMode == ENTRY_MODE_CHIP) {
                     notifyTxFailToChip()
                 }

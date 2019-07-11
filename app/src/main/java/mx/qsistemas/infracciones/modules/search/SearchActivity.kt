@@ -8,20 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_search.*
 import mx.qsistemas.infracciones.R
+import mx.qsistemas.infracciones.db.entities.InfractionItem
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
 
-class SearchActivity : ActivityHelper(), SearchContracts.Presenter, View.OnClickListener {
-    override fun onResultSavePayment(msg: String, flag: Boolean) {
-
-    }
-
-    override fun onResultInfractionById(infraction: InfractionSearch, origin: Int) {
-
-    }
-
+class SearchActivity : ActivityHelper(), View.OnClickListener {
     val router = lazy { SearchRouter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,15 +52,6 @@ class SearchActivity : ActivityHelper(), SearchContracts.Presenter, View.OnClick
 
     private fun initListeners() {
         img_back.setOnClickListener(this)
-    }
-
-
-    override fun onResultSearch(listInfractions: MutableList<InfractionList.Results>) {
-
-    }
-
-    override fun onError(msg: String) {
-
     }
 
     override fun onClick(id: View?) {

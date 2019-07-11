@@ -32,13 +32,6 @@ import java.util.*
 
 private const val ARG_IS_CREATION = "is_creation"
 
-/*
-var AMOUNT_TO_PAY: String = "0"
-var DISCOUNT_TO_PAY: String = "0"
-var TOTAL_TO_PAY: String = "0"
-var ID_PERSON_PAYMENT = "0"
-*/
-
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
@@ -179,6 +172,16 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
+        if (msg == getString(R.string.pt_e_print_other_error)) {
+            val builder = AlertDialogHelper.getGenericBuilder(
+                    getString(R.string.w_dialog_title_print_ticket), getString(R.string.w_options_reprint), activity
+            )
+            builder.setPositiveButton("Boleta") { _, _ ->
+                activity.showLoader(getString(R.string.l_preparing_printer))
+                iterator.value.printTicket(activity)
+            }
+            builder.show()
+        }
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -206,12 +209,18 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when (p0?.id) {
             binding.btnSave.id -> {
                 if (validFields()) {
-                    if (isCreation) {
-                        iterator.value.saveData(true)
-                    } else {
-                        SingletonInfraction.idNewInfraction = ID_INFRACTION.toLong()
-                        iterator.value.updateData()
+                    val builder = AlertDialogHelper.getGenericBuilder(
+                            getString(R.string.w_dialog_title), getString(R.string.w_verify_printer), activity
+                    )
+                    builder.setPositiveButton("Aceptar") { _, _ ->
+                        if (isCreation) {
+                            iterator.value.saveData(true)
+                        } else {
+                            SingletonInfraction.idNewInfraction = ID_INFRACTION.toLong()
+                            iterator.value.updateData()
+                        }
                     }
+                    builder.show()
                 }
             }
         }
@@ -338,7 +347,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             iterator.value.savePayment(txInfo)
             SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
         } else {
-            //TODO: Cambiar los montos por el correspondiente
             iterator.value.savePaymentToService(SingletonInfraction.idNewInfraction.toString(), txInfo, totalAmount, discountPayment, SingletonInfraction.totalInfraction, SingletonInfraction.idNewPersonInfraction)
         }
     }
@@ -388,17 +396,22 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun onTxVoucherFailer(message: String) {
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
         val builder = AlertDialogHelper.getGenericBuilder(
-                getString(R.string.w_dialog_title_print_ticket), getString(R.string.w_want_to_reprint_ticket), activity
+                getString(R.string.w_dialog_title_print_ticket), getString(R.string.w_options_reprint), activity
         )
-        builder.setPositiveButton("Aceptar") { _, _ ->
+        builder.setPositiveButton("Boleta") { _, _ ->
             activity.showLoader(getString(R.string.l_preparing_printer))
             iterator.value.printTicket(activity)
         }
-        builder.setNegativeButton("Cancelar") { _, _ ->
-            SingletonInfraction.cleanSingleton()
-            activity.finish()
-
-        }
+        if (isPaid) {
+            builder.setNegativeButton("Voucher Banc.") { _, _ ->
+                iterator.value.reprintVoucher(activity, this)
+            }
+        } /*else {
+            builder.setNegativeButton("Cancelar") { _, _ ->
+                SingletonInfraction.cleanSingleton()
+                activity.finish()
+            }
+        }*/
         builder.show()
     }
 

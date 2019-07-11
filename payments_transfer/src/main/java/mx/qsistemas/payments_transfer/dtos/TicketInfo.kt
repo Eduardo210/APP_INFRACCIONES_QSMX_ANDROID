@@ -5,4 +5,4 @@ data class Voucher(val noControl: String, val noCard: String, val caducity: Stri
                    val amount: String, val cardBeneficiary: String, val date: String, val hour: String,
                    var AID: String, var TVR: String, var TSI: String, var APN: String,
                    val flagTrans: String, val needSign: Boolean, val afiliacion: String,
-                   val terminalId: String)
+                   val terminalId: String, val entryMode: String)

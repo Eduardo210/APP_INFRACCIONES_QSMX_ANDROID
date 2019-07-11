@@ -32,6 +32,8 @@ object SingletonInfraction {
     var dispositionRemited: Disposition = Disposition(0, "")
     var latitudeInfraction: Double = 0.0
     var longitudeInfraction: Double = 0.0
+    var dateInfraction: String = ""
+    var folioInfraction:String=""
 
     /* Offender Information */
     var isPersonAbstent: Boolean = true
@@ -88,6 +90,8 @@ object SingletonInfraction {
         dispositionRemited = Disposition(0, "")
         latitudeInfraction = 0.0
         longitudeInfraction = 0.0
+        dateInfraction= ""
+        folioInfraction=""
 
         /* Offender Information Reset */
         isPersonAbstent = true

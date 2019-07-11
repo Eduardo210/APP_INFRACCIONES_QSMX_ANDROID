@@ -15,7 +15,8 @@ import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import kotlin.properties.Delegates
 var ID_INFRACTION: String = ""
-
+var PRINT_ONLINE = 102
+var PAYMENT_ONLINE = 202
 class SearchAdapter(private val infractions: MutableList<InfractionList.Results>,
                     listener: SearchContracts.OnInfractionClick) : RecyclerView.Adapter<SearchAdapter.ViewHolderInfra>() {
 
@@ -58,11 +59,14 @@ class SearchAdapter(private val infractions: MutableList<InfractionList.Results>
                 itemView.txt_status_infra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.green_circle), null, null, null)
                 itemView.txt_resume_art_frac.text = motivation
                 itemView.txt_date_infra.text = date_infra
-                itemView.btn_print.setOnClickListener { view -> listener.onPrintClick(view, position ) }
-                itemView.btn_payment.setOnClickListener{view -> listener.onPaymentClick(view, position)}
+                itemView.btn_print.setOnClickListener { view -> listener.onPrintClick(view, position, PRINT_ONLINE) }
+                itemView.btn_payment.setOnClickListener{view -> listener.onPaymentClick(view, position, PAYMENT_ONLINE)}
                 ID_INFRACTION = id_infraction.toString()
                 if (it_is_paid == 1) {
                     itemView.btn_payment.visibility = View.GONE
+                    itemView.txt_status_payment.text = itemView.context.getString(R.string.paid)
+                    itemView.txt_status_payment.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorRed))
+                    itemView.txt_status_payment.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.red_circle), null, null, null)
                 } else {
                     itemView.btn_payment.visibility = View.VISIBLE
                 }

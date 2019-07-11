@@ -11,7 +11,7 @@ import mx.qsistemas.infracciones.dialogs.InitialConfigurationCallback
 import mx.qsistemas.infracciones.dialogs.InitialConfigurationDialog
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
-import mx.qsistemas.infracciones.utils.Validator
+import mx.qsistemas.infracciones.utils.*
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.LoadKeyData
@@ -65,7 +65,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
 
     override fun onConfigurationSuccessful(idTownship: Int, prefix: String) {
         PaymentsTransfer.configDevice(idTownship, prefix)
-        val loadKeyData = LoadKeyData("88888888", "7455440", "a7455440", "quet5440")
+        val loadKeyData = LoadKeyData(PTX_SERIAL_NUMBER, PTX_MERCHANT_ID, PTX_USER, PTX_PSW)
         PaymentsTransfer.loadKeyDevice(this, loadKeyData, object : IPaymentsTransfer.LoadKeyListener {
             override fun onLoadKey(success: Boolean, value: String) {
                 if (!success) {

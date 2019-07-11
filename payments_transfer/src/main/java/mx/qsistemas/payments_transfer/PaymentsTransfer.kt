@@ -259,6 +259,11 @@ object PaymentsTransfer : Interfaces.Contracts {
         })
     }
 
+    override fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener, voucher: Voucher) {
+        val paymentsVoucher = PaymentsVoucher(activity, listener)
+        paymentsVoucher.printVoucher(activity, voucher, false)
+    }
+
     private fun formatAmount(amount: String): Int? {
         return Integer.parseInt(StringHelper.changeAmout(amount).replace(".", "").replace(",", ""))
     }
@@ -280,6 +285,7 @@ internal class Interfaces {
         fun print(activity: Activity, json: String, bitmap: Array<Bitmap>?, listener: IPaymentsTransfer.PrintListener)
         fun scanCard(activity: Activity, timeout: Int, listener: IPaymentsTransfer.ScanCardListener)
         fun scanCode(activity: Activity, timeout: Long, listener: IPaymentsTransfer.ScanCodeListener)
+        fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener, voucher: Voucher)
     }
 
     interface CipherDataListener {

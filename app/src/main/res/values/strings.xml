@@ -207,9 +207,11 @@
     <string name="w_dialog_title_print_ticket">IMPRESIÓN FALLIDA</string>
     <string name="w_dialog_title_reprint_ticket">REIMPRESIÓN BOLETA</string>
     <string name="w_want_to_reprint_ticket">¿Desea reimprimir la boleta?</string>
+    <string name="w_options_reprint">Por favor verifique que la impresora contenga papel y seleccione opción de reimpresión</string>
     <string name="w_want_to_pay">¿Desea pagar la infracción en este momento?</string>
     <string name="w_exit_without_save">Se perderán los cambios realizados, ¿Desea continuar?</string>
     <string name="w_reintent_transaction">¿Desea reintentar hacer el cobro?</string>
+    <string name="w_verify_printer">Asegúrate de contar con papel suficiente para imprimir</string>
     <string name="w_close_session">¿Desea cerrar sesión en el dispositivo?</string>
     <string name="w_date_time_zone_not_automatic">Favor de seleccionar fecha y zona horaria automática</string>
     <string name="w_min_photos_take">Favor de tomar por lo menos 1 foto</string>
@@ -223,4 +225,6 @@
     <string name="s_infraction_pay">Infracción pagada</string>
     <string name="s_infraction_send">Infracciones enviadas exitosamente</string>
     <string name="s_images_send">Imágenes enviadas exitosamente</string>
+    <string name="paid">Pagado</string>
+    <string name="status_pending_local">Envio pendiente</string>
 </resources>

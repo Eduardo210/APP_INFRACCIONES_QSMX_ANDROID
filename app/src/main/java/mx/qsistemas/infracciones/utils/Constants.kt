@@ -1,5 +1,11 @@
 package mx.qsistemas.infracciones.utils
 
+/* BANORTE CONTANTS */
+const val PTX_SERIAL_NUMBER = "88888888"
+const val PTX_MERCHANT_ID = "7455440"
+const val PTX_USER = "a7455440"
+const val PTX_PSW = "quet5440"
+
 /* PERMISSION REQUEST CODES */
 const val RC_PERMISSION_LOCATION = 1
 const val RC_PERMISSION_CAMERA = 2

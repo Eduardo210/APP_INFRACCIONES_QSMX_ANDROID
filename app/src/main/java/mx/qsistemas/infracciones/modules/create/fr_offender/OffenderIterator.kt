@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
-import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.*
 import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
@@ -15,10 +14,7 @@ import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.*
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
-import mx.qsistemas.infracciones.utils.FS_COL_STATES
-import mx.qsistemas.infracciones.utils.FS_COL_TOWNSHIPS
-import mx.qsistemas.infracciones.utils.Ticket
-import mx.qsistemas.infracciones.utils.Utils
+import mx.qsistemas.infracciones.utils.*
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
@@ -403,7 +399,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         val voucher = Voucher(txInfo.noControl, txInfo.maskedPan.substring(txInfo.maskedPan.length - 4, txInfo.maskedPan.length), txInfo.expirationDate, txInfo.brandCard,
                 txInfo.typeCard, txInfo.bank, txInfo.authorization, txInfo.reference, txInfo.amount, txInfo.cardOwner,
                 txInfo.txDate, txInfo.txTime, txInfo.aid, txInfo.tvr, txInfo.tsi, txInfo.appLabel, txInfo.flagTransaction,
-                txInfo.needSign, BuildConfig.PTX_MERCHANT_ID, Utils.getImeiDevice(activity), txInfo.entryType)
+                txInfo.needSign, PTX_MERCHANT_ID, Utils.getImeiDevice(activity), txInfo.entryType)
         PaymentsTransfer.reprintVoucher(activity, listener, voucher)
     }
 

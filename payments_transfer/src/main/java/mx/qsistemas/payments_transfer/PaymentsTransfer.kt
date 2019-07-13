@@ -78,32 +78,30 @@ object PaymentsTransfer : Interfaces.Contracts {
     }
 
     override fun configDevice(idTownship: Int, terminalCode: String) {
+        val AREA = 2
+        val TMKID = 1
         /* Save the control number of initialize */
         paymentsPreferences.saveDataInt(R.string.pt_sp_quetz_id_township, idTownship)
         paymentsPreferences.saveData(R.string.pt_sp_quetz_id_terminal, terminalCode)
-        val keyValue1 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)
+        val keyValue1 = "13F0A294679546195AD092C4E5937A41"
         val keyValue2 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)
         val keyValue3 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)
         val checkValue1 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(120)
         val checkValue2 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(120)
         AsyncTask.execute {
             /* Load Params of the terminal */
-            ServiceManager.getInstence().pinpad.loadProtectKeyByArea(1, keyValue1)
-            ServiceManager.getInstence().pinpad.loadMainKeyWithKcvByArea(
-                    1,
-                    1,
-                    keyValue2,
-                    checkValue1
-            )
+            ServiceManager.getInstence().pinpad.loadProtectKeyByArea(AREA, keyValue1)
+            GlobalData.getInstance().pinpadVersion = PINPAD_INTERFACE_VERSION3
+            GlobalData.getInstance().area = AREA
+            ServiceManager.getInstence().pinpad.loadMainKeyByArea(AREA, TMKID, keyValue2)
+            //ServiceManager.getInstence().pinpad.loadMainKeyWithKcvByArea(AREA, TMKID, keyValue2, checkValue1)
+            GlobalData.getInstance().tmkId = TMKID
+            ServiceManager.getInstence().pinpad.loadMacKeyByArea(AREA, TMKID, keyValue3, null)
+            ServiceManager.getInstence().pinpad.loadPinKeyByArea(AREA, TMKID, keyValue2, null)
+            GlobalData.getInstance().pinkeyFlag = true
+            ServiceManager.getInstence().pinpad.loadTDKeyByArea(AREA, TMKID, keyValue3, null)
             /* Set time to terminal */
             ServiceManager.getInstence().deviceinfo.spTime = BCDHelper.StrToBCD(System.currentTimeMillis().toString())
-            ServiceManager.getInstence().pinpad.loadMacKeyByArea(1, 1, keyValue3, checkValue2)
-            ServiceManager.getInstence().pinpad.loadTDKeyByArea(1, 1, keyValue3, checkValue2)
-            ServiceManager.getInstence().pinpad.loadPinKeyByArea(1, 1, keyValue2, checkValue2)
-            GlobalData.getInstance().pinpadVersion = PINPAD_INTERFACE_VERSION3
-            GlobalData.getInstance().area = 1
-            GlobalData.getInstance().tmkId = 1
-            GlobalData.getInstance().pinkeyFlag = true
             ServiceManager.getInstence().pboc.setEmvParamSetBySdk(false)
             LoadParamManage.getInstance().DeleteAllTerParamFile()
             for (j in aid_data.indices) {

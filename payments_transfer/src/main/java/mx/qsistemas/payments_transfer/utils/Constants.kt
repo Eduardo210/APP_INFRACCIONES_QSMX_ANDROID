@@ -25,6 +25,7 @@ internal val GETLAYOUT = 5
 const val ENTRY_MODE_BAND = "MAGSTRIPE"
 const val ENTRY_MODE_CHIP = "CHIP"
 const val ENTRY_MODE_FALLBACK = "FALLBACK"
+const val ENTRY_MODE_CONTACTLESS = "CONTACTLESSCHIP"
 
 /* Mode of Processing the Transaction */
 const val MODE_TX_PROD = "PRD"

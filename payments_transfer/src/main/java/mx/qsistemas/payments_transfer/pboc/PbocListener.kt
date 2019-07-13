@@ -381,8 +381,8 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                 cipherData(chipTrack, object : Interfaces.CipherDataListener {
                     override fun onCipherData(success: Boolean, value: String) {
                         if (success) {
-                            processTx(ENTRY_MODE_CHIP, "", value,
-                                    chipIcData, chipMaskedPan, chipExpDate, chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn)
+                            processTx(ENTRY_MODE_CONTACTLESS, "", value,
+                                chipIcData, chipMaskedPan, chipExpDate, chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn)
                         } else {
                             DialogStatusHelper.closeDialog()
                             txListener.onTxFailed(value)
@@ -408,12 +408,12 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     /* Prepare parameters of NFC transaction */
     private fun prepareNfcTx(data: OutputQPBOCResult, kernel: KernelDataRecord) {
         kernel.setPiccDataRecord(data.kernelData, null)
-        chipIcData = /*Utils.translateTlv(*/BCDASCII.bytesToHexString(data.kernelData, data.kernelData.size)
+        chipIcData = Utils.translateTlv(BCDASCII.bytesToHexString(data.kernelData, data.kernelData.size))
         chipCardNumber = data.pan
         chipMaskedPan = data.maskedPan
         chipTrack = data.track
         chipExpDate = data.expiredDate
-        val tagOwner = kernel.getDataTlv("5F20") ?: ""
+        var tagOwner = kernel.getDataTlv("5F20") ?: ""
         if (tagOwner.isNotEmpty()) {
             chipCardOwner = Utils.hexToAscii(tagOwner)
         }

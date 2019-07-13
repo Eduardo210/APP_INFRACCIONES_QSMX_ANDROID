@@ -1,56 +1,52 @@
 package mx.qsistemas.infracciones.db
 
 import android.content.Context
-import android.text.Editable
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.commonsware.cwac.saferoom.SafeHelperFactory
-import mx.qsistemas.infracciones.Application
-import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.db.dao.*
 import mx.qsistemas.infracciones.db.entities.*
-import mx.qsistemas.infracciones.db.managers.SearchManager
-import mx.qsistemas.infracciones.utils.Utils
 
 private const val DB_NAME = "infracciones"
 private const val DB_VERSION = 1
 
-@Database(entities = [
-    Address::class,
-    AddressInfringement::class,
-    AddressPerson::class,
-    Articles::class,
-    Ascription::class,
-    Attribute::class,
-    AuthorityIssues::class,
-    Colour::class,
-    Config::class,
-    Disposition::class,
-    Infraction::class,
-    InfractionEvidence::class,
-    IdentifierDocument::class,
-    InfractionFraction::class,
-    LicenseType::class,
-    Module::class,
-    NonWorkingDay::class,
-    PaymentInfringement::class,
-    PaymentInfringementCard::class,
-    Person::class,
-    PersonAccount::class,
-    PersonAttibute::class,
-    PersonInfringement::class,
-    PersonTownship::class,
-    RetainedDocument::class,
-    State::class,
-    SubmarkingVehicle::class,
-    Syncronization::class,
-    TownSepoMex::class,
-    TrafficViolationFraction::class,
-    VehicleBrand::class,
-    VehicleType::class,
-    VehicleInfraction::class
-], version = DB_VERSION, exportSchema = false)
+@Database(
+    entities = [
+        Address::class,
+        AddressInfringement::class,
+        AddressPerson::class,
+        Articles::class,
+        Ascription::class,
+        Attribute::class,
+        AuthorityIssues::class,
+        Colour::class,
+        Config::class,
+        Disposition::class,
+        Infraction::class,
+        InfractionEvidence::class,
+        IdentifierDocument::class,
+        InfractionFraction::class,
+        LicenseType::class,
+        Module::class,
+        NonWorkingDay::class,
+        PaymentInfringement::class,
+        PaymentInfringementCard::class,
+        Person::class,
+        PersonAccount::class,
+        PersonAttibute::class,
+        PersonInfringement::class,
+        PersonTownship::class,
+        RetainedDocument::class,
+        State::class,
+        SubmarkingVehicle::class,
+        Syncronization::class,
+        TownSepoMex::class,
+        TrafficViolationFraction::class,
+        VehicleBrand::class,
+        VehicleType::class,
+        VehicleInfraction::class
+    ], version = DB_VERSION, exportSchema = false
+)
 
 
 abstract class AppDatabase : RoomDatabase() {
@@ -96,14 +92,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getInMemoryDatabase(context: Context): AppDatabase? {
             if (INSTANCE == null) {
                 synchronized(AppDatabase::class.java) {
-                    INSTANCE = if (!BuildConfig.DEBUG) {
-                        val editable = Editable.Factory.getInstance().newEditable(Utils.getTokenDevice(Application.getContext()))
-                        val factory = SafeHelperFactory.fromUser(editable)
-                        Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).openHelperFactory(factory)
-                                .build()
-                    } else {
-                        Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
-                    }
+                    INSTANCE = Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
                 }
             }
             return INSTANCE

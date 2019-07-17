@@ -26,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentInfractionBinding
+import mx.qsistemas.infracciones.db.entities.RetainedDocument
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
@@ -199,7 +200,11 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                 binding.spnFraction.adapter = iterator.value.getFractionAdapter(p2)
             }
             binding.spnRetainedDoc.id -> {
-                SingletonInfraction.retainedDocument = iterator.value.retainedDocList[p2]
+                if (p2 == 0) {
+                    SingletonInfraction.retainedDocument = RetainedDocument(0, "NINGUNO")
+                } else {
+                    SingletonInfraction.retainedDocument = iterator.value.retainedDocList[p2]
+                }
             }
             binding.spnDisposition.id -> {
                 SingletonInfraction.dispositionRemited = iterator.value.dispositionList[p2]
@@ -230,14 +235,18 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.btnAdd.id -> {
-                if (iterator.value.articlesList[binding.spnArticle.selectedItemPosition].id.toInt() == 0) {
-                    onError(getString(R.string.e_invalid_article))
-                } else {
-                    iterator.value.saveNewArticle(binding.spnArticle.selectedItemPosition,
-                            binding.spnFraction.selectedItemPosition)
-                    binding.rcvArticles.adapter?.notifyDataSetChanged()
-                    binding.spnFraction.setSelection(0)
-                    binding.spnArticle.setSelection(0)
+                when {
+                    iterator.value.articlesList[binding.spnArticle.selectedItemPosition].id.toInt() == 0 -> onError(getString(R.string.e_invalid_article))
+                    fractionExist(iterator.value.fractionList[binding.spnFraction.selectedItemPosition].fraccion
+                            , iterator.value.articlesList[binding.spnArticle.selectedItemPosition].article) -> SnackbarHelper.showErrorSnackBar(activity, "La fracción no se puede repetir.", Snackbar.LENGTH_LONG)
+                    else -> {
+
+                        iterator.value.saveNewArticle(binding.spnArticle.selectedItemPosition,
+                                binding.spnFraction.selectedItemPosition)
+                        binding.rcvArticles.adapter?.notifyDataSetChanged()
+                        binding.spnFraction.setSelection(0)
+                        binding.spnArticle.setSelection(0)
+                    }
                 }
             }
             binding.btnNext.id -> {
@@ -247,6 +256,15 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                 }
             }
         }
+    }
+
+    fun fractionExist(fraction: String, article: String): Boolean {
+        SingletonInfraction.motivationList.forEach { item ->
+            if (item.fraction.fraccion == fraction && item.article.article == article) {
+                return true
+            }
+        }
+        return false
     }
 
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {

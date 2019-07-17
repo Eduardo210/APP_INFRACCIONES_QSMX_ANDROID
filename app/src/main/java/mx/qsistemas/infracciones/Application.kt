@@ -83,7 +83,7 @@ class Application : MultiDexApplication() {
         /* Initialize Firebase Remote Config */
         remoteConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(1800)
+                .setMinimumFetchIntervalInSeconds(1000*60*5)
                 .build()
         remoteConfig?.setConfigSettings(configSettings)
         remoteConfig?.setDefaults(R.xml.remote_config_defaults)

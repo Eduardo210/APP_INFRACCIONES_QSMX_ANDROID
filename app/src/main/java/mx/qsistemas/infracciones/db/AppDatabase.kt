@@ -96,14 +96,7 @@ abstract class AppDatabase : RoomDatabase() {
         fun getInMemoryDatabase(context: Context): AppDatabase? {
             if (INSTANCE == null) {
                 synchronized(AppDatabase::class.java) {
-                    INSTANCE = if (!BuildConfig.DEBUG) {
-                        val editable = Editable.Factory.getInstance().newEditable(Utils.getTokenDevice(Application.getContext()))
-                        val factory = SafeHelperFactory.fromUser(editable)
-                        Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).openHelperFactory(factory)
-                                .build()
-                    } else {
-                        Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
-                    }
+                    INSTANCE = Room.databaseBuilder(context, AppDatabase::class.java, DB_NAME).build()
                 }
             }
             return INSTANCE

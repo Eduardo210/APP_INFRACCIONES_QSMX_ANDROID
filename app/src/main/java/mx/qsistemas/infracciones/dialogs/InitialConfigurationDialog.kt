@@ -117,7 +117,6 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                 listener?.onDialogError(Application.getContext().getString(R.string.e_firestore_not_saved))
             }
         }
-
         dismiss()
     }
 

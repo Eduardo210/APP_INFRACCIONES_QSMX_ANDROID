@@ -12,14 +12,12 @@ import com.basewin.aidl.OnBarcodeCallBack
 import com.basewin.aidl.OnPrinterListener
 import com.basewin.define.InputPBOCInitData
 import com.basewin.define.TransactionType
-import com.basewin.interfaces.OnDetectListener
 import com.basewin.log.LogUtil
 import com.basewin.services.ServiceManager
 import com.basewin.utils.BCDHelper
 import com.basewin.utils.CUPParam
 import com.basewin.utils.LoadParamManage
 import com.facebook.stetho.Stetho
-import com.pos.sdk.card.PosCardInfo
 import mx.qsistemas.payments_transfer.dtos.*
 import mx.qsistemas.payments_transfer.net.API_Quetzalcoatl
 import mx.qsistemas.payments_transfer.pboc.PbocListener
@@ -46,17 +44,17 @@ object PaymentsTransfer : Interfaces.Contracts {
     lateinit var modeTx: String
     var isDeviceConfigured: Boolean = false
     private val aid_data = arrayOf(
-            "9F0607A0000000031010DF0101009F0802008CDF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0607A0000000032010DF0101009F08020140DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0607A0000000033010DF0101009F08020140DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0607A0000000041010DF0101009F08020002DF1105FC5080A000DF1205F85080F800DF130504000000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0607A0000000043060DF0101009F08020002DF1105DC4000A800DF1205DC4004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0607A0000000651010DF0101009F08020200DF1105FC6024A800DF1205FC60ACF800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0607A0000003330101DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0608A000000333010101DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0608A000000333010102DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0608A000000333010103DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
-            "9F0608A000000333010106DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647"
+        "9F0607A0000000031010DF0101009F0802008CDF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0607A0000000032010DF0101009F08020140DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0607A0000000033010DF0101009F08020140DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0607A0000000041010DF0101009F08020002DF1105FC5080A000DF1205F85080F800DF130504000000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0607A0000000043060DF0101009F08020002DF1105DC4000A800DF1205DC4004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0607A0000000651010DF0101009F08020200DF1105FC6024A800DF1205FC60ACF800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0607A0000003330101DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0608A000000333010101DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0608A000000333010102DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0608A000000333010103DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647",
+        "9F0608A000000333010106DF0101009F08020020DF1105D84000A800DF1205D84004F800DF130500100000009F1B0400000000DF150400000000DF160199DF170199DF14039F3704DF1801019F7B06002147483647DF1906002147483647DF2006002147483647DF2106002147483647"
     )
 
     override fun initialize(context: Context) {
@@ -78,32 +76,30 @@ object PaymentsTransfer : Interfaces.Contracts {
     }
 
     override fun configDevice(idTownship: Int, terminalCode: String) {
+        val AREA = 2
+        val TMKID = 1
         /* Save the control number of initialize */
         paymentsPreferences.saveDataInt(R.string.pt_sp_quetz_id_township, idTownship)
         paymentsPreferences.saveData(R.string.pt_sp_quetz_id_terminal, terminalCode)
-        val keyValue1 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)
+        val keyValue1 = "13F0A294679546195AD092C4E5937A41"
         val keyValue2 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)
         val keyValue3 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)
         val checkValue1 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(120)
         val checkValue2 = Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(120)
         AsyncTask.execute {
             /* Load Params of the terminal */
-            ServiceManager.getInstence().pinpad.loadProtectKeyByArea(1, keyValue1)
-            ServiceManager.getInstence().pinpad.loadMainKeyWithKcvByArea(
-                    1,
-                    1,
-                    keyValue2,
-                    checkValue1
-            )
+            ServiceManager.getInstence().pinpad.loadProtectKeyByArea(AREA, keyValue1)
+            GlobalData.getInstance().pinpadVersion = PINPAD_INTERFACE_VERSION3
+            GlobalData.getInstance().area = AREA
+            ServiceManager.getInstence().pinpad.loadMainKeyByArea(AREA, TMKID, keyValue2)
+            //ServiceManager.getInstence().pinpad.loadMainKeyWithKcvByArea(AREA, TMKID, keyValue2, checkValue1)
+            GlobalData.getInstance().tmkId = TMKID
+            ServiceManager.getInstence().pinpad.loadMacKeyByArea(AREA, TMKID, keyValue3, null)
+            ServiceManager.getInstence().pinpad.loadPinKeyByArea(AREA, TMKID, keyValue2, null)
+            GlobalData.getInstance().pinkeyFlag = true
+            ServiceManager.getInstence().pinpad.loadTDKeyByArea(AREA, TMKID, keyValue3, null)
             /* Set time to terminal */
             ServiceManager.getInstence().deviceinfo.spTime = BCDHelper.StrToBCD(System.currentTimeMillis().toString())
-            ServiceManager.getInstence().pinpad.loadMacKeyByArea(1, 1, keyValue3, checkValue2)
-            ServiceManager.getInstence().pinpad.loadTDKeyByArea(1, 1, keyValue3, checkValue2)
-            ServiceManager.getInstence().pinpad.loadPinKeyByArea(1, 1, keyValue2, checkValue2)
-            GlobalData.getInstance().pinpadVersion = PINPAD_INTERFACE_VERSION3
-            GlobalData.getInstance().area = 1
-            GlobalData.getInstance().tmkId = 1
-            GlobalData.getInstance().pinkeyFlag = true
             ServiceManager.getInstence().pboc.setEmvParamSetBySdk(false)
             LoadParamManage.getInstance().DeleteAllTerParamFile()
             for (j in aid_data.indices) {
@@ -116,7 +112,7 @@ object PaymentsTransfer : Interfaces.Contracts {
             System.arraycopy(byteArrayOf(0x04, 132.toByte()), 0, posEmvParam.TransCurrCode, 0, 2)
             System.arraycopy(byteArrayOf(0x04, 132.toByte()), 0, posEmvParam.CountryCode, 0, 2)
             posEmvParam.TerminalType =
-                    0x22  // https://www.emvco.com/wp-content/uploads/2017/05/EMV_v4.3_Book_4_Other_Interfaces_20120607062305603.pdf (Pag. 129)
+                0x22  // https://www.emvco.com/wp-content/uploads/2017/05/EMV_v4.3_Book_4_Other_Interfaces_20120607062305603.pdf (Pag. 129)
             posEmvParam.Capability[0] = 0xe0.toByte()
             posEmvParam.Capability[1] = 0xb8.toByte()
             posEmvParam.Capability[2] = 0xc8.toByte()
@@ -227,26 +223,6 @@ object PaymentsTransfer : Interfaces.Contracts {
         })
     }
 
-    override fun scanCard(activity: Activity, timeout: Int, listener: IPaymentsTransfer.ScanCardListener) {
-        val cardService = ServiceManager.getInstence().card
-        cardService.openM1AndDetect(timeout, object : OnDetectListener {
-            override fun onSuccess(p0: Int) {
-                val posCardInfo = PosCardInfo()
-                try {
-                    ServiceManager.getInstence().card.getCardInfo(p0, posCardInfo);
-                    listener.onSuccess(BCDHelper.bcdToString(posCardInfo.mSerialNum, 0, posCardInfo.mSerialNum.size))
-                } catch (e: Exception) {
-                    listener.onError(0, "")
-                }
-            }
-
-            override fun onError(p0: Int, p1: String?) {
-                listener.onError(p0, p1 ?: "")
-            }
-        })
-
-    }
-
     override fun scanCode(activity: Activity, timeout: Long, listener: IPaymentsTransfer.ScanCodeListener) {
         ServiceManager.getInstence().scan.startScan(timeout, object : OnBarcodeCallBack {
             override fun onScanResult(p0: String?) {
@@ -283,7 +259,6 @@ internal class Interfaces {
         )
 
         fun print(activity: Activity, json: String, bitmap: Array<Bitmap>?, listener: IPaymentsTransfer.PrintListener)
-        fun scanCard(activity: Activity, timeout: Int, listener: IPaymentsTransfer.ScanCardListener)
         fun scanCode(activity: Activity, timeout: Long, listener: IPaymentsTransfer.ScanCodeListener)
         fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener, voucher: Voucher)
     }

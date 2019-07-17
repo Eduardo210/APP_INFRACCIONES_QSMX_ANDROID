@@ -31,8 +31,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
-class PbocListener(val amount: String, val activity: Activity, val txListener: IPaymentsTransfer.TransactionListener) : OnPBOCListener,
-        OnPinInputListener {
+class PbocListener(val amount: String, val activity: Activity, val txListener: IPaymentsTransfer.TransactionListener) :
+    OnPBOCListener, OnPinInputListener {
 
     private var chipExpDate: String
     private var chipMaskedPan: String
@@ -115,11 +115,6 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                             ServiceManager.getInstence().pinpad.setOnPinInputListener(this@PbocListener)
                             if (isOnlinePin) {
                                 when (GlobalData.getInstance().pinpadVersion) {
-                                    PINPAD_INTERFACE_VERSION1 -> ServiceManager.getInstence().pinpad.inputOnlinePin(chipCardNumber,
-                                            byteArrayOf(0, 4, 5, 6, 7, 8, 9, 10, 11, 12))
-                                    PINPAD_INTERFACE_VERSION2 -> ServiceManager.getInstence().pinpad.inputOnlinePinNew(
-                                            GlobalData.getInstance().tmkId, chipCardNumber,
-                                            byteArrayOf(0, 4, 5, 6, 7, 8, 9, 10, 11, 12))
                                     PINPAD_INTERFACE_VERSION3 -> ServiceManager.getInstence().pinpad.inputOnlinePinByArea(
                                             GlobalData.getInstance().area, GlobalData.getInstance().tmkId, chipCardNumber,
                                             byteArrayOf(0, 4, 5, 6, 7, 8, 9, 10, 11, 12))
@@ -298,6 +293,10 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
         print(p0)
     }
 
+    override fun onRupayContactlessSecondTapCard() {
+        Log.i(this.javaClass.simpleName, "")
+    }
+
     override fun onTransactionResult(result: Int, data: Intent?) {
         if (result == PBOCTransactionResult.QPBOC_ARQC) {
             // quick pay to process(快速交易流程)
@@ -327,6 +326,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
             }
         } else if (result == PBOCTransactionResult.TERMINATED) {
             Log.e(this.javaClass.simpleName, "Transaction terminated")
+            txListener.onTxFailed(activity.getString(R.string.pt_e_terminated))
             DialogStatusHelper.closeDialog()
         }
     }
@@ -381,8 +381,9 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                 cipherData(chipTrack, object : Interfaces.CipherDataListener {
                     override fun onCipherData(success: Boolean, value: String) {
                         if (success) {
-                            processTx(ENTRY_MODE_CHIP, "", value,
-                                    chipIcData, chipMaskedPan, chipExpDate, chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn)
+                            processTx(ENTRY_MODE_CONTACTLESS, "", value, chipIcData, chipMaskedPan, chipExpDate,
+                                    chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi,
+                                    chipApn)
                         } else {
                             DialogStatusHelper.closeDialog()
                             txListener.onTxFailed(value)
@@ -408,12 +409,13 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     /* Prepare parameters of NFC transaction */
     private fun prepareNfcTx(data: OutputQPBOCResult, kernel: KernelDataRecord) {
         kernel.setPiccDataRecord(data.kernelData, null)
-        chipIcData = /*Utils.translateTlv(*/BCDASCII.bytesToHexString(data.kernelData, data.kernelData.size)
+        chipIcData = data.get55Field() + "9F6E${String.format("%1$02X", kernel.getDataTlv("9F6E").length / 2)}${kernel.getDataTlv("9F6E")}"//Utils.translateTlv(BCDASCII.bytesToHexString(data.kernelData, data.kernelData.size))
         chipCardNumber = data.pan
         chipMaskedPan = data.maskedPan
         chipTrack = data.track
         chipExpDate = data.expiredDate
-        val tagOwner = kernel.getDataTlv("5F20") ?: ""
+        var tagOwner = kernel.getDataTlv("5F20") ?: ""
+        Log.i(this.javaClass.simpleName, "9F6E: ${data.set55Field("9F6E")} - ${kernel.getDataTlv("9F6E")}")
         if (tagOwner.isNotEmpty()) {
             chipCardOwner = Utils.hexToAscii(tagOwner)
         }
@@ -491,7 +493,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     val paymentsVoucher = PaymentsVoucher(activity, txListener)
                     val c = Calendar.getInstance().time
                     val date = SimpleDateFormat("dd-MM-yyyy").format(c)
-                    val hour = SimpleDateFormat("HH:mm:SS").format(c)
+                    val hour = SimpleDateFormat("HH:mm:ss").format(c)
                     Preferences(activity).saveDataInt(R.string.pt_sp_banorte_counter_control, controlCounter)
                     when (result.resultadoPayW) {
                         PWR_APROBADA -> {
@@ -563,7 +565,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     val paymentsVoucher = PaymentsVoucher(activity, txListener)
                     val c = Calendar.getInstance().time
                     val date = SimpleDateFormat("dd-MM-yyyy").format(c)
-                    val hour = SimpleDateFormat("HH:mm:SS").format(c)
+                    val hour = SimpleDateFormat("HH:mm:ss").format(c)
                     val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
                             "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
                             FLAG_TRANS_TIMEOUT, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!, entryMode)
@@ -586,7 +588,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                 val paymentsVoucher = PaymentsVoucher(activity, txListener)
                 val c = Calendar.getInstance().time
                 val date = SimpleDateFormat("dd-MM-yyyy").format(c)
-                val hour = SimpleDateFormat("HH:mm:SS").format(c)
+                val hour = SimpleDateFormat("HH:mm:ss").format(c)
                 val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate, "",
                         "", "", "", "", amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi, apn,
                         FLAG_TRANS_OFFLINE, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!, entryMode)

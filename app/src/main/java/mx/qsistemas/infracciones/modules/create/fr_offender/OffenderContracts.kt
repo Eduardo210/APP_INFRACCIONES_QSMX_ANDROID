@@ -20,6 +20,7 @@ class OffenderContracts {
         fun isDirectionAnswered(): Boolean
         fun isLicenseAnswered(): Boolean
         fun onDataSaved()
+        fun onDataDuplicate()
         fun onDataUpdated(idPerson: Long)
         fun onTicketPrinted()
         fun onResultSavePayment(msg: String, flag: Boolean)

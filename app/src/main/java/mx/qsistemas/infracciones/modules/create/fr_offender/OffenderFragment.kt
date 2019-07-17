@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
+import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.databinding.FragmentOffenderBinding
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
@@ -233,15 +234,34 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                 var builder = AlertDialogHelper.getGenericBuilder(
                         getString(R.string.w_dialog_title_payment), getString(R.string.w_want_to_pay), activity
                 )
-                builder.setPositiveButton("Aceptar") { _, _ ->
+                builder.setPositiveButton("Sí") { _, _ ->
                     PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
                 }
-                builder.setNegativeButton("Cancelar") { _, _ ->
+                builder.setNegativeButton("No") { _, _ ->
                     activity.showLoader(getString(R.string.l_preparing_printer))
                     iterator.value.printTicket(activity)
                 }
                 builder.show()
             }, 2000)
+        } else {
+            activity.showLoader(getString(R.string.l_preparing_printer))
+            iterator.value.printTicket(activity)
+        }
+    }
+
+    override fun onDataDuplicate() {
+        if (!SingletonInfraction.isPersonAbstent) {
+            val builder = AlertDialogHelper.getGenericBuilder(
+                    getString(R.string.w_dialog_title_payment), getString(R.string.w_want_to_pay), activity
+            )
+            builder.setPositiveButton("Sí") { _, _ ->
+                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+            }
+            builder.setNegativeButton("No") { _, _ ->
+                activity.showLoader(getString(R.string.l_preparing_printer))
+                iterator.value.printTicket(activity)
+            }
+            builder.show()
         } else {
             activity.showLoader(getString(R.string.l_preparing_printer))
             iterator.value.printTicket(activity)
@@ -358,16 +378,17 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                 iterator.value.printTicket(activity)
             } else {
                 SingletonInfraction.cleanSingleton()
+                Alarms()
                 activity.finish()
             }
         } else {
             var builder = AlertDialogHelper.getGenericBuilder(
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
-            builder.setPositiveButton("Aceptar") { _, _ ->
+            builder.setPositiveButton("Sí") { _, _ ->
                 PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
             }
-            builder.setNegativeButton("Cancelar") { _, _ ->
+            builder.setNegativeButton("No") { _, _ ->
                 activity.showLoader(getString(R.string.l_preparing_printer))
                 iterator.value.printTicket(activity)
             }
@@ -377,19 +398,24 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxFailed(message: String) {
         isPaid = false
+        SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
         if (message == getString(mx.qsistemas.payments_transfer.R.string.pt_e_card_input_incorrect)) {
-            SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
             var builder = AlertDialogHelper.getGenericBuilder(
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
-            builder.setPositiveButton("Aceptar") { _, _ ->
+            builder.setPositiveButton("Sí") { _, _ ->
                 PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
             }
-            builder.setNegativeButton("Cancelar") { _, _ ->
+            builder.setNegativeButton("No") { _, _ ->
                 activity.showLoader(getString(R.string.l_preparing_printer))
                 iterator.value.printTicket(activity)
             }
             builder.show()
+        } else if (message == getString(R.string.pt_e_canceled)) {
+            if (isCreation) {
+                activity.showLoader(getString(R.string.l_preparing_printer))
+                iterator.value.printTicket(activity)
+            }
         }
     }
 
@@ -421,19 +447,20 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             val builder = AlertDialogHelper.getGenericBuilder(
                     getString(R.string.w_dialog_title_reprint_ticket), getString(R.string.w_want_to_reprint_ticket), activity
             )
-            builder.setPositiveButton("Aceptar") { _, _ ->
+            builder.setPositiveButton("Sí") { _, _ ->
                 isTicketCopy = true
                 activity.showLoader(getString(R.string.l_preparing_printer))
                 iterator.value.printTicket(activity)
             }
-            builder.setNegativeButton("Cancelar") { _, _ ->
+            /*builder.setNegativeButton("Cancelar") { _, _ ->
                 SingletonInfraction.cleanSingleton()
                 activity.finish()
 
-            }
+            }*/
             builder.show()
         } else {
             SingletonInfraction.cleanSingleton()
+            Alarms()
             activity.finish()
         }
     }

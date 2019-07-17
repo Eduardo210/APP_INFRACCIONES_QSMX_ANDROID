@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivityMainBinding
+import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
@@ -28,28 +29,14 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
     override fun enableHighAccuracyGps() {
         onError(getString(R.string.e_high_accuracy_required))
         Handler().postDelayed({ router.value.presentLocationSettings() }, 3000)
-        /*val locationRequest = LocationRequest()
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        val builder = LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest)
-        val task = LocationServices.getSettingsClient(this).checkLocationSettings(builder.build())
-        task.addOnCompleteListener {
-            try {
-                task.getResult(ApiException::class.java)
-            } catch (exception: ApiException) {
-                when (exception.statusCode) {
-                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {
-                        try {
-                            val resolvable = exception as ResolvableApiException
-                            resolvable.startResolutionForResult(this, 0)
-                        } catch (e: IntentSender.SendIntentException) {
-                            e.printStackTrace()
-                        } catch (e: ClassCastException) {
-                            e.printStackTrace()
-                        }
-                    }
-                }
-            }
-        }*/
+    }
+
+    override fun onBackPressed() {
+        val builder = AlertDialogHelper.getGenericBuilder(getString(R.string.w_dialog_close_session), getString(R.string.w_want_to_close_session), this)
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            super.onBackPressed()
+        }
+        builder.setNegativeButton("Cancelar") { _, _ -> }
+        builder.show()
     }
 }

@@ -6,10 +6,7 @@ import com.basewin.aidl.OnPrinterListener
 import com.basewin.services.PrinterBinder
 import com.basewin.services.ServiceManager
 import mx.qsistemas.payments_transfer.dtos.Voucher
-import mx.qsistemas.payments_transfer.utils.AlertDialogHelper
-import mx.qsistemas.payments_transfer.utils.DialogStatusHelper
-import mx.qsistemas.payments_transfer.utils.ENTRY_MODE_CHIP
-import mx.qsistemas.payments_transfer.utils.FLAG_TRANS_APPROVE
+import mx.qsistemas.payments_transfer.utils.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -29,43 +26,43 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
             ServiceManager.getInstence().printer.setPrintGray(1000)
             val printTest = JSONArray()
             ServiceManager.getInstence().printer.setPrintFontByAsserts("sans_bold.ttf")
-            printTest.put(getPrintObject("               Banorte", "3"))
-            printTest.put(getPrintObject("                              Venta\n\n", "2"))
-            printTest.put(getPrintObject("  Quetzalcoátl Sistemas S.A de C.V.", "2"))
-            printTest.put(getPrintObject("              Cto. Puericultores 18, Ciudad Satélite", "1"))
-            printTest.put(getPrintObject("      Naucalpan de Juárez, Edo. de México CP 53100\n\n", "1"))
-            printTest.put(getPrintObject("Afiliación: ${voucherInfo.afiliacion}", "2"))
-            printTest.put(getPrintObject("Terminal ID: ${voucherInfo.terminalId}", "2"))
-            printTest.put(getPrintObject("No. de control: ${voucherInfo.noControl}\n\n", "2"))
+            printTest.put(getPrintObject("Banorte", "3", "center"))
+            printTest.put(getPrintObject("Venta\n\n", "2", "center"))
+            printTest.put(getPrintObject("Quetzalcoátl Sistemas S.A de C.V.", "2", "center"))
+            printTest.put(getPrintObject("Cto. Puericultores 18, Ciudad Satélite", "1", "center"))
+            printTest.put(getPrintObject("Naucalpan de Juárez, Edo. de México CP 53100\n\n", "1", "center"))
+            printTest.put(getPrintObject("Afiliación: ${voucherInfo.afiliacion}", "2", "left"))
+            printTest.put(getPrintObject("Terminal ID: ${voucherInfo.terminalId}", "2", "left"))
+            printTest.put(getPrintObject("No. de control: ${voucherInfo.noControl}\n\n", "2", "left"))
             if (isCopy) {
-                printTest.put(getPrintObject("        Copia Cliente\n\n", "3"))
+                printTest.put(getPrintObject("Copia Cliente\n\n", "3", "center"))
             }
-            printTest.put(getPrintObject("     Número de tarjeta     Vigencia", "2"))
-            printTest.put(getPrintObject("     **** **** **** ${voucherInfo.noCard}        ${voucherInfo.caducity}\n\n", "2"))
-            printTest.put(getPrintObject("             ${voucherInfo.flagTrans}\n\n", "3"))
+            printTest.put(getPrintObject("Número de tarjeta     Vigencia", "2", "center"))
+            printTest.put(getPrintObject("     **** **** **** ${voucherInfo.noCard}        ${voucherInfo.caducity}\n\n", "2", "left"))
+            printTest.put(getPrintObject("${voucherInfo.flagTrans}\n\n", "3", "center"))
             if (voucherInfo.flagTrans == FLAG_TRANS_APPROVE) {
-                printTest.put(getPrintObject("Tipo de tarjeta: ${voucherInfo.cardBrand}", "2"))
-                printTest.put(getPrintObject("Tipo:  ${voucherInfo.cardType}", "2"))
-                printTest.put(getPrintObject("Banco Emisor: ${voucherInfo.bank}\n\n", "2"))
-                printTest.put(getPrintObject("Codigo Autorización: ${voucherInfo.authCode}", "2"))
-                printTest.put(getPrintObject("Referencia: ${voucherInfo.reference}\n\n", "2"))
-                printTest.put(getPrintObject("Importe:    $${voucherInfo.amount}\n\n\n\n", "2"))
+                printTest.put(getPrintObject("Tipo de tarjeta: ${voucherInfo.cardBrand}", "2", "left"))
+                printTest.put(getPrintObject("Tipo:  ${voucherInfo.cardType}", "2", "left"))
+                printTest.put(getPrintObject("Banco Emisor: ${voucherInfo.bank}\n\n", "2", "left"))
+                printTest.put(getPrintObject("Codigo Autorización: ${voucherInfo.authCode}", "2", "left"))
+                printTest.put(getPrintObject("Referencia: ${voucherInfo.reference}\n\n", "2", "left"))
+                printTest.put(getPrintObject("Importe:    $${voucherInfo.amount}\n\n\n\n", "2", "left"))
                 if (voucherInfo.needSign) {
-                    printTest.put(getPrintObject("-----------------------------------------------", "2"))
-                    printTest.put(getPrintObject(" ${voucherInfo.cardBeneficiary}\n\n", "2"))
+                    printTest.put(getPrintObject("-----------------------------------------------", "2", "center"))
+                    printTest.put(getPrintObject("${voucherInfo.cardBeneficiary}\n\n", "2", "center"))
                 } else {
-                    printTest.put(getPrintObject("  Autorizado con firma electrónica\n\n\n", "2"))
+                    printTest.put(getPrintObject("Autorizado con firma electrónica\n\n\n", "2", "center"))
                 }
             }
-            printTest.put(getPrintObject("          Fecha: ${voucherInfo.date}", "2"))
-            printTest.put(getPrintObject("          Hora: ${voucherInfo.hour}\n\n", "2"))
-            if (voucher.entryMode == ENTRY_MODE_CHIP && voucherInfo.flagTrans == FLAG_TRANS_APPROVE) {
-                printTest.put(getPrintObject("AID: ${voucherInfo.AID}", "2"))
-                printTest.put(getPrintObject("TVR: ${voucherInfo.TVR}", "2"))
-                printTest.put(getPrintObject("TSI: ${voucherInfo.TSI}", "2"))
-                printTest.put(getPrintObject("APN: ${voucherInfo.APN}\n\n", "2"))
+            printTest.put(getPrintObject("Fecha: ${voucherInfo.date}", "2", "center"))
+            printTest.put(getPrintObject("Hora: ${voucherInfo.hour}\n\n", "2", "center"))
+            if ((voucher.entryMode == ENTRY_MODE_CHIP || voucher.entryMode == ENTRY_MODE_CONTACTLESS) && voucherInfo.flagTrans == FLAG_TRANS_APPROVE) {
+                printTest.put(getPrintObject("AID: ${voucherInfo.AID}", "2", "left"))
+                printTest.put(getPrintObject("TVR: ${voucherInfo.TVR}", "2", "left"))
+                printTest.put(getPrintObject("TSI: ${voucherInfo.TSI}", "2", "left"))
+                printTest.put(getPrintObject("APN: ${voucherInfo.APN}\n\n", "2", "left"))
             }
-            printTest.put(getPrintObject("\n\n\n", "2"))
+            printTest.put(getPrintObject("\n\n\n", "2", "left"))
             printJson.put("spos", printTest)
             ServiceManager.getInstence().printer.print(printJson.toString(), null, this)
         } catch (e: JSONException) {
@@ -79,13 +76,13 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
         }
     }
 
-    private fun getPrintObject(text: String, size: String): JSONObject {
+    private fun getPrintObject(text: String, size: String, position: String): JSONObject {
         val json = JSONObject()
         try {
             json.put("content-type", "txt")
             json.put("content", text)
             json.put("size", size)
-            json.put("position", "left")
+            json.put("position", position)
             json.put("offset", "0")
             json.put("bold", "0")
             json.put("italic", "0")
@@ -105,7 +102,7 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
                 hasPrintedCopy = true
                 printVoucher(activity, voucher, true)
             }
-            builder.setNegativeButton("Cancelar") { _, _ -> txListener.onTxVoucherPrinted() }
+            //builder.setNegativeButton("Cancelar") { _, _ -> txListener.onTxVoucherPrinted() }
             builder.show()
         } else {
             txListener.onTxVoucherPrinted()

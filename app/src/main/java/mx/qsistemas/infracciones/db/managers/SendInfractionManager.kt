@@ -60,7 +60,7 @@ object SendInfractionManager {
         return object : AsyncTask<Void, Void, PaymentInfringement>() {
             override fun doInBackground(vararg p0: Void?): PaymentInfringement {
                 return Application.m_database?.paymentInfringementDao()?.selectPaymentOfInfraction(idInfraction)
-                        ?: PaymentInfringement(0, idInfraction.toInt(), 2, 0F, 0F, 0F,
+                        ?: PaymentInfringement(0, idInfraction.toInt(), 1, 0F, 0F, 0F,
                                 "", "", 0, 0F)
             }
         }.execute().get()

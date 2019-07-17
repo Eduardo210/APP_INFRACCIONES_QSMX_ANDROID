@@ -333,6 +333,8 @@ class Utils {
             var bytesRead = 1
             var hexToBin: String
             var TAG = ""
+            var exceptionTags1Bytes = mutableListOf("9B", "57")
+            var exceptionTags2Bytes = mutableListOf("DF06", "DF35", "9F06", "9F5A", "9F66", "9F01")
             for (i in b.indices) {
                 /* Obtención de bytes hexadecimales del String */
                 val index = i * 2
@@ -347,20 +349,21 @@ class Utils {
                  * procede a buscar la longitud del contenido del tag */
                     if (tagHas2Bytes) {
                         TAG += b[i]
-                        translate += b[i]
+                        if (TAG !in exceptionTags2Bytes) {
+                            translate += b[i]
+                        } else {
+                            translate = translate.removeRange(translate.length - 2, translate.length)
+                        }
                         tagHas2Bytes = false
                         searchTag = false
                         searchLength = true
                     } else {
                         TAG = b[i].toString()
-                        translate += TAG
+                        if (TAG !in exceptionTags1Bytes)
+                            translate += TAG
                         /* Si los ultimos 5 bits del hexadecimal convertido en binario están prendidos entonces
                      * significa que el tag contiene 2 bytes hexadecimales */
-                        if (hexToBin.length > 4 && hexToBin.substring(
-                                        hexToBin.length - 5,
-                                        hexToBin.length
-                                ) == "11111"
-                        ) {
+                        if (hexToBin.length > 4 && hexToBin.substring(hexToBin.length - 5, hexToBin.length) == "11111") {
                             tagHas2Bytes = true
                         } else {
                             tagHas2Bytes = false
@@ -370,7 +373,8 @@ class Utils {
                     }
                     /* Una vez encontrado el TAG procedemos a buscar la longitud del contenido del tag */
                 } else if (searchLength) {
-                    translate += b[i]
+                    if (TAG !in exceptionTags2Bytes && TAG !in exceptionTags1Bytes)
+                        translate += b[i]
                     lengthBytesContent = Integer.parseInt(b[i].toString(), 16)
                     searchLength = false
                     searchContent = true
@@ -381,14 +385,18 @@ class Utils {
                  * es 91 y bytes leidos son iguales a la longitud maxima del tag (16 bytes), se
                  * procede a guardar el byte e incrementar el contador de bytes leidos */
                     if (bytesRead < lengthBytesContent) {
-                        translate += if (TAG == "9F1E") "08" else b[i]
+                        if (TAG !in exceptionTags2Bytes && TAG !in exceptionTags1Bytes) {
+                            translate += /*if (TAG == "9F1E") "08" else*/ b[i]
+                        }
                         bytesRead++
                         /* En caso de que no se cumplan las validaciones anteriores, significa que el TAG
                      * es diferente al 91 y que ya se encuentra leyendo el último byte por la longitud
                      * indicada.  Se guarda ese byte y se reinician las banderas para que continue
                      * leyendo TAG. */
                     } else {
-                        translate += if (TAG == "9F1E") "08" else b[i]
+                        if (TAG !in exceptionTags2Bytes && TAG !in exceptionTags1Bytes) {
+                            translate += /*if (TAG == "9F1E") "08" else*/ b[i]
+                        }
                         bytesRead = 1
                         lengthBytesContent = 0
                         searchContent = false

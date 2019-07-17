@@ -107,6 +107,7 @@ class ReportsService : JobService() {
                                         SendInfractionManager.updatePaymentToSend(it.id.toLong())
                                     }
                                 }
+                                sendPayments()
                                 // When done, update the notification one more time to remove the progress bar
                                 builderInfraction.setContentText(getString(R.string.s_infraction_send))
                                         .setProgress(0, 0, false)

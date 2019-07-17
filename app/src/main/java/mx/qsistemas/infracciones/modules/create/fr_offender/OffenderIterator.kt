@@ -10,6 +10,7 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.*
 import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
 import mx.qsistemas.infracciones.db.managers.SaveInfractionManager
+import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.*
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
@@ -194,56 +195,63 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /* Generate all banking capture lines */
         captureLine1 = Utils.generateCaptureLine(newFolio.replace("-", ""), fifteenthDay, "%.2f".format(fiftiethDiscount), "2")
         captureLine2 = Utils.generateCaptureLine(newFolio.replace("-", ""), thirtythDay, "%.2f".format(totalImport), "2")
-        /* Step 1. Save the infraction information */
-        val infraction = Infraction(0, newFolio, SingletonInfraction.noLicenseOffender, SingletonInfraction.typeLicenseOffender.id, SingletonInfraction.licenseIssuedInOffender.id.toString(),
-                "", SingletonInfraction.isRemited.toInt(), SingletonInfraction.retainedDocument.document, totalUmas, totalImport, config.minimum_salary,
-                Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong(), actualDay, false.toInt(), 1, 4, SingletonInfraction.idPersonTownship.toInt(), 1, 0,
-                SingletonInfraction.typeDocument.id, "", SingletonInfraction.dispositionRemited.id, SingletonInfraction.isPersonAbstent.toInt(), 0,
-                "", "", "", captureLine1, captureLine2, "", fifteenthDay, thirtythDay, 0F, fiftiethDiscount.toFloat(),
-                totalImport, 1, "", "", 0F, false)
-        SingletonInfraction.idNewInfraction = SaveInfractionManager.insertInfraction(infraction)
-        /* Step 2. Validate that sub brand doesn't exists */
-        val brandExisting = SaveInfractionManager.getSubBrandExist(SingletonInfraction.subBrandVehicle, SingletonInfraction.brandVehicle.id)
-        // If sub brand not exist, then save it to future possible uses
-        if (brandExisting.id_submarking_vehicle == 0) {
-            val submarkingVehicle = SubmarkingVehicle(0, SingletonInfraction.brandVehicle.id, SingletonInfraction.subBrandVehicle)
-            SaveInfractionManager.saveSubBrandVehicle(submarkingVehicle)
+        /* Validate if is the first time to insert the infraction */
+        if (SingletonInfraction.idNewInfraction == 0L) {
+            /* Step 1. Save the infraction information */
+            val infraction = Infraction(0, newFolio, SingletonInfraction.noLicenseOffender, SingletonInfraction.typeLicenseOffender.id, SingletonInfraction.licenseIssuedInOffender.id.toString(),
+                    "", SingletonInfraction.isRemited.toInt(), SingletonInfraction.retainedDocument.document, totalUmas, totalImport, config.minimum_salary,
+                    Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong(), actualDay, false.toInt(), 1, 4, SingletonInfraction.idPersonTownship.toInt(), 1, 0,
+                    SingletonInfraction.typeDocument.id, "", SingletonInfraction.dispositionRemited.id, SingletonInfraction.isPersonAbstent.toInt(), 0,
+                    "", "", "", captureLine1, captureLine2, "", fifteenthDay, thirtythDay, 0F, fiftiethDiscount.toFloat(),
+                    totalImport, 1, "", "", 0F, false)
+            SingletonInfraction.idNewInfraction = SaveInfractionManager.insertInfraction(infraction)
+            /* Step 2. Validate that sub brand doesn't exists */
+            val brandExisting = SaveInfractionManager.getSubBrandExist(SingletonInfraction.subBrandVehicle, SingletonInfraction.brandVehicle.id)
+            // If sub brand not exist, then save it to future possible uses
+            if (brandExisting.id_submarking_vehicle == 0) {
+                val submarkingVehicle = SubmarkingVehicle(0, SingletonInfraction.brandVehicle.id, SingletonInfraction.subBrandVehicle)
+                SaveInfractionManager.saveSubBrandVehicle(submarkingVehicle)
+            }
+            /* Step 3. Save Vehicle Information */
+            val vehicleInfraction = VehicleInfraction(0, SingletonInfraction.brandVehicle.id, SingletonInfraction.subBrandVehicle, SingletonInfraction.typeVehicle.type_string,
+                    SingletonInfraction.colorVehicle, SingletonInfraction.yearVehicle, SingletonInfraction.identifierDocument.id, SingletonInfraction.noDocument,
+                    SingletonInfraction.stateIssuedIn.value, SingletonInfraction.idPersonTownship, "", SingletonInfraction.noCirculationCard, SingletonInfraction.idNewInfraction.toInt())
+            SaveInfractionManager.saveVehicleInfraction(vehicleInfraction)
+            /* Step 4. Save Person Information */
+            val person = Person(0, SingletonInfraction.nameOffender, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName, SingletonInfraction.rfcOffenfer)
+            SingletonInfraction.idNewPersonInfraction = SaveInfractionManager.savePersonInformation(person)
+            /* Step 5. Save Person-Infraction Relation */
+            SaveInfractionManager.savePersonInfractionRelation(PersonInfringement(SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.idNewPersonInfraction))
+            /* Step 6. Save Person Address If Offender Was On The Moment */
+            if (!SingletonInfraction.isPersonAbstent) {
+                val personAddress = Address(0, 0, SingletonInfraction.stateOffender.id, SingletonInfraction.townshipOffender.id_town, SingletonInfraction.colonyOffender,
+                        SingletonInfraction.streetOffender, SingletonInfraction.noExtOffender, SingletonInfraction.noIntOffender, SingletonInfraction.idPersonTownship, "", "", 0.0, 0.0)
+                val idNewPersonAddress = SaveInfractionManager.saveAddress(personAddress)
+                /* Step 6:1. Save Person-Address Relation */
+                SaveInfractionManager.savePersonAddressRelation(AddressPerson(idNewPersonAddress.toInt(), SingletonInfraction.idNewPersonInfraction))
+            }
+            /* Step 7. Save Address Information */
+            val infractionAddress = Address(0, 1, 0, 0, SingletonInfraction.colonnyInfraction, SingletonInfraction.streetInfraction,
+                    "", "", SingletonInfraction.idPersonTownship, SingletonInfraction.betweenStreet1, SingletonInfraction.betweenStreet2,
+                    SingletonInfraction.latitudeInfraction, SingletonInfraction.longitudeInfraction)
+            val idInfractionAddress = SaveInfractionManager.saveAddress(infractionAddress)
+            /* Step 7:1. Save Infraction-Address Relation */
+            SaveInfractionManager.saveInfractionAddressRelation(AddressInfringement(idInfractionAddress.toInt(), SingletonInfraction.idNewInfraction.toInt()))
+            /* Step 8. Save Fractions List */
+            SingletonInfraction.motivationList.forEach {
+                val trafficViolation = TrafficViolationFraction(0, SingletonInfraction.idNewInfraction, it.fraction.id.toInt(), it.fraction.minimum_wages, SingletonInfraction.idPersonTownship, it.fraction.penalty_points, it.motivation)
+                SaveInfractionManager.saveTrafficViolation(trafficViolation)
+            }
+            /* Step 9. Save Evidence Photos */
+            val evidencePhoto = InfractionEvidence(0, SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.evidence1, SingletonInfraction.evidence2, false)
+            SaveInfractionManager.saveInfractionEvidence(evidencePhoto)
+            /* Step 10. Register Event Infraction */
+            FirebaseEvents.registerInfractionFinished()
+            /* Notify View That All Data Was Saved */
+            if (notify) listener.onDataSaved()
+        } else {
+            listener.onDataDuplicate()
         }
-        /* Step 3. Save Vehicle Information */
-        val vehicleInfraction = VehicleInfraction(0, SingletonInfraction.brandVehicle.id, SingletonInfraction.subBrandVehicle, SingletonInfraction.typeVehicle.type_string,
-                SingletonInfraction.colorVehicle, SingletonInfraction.yearVehicle, SingletonInfraction.identifierDocument.id, SingletonInfraction.noDocument,
-                SingletonInfraction.stateIssuedIn.value, SingletonInfraction.idPersonTownship, "", SingletonInfraction.noCirculationCard, SingletonInfraction.idNewInfraction.toInt())
-        SaveInfractionManager.saveVehicleInfraction(vehicleInfraction)
-        /* Step 4. Save Person Information */
-        val person = Person(0, SingletonInfraction.nameOffender, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName, SingletonInfraction.rfcOffenfer)
-        SingletonInfraction.idNewPersonInfraction = SaveInfractionManager.savePersonInformation(person)
-        /* Step 5. Save Person-Infraction Relation */
-        SaveInfractionManager.savePersonInfractionRelation(PersonInfringement(SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.idNewPersonInfraction))
-        /* Step 6. Save Person Address If Offender Was On The Moment */
-        if (!SingletonInfraction.isPersonAbstent) {
-            val personAddress = Address(0, 0, SingletonInfraction.stateOffender.id, SingletonInfraction.townshipOffender.id_town, SingletonInfraction.colonyOffender,
-                    SingletonInfraction.streetOffender, SingletonInfraction.noExtOffender, SingletonInfraction.noIntOffender, SingletonInfraction.idPersonTownship, "", "", 0.0, 0.0)
-            val idNewPersonAddress = SaveInfractionManager.saveAddress(personAddress)
-            /* Step 6:1. Save Person-Address Relation */
-            SaveInfractionManager.savePersonAddressRelation(AddressPerson(idNewPersonAddress.toInt(), SingletonInfraction.idNewPersonInfraction))
-        }
-        /* Step 7. Save Address Information */
-        val infractionAddress = Address(0, 1, 0, 0, SingletonInfraction.colonnyInfraction, SingletonInfraction.streetInfraction,
-                "", "", SingletonInfraction.idPersonTownship, SingletonInfraction.betweenStreet1, SingletonInfraction.betweenStreet2,
-                SingletonInfraction.latitudeInfraction, SingletonInfraction.longitudeInfraction)
-        val idInfractionAddress = SaveInfractionManager.saveAddress(infractionAddress)
-        /* Step 7:1. Save Infraction-Address Relation */
-        SaveInfractionManager.saveInfractionAddressRelation(AddressInfringement(idInfractionAddress.toInt(), SingletonInfraction.idNewInfraction.toInt()))
-        /* Step 8. Save Fractions List */
-        SingletonInfraction.motivationList.forEach {
-            val trafficViolation = TrafficViolationFraction(0, SingletonInfraction.idNewInfraction, it.fraction.id.toInt(), it.fraction.minimum_wages, SingletonInfraction.idPersonTownship, it.fraction.penalty_points, it.motivation)
-            SaveInfractionManager.saveTrafficViolation(trafficViolation)
-        }
-        /* Step 9. Save Evidence Photos */
-        val evidencePhoto = InfractionEvidence(0, SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.evidence1, SingletonInfraction.evidence2, false)
-        SaveInfractionManager.saveInfractionEvidence(evidencePhoto)
-        /* Notify View That All Data Was Saved */
-        if (notify) listener.onDataSaved()
     }
 
     override fun updateData() {
@@ -310,7 +318,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     override fun savePayment(info: TransactionInfo) {
         this.txInfo = info
         /* Step 1. Save Payment Infraction */
-        val paymentInfringement = PaymentInfringement(0, SingletonInfraction.idNewInfraction.toInt(), 2, SingletonInfraction.subTotalInfraction.toFloat(), SingletonInfraction.discountInfraction.toFloat(),
+        val paymentInfringement = PaymentInfringement(0, SingletonInfraction.idNewInfraction.toInt(), 1, SingletonInfraction.subTotalInfraction.toFloat(), SingletonInfraction.discountInfraction.toFloat(),
                 SingletonInfraction.totalInfraction.toFloat(), info.authorization, "", SingletonInfraction.idNewPersonInfraction, 0F)
         SaveInfractionManager.savePaymentInfringement(paymentInfringement)
         /* Step 2. Save Payment Transaction Information */

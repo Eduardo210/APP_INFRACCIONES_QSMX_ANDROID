@@ -1,4 +1,4 @@
-package mx.qsistemas.infracciones.db.entities_migration
+package mx.qsistemas.infracciones.db_web.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

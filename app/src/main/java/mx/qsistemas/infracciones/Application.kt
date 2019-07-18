@@ -21,6 +21,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
 import io.fabric.sdk.android.Fabric
 import mx.qsistemas.infracciones.db.AppDatabase
+import mx.qsistemas.infracciones.db_web.AppDatabaseWeb
 import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
 import mx.qsistemas.infracciones.utils.Preferences
 import mx.qsistemas.infracciones.utils.Utils
@@ -36,11 +37,12 @@ class Application : MultiDexApplication() {
         val TAG = "Infracciones"
         private var instance: Application? = null
         var m_database: AppDatabase? = null
+        var m_database_web: AppDatabaseWeb? = null
         var prefs: Preferences? = null
         var firestore: FirebaseFirestore? = null
         var remoteConfig: FirebaseRemoteConfig? = null
         var firebaseAnalytics: FirebaseAnalytics? = null
-        var firebaseStorage: FirebaseStorage ?= null
+        var firebaseStorage: FirebaseStorage? = null
 
         fun getContext(): Context {
             return instance!!.applicationContext
@@ -53,6 +55,7 @@ class Application : MultiDexApplication() {
         MultiDex.install(getContext())
         prefs = Preferences(getContext())
         m_database = AppDatabase.getInMemoryDatabase(getContext())
+        m_database_web = AppDatabaseWeb.getInMemoryDatabase(getContext())
         initializeFirebaseComponents()
         /* Initialize Payments Library */
         PaymentsTransfer.initialize(getContext())

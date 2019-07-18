@@ -49,6 +49,7 @@ const val FCM_TOKEN_OPERATION = "id_operation"
 
 /* Firebase Push Operations */
 const val OP_SEND_DATABASE = 1
+const val OP_SEND_DATABASE_WEB = 2
 
 /* Event Names */
 const val EVENT_INFRACTION_STARTED = "infraction_started"

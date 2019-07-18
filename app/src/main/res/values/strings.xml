@@ -2,7 +2,6 @@
     <string name="app_name">Infracciones</string>
 
     <!-- Shared Preferences -->
-    <string name="sp_has_session">has_session</string>
     <string name="sp_has_config_prefix">has_config_prefix</string>
     <string name="sp_ip_address">ip_address</string>
     <string name="sp_firebase_token_push">firebase_token_push</string>
@@ -19,7 +18,7 @@
     <string name="sp_no_employee">no_employee</string>
 
     <!-- Remote Config Strings -->
-    <string name="rc_ip_address">ip_address</string>
+    <string name="rc_version">desarrollo_version</string>
 
     <!-- Notification Strings -->
     <string name="channel_name">QUETZ_SISTEMAS_INFRACCIONES</string>
@@ -137,6 +136,7 @@
     <string name="t_save">Guardar</string>
 
     <!-- Loader Strings -->
+    <string name="l_config_terminal">Configurando terminal</string>
     <string name="l_download_catalogs">Descargando catálogos</string>
     <string name="l_preparing_printer">Preparando impresión</string>
 
@@ -206,7 +206,11 @@
     <string name="w_dialog_title_payment_failed">COBRO FALLIDO</string>
     <string name="w_dialog_title_print_ticket">IMPRESIÓN FALLIDA</string>
     <string name="w_dialog_title_reprint_ticket">REIMPRESIÓN BOLETA</string>
+    <string name="w_dialog_close_session">CERRAR SESIÓN</string>
+    <string name="w_dialog_update">ACTUALIZACIÓN</string>
     <string name="w_want_to_reprint_ticket">¿Desea reimprimir la boleta?</string>
+    <string name="w_want_to_close_session">Esta a punto de cerrar sesión, ¿Desea continuar?</string>
+    <string name="w_need_to_update">Hay una nueva versión disponible, por favor descarguela para poder continuar</string>
     <string name="w_options_reprint">Por favor verifique que la impresora contenga papel y seleccione opción de reimpresión</string>
     <string name="w_want_to_pay">¿Desea pagar la infracción en este momento?</string>
     <string name="w_exit_without_save">Se perderán los cambios realizados, ¿Desea continuar?</string>

@@ -183,32 +183,32 @@ class SearchFr : Fragment()
         SingletonTicket.folioTicket = infraction.FOLIO
 
         SingletonTicket.completeNameOffender = "${infraction.NOMBRE} ${infraction.A_PATERNO} ${infraction.A_MATERNO}"
-        if(!infraction.RFC.isNullOrEmpty()){
+        if (!infraction.RFC.isNullOrEmpty()) {
             SingletonTicket.rfcOffender = infraction.RFC.toString()
         }
-        if (!infraction.CALLE_PERSON.isNullOrEmpty()){
+        if (!infraction.CALLE_PERSON.isNullOrEmpty()) {
             SingletonTicket.streetOffender = infraction.CALLE_PERSON.toString()
         }
-        if(!infraction.EXTERIOR.isNullOrEmpty()){
+        if (!infraction.EXTERIOR.isNullOrEmpty()) {
             SingletonTicket.noExtOffender = infraction.EXTERIOR.toString()
         }
 
-        if(!infraction.INTERIOR.isNullOrEmpty()){
+        if (!infraction.INTERIOR.isNullOrEmpty()) {
             SingletonTicket.noIntOffender = infraction.INTERIOR.toString()
         }
-        if(!infraction.COL_PERSON.isNullOrEmpty()){
+        if (!infraction.COL_PERSON.isNullOrEmpty()) {
             SingletonTicket.colonyOffender = infraction.COL_PERSON.toString()
         }
-        if(!infraction.ESTADO_INFRACTOR.isNullOrEmpty()){
+        if (!infraction.ESTADO_INFRACTOR.isNullOrEmpty()) {
             SingletonTicket.stateOffender = infraction.ESTADO_INFRACTOR.toString()
         }
-        if(!infraction.TARJETA_CIRCULACION.isNullOrEmpty()){
+        if (!infraction.TARJETA_CIRCULACION.isNullOrEmpty()) {
             SingletonTicket.noLicenseOffender = infraction.TARJETA_CIRCULACION.toString()
         }
-        if(!infraction.TIPO.isNullOrEmpty()){
+        if (!infraction.TIPO.isNullOrEmpty()) {
             SingletonTicket.typeLicenseOffender = infraction.TIPO.toString()
         }
-        if(!infraction.EXPEDIDA_EN_LICENCIA.isNullOrEmpty()){
+        if (!infraction.EXPEDIDA_EN_LICENCIA.isNullOrEmpty()) {
             SingletonTicket.stateLicenseOffender = infraction.EXPEDIDA_EN_LICENCIA.toString()
         }
 
@@ -237,11 +237,11 @@ class SearchFr : Fragment()
 
         SingletonTicket.streetInfraction = infraction.CALLE_INFRA.toString()
 
-        if(!infraction.ENTRE_CALLE_INFRA.isNullOrEmpty()){
+        if (!infraction.ENTRE_CALLE_INFRA.isNullOrEmpty()) {
             SingletonTicket.betweenStreetInfraction = infraction.ENTRE_CALLE_INFRA.toString()
         }
 
-        if(!infraction.Y_CALLE_INFRA.isNullOrBlank()){
+        if (!infraction.Y_CALLE_INFRA.isNullOrBlank()) {
             SingletonTicket.andStreetInfraction = infraction.Y_CALLE_INFRA.toString()
         }
 
@@ -291,11 +291,28 @@ class SearchFr : Fragment()
 
         SingletonTicket.completeNameOffender = "${infraction.name} ${infraction.last_name} ${infraction.mother_last_name}"
         SingletonTicket.rfcOffender = infraction.rfc
-        SingletonTicket.streetOffender = infraction.infractor_street
-        SingletonTicket.noExtOffender = infraction.infractor_external_number
-        SingletonTicket.noIntOffender = infraction.infractor_internal_number
-        SingletonTicket.colonyOffender = infraction.infractor_colony
-        SingletonTicket.stateOffender = infraction.infractor_state
+
+        if(infraction.infractor_street.isNotBlank()){
+            SingletonTicket.streetOffender = infraction.infractor_street
+        }
+
+        if(infraction.infractor_external_number.isNotBlank()){
+            SingletonTicket.noExtOffender = infraction.infractor_external_number
+        }
+
+        if(infraction.infractor_internal_number.isNotBlank()){
+            SingletonTicket.noIntOffender = infraction.infractor_internal_number
+        }
+
+        if(infraction.infractor_colony.isNotBlank()){
+            SingletonTicket.colonyOffender = infraction.infractor_colony
+        }
+
+        if(infraction.infractor_state.isNotBlank()){
+            SingletonTicket.stateOffender = infraction.infractor_state
+        }
+
+
         SingletonTicket.noLicenseOffender = infraction.license_number
         SingletonTicket.typeLicenseOffender = infraction.card_type_type
         SingletonTicket.stateLicenseOffender = infraction.issued_in
@@ -306,7 +323,7 @@ class SearchFr : Fragment()
         SingletonTicket.modelVehicle = infraction.vehicle_model
         SingletonTicket.identifierVehicle = infraction.ident_document
         SingletonTicket.noIdentifierVehicle = infraction.num_doc_ident
-        SingletonTicket.expeditionAuthVehicle = infraction.doc_ident_issued
+        SingletonTicket.expeditionAuthVehicle = infraction.authority_issue
         SingletonTicket.stateExpVehicle = infraction.doc_ident_issued //TODO: corregir
 
         infraction.infraction_fraction.forEach { fracc ->
@@ -381,14 +398,14 @@ class SearchFr : Fragment()
         totalAmount = infraction.amount_capture_line_iii.toString()
         if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
             //Tiene el descuento del 50%
-            amountToPay = "%.2f".format(infraction.amount_capture_line_ii)
+            amountToPay = "%.2f".format(infraction.amount_capture_line_ii).replace(",", ".")
             discountPayment = (infraction.amount_capture_line_iii.toDouble() - infraction.amount_capture_line_ii.toDouble()).toString()
         } else {
             //No tiene descuento
             discountPayment = "0"
             compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
             if (compare_date <= 0) {
-                amountToPay = "%.2f".format(infraction.amount_capture_line_iii)
+                amountToPay = "%.2f".format(infraction.amount_capture_line_iii).replace(",", ".")
             } else {
                 haveToPay = false
             }
@@ -410,7 +427,7 @@ class SearchFr : Fragment()
 
     override fun onPaymentClick(view: View, position: Int, origin: Int) {
         activity.showLoader("Espere ...")
-        val idInfrac:Long
+        val idInfrac: Long
         when (origin) {
             PAYMENT_LOCAL -> {
                 idInfrac = itemInfraOffLine[position].id_infraction
@@ -586,6 +603,7 @@ class SearchFr : Fragment()
 
     override fun onTxFailed(message: String) {
         isPaid = false
+        SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
     }
 
     override fun onTxVoucherFailer(message: String) {

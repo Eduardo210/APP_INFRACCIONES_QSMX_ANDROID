@@ -6,6 +6,7 @@ class LogInContracts {
         fun onError(msg: String)
         fun onCatalogsDownloaded()
         fun onLoginSuccessful()
+        fun validateVersion()
     }
 
     interface Iterator {

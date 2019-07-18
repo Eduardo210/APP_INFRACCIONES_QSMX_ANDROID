@@ -53,8 +53,8 @@ class ReportsService : JobService() {
                     val motivationList = SendInfractionManager.getInfractionMotivationList(it.id.toLong())
                     val motivationListRequest = mutableListOf<SaveInfractionRequest.InfractionRequest.InfractionFractions_Request>()
                     /* Save the motivation list into the request */
-                    motivationList.forEach {
-                        motivationListRequest.add(SaveInfractionRequest.InfractionRequest.InfractionFractions_Request(it.id_fraction, it.penalty_points, it.salary, it.motivation))
+                    motivationList.forEach { x ->
+                        motivationListRequest.add(SaveInfractionRequest.InfractionRequest.InfractionFractions_Request(x.id_fraction, x.penalty_points, x.salary, x.motivation))
                     }
                     /* Get offender address */
                     val personAddress = SendInfractionManager.getPersonAddress(it.id.toLong())
@@ -107,6 +107,7 @@ class ReportsService : JobService() {
                                         SendInfractionManager.updatePaymentToSend(it.id.toLong())
                                     }
                                 }
+                                sendPayments()
                                 // When done, update the notification one more time to remove the progress bar
                                 builderInfraction.setContentText(getString(R.string.s_infraction_send))
                                         .setProgress(0, 0, false)

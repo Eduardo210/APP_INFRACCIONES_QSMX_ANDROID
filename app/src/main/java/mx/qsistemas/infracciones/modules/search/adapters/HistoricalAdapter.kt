@@ -43,12 +43,14 @@ class HistoricalAdapter(private val infraction: MutableList<InfractionItem>
                 itemView.txt_folio?.text = folio
                 if (send) {
                     itemView.txt_status_infra.text = itemView.context.getString(R.string.status_send)
+                    itemView.txt_status_infra.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorGreen))
+                    itemView.txt_status_infra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.green_circle), null, null, null)
                 } else {
                     itemView.txt_status_infra.text = itemView.context.getString(R.string.status_pending_local)
+                    itemView.txt_status_infra.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorYellow))
+                    itemView.txt_status_infra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.yellow_circle), null, null, null)
                 }
 
-                itemView.txt_status_infra.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorGreen))
-                itemView.txt_status_infra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.green_circle), null, null, null)
                 itemView.txt_resume_art_frac.text = motivation
                 itemView.txt_date_infra.text = date_infra
                 itemView.btn_payment.visibility = View.GONE

@@ -142,6 +142,8 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             binding.imgEvidence1.id -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     activity.requestPermissions(arrayOf(Manifest.permission.CAMERA), RC_PERMISSION_CAMERA)
+                } else if (SingletonInfraction.evidence1 != "") {
+                    SnackbarHelper.showErrorSnackBar(activity, "Fotografía ya capturada", Snackbar.LENGTH_LONG)
                 } else {
                     takePhoto(RC_INTENT_CAMERA_EV1)
                 }
@@ -149,6 +151,8 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             binding.imgEvidence2.id -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     activity.requestPermissions(arrayOf(Manifest.permission.CAMERA), RC_PERMISSION_CAMERA)
+                } else if (SingletonInfraction.evidence2 != "") {6
+                    SnackbarHelper.showErrorSnackBar(activity, "Fotografía ya capturada", Snackbar.LENGTH_LONG)
                 } else {
                     takePhoto(RC_INTENT_CAMERA_EV2)
                 }

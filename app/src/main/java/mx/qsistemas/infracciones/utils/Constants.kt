@@ -44,6 +44,12 @@ const val NOTIF_SEND_REPORTS = 0x1
 const val NOTIF_SEND_GEOS = 0x2
 const val NOTIF_SEND_IMAGES = 0x3
 
+/* Firebase Push Data Tokens */
+const val FCM_TOKEN_OPERATION = "id_operation"
+
+/* Firebase Push Operations */
+const val OP_SEND_DATABASE = 1
+
 /* Event Names */
 const val EVENT_INFRACTION_STARTED = "infraction_started"
 const val EVENT_INFRACTION_FINISHED = "infraction_finished"

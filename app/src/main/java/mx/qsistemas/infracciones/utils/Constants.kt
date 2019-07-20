@@ -31,6 +31,11 @@ const val MAX_ACCURACY = 100.0
 const val TIME_OUT_OF_GEO = 1000 * 60L
 
 /* FIRESTORE COLLECTIONS */
+const val FS_COL_BRANDS = "brands"
+const val FS_COL_MODELS = "models"
+const val FS_COL_IDENTIF_DOC = "identifier_document"
+const val FS_COL_COLORS = "colors"
+const val FS_COL_CLASS_TYPE = "class_type"
 const val FS_COL_STATES = "states"
 const val FS_COL_TOWNSHIPS = "townships"
 const val FS_COL_TERMINALS = "terminals"

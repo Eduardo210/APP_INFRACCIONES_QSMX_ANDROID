@@ -1,6 +1,7 @@
 package mx.qsistemas.infracciones.singletons
 
 import mx.qsistemas.infracciones.db.entities.*
+import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import java.util.*
@@ -8,14 +9,14 @@ import java.util.*
 object SingletonInfraction {
 
     /* Vehicle Information */
-    var identifierDocument: IdentifierDocument = IdentifierDocument(0, "")
+    var identifierDocument: GenericCatalog = GenericCatalog("", true)
     var noDocument: String = ""
     var stateIssuedIn: States = States()
     var typeDocument: AuthorityIssues = AuthorityIssues(0, "")
-    var brandVehicle: VehicleBrand = VehicleBrand(0, "")
+    var brandVehicle: GenericCatalog = GenericCatalog("", true)
     var subBrandVehicle: String = ""
     var colorVehicle: String = ""
-    var typeVehicle: VehicleType = VehicleType(0, "")
+    var typeVehicle: GenericCatalog = GenericCatalog("", true)
     var noCirculationCard: String = ""
     var yearVehicle: String = ""
     var evidence1: String = ""
@@ -33,7 +34,7 @@ object SingletonInfraction {
     var latitudeInfraction: Double = 0.0
     var longitudeInfraction: Double = 0.0
     var dateInfraction: String = ""
-    var folioInfraction:String=""
+    var folioInfraction: String = ""
 
     /* Offender Information */
     var isPersonAbstent: Boolean = true
@@ -66,14 +67,14 @@ object SingletonInfraction {
 
     fun cleanSingleton() {
         /* Vehicle Information Reset */
-        identifierDocument = IdentifierDocument(0, "")
+        identifierDocument = GenericCatalog("", true)
         noDocument = ""
         stateIssuedIn = States()
         typeDocument = AuthorityIssues(0, "")
-        brandVehicle = VehicleBrand(0, "")
+        brandVehicle = GenericCatalog("", true)
         subBrandVehicle = ""
         colorVehicle = ""
-        typeVehicle = VehicleType(0, "")
+        typeVehicle = GenericCatalog("", true)
         noCirculationCard = ""
         yearVehicle = ""
         evidence1 = ""
@@ -90,8 +91,8 @@ object SingletonInfraction {
         dispositionRemited = Disposition(0, "")
         latitudeInfraction = 0.0
         longitudeInfraction = 0.0
-        dateInfraction= ""
-        folioInfraction=""
+        dateInfraction = ""
+        folioInfraction = ""
 
         /* Offender Information Reset */
         isPersonAbstent = true
@@ -116,8 +117,8 @@ object SingletonInfraction {
         subTotalInfraction = ""
         discountInfraction = ""
         totalInfraction = ""
-        captureLineii =  null
-        captureLineiii =  null
+        captureLineii = null
+        captureLineiii = null
         amountCaptureLineii = 0F
         amountCaptureLineiii = 0F
         paymentAuthCode = ""

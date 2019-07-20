@@ -51,7 +51,10 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
                     printTest.put(getPrintObject("-----------------------------------------------", "2", "center"))
                     printTest.put(getPrintObject("${voucherInfo.cardBeneficiary}\n\n", "2", "center"))
                 } else {
-                    printTest.put(getPrintObject("Autorizado con firma electrónica\n\n\n", "2", "center"))
+                    if (voucherInfo.entryMode == ENTRY_MODE_CHIP)
+                        printTest.put(getPrintObject("Autorizado con firma electrónica\n\n\n", "2", "center"))
+                    else if (voucherInfo.entryMode == ENTRY_MODE_CONTACTLESS)
+                        printTest.put(getPrintObject("Autorizado sin firma\n\n\n", "2", "center"))
                 }
             }
             printTest.put(getPrintObject("Fecha: ${voucherInfo.date}", "2", "center"))
@@ -60,7 +63,10 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
                 printTest.put(getPrintObject("AID: ${voucherInfo.AID}", "2", "left"))
                 printTest.put(getPrintObject("TVR: ${voucherInfo.TVR}", "2", "left"))
                 printTest.put(getPrintObject("TSI: ${voucherInfo.TSI}", "2", "left"))
-                printTest.put(getPrintObject("APN: ${voucherInfo.APN}\n\n", "2", "left"))
+                if (voucherInfo.APN.isNotEmpty())
+                    printTest.put(getPrintObject("APN: ${voucherInfo.APN}\n\n", "2", "left"))
+                else
+                    printTest.put(getPrintObject("AL: ${voucherInfo.AL}\n\n", "2", "left"))
             }
             printTest.put(getPrintObject("\n\n\n", "2", "left"))
             printJson.put("spos", printTest)

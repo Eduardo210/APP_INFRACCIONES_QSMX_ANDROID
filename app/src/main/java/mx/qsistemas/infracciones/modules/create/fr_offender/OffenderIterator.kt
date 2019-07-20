@@ -206,15 +206,15 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     totalImport, 1, "", "", 0F, false)
             SingletonInfraction.idNewInfraction = SaveInfractionManager.insertInfraction(infraction)
             /* Step 2. Validate that sub brand doesn't exists */
-            val brandExisting = SaveInfractionManager.getSubBrandExist(SingletonInfraction.subBrandVehicle, SingletonInfraction.brandVehicle.id)
+            /*val brandExisting = SaveInfractionManager.getSubBrandExist(SingletonInfraction.subBrandVehicle, SingletonInfraction.brandVehicle.id)
             // If sub brand not exist, then save it to future possible uses
             if (brandExisting.id_submarking_vehicle == 0) {
                 val submarkingVehicle = SubmarkingVehicle(0, SingletonInfraction.brandVehicle.id, SingletonInfraction.subBrandVehicle)
                 SaveInfractionManager.saveSubBrandVehicle(submarkingVehicle)
-            }
+            }*/
             /* Step 3. Save Vehicle Information */
-            val vehicleInfraction = VehicleInfraction(0, SingletonInfraction.brandVehicle.id, SingletonInfraction.subBrandVehicle, SingletonInfraction.typeVehicle.type_string,
-                    SingletonInfraction.colorVehicle, SingletonInfraction.yearVehicle, SingletonInfraction.identifierDocument.id, SingletonInfraction.noDocument,
+            val vehicleInfraction = VehicleInfraction(0, 0/*SingletonInfraction.brandVehicle.id*/, SingletonInfraction.subBrandVehicle, SingletonInfraction.typeVehicle.value,
+                    SingletonInfraction.colorVehicle, SingletonInfraction.yearVehicle, 0/*SingletonInfraction.identifierDocument.id*/, SingletonInfraction.noDocument,
                     SingletonInfraction.stateIssuedIn.value, SingletonInfraction.idPersonTownship, "", SingletonInfraction.noCirculationCard, SingletonInfraction.idNewInfraction.toInt())
             SaveInfractionManager.saveVehicleInfraction(vehicleInfraction)
             /* Step 4. Save Person Information */
@@ -364,14 +364,14 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.licenseIssuedInOffender.id != 0) {
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
         }
-        SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.vehicle_brand
+        //SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.vehicle_brand
         if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
             SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle
         }
-        SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.type_string
+        //SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.type_string
         SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle
         SingletonTicket.modelVehicle = SingletonInfraction.yearVehicle
-        SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
+        //SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
         SingletonTicket.noIdentifierVehicle = SingletonInfraction.noDocument
         SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
         SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value
@@ -406,7 +406,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     override fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener) {
         val voucher = Voucher(txInfo.noControl, txInfo.maskedPan.substring(txInfo.maskedPan.length - 4, txInfo.maskedPan.length), txInfo.expirationDate, txInfo.brandCard,
                 txInfo.typeCard, txInfo.bank, txInfo.authorization, txInfo.reference, txInfo.amount, txInfo.cardOwner,
-                txInfo.txDate, txInfo.txTime, txInfo.aid, txInfo.tvr, txInfo.tsi, txInfo.appLabel, txInfo.flagTransaction,
+                txInfo.txDate, txInfo.txTime, txInfo.aid, txInfo.tvr, txInfo.tsi, txInfo.appLabel, txInfo.appLabel, txInfo.flagTransaction,
                 txInfo.needSign, PTX_MERCHANT_ID, Utils.getImeiDevice(activity), txInfo.entryType)
         PaymentsTransfer.reprintVoucher(activity, listener, voucher)
     }

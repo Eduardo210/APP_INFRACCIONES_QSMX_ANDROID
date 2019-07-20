@@ -100,10 +100,10 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         binding.imgEvidence2.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         /* Set spinners adapters */
-        binding.spnBrandVehicle.adapter = iterator.value.getBrandAdapter()
-        binding.spnType.adapter = iterator.value.getTypeAdapter()
-        binding.autxtColor.setAdapter(iterator.value.getColorAdapter())
-        binding.spnIdentifierDoc.adapter = iterator.value.getIdentifierDocAdapter()
+        iterator.value.getBrandAdapter() // Download catalog from Firebase
+        iterator.value.getTypeAdapter() // Download catalog from Firebase
+        iterator.value.getColorAdapter() // Download catalog from Firebase
+        iterator.value.getIdentifierDocAdapter()// Download catalog from Firebase
         iterator.value.getIssuedInAdapter() // Download catalog from Firebase
         binding.spnTypeDoc.adapter = iterator.value.getTypeDocument()
     }
@@ -121,10 +121,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             val baseBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
             binding.imgEvidence2.setImageBitmap(baseBitmap)
         }
-        binding.spnIdentifierDoc.setSelection(iterator.value.getPositionIdentifiedDoc(SingletonInfraction.identifierDocument))
         binding.spnTypeDoc.setSelection(iterator.value.getPositionAuthority(SingletonInfraction.typeDocument))
-        binding.spnBrandVehicle.setSelection(iterator.value.getPositionBrand(SingletonInfraction.brandVehicle))
-        binding.spnType.setSelection(iterator.value.getPositionType(SingletonInfraction.typeVehicle))
         binding.autxtSubBrandVehicle.setText(SingletonInfraction.subBrandVehicle)
         binding.autxtColor.setText(SingletonInfraction.colorVehicle)
         binding.edtNoDoc.setText(SingletonInfraction.noDocument)
@@ -132,9 +129,32 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         binding.edtYear.setText(SingletonInfraction.yearVehicle)
     }
 
+    override fun onBrandReady(adapter: ArrayAdapter<String>) {
+        binding.spnBrandVehicle.adapter = adapter
+        binding.spnBrandVehicle.setSelection(iterator.value.getPositionBrand(SingletonInfraction.brandVehicle))
+    }
+
+    override fun onSubBrandReady(adapter: ArrayAdapter<String>) {
+        binding.autxtSubBrandVehicle.setAdapter(adapter)
+    }
+
     override fun onIssuedInReady(adapter: ArrayAdapter<String>) {
         binding.spnIssuedIn.adapter = adapter
         binding.spnIssuedIn.setSelection(iterator.value.getPositionState(SingletonInfraction.stateIssuedIn))
+    }
+
+    override fun onColorsReady(adapter: ArrayAdapter<String>) {
+        binding.autxtColor.setAdapter(adapter)
+    }
+
+    override fun onIdentifierDocReady(adapter: ArrayAdapter<String>) {
+        binding.spnIdentifierDoc.adapter = adapter
+        binding.spnIdentifierDoc.setSelection(iterator.value.getPositionIdentifiedDoc(SingletonInfraction.identifierDocument))
+    }
+
+    override fun onTypeVehicleReady(adapter: ArrayAdapter<String>) {
+        binding.spnType.adapter = adapter
+        binding.spnType.setSelection(iterator.value.getPositionType(SingletonInfraction.typeVehicle))
     }
 
     override fun onClick(p0: View?) {
@@ -151,7 +171,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             binding.imgEvidence2.id -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     activity.requestPermissions(arrayOf(Manifest.permission.CAMERA), RC_PERMISSION_CAMERA)
-                } else if (SingletonInfraction.evidence2 != "") {6
+                } else if (SingletonInfraction.evidence2 != "") {
                     SnackbarHelper.showErrorSnackBar(activity, "Fotografía ya capturada", Snackbar.LENGTH_LONG)
                 } else {
                     takePhoto(RC_INTENT_CAMERA_EV2)
@@ -216,8 +236,8 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             }
             binding.spnBrandVehicle.id -> {
                 SingletonInfraction.brandVehicle = iterator.value.brandList[p2]
-                val idBrand = iterator.value.brandList[p2].id
-                binding.autxtSubBrandVehicle.setAdapter(iterator.value.getSubBrandAdapter(idBrand))
+                val reference = iterator.value.brandList[p2].documentReference
+                iterator.value.getSubBrandAdapter(reference)
             }
             binding.spnType.id -> {
                 SingletonInfraction.typeVehicle = iterator.value.typeVehicleList[p2]
@@ -232,7 +252,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     override fun validFields(): Boolean {
         var isValid = true
         when {
-            SingletonInfraction.identifierDocument.id == 0 -> {
+            SingletonInfraction.identifierDocument.documentReference == null -> {
                 isValid = false
                 onError(getString(R.string.e_identifier_doc))
             }
@@ -244,7 +264,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 isValid = false
                 onError(getString(R.string.e_type_doc))
             }
-            SingletonInfraction.brandVehicle.id == 0 -> {
+            SingletonInfraction.brandVehicle.documentReference == null -> {
                 isValid = false
                 onError(getString(R.string.e_brand_vehicle))
             }
@@ -256,7 +276,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 isValid = false
                 onError(getString(R.string.e_color_vehicle))
             }
-            SingletonInfraction.typeVehicle.id == 0L -> {
+            SingletonInfraction.typeVehicle.documentReference == null -> {
                 isValid = false
                 onError(getString(R.string.e_type_vehicle))
             }

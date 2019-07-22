@@ -141,7 +141,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         rootObj.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
 
         jPaymentCard.put("aid", txInfo.aid)
-        jPaymentCard.put("app_label", txInfo.appLabel)
+        jPaymentCard.put("app_label", txInfo.apn)
         jPaymentCard.put("arqc", txInfo.arqc)
         jPaymentCard.put("auth_nb", txInfo.authorization)
         jPaymentCard.put("entry_type", txInfo.entryType)

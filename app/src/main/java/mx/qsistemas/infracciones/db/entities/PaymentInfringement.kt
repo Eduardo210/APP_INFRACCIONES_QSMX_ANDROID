@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "payment_infringement")
 data class PaymentInfringement(@PrimaryKey(autoGenerate = true) val id: Int,
                                @ColumnInfo(name = "ID_INFRACCION") val id_infringement: Int,
-                               @ColumnInfo(name = "ID_FORMA_PAGO") val id_payment_method: Int = 2,
+                               @ColumnInfo(name = "ID_FORMA_PAGO") val id_payment_method: Int = 1,
                                @ColumnInfo(name = "SUBTOTAL") val subtotal: Float,
                                @ColumnInfo(name = "DESCUENTO") val discount: Float,
                                @ColumnInfo(name = "TOTAL") val total: Float,

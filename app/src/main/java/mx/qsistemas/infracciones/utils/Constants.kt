@@ -59,6 +59,7 @@ const val OP_SEND_DATABASE_WEB = 2
 /* Event Names */
 const val EVENT_INFRACTION_STARTED = "infraction_started"
 const val EVENT_INFRACTION_FINISHED = "infraction_finished"
+const val EVENT_REPRINT_VOUCHER = "reprint_voucher"
 
 /* Event Bundle Items */
 const val EV_PERSON_NAME = "person_name"

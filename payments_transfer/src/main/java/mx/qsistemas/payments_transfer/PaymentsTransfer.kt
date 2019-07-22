@@ -18,6 +18,7 @@ import com.basewin.utils.BCDHelper
 import com.basewin.utils.CUPParam
 import com.basewin.utils.LoadParamManage
 import com.facebook.stetho.Stetho
+import com.google.gson.Gson
 import mx.qsistemas.payments_transfer.dtos.*
 import mx.qsistemas.payments_transfer.net.API_Quetzalcoatl
 import mx.qsistemas.payments_transfer.pboc.PbocListener
@@ -240,6 +241,16 @@ object PaymentsTransfer : Interfaces.Contracts {
         paymentsVoucher.printVoucher(activity, voucher, false)
     }
 
+    override fun printLastVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener) {
+        val json = paymentsPreferences.loadData(R.string.pt_sp_last_transaction, "")!!
+        if (json.isNotEmpty()) {
+            val voucher = Gson().fromJson(json, Voucher::class.java)
+            PaymentsVoucher(activity, listener).printVoucher(activity, voucher, false)
+        } else {
+            listener.onTxFailed(activity.getString(R.string.pt_e_voucher_not_found))
+        }
+    }
+
     private fun formatAmount(amount: String): Int? {
         return Integer.parseInt(StringHelper.changeAmout(amount).replace(".", "").replace(",", ""))
     }
@@ -261,6 +272,7 @@ internal class Interfaces {
         fun print(activity: Activity, json: String, bitmap: Array<Bitmap>?, listener: IPaymentsTransfer.PrintListener)
         fun scanCode(activity: Activity, timeout: Long, listener: IPaymentsTransfer.ScanCodeListener)
         fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener, voucher: Voucher)
+        fun printLastVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener)
     }
 
     interface CipherDataListener {

@@ -234,8 +234,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     chipTvr = BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_TVR))
                     chipArqc = BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_ARQC))
                     chipTsi = BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_TSI))
-                    chipApn = Utils.hexToAscii(BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_APN))
-                    )
+                    chipApn = Utils.hexToAscii(BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_APN)))
                     if (chipApn.isEmpty()) {
                         chipAppLbl = Utils.hexToAscii(BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_AL)))
                     }
@@ -467,8 +466,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     private fun processTx(
             entryMode: String, track1: String, track2: String, emvTags: String, maskedPan: String,
             expirationDate: String, nombreTarjetahabiente: String, needSign: Boolean, aid: String = "",
-            arqc: String = "", tvr: String = "", tsi: String = "", apn: String = "", al: String = ""
-    ) {
+            arqc: String = "", tvr: String = "", tsi: String = "", apn: String = "", al: String = "") {
         activity.runOnUiThread {
             DialogStatusHelper.showDialog(activity, activity.getString(R.string.pt_t_doing_payworks_tx))
         }
@@ -508,11 +506,11 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                         val paymentsVoucher = PaymentsVoucher(activity, txListener)
                         val c = Calendar.getInstance().time
                         val date = SimpleDateFormat("dd-MM-yyyy").format(c)
-                        val hour = SimpleDateFormat("HH:mm:SS").format(c)
+                        val hour = SimpleDateFormat("HH:mm:ss").format(c)
                         Preferences(activity).saveDataInt(R.string.pt_sp_banorte_counter_control, controlCounter)
                         when (result.resultadoPayW) {
                             PWR_APROBADA -> {
-                                val txInfo = TransactionInfo(aid, apn, arqc, result.codigoAut, entryMode, maskedPan,
+                                val txInfo = TransactionInfo(aid, apn, al, arqc, result.codigoAut, entryMode, maskedPan,
                                         date, hour, result.idAfiliacion, expirationDate, result.marcaTarjeta, result.tipoTarjeta,
                                         result.bancoEmisor, result.reference, amount, tvr, tsi, result.noControl,
                                         nombreTarjetahabiente, TRANSACTION_TYPE, FLAG_TRANS_APPROVE, needSign)
@@ -533,6 +531,9 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                                     }
                                 }
                                 txListener.onTxApproved(txInfo)
+                                /* Save last transaction into Shared Preferences */
+                                Preferences(activity).saveData(R.string.pt_sp_last_transaction, Gson().toJson(voucher))
+                                /* Print Voucher */
                                 paymentsVoucher.printVoucher(activity, voucher, false)
                             }
                             PWR_DECLINADA -> {
@@ -582,7 +583,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                         val paymentsVoucher = PaymentsVoucher(activity, txListener)
                         val c = Calendar.getInstance().time
                         val date = SimpleDateFormat("dd-MM-yyyy").format(c)
-                        val hour = SimpleDateFormat("HH:mm:SS").format(c)
+                        val hour = SimpleDateFormat("HH:mm:ss").format(c)
                         val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
                                 expirationDate, "", "", "", "",
                                 "", amount, nombreTarjetahabiente, date, hour,
@@ -607,7 +608,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     val paymentsVoucher = PaymentsVoucher(activity, txListener)
                     val c = Calendar.getInstance().time
                     val date = SimpleDateFormat("dd-MM-yyyy").format(c)
-                    val hour = SimpleDateFormat("HH:mm:SS").format(c)
+                    val hour = SimpleDateFormat("HH:mm:ss").format(c)
                     val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
                             expirationDate, "", "", "", "", "", amount,
                             nombreTarjetahabiente, date, hour, aid, tvr, tsi,
@@ -621,7 +622,6 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
             })
         }
     }
-
 
     private fun notifyTxFailToChip() {
         val onlineData = InputPBOCOnlineData()

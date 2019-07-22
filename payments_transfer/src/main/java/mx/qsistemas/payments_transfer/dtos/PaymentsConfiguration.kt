@@ -3,7 +3,7 @@ package mx.qsistemas.payments_transfer.dtos
 data class LoadKeyData(var serialNumber: String = "", var merchantId: String = "", var user: String = "",
                        var psw: String = "")
 
-data class TransactionInfo(var aid: String, var appLabel: String, var arqc: String,
+data class TransactionInfo(var aid: String, var apn: String, var al: String, var arqc: String,
                            val authorization: String, val entryType: String,
                            val maskedPan: String, val txDate: String, val txTime: String,
                            val affiliation: String, val expirationDate: String,

@@ -103,7 +103,8 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                         "last_synch" to Date(946688401000),
                         "last_geo" to GeoPoint(0.0, 0.0),
                         "time_geo" to Date(),
-                        "android_id" to Utils.getTokenDevice(Application.getContext()))
+                        "android_id" to Utils.getTokenDevice(Application.getContext()),
+                        "push_token" to Application.prefs?.loadData(R.string.sp_firebase_token_push, ""))
                 val imei = Utils.getImeiDevice(Application.getContext())
                 Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.set(map, SetOptions.merge())?.addOnCompleteListener { t2 ->
                     if (t2.isSuccessful) {
@@ -117,7 +118,6 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                 listener?.onDialogError(Application.getContext().getString(R.string.e_firestore_not_saved))
             }
         }
-
         dismiss()
     }
 

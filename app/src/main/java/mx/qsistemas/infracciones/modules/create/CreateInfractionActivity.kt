@@ -80,7 +80,6 @@ class CreateInfractionActivity : ActivityHelper(), CreateInfractionContracts.Pre
                 )
                 builder.setPositiveButton("Aceptar") { _, _ ->
                     SingletonInfraction.cleanSingleton()
-                    FirebaseEvents.registerInfractionCancelled()
                     super.onBackPressed()
                 }
                 builder.setNegativeButton("Cancelar") { _, _ -> }

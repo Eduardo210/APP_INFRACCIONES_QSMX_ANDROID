@@ -6,6 +6,7 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.db.managers.CatalogsSyncManager
 import mx.qsistemas.infracciones.db.managers.LogInManager
+import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.DownloadCatalogs
 import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
@@ -58,7 +59,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             Application.prefs?.saveData(R.string.sp_person_f_last_name, user.fLastName)
             Application.prefs?.saveData(R.string.sp_person_m_last_name, user.mLastName)
             Application.prefs?.saveData(R.string.sp_no_employee, user.employee)
-            Application.prefs?.saveDataBool(R.string.sp_has_session, true)
+            FirebaseEvents.registerUserProperties()
             listener.onLoginSuccessful()
         }
     }

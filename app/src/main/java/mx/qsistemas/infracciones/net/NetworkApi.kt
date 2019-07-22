@@ -1,8 +1,6 @@
 package mx.qsistemas.infracciones.net
 
-import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.BuildConfig
-import mx.qsistemas.infracciones.R
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -23,7 +21,7 @@ open class NetworkApi {
             customClient.addInterceptor(interceptor)
         }
         val clientBuilder = customClient.build()
-        val builder = Retrofit.Builder().baseUrl(Application.remoteConfig?.getString(Application.getContext().getString(R.string.rc_ip_address)))
+        val builder = Retrofit.Builder().baseUrl("http://189.240.246.19/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 //.addConverterFactory(GsonConverterFactory.create())
                 .client(clientBuilder).build()
@@ -53,5 +51,14 @@ open class NetworkApi {
 
         @GET("ws/mobile/qsistemas/LoginInicial.asmx/savePayment")
         fun savePayment(@Header("id_infraction") idInfraction: Long, @Query("Json") json: String): Call<String>
+
+        //Para la migración de la app
+        @GET("api/infringement/add")
+        fun saveInfractionToAws(@Query("Json") json: String): Call<String>
+
+        @GET("api/infringement/search/")
+        fun searchInfractionAws(@Query("Json") json: String): Call<String>
+
+
     }
 }

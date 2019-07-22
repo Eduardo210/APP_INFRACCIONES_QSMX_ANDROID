@@ -1,12 +1,9 @@
 <resources>
-    <string name="pt_app_name">Payments Transfer</string>
-
     <!-- Titles -->
     <string name="pt_t_pin_input">Ingresar firma electrónica</string>
     <string name="pt_t_config_terminal">Configurando terminal</string>
     <string name="pt_t_obtaining_key">Obteniendo llave de cifrado</string>
-    <string name="pt_t_waiting_card">Inserte/Deslice la tarjeta</string>
-    <!--<string name="pt_t_waiting_card">Inserte/Deslice la tarjeta\no\nAproxime contactless</string>-->
+    <string name="pt_t_waiting_card">Inserte/Deslice la tarjeta\no\nAproxime contactless</string>
     <string name="pt_t_waiting_nfc_card">Aproxime tarjeta</string>
     <string name="pt_t_reading_card">Leyendo tarjeta</string>
     <string name="pt_t_confirming_card">Confirmando tarjeta</string>
@@ -39,6 +36,7 @@
     <!-- Errors -->
     <string name="pt_e_unknown">Error desconocido</string>
     <string name="pt_e_declined">Operación declinada</string>
+    <string name="pt_e_declined_contactless">No se puede pagar un monto mayor a $400°° vía contactless</string>
     <string name="pt_e_rejected">Operación rechazada</string>
     <string name="pt_e_terminated">Operación terminada</string>
     <string name="pt_e_canceled">Operación cancelada</string>

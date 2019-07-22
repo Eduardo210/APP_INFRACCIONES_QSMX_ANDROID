@@ -31,6 +31,11 @@ const val MAX_ACCURACY = 100.0
 const val TIME_OUT_OF_GEO = 1000 * 60L
 
 /* FIRESTORE COLLECTIONS */
+const val FS_COL_BRANDS = "brands"
+const val FS_COL_MODELS = "models"
+const val FS_COL_IDENTIF_DOC = "identifier_document"
+const val FS_COL_COLORS = "colors"
+const val FS_COL_CLASS_TYPE = "class_type"
 const val FS_COL_STATES = "states"
 const val FS_COL_TOWNSHIPS = "townships"
 const val FS_COL_TERMINALS = "terminals"
@@ -44,11 +49,20 @@ const val NOTIF_SEND_REPORTS = 0x1
 const val NOTIF_SEND_GEOS = 0x2
 const val NOTIF_SEND_IMAGES = 0x3
 
+/* Firebase Push Data Tokens */
+const val FCM_TOKEN_OPERATION = "id_operation"
+
+/* Firebase Push Operations */
+const val OP_SEND_DATABASE = 1
+const val OP_SEND_DATABASE_WEB = 2
+
 /* Event Names */
-const val EVENT_INFRACTION_CANCELLED = "infraction_cancelled"
+const val EVENT_INFRACTION_STARTED = "infraction_started"
+const val EVENT_INFRACTION_FINISHED = "infraction_finished"
 
 /* Event Bundle Items */
 const val EV_PERSON_NAME = "person_name"
 const val EV_DEVICE_PREFIX = "device_prefix"
 const val EV_DEVICE_IMEI = "device_imei"
+const val EV_TOWNSHIP_NAME = "township_name"
 

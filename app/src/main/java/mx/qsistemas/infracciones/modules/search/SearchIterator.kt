@@ -167,7 +167,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         jPaymentCard.put("tipo_transaccion", txInfo.typeTx)
         rootObj.put("paymentCard", jPaymentCard)
 
-        jPayment.put("id_forma_pago", 2)
+        jPayment.put("id_forma_pago", 1)
         jPayment.put("subtotal", amount)
         jPayment.put("descuento", discount)
         jPayment.put("total", totalPayment)
@@ -228,14 +228,14 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (SingletonInfraction.licenseIssuedInOffender.id != 0) {
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
         }
-        SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.vehicle_brand
+        //SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.vehicle_brand
         if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
             SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle
         }
-        SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.type_string
+        //SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.type_string
         SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle
         SingletonTicket.modelVehicle = SingletonInfraction.yearVehicle
-        SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
+        //SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
         SingletonTicket.noIdentifierVehicle = SingletonInfraction.noDocument
         SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
         SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value

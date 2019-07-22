@@ -130,7 +130,7 @@
                 android:textSize="15sp"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintTop_toBottomOf="@id/txt_status_payment" />
+                card_view:layout_constraintTop_toBottomOf="@id/txt_date_infra" />
 
             <Button
                 android:id="@+id/btn_payment"
@@ -147,7 +147,7 @@
                 android:textSize="15sp"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toStartOf="@id/btn_print"
-                card_view:layout_constraintTop_toBottomOf="@id/txt_status_payment" />
+                card_view:layout_constraintTop_toBottomOf="@id/txt_date_infra" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

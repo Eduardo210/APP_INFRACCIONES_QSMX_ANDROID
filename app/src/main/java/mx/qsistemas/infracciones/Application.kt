@@ -14,12 +14,17 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.google.firebase.storage.FirebaseStorage
 import io.fabric.sdk.android.Fabric
 import mx.qsistemas.infracciones.db.AppDatabase
+import mx.qsistemas.infracciones.db_web.AppDatabaseWeb
+import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
 import mx.qsistemas.infracciones.utils.Preferences
+import mx.qsistemas.infracciones.utils.Utils
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 
 class Application : MultiDexApplication() {
@@ -32,10 +37,12 @@ class Application : MultiDexApplication() {
         val TAG = "Infracciones"
         private var instance: Application? = null
         var m_database: AppDatabase? = null
+        var m_database_web: AppDatabaseWeb? = null
         var prefs: Preferences? = null
         var firestore: FirebaseFirestore? = null
         var remoteConfig: FirebaseRemoteConfig? = null
         var firebaseAnalytics: FirebaseAnalytics? = null
+        var firebaseStorage: FirebaseStorage? = null
 
         fun getContext(): Context {
             return instance!!.applicationContext
@@ -48,10 +55,11 @@ class Application : MultiDexApplication() {
         MultiDex.install(getContext())
         prefs = Preferences(getContext())
         m_database = AppDatabase.getInMemoryDatabase(getContext())
+        m_database_web = AppDatabaseWeb.getInMemoryDatabase(getContext())
         initializeFirebaseComponents()
         /* Initialize Payments Library */
         PaymentsTransfer.initialize(getContext())
-        /* Granted permission to access to storage*/
+        /* Granted permission to access to firebaseStorage*/
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
         /* Initialize crashlytics */
@@ -80,10 +88,12 @@ class Application : MultiDexApplication() {
         firestore?.firestoreSettings = settings
         /* Initialize Firebase Analytics Events */
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        /* Initialize Firebase Storage */
+        firebaseStorage = FirebaseStorage.getInstance()
         /* Initialize Firebase Remote Config */
         remoteConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(1800)
+                .setMinimumFetchIntervalInSeconds(1000 * 60 * 5)
                 .build()
         remoteConfig?.setConfigSettings(configSettings)
         remoteConfig?.setDefaults(R.xml.remote_config_defaults)
@@ -104,6 +114,14 @@ class Application : MultiDexApplication() {
             // Get new Instance ID token
             val token = task.result?.token
             prefs?.saveData(R.string.sp_firebase_token_push, token ?: "")
+            /* Register Firebase Push Token Into Firestore */
+            val map = hashMapOf("push_token" to token)
+            val imei = Utils.getImeiDevice(getContext())
+            firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.set(map, SetOptions.merge())?.addOnCompleteListener { t2 ->
+                if (!t2.isSuccessful) {
+                    Log.e(this.javaClass.simpleName, "Push Notification Token Not Registered")
+                }
+            }
         })
     }
 }

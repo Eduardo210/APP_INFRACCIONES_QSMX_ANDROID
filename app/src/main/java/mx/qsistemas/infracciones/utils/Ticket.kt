@@ -3,6 +3,7 @@ package mx.qsistemas.infracciones.utils
 import android.app.Activity
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
+import mx.qsistemas.infracciones.db.managers.PrintTicketManager
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
@@ -17,15 +18,13 @@ class Ticket {
             val printJson = JSONObject()
             val printTest = JSONArray()
 
-            val header1 = "QSISTEMAS_I\n"
-            val header2 = "QSISTEMAS_II\n"
-            val header3 = "QSISTEMAS_III\n"
-            val header4 = "QSISTEMAS_IV\n"
-            val header5 = "QSISTEMAS_V\n"
-            val header6 = "QSISTEMAS_VI\n"
-            val footer1 = "QSISTEMAS_VII"
-            val footer2 = "QSISTEMAS_VIII"
-            val footer3 = "QSISTEMAS_IX"
+            val config = PrintTicketManager.getConfig()
+            val header1 = "${config.header_print_1}\n"
+            val header2 = "${config.header_print_2}\n"
+            val header3 = "${config.header_print_3}\n"
+            val header4 = "${config.header_print_4}\n"
+            val header5 = "${config.header_print_5}\n"
+            val header6 = "${config.header_print_6}\n"
 
             //Impresión de encabezados
             printTest.put(getPrintObject(header1 + header2 + header3 + header4 + header5 + header6, "2", "center", "1"))
@@ -81,7 +80,8 @@ class Ticket {
                 printTest.put(getPrintObject("ENTIDAD: ${SingletonTicket.stateOffender}\n\n", "2", "left", "0"))
 
             // Datos de licencia
-            printTest.put(getPrintObject("LICENCIA/PERMISO: ${SingletonTicket.noLicenseOffender}\n", "2", "left", "0"))
+            if (SingletonTicket.noLicenseOffender != "-")
+                printTest.put(getPrintObject("LICENCIA/PERMISO: ${SingletonTicket.noLicenseOffender}\n", "2", "left", "0"))
             if (SingletonTicket.typeLicenseOffender != "-")
                 printTest.put(getPrintObject("TIPO LICENCIA: ${SingletonTicket.typeLicenseOffender}\n", "2", "left", "0"))
             if (SingletonTicket.stateLicenseOffender != "-")
@@ -138,7 +138,7 @@ class Ticket {
 
             // Referencia de pago
             if (SingletonTicket.paymentAuthCode.isNotEmpty()) {
-                printTest.put(getPrintObject("REFERENCIA DE PAGO:\n", "2", "center", "1"))
+                printTest.put(getPrintObject("PAGO CON TARJETA, AUTORIZACIÓN:\n", "2", "center", "1"))
                 printTest.put(getPrintObject("${SingletonTicket.paymentAuthCode}\n\n\n\n", "2", "center", "0"))
             } else {
                 printTest.put(getPrintObject("\n\n\n\n", "2", "center", "0"))
@@ -154,9 +154,9 @@ class Ticket {
             }
 
             // Pie de página
-            printTest.put(getPrintObject("$footer1\n", "2", "center", "0"))
-            printTest.put(getPrintObject("$footer2\n", "2", "center", "0"))
-            printTest.put(getPrintObject("$footer3\n\n", "2", "center", "0"))
+            printTest.put(getPrintObject("QSISTEMAS XI\n", "2", "center", "0"))
+            printTest.put(getPrintObject("QSISTEMAS XII\n", "2", "center", "0"))
+            printTest.put(getPrintObject("QSISTEMAS XIII\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("-AVISO DE PRIVACIDAD-\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("FUENTE DE CAPTURA: SIIP\n\n\n\n\n", "2", "center", "0"))
 

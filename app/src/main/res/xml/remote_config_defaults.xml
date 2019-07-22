@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
-        <key>ip_address</key>
-        <value>http://189.240.246.19/</value>
+        <key>desarrollo_version</key>
+        <value>{"version":"3.0.0","url":"https://play.google.com/store/apps/details?id=mx.qsistemas.infracciones_tultitlan"}</value>
     </entry>
 </defaultsMap>

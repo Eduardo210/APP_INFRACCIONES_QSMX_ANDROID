@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
@@ -45,7 +46,7 @@ dependencies {
     implementation files('libs/bcprov-jdk16-1.45.jar')
     implementation files('libs/zxingcore.jar')
     compileOnly files('extern_libs/classes.jar')
-    implementation files('libs/bw_pos_sdk2.0.23.jar')
+    implementation files('libs/bw_pos_sdk.jar')
 
     implementation 'androidx.core:core-ktx:1.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'

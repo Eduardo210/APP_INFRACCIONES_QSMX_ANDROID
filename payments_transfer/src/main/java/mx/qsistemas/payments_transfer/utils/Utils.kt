@@ -334,7 +334,7 @@ class Utils {
             var hexToBin: String
             var TAG = ""
             var exceptionTags1Bytes = mutableListOf("9B", "57")
-            var exceptionTags2Bytes = mutableListOf("DF06", "DF35", "9F06", "9F5A", "9F66", "9F6E", "9F01")
+            var exceptionTags2Bytes = mutableListOf("DF06", "DF35", "9F06", "9F5A", "9F66", "9F01")
             for (i in b.indices) {
                 /* Obtención de bytes hexadecimales del String */
                 val index = i * 2

@@ -211,7 +211,7 @@ class SearchFr : Fragment()
         if (!infraction.EXPEDIDA_EN_LICENCIA.isNullOrEmpty()) {
             SingletonTicket.stateLicenseOffender = infraction.EXPEDIDA_EN_LICENCIA.toString()
         }
-
+        SingletonTicket.nameAgent = infraction.OFICIAL.toString()
         SingletonTicket.brandVehicle = infraction.MARCA_VEHICULO.toString()
         SingletonTicket.subBrandVehicle = infraction.SUBMARCA.toString()
         SingletonTicket.typeVehicle = infraction.TIPO.toString()
@@ -274,7 +274,7 @@ class SearchFr : Fragment()
             }
 
             override fun onTicketError() {
-                onError("Ha ocurrido un error em la impresión")
+                onError("Ha ocurrido un error en la impresión")
             }
 
         })
@@ -312,7 +312,7 @@ class SearchFr : Fragment()
             SingletonTicket.stateOffender = infraction.infractor_state
         }
 
-
+        SingletonTicket.nameAgent = infraction.official
         SingletonTicket.noLicenseOffender = infraction.license_number
         SingletonTicket.typeLicenseOffender = infraction.card_type_type
         SingletonTicket.stateLicenseOffender = infraction.issued_in

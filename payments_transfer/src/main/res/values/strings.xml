@@ -23,6 +23,7 @@
     <string name="pt_sp_banorte_merchant_id">ban_merchant_id</string>
     <string name="pt_sp_banorte_user">ban_user</string>
     <string name="pt_sp_banorte_black_box">ban_black_box</string>
+    <string name="pt_sp_last_transaction">ban_last_transaction</string>
 
     <!-- Success Strings -->
     <string name="pt_s_load_key">Llave guardada correctamente</string>
@@ -47,4 +48,5 @@
     <string name="pt_e_print_run_out_paper">Se ha terminado el papel durante impresión</string>
     <string name="pt_e_print_overheat">Sobrecalentamiento de la terminal</string>
     <string name="pt_e_print_other_error">Ha ocurrido un error en la impresión</string>
+    <string name="pt_e_voucher_not_found">No se ha encontrado una transacción pagada</string>
 </resources>

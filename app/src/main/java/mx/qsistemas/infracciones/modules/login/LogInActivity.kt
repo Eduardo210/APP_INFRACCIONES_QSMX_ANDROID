@@ -84,7 +84,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
 
     override fun onResume() {
         super.onResume()
-        if (Validator.isNetworkEnable(this))
+        if (Validator.isNetworkEnable(this) && !BuildConfig.DEBUG)
             validateVersion()
     }
 

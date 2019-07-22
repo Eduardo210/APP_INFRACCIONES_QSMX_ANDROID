@@ -15,11 +15,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentInfractionListBinding
+import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.main.MainActivity
 import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.RC_PERMISSION_LOCATION
 import mx.qsistemas.infracciones.utils.Validator
+import mx.qsistemas.payments_transfer.IPaymentsTransfer
+import mx.qsistemas.payments_transfer.PaymentsTransfer
+import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
 class InfractionListFr : Fragment(), View.OnClickListener {
 
@@ -36,6 +40,7 @@ class InfractionListFr : Fragment(), View.OnClickListener {
         //binding.rcvInfractions.layoutManager = GridLayoutManager(activity, 1)
         binding.btnAddInfraction.setOnClickListener(this)
         binding.btnSearchInfraction.setOnClickListener(this)
+        binding.btnPrintVoucher.setOnClickListener(this)
         binding.include.imgSearchInfraction.setOnClickListener(this)
         return binding.root
     }
@@ -62,6 +67,19 @@ class InfractionListFr : Fragment(), View.OnClickListener {
             }
             binding.btnSearchInfraction.id -> {
                 activity.router.value.presentSearchInfraction()
+            }
+            binding.btnPrintVoucher.id -> {
+                PaymentsTransfer.printLastVoucher(activity, object : IPaymentsTransfer.TransactionListener {
+                    override fun onTxApproved(txInfo: TransactionInfo) {}
+                    override fun onTxFailed(message: String) {
+                        SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
+                    }
+
+                    override fun onTxVoucherFailer(message: String) {}
+                    override fun onTxVoucherPrinted() {
+                        FirebaseEvents.registerReprintVoucher()
+                    }
+                })
             }
         }
     }

@@ -292,7 +292,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
         this.txInfo = txInfo
         val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
-        val paymentCardData = UpdatePaymentRequest.UpdatePaymentCardData(txInfo.aid, txInfo.appLabel, txInfo.arqc, txInfo.authorization,
+        val paymentCardData = UpdatePaymentRequest.UpdatePaymentCardData(txInfo.aid, txInfo.apn, txInfo.arqc, txInfo.authorization,
                 txInfo.entryType, txInfo.maskedPan, txInfo.txDate, "", txInfo.txTime, "", idRegUser.toString(),
                 txInfo.affiliation, txInfo.expirationDate, "Aprobado", txInfo.brandCard, txInfo.typeCard,
                 txInfo.bank, txInfo.reference, totalPayment, txInfo.tvr, txInfo.tsi, txInfo.noControl,
@@ -322,7 +322,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 SingletonInfraction.totalInfraction.toFloat(), info.authorization, "", SingletonInfraction.idNewPersonInfraction, 0F)
         SaveInfractionManager.savePaymentInfringement(paymentInfringement)
         /* Step 2. Save Payment Transaction Information */
-        val paymentInfringementCard = PaymentInfringementCard(0, info.aid, info.appLabel, info.arqc, info.authorization, info.entryType, info.maskedPan,
+        val paymentInfringementCard = PaymentInfringementCard(0, info.aid, info.apn, info.arqc, info.authorization, info.entryType, info.maskedPan,
                 info.txDate, "", info.txTime, Application.prefs?.loadData(R.string.sp_prefix, "")!!, SingletonInfraction.idNewPersonInfraction, info.affiliation, info.expirationDate, info.flagTransaction, info.brandCard,
                 info.typeCard, info.bank, info.reference, SingletonInfraction.totalInfraction, info.tvr, info.tsi, info.noControl, info.cardOwner,
                 "", info.typeTx, SingletonInfraction.idNewInfraction)
@@ -389,6 +389,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.disposition
         }
+        SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_f_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_m_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_name, "")}"
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
         SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
         SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
@@ -406,7 +407,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     override fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener) {
         val voucher = Voucher(txInfo.noControl, txInfo.maskedPan.substring(txInfo.maskedPan.length - 4, txInfo.maskedPan.length), txInfo.expirationDate, txInfo.brandCard,
                 txInfo.typeCard, txInfo.bank, txInfo.authorization, txInfo.reference, txInfo.amount, txInfo.cardOwner,
-                txInfo.txDate, txInfo.txTime, txInfo.aid, txInfo.tvr, txInfo.tsi, txInfo.appLabel, txInfo.appLabel, txInfo.flagTransaction,
+                txInfo.txDate, txInfo.txTime, txInfo.aid, txInfo.tvr, txInfo.tsi, txInfo.apn, txInfo.al, txInfo.flagTransaction,
                 txInfo.needSign, PTX_MERCHANT_ID, Utils.getImeiDevice(activity), txInfo.entryType)
         PaymentsTransfer.reprintVoucher(activity, listener, voucher)
     }

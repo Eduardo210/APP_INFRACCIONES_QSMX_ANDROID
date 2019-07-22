@@ -37,6 +37,7 @@ object SingletonTicket {
     var retainedDocumentInfraction: String = "NINGUNO"
     var isRemitedInfraction: Boolean = false
     var remitedDispositionInfraction: String = ""
+    var nameAgent: String = ""
 
     var paymentAuthCode: String = ""
     var captureLineList: MutableList<CaptureLine> = mutableListOf()
@@ -83,6 +84,7 @@ object SingletonTicket {
         retainedDocumentInfraction = "NINGUNO"
         isRemitedInfraction = false
         remitedDispositionInfraction = ""
+        nameAgent = ""
 
         paymentAuthCode = ""
         captureLineList = mutableListOf()

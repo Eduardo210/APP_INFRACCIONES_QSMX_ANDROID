@@ -32,4 +32,13 @@ object FirebaseEvents {
         bundle.putString(EV_TOWNSHIP_NAME, townshipName)
         Application.firebaseAnalytics?.logEvent(EVENT_INFRACTION_FINISHED, bundle)
     }
+
+    fun registerReprintVoucher() {
+        val bundle = Bundle()
+        bundle.putString(EV_PERSON_NAME, personName)
+        bundle.putString(EV_DEVICE_PREFIX, devicePrefix)
+        bundle.putString(EV_DEVICE_IMEI, Utils.getImeiDevice(Application.getContext()))
+        bundle.putString(EV_TOWNSHIP_NAME, townshipName)
+        Application.firebaseAnalytics?.logEvent(EVENT_REPRINT_VOUCHER, bundle)
+    }
 }

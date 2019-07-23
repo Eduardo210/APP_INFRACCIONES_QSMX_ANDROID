@@ -24,13 +24,14 @@ class OffenderContracts {
         fun onDataUpdated(idPerson: Long)
         fun onTicketPrinted()
         fun onResultSavePayment(msg: String, flag: Boolean)
+        fun onTypeLicenseReady(array: ArrayAdapter<String>)
     }
 
     interface Iterator {
         fun getStatesList()
         fun getStatesIssuedList()
         fun getTownshipsList(posState: Int)
-        fun getTypeLicenseAdapter(): ArrayAdapter<String>
+        //fun getTypeLicenseAdapter(): ArrayAdapter<String>
         fun getPositionState(obj: States): Int
         fun getPositionStateLicense(obj: States): Int
         fun getPositionTownship(obj: Townships): Int
@@ -41,5 +42,6 @@ class OffenderContracts {
         fun printTicket(activity: Activity)
         fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener)
         fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long)
+        fun getTypeLicenseAdapter()
     }
 }

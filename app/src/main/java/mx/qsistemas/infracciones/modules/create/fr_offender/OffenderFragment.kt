@@ -170,6 +170,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.spnTownship.adapter = adapter
         binding.lytOffender.spnTownship.setSelection(iterator.value.getPositionTownship(SingletonInfraction.townshipOffender))
     }
+    override fun onTypeLicenseReady(array: ArrayAdapter<String>) {
+        binding.lytOffender.spnLicenseType.adapter
+    }
 
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)

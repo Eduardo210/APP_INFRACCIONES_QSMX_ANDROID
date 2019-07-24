@@ -294,11 +294,11 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                 else -> {
                     if (isDirectionAnswered()) {
                         when {
-                            SingletonInfraction.stateOffender.id == 0 -> {
+                            SingletonInfraction.stateOffender.documentReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_state_offender))
                             }
-                            SingletonInfraction.townshipOffender.id_town == 0 -> {
+                            SingletonInfraction.townshipOffender.childReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_township_offender))
                             }
@@ -326,7 +326,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 isValid = false
                                 onError(getString(R.string.e_type_license_offender))
                             }
-                            SingletonInfraction.licenseIssuedInOffender.id == 0 -> {
+                            SingletonInfraction.licenseIssuedInOffender.documentReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_issued_license_offender))
                             }
@@ -341,8 +341,8 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun isDirectionAnswered(): Boolean {
         var isAnswered = false
         when {
-            SingletonInfraction.stateOffender.id != 0 -> isAnswered = true
-            SingletonInfraction.townshipOffender.id_town != 0 -> isAnswered = true
+            SingletonInfraction.stateOffender.documentReference != null -> isAnswered = true
+            SingletonInfraction.townshipOffender.childReference != null -> isAnswered = true
             SingletonInfraction.colonyOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.streetOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noExtOffender.isNotEmpty() -> isAnswered = true
@@ -355,7 +355,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         var isAnswered = false
         when {
             SingletonInfraction.noLicenseOffender.isNotEmpty() -> isAnswered = true
-            SingletonInfraction.licenseIssuedInOffender.id != 0 -> isAnswered = true
+            SingletonInfraction.licenseIssuedInOffender.documentReference != null -> isAnswered = true
             SingletonInfraction.typeLicenseOffender.id != 0 -> isAnswered = true
         }
         return isAnswered

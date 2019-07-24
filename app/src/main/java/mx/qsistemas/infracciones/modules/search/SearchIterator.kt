@@ -216,7 +216,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (SingletonInfraction.colonyOffender.isNotEmpty()) {
             SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender
         }
-        if (SingletonInfraction.stateOffender.id != 0) {
+        if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
         }
         if (SingletonInfraction.noCirculationCard.isNotEmpty()) {
@@ -225,13 +225,13 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (SingletonInfraction.typeLicenseOffender.id != 0) {
             SingletonTicket.typeLicenseOffender = SingletonInfraction.typeLicenseOffender.license_type
         }
-        if (SingletonInfraction.licenseIssuedInOffender.id != 0) {
+        if (SingletonInfraction.licenseIssuedInOffender.documentReference != null) {
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
         }
         //SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.vehicle_brand
-       /* if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
-            SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle
-        }*/
+        /* if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
+             SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle
+         }*/
         //SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.type_string
         //SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle
         SingletonTicket.modelVehicle = SingletonInfraction.yearVehicle

@@ -16,7 +16,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.HttpURLConnection
-import java.text.SimpleDateFormat
 import java.util.*
 
 class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContracts.Iterator {
@@ -26,13 +25,11 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
     }
 
     override fun downloadCatalogs() {
-        val lastSynch = Application.prefs?.loadData(R.string.sp_last_synch, "01/01/2000")!!
-        NetworkApi().getNetworkService().downloadCatalogs(lastSynch).enqueue(object : Callback<String> {
+        NetworkApi().getNetworkService().downloadCatalogs("01/01/2000").enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), DownloadCatalogs::class.java)
                     processCatalogs(data)
-                    Application.prefs?.saveData(R.string.sp_last_synch, SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date()))
                     val imei = Utils.getImeiDevice(Application.getContext())
                     Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.update("last_synch", Date())
                     listener.onCatalogsDownloaded()

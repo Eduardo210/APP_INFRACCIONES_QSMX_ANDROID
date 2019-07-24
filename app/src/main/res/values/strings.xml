@@ -9,7 +9,6 @@
     <string name="sp_id_township">id_township</string>
     <string name="sp_township_name">township_name</string>
     <string name="sp_prefix">prefix</string>
-    <string name="sp_last_synch">last_synch</string>
     <string name="sp_id_person">id_person</string>
     <string name="sp_id_township_person">id_township_person</string>
     <string name="sp_person_name">person_name</string>

@@ -64,7 +64,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         SnackbarHelper.showErrorSnackBar(this, msg, Snackbar.LENGTH_SHORT)
     }
 
-    override fun onConfigurationSuccessful(idTownship: Int, prefix: String) {
+    override fun onConfigurationSuccessful(idTownship: String, prefix: String) {
         showLoader(getString(R.string.l_config_terminal))
         PaymentsTransfer.configDevice(idTownship, prefix)
         Handler().postDelayed({

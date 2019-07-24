@@ -181,7 +181,7 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
     }
 
     override fun getIssuedInAdapter() {
-        Application.firestore?.collection(FS_COL_STATES_WEB)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore?.collection(FS_COL_STATES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))

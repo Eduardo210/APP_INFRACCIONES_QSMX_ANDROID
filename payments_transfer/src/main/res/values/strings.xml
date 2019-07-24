@@ -14,7 +14,7 @@
 
     <!-- Shared Preferences -->
     <string name="pt_sp_name">payments_transfer</string>
-    <string name="pt_sp_quetz_id_township">quetz_id_township</string>
+    <string name="pt_sp_quetz_prefix">quetz_prefix</string>
     <string name="pt_sp_quetz_id_terminal">quetz_id_terminal</string>
     <string name="pt_sp_quetz_is_device_config">is_device_config</string>
     <string name="pt_sp_banorte_counter_control">ban_counter_control</string>

@@ -3,7 +3,7 @@ package mx.qsistemas.infracciones.modules.create.fr_offender
 import android.app.Activity
 import android.widget.ArrayAdapter
 import mx.qsistemas.infracciones.db.entities.LicenseType
-import mx.qsistemas.infracciones.net.catalogs.States
+import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
@@ -31,8 +31,8 @@ class OffenderContracts {
         fun getStatesIssuedList()
         fun getTownshipsList(posState: Int)
         fun getTypeLicenseAdapter(): ArrayAdapter<String>
-        fun getPositionState(obj: States): Int
-        fun getPositionStateLicense(obj: States): Int
+        fun getPositionState(obj: GenericCatalog): Int
+        fun getPositionStateLicense(obj: GenericCatalog): Int
         fun getPositionTownship(obj: Townships): Int
         fun getPositionTypeLicense(obj: LicenseType): Int
         fun saveData(notify: Boolean)

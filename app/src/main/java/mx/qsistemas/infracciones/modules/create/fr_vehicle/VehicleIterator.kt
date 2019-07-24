@@ -288,4 +288,22 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
         }
         return 0
     }
+
+    override fun getPositionSubBrand(obj: GenericSubCatalog): Int {
+        for (i in 0 until subBrandList.size) {
+            if (subBrandList[i].childReference == obj.childReference) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    override fun getPositionColor(obj: GenericCatalog): Int {
+        for (i in 0 until colorList.size) {
+            if (colorList[i].documentReference == obj.documentReference) {
+                return i
+            }
+        }
+        return 0
+    }
 }

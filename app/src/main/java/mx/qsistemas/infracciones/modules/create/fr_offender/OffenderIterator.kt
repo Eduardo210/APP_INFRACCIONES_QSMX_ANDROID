@@ -213,8 +213,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 SaveInfractionManager.saveSubBrandVehicle(submarkingVehicle)
             }*/
             /* Step 3. Save Vehicle Information */
-            val vehicleInfraction = VehicleInfraction(0, 0/*SingletonInfraction.brandVehicle.id*/, SingletonInfraction.subBrandVehicle, SingletonInfraction.typeVehicle.value,
-                    SingletonInfraction.colorVehicle, SingletonInfraction.yearVehicle, 0/*SingletonInfraction.identifierDocument.id*/, SingletonInfraction.noDocument,
+            val vehicleInfraction = VehicleInfraction(0, 0/*SingletonInfraction.brandVehicle.id*/, ""/*SingletonInfraction.subBrandVehicle*/, SingletonInfraction.typeVehicle.value,
+                    ""/*SingletonInfraction.colorVehicle*/, SingletonInfraction.yearVehicle, 0/*SingletonInfraction.identifierDocument.id*/, SingletonInfraction.noDocument,
                     SingletonInfraction.stateIssuedIn.value, SingletonInfraction.idPersonTownship, "", SingletonInfraction.noCirculationCard, SingletonInfraction.idNewInfraction.toInt())
             SaveInfractionManager.saveVehicleInfraction(vehicleInfraction)
             /* Step 4. Save Person Information */
@@ -365,11 +365,11 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
         }
         //SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.vehicle_brand
-        if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
+        /*if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
             SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle
-        }
+        }*/
         //SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.type_string
-        SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle
+        //SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle
         SingletonTicket.modelVehicle = SingletonInfraction.yearVehicle
         //SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
         SingletonTicket.noIdentifierVehicle = SingletonInfraction.noDocument

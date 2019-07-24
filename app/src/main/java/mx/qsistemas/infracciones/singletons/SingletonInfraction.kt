@@ -2,6 +2,7 @@ package mx.qsistemas.infracciones.singletons
 
 import mx.qsistemas.infracciones.db.entities.*
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
+import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import java.util.*
@@ -14,8 +15,8 @@ object SingletonInfraction {
     var stateIssuedIn: GenericCatalog = GenericCatalog("", true)
     var typeDocument: GenericCatalog = GenericCatalog("", true)
     var brandVehicle: GenericCatalog = GenericCatalog("", true)
-    var subBrandVehicle: String = ""
-    var colorVehicle: String = ""
+    var subBrandVehicle: GenericSubCatalog = GenericSubCatalog("", null,true)
+    var colorVehicle: GenericCatalog = GenericCatalog("", true)
     var typeVehicle: GenericCatalog = GenericCatalog("", true)
     var noCirculationCard: String = ""
     var yearVehicle: String = ""
@@ -72,8 +73,8 @@ object SingletonInfraction {
         stateIssuedIn = GenericCatalog("", true)
         typeDocument = GenericCatalog("", true)
         brandVehicle = GenericCatalog("", true)
-        subBrandVehicle = ""
-        colorVehicle = ""
+        subBrandVehicle = GenericSubCatalog("", null,true)
+        colorVehicle = GenericCatalog("", true)
         typeVehicle = GenericCatalog("", true)
         noCirculationCard = ""
         yearVehicle = ""

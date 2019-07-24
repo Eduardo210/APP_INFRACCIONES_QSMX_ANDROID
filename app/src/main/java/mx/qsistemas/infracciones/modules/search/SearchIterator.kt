@@ -229,11 +229,11 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
         }
         //SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.vehicle_brand
-        if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
+       /* if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
             SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle
-        }
+        }*/
         //SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.type_string
-        SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle
+        //SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle
         SingletonTicket.modelVehicle = SingletonInfraction.yearVehicle
         //SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
         SingletonTicket.noIdentifierVehicle = SingletonInfraction.noDocument

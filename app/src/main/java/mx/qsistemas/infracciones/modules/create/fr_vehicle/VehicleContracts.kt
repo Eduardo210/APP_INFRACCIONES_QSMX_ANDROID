@@ -3,6 +3,7 @@ package mx.qsistemas.infracciones.modules.create.fr_vehicle
 import android.widget.ArrayAdapter
 import com.google.firebase.firestore.DocumentReference
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
+import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 
 class VehicleContracts {
     interface Presenter {
@@ -32,6 +33,8 @@ class VehicleContracts {
         fun getPositionState(obj: GenericCatalog): Int
         fun getPositionAuthority(obj: GenericCatalog): Int
         fun getPositionBrand(obj: GenericCatalog): Int
+        fun getPositionSubBrand(obj: GenericSubCatalog): Int
         fun getPositionType(obj: GenericCatalog): Int
+        fun getPositionColor(obj: GenericCatalog): Int
     }
 }

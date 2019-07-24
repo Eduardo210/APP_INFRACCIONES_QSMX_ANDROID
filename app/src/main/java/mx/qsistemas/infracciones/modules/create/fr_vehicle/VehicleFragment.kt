@@ -80,12 +80,12 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     override fun initAdapters() {
         /* Set item listeners */
         binding.spnBrandVehicle.onItemSelectedListener = this
+        binding.spnSubBrandVehicle.onItemSelectedListener = this
         binding.spnTypeDoc.onItemSelectedListener = this
         binding.spnType.onItemSelectedListener = this
         binding.spnIssuedIn.onItemSelectedListener = this
+        binding.spnColorVehicle.onItemSelectedListener = this
         binding.spnIdentifierDoc.onItemSelectedListener = this
-        binding.autxtSubBrandVehicle.doOnTextChanged { text, start, count, after -> SingletonInfraction.subBrandVehicle = text?.trim().toString().toUpperCase() }
-        binding.autxtColor.doOnTextChanged { text, start, count, after -> SingletonInfraction.colorVehicle = text?.trim().toString().toUpperCase() }
         binding.edtNoDoc.doOnTextChanged { text, start, count, after -> SingletonInfraction.noDocument = text?.trim().toString().toUpperCase() }
         binding.edtNoCard.doOnTextChanged { text, start, count, after -> SingletonInfraction.noCirculationCard = text?.trim().toString().toUpperCase() }
         binding.edtYear.doOnTextChanged { text, start, count, after ->
@@ -121,8 +121,6 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             val baseBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
             binding.imgEvidence2.setImageBitmap(baseBitmap)
         }
-        binding.autxtSubBrandVehicle.setText(SingletonInfraction.subBrandVehicle)
-        binding.autxtColor.setText(SingletonInfraction.colorVehicle)
         binding.edtNoDoc.setText(SingletonInfraction.noDocument)
         binding.edtNoCard.setText(SingletonInfraction.noCirculationCard)
         binding.edtYear.setText(SingletonInfraction.yearVehicle)
@@ -134,7 +132,8 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     }
 
     override fun onSubBrandReady(adapter: ArrayAdapter<String>) {
-        binding.autxtSubBrandVehicle.setAdapter(adapter)
+        binding.spnSubBrandVehicle.adapter = adapter
+        binding.spnSubBrandVehicle.setSelection(iterator.value.getPositionSubBrand(SingletonInfraction.subBrandVehicle))
     }
 
     override fun onIssuedInReady(adapter: ArrayAdapter<String>) {
@@ -143,7 +142,8 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     }
 
     override fun onColorsReady(adapter: ArrayAdapter<String>) {
-        binding.autxtColor.setAdapter(adapter)
+        binding.spnColorVehicle.adapter = adapter
+        binding.spnColorVehicle.setSelection(iterator.value.getPositionColor(SingletonInfraction.colorVehicle))
     }
 
     override fun onIdentifierDocReady(adapter: ArrayAdapter<String>) {
@@ -246,6 +246,12 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             binding.spnType.id -> {
                 SingletonInfraction.typeVehicle = iterator.value.typeVehicleList[p2]
             }
+            binding.spnSubBrandVehicle.id -> {
+                SingletonInfraction.subBrandVehicle = iterator.value.subBrandList[p2]
+            }
+            binding.spnColorVehicle.id -> {
+                SingletonInfraction.colorVehicle = iterator.value.colorList[p2]
+            }
         }
     }
 
@@ -256,6 +262,14 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     override fun validFields(): Boolean {
         var isValid = true
         when {
+            SingletonInfraction.evidence1.isEmpty() -> {
+                isValid = false
+                onError(getString(R.string.e_evidence_1))
+            }
+            SingletonInfraction.evidence2.isEmpty() -> {
+                isValid = false
+                onError(getString(R.string.e_evidence_2))
+            }
             SingletonInfraction.identifierDocument.documentReference == null -> {
                 isValid = false
                 onError(getString(R.string.e_identifier_doc))
@@ -276,11 +290,11 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 isValid = false
                 onError(getString(R.string.e_brand_vehicle))
             }
-            binding.autxtSubBrandVehicle.text.trim().isEmpty() -> {
+            SingletonInfraction.subBrandVehicle.childReference == null -> {
                 isValid = false
                 onError(getString(R.string.e_sub_brand_vehicle))
             }
-            binding.autxtColor.text.trim().isEmpty() -> {
+            SingletonInfraction.colorVehicle.documentReference == null -> {
                 isValid = false
                 onError(getString(R.string.e_color_vehicle))
             }
@@ -300,14 +314,6 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                     || binding.edtYear.text.toString().toInt() > Calendar.getInstance().get(Calendar.YEAR) + 1) -> {
                 isValid = false
                 onError(getString(R.string.e_year_invalid))
-            }
-            SingletonInfraction.evidence1.isEmpty() -> {
-                isValid = false
-                onError(getString(R.string.e_evidence_1))
-            }
-            SingletonInfraction.evidence2.isEmpty() -> {
-                isValid = false
-                onError(getString(R.string.e_evidence_2))
             }
         }
         return isValid

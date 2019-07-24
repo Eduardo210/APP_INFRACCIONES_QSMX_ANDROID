@@ -63,6 +63,15 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_add_photo"
+                        app:layout_constraintBottom_toBottomOf="@+id/img_evidence_1"
+                        app:layout_constraintEnd_toEndOf="@+id/img_evidence_1"
+                        app:layout_constraintStart_toStartOf="@+id/img_evidence_1"
+                        app:layout_constraintTop_toTopOf="@+id/img_evidence_1" />
+
+                    <ImageView
                         android:id="@+id/img_evidence_1"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
@@ -86,6 +95,16 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_add_photo"
+                        app:layout_constraintBottom_toBottomOf="@+id/img_evidence_2"
+                        app:layout_constraintEnd_toEndOf="@+id/img_evidence_2"
+                        app:layout_constraintStart_toStartOf="@+id/img_evidence_2"
+                        app:layout_constraintTop_toTopOf="@+id/img_evidence_2" />
+
 
                     <ImageView
                         android:id="@+id/img_evidence_2"
@@ -237,7 +256,17 @@
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
                         app:layout_constraintTop_toBottomOf="@+id/spn_type_doc" />
 
-                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    <Spinner
+                        android:id="@+id/spn_sub_brand_vehicle"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_title_subtype_incidence" />
+
+                    <!--<androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/autxt_sub_brand_vehicle"
                         style="@style/EditText_InputItem"
                         android:layout_width="0dp"
@@ -252,7 +281,7 @@
                         android:textSize="@dimen/font_size_small"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_title_subtype_incidence" />
+                        app:layout_constraintTop_toBottomOf="@+id/txt_title_subtype_incidence" />-->
 
                     <TextView
                         android:id="@+id/textView11"
@@ -267,7 +296,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/spn_brand_vehicle" />
 
-                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    <Spinner
+                        android:id="@+id/spn_color_vehicle"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dialog"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+                    <!--<androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/autxt_color"
                         style="@style/EditText_InputItem"
                         android:layout_width="0dp"
@@ -282,7 +321,7 @@
                         android:textSize="@dimen/font_size_small"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView11" />-->
 
                     <TextView
                         android:id="@+id/textView10"
@@ -295,7 +334,7 @@
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/autxt_sub_brand_vehicle" />
+                        app:layout_constraintTop_toBottomOf="@+id/spn_sub_brand_vehicle" />
 
                     <Spinner
                         android:id="@+id/spn_type"
@@ -318,7 +357,7 @@
                         android:textSize="13sp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/autxt_color" />
+                        app:layout_constraintTop_toBottomOf="@+id/spn_color_vehicle" />
 
                     <EditText
                         android:id="@+id/edt_no_card"

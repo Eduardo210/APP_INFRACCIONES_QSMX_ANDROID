@@ -6,6 +6,6 @@
         android:color="#cccccc"
         android:dashWidth="5dp"
         android:dashGap="5dp" />
-    <solid android:color="@color/colorLightBlue" />
+    <solid android:color="@color/colorLightBlueTransparent" />
     <corners android:radius="8dp" />
 </shape>

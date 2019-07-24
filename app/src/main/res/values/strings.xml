@@ -160,6 +160,7 @@
     <string name="e_evidence_1">Evidencia 1 obligatoria</string>
     <string name="e_evidence_2">Evidencia 2 obligatoria</string>
     <string name="e_identifier_doc">Documento identificador obligatorio</string>
+    <string name="e_issued_in">Expedido en obligatorio</string>
     <string name="e_no_document">No. del documento obligatorio</string>
     <string name="e_type_doc">Tipo de documento obligatorio</string>
     <string name="e_brand_vehicle">Marca obligatoria</string>

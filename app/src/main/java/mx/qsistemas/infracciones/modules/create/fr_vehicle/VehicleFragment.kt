@@ -105,7 +105,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         iterator.value.getColorAdapter() // Download catalog from Firebase
         iterator.value.getIdentifierDocAdapter()// Download catalog from Firebase
         iterator.value.getIssuedInAdapter() // Download catalog from Firebase
-        binding.spnTypeDoc.adapter = iterator.value.getTypeDocument()
+        iterator.value.getTypeDocument() // Download catalog from Firebase
     }
 
     override fun fillFields() {
@@ -121,7 +121,6 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             val baseBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
             binding.imgEvidence2.setImageBitmap(baseBitmap)
         }
-        binding.spnTypeDoc.setSelection(iterator.value.getPositionAuthority(SingletonInfraction.typeDocument))
         binding.autxtSubBrandVehicle.setText(SingletonInfraction.subBrandVehicle)
         binding.autxtColor.setText(SingletonInfraction.colorVehicle)
         binding.edtNoDoc.setText(SingletonInfraction.noDocument)
@@ -155,6 +154,11 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     override fun onTypeVehicleReady(adapter: ArrayAdapter<String>) {
         binding.spnType.adapter = adapter
         binding.spnType.setSelection(iterator.value.getPositionType(SingletonInfraction.typeVehicle))
+    }
+
+    override fun onTypeDocReady(adapter: ArrayAdapter<String>) {
+        binding.spnTypeDoc.adapter = adapter
+        binding.spnTypeDoc.setSelection(iterator.value.getPositionAuthority(SingletonInfraction.typeDocument))
     }
 
     override fun onClick(p0: View?) {
@@ -256,11 +260,15 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 isValid = false
                 onError(getString(R.string.e_identifier_doc))
             }
+            SingletonInfraction.stateIssuedIn.documentReference == null -> {
+                isValid = false
+                onError(getString(R.string.e_issued_in))
+            }
             binding.edtNoDoc.text.trim().isEmpty() -> {
                 isValid = false
                 onError(getString(R.string.e_no_document))
             }
-            SingletonInfraction.typeDocument.id == 0 -> {
+            SingletonInfraction.typeDocument.documentReference == null -> {
                 isValid = false
                 onError(getString(R.string.e_type_doc))
             }

@@ -201,7 +201,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             val infraction = Infraction(0, newFolio, SingletonInfraction.noLicenseOffender, SingletonInfraction.typeLicenseOffender.id, SingletonInfraction.licenseIssuedInOffender.id.toString(),
                     "", SingletonInfraction.isRemited.toInt(), SingletonInfraction.retainedDocument.document, totalUmas, totalImport, config.minimum_salary,
                     Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong(), actualDay, false.toInt(), 1, 4, SingletonInfraction.idPersonTownship.toInt(), 1, 0,
-                    SingletonInfraction.typeDocument.id, "", SingletonInfraction.dispositionRemited.id, SingletonInfraction.isPersonAbstent.toInt(), 0,
+                    0/*SingletonInfraction.typeDocument.id*/, "", SingletonInfraction.dispositionRemited.id, SingletonInfraction.isPersonAbstent.toInt(), 0,
                     "", "", "", captureLine1, captureLine2, "", fifteenthDay, thirtythDay, 0F, fiftiethDiscount.toFloat(),
                     totalImport, 1, "", "", 0F, false)
             SingletonInfraction.idNewInfraction = SaveInfractionManager.insertInfraction(infraction)
@@ -373,7 +373,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SingletonTicket.modelVehicle = SingletonInfraction.yearVehicle
         //SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
         SingletonTicket.noIdentifierVehicle = SingletonInfraction.noDocument
-        SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
+        //SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
         SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value
         SingletonInfraction.motivationList.forEach { art ->
             val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),

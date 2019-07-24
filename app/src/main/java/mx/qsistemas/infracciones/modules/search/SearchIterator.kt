@@ -237,7 +237,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         SingletonTicket.modelVehicle = SingletonInfraction.yearVehicle
         //SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
         SingletonTicket.noIdentifierVehicle = SingletonInfraction.noDocument
-        SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
+        //SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
         SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value
         SingletonInfraction.motivationList.forEach { art ->
             val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),

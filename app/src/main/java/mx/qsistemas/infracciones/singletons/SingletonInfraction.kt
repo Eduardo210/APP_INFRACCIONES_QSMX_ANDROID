@@ -11,8 +11,8 @@ object SingletonInfraction {
     /* Vehicle Information */
     var identifierDocument: GenericCatalog = GenericCatalog("", true)
     var noDocument: String = ""
-    var stateIssuedIn: States = States()
-    var typeDocument: AuthorityIssues = AuthorityIssues(0, "")
+    var stateIssuedIn: GenericCatalog = GenericCatalog("", true)
+    var typeDocument: GenericCatalog = GenericCatalog("", true)
     var brandVehicle: GenericCatalog = GenericCatalog("", true)
     var subBrandVehicle: String = ""
     var colorVehicle: String = ""
@@ -69,8 +69,8 @@ object SingletonInfraction {
         /* Vehicle Information Reset */
         identifierDocument = GenericCatalog("", true)
         noDocument = ""
-        stateIssuedIn = States()
-        typeDocument = AuthorityIssues(0, "")
+        stateIssuedIn = GenericCatalog("", true)
+        typeDocument = GenericCatalog("", true)
         brandVehicle = GenericCatalog("", true)
         subBrandVehicle = ""
         colorVehicle = ""

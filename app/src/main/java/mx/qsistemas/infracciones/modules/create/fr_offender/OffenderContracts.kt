@@ -3,7 +3,7 @@ package mx.qsistemas.infracciones.modules.create.fr_offender
 import android.app.Activity
 import android.widget.ArrayAdapter
 import mx.qsistemas.infracciones.db.entities.LicenseType
-import mx.qsistemas.infracciones.net.catalogs.States
+import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
@@ -24,16 +24,15 @@ class OffenderContracts {
         fun onDataUpdated(idPerson: Long)
         fun onTicketPrinted()
         fun onResultSavePayment(msg: String, flag: Boolean)
-        fun onTypeLicenseReady(array: ArrayAdapter<String>)
     }
 
     interface Iterator {
         fun getStatesList()
         fun getStatesIssuedList()
         fun getTownshipsList(posState: Int)
-        //fun getTypeLicenseAdapter(): ArrayAdapter<String>
-        fun getPositionState(obj: States): Int
-        fun getPositionStateLicense(obj: States): Int
+        fun getTypeLicenseAdapter(): ArrayAdapter<String>
+        fun getPositionState(obj: GenericCatalog): Int
+        fun getPositionStateLicense(obj: GenericCatalog): Int
         fun getPositionTownship(obj: Townships): Int
         fun getPositionTypeLicense(obj: LicenseType): Int
         fun saveData(notify: Boolean)
@@ -42,6 +41,5 @@ class OffenderContracts {
         fun printTicket(activity: Activity)
         fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener)
         fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long)
-        fun getTypeLicenseAdapter()
     }
 }

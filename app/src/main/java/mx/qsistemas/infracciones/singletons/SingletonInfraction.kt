@@ -3,21 +3,20 @@ package mx.qsistemas.infracciones.singletons
 import mx.qsistemas.infracciones.db.entities.*
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
-import mx.qsistemas.infracciones.net.catalogs.States
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import java.util.*
 
 object SingletonInfraction {
 
     /* Vehicle Information */
-    var identifierDocument: GenericCatalog = GenericCatalog("", true)
+    var identifierDocument: GenericCatalog = GenericCatalog()
     var noDocument: String = ""
-    var stateIssuedIn: GenericCatalog = GenericCatalog("", true)
-    var typeDocument: GenericCatalog = GenericCatalog("", true)
-    var brandVehicle: GenericCatalog = GenericCatalog("", true)
-    var subBrandVehicle: GenericSubCatalog = GenericSubCatalog("", null,true)
-    var colorVehicle: GenericCatalog = GenericCatalog("", true)
-    var typeVehicle: GenericCatalog = GenericCatalog("", true)
+    var stateIssuedIn: GenericCatalog = GenericCatalog()
+    var typeDocument: GenericCatalog = GenericCatalog()
+    var brandVehicle: GenericCatalog = GenericCatalog()
+    var subBrandVehicle: GenericSubCatalog = GenericSubCatalog()
+    var colorVehicle: GenericCatalog = GenericCatalog()
+    var typeVehicle: GenericCatalog = GenericCatalog()
     var noCirculationCard: String = ""
     var yearVehicle: String = ""
     var evidence1: String = ""
@@ -43,7 +42,7 @@ object SingletonInfraction {
     var lastFatherName: String = "RESULTE"
     var lastMotherName: String = "RESPONSABLE"
     var rfcOffenfer: String = ""
-    var stateOffender: States = States()
+    var stateOffender: GenericCatalog = GenericCatalog()
     var townshipOffender: Townships = Townships()
     var colonyOffender: String = ""
     var streetOffender: String = ""
@@ -51,7 +50,7 @@ object SingletonInfraction {
     var noIntOffender: String = ""
     var noLicenseOffender: String = ""
     var typeLicenseOffender: LicenseType = LicenseType(0, "")
-    var licenseIssuedInOffender: States = States()
+    var licenseIssuedInOffender: GenericCatalog = GenericCatalog()
 
     /* Calculated Variables */
     var idNewInfraction: Long = 0L
@@ -70,12 +69,12 @@ object SingletonInfraction {
         /* Vehicle Information Reset */
         identifierDocument = GenericCatalog("", true)
         noDocument = ""
-        stateIssuedIn = GenericCatalog("", true)
-        typeDocument = GenericCatalog("", true)
-        brandVehicle = GenericCatalog("", true)
+        stateIssuedIn = GenericCatalog()
+        typeDocument = GenericCatalog()
+        brandVehicle = GenericCatalog()
         subBrandVehicle = GenericSubCatalog("", null,true)
-        colorVehicle = GenericCatalog("", true)
-        typeVehicle = GenericCatalog("", true)
+        colorVehicle = GenericCatalog()
+        typeVehicle = GenericCatalog()
         noCirculationCard = ""
         yearVehicle = ""
         evidence1 = ""
@@ -101,7 +100,7 @@ object SingletonInfraction {
         lastFatherName = "RESULTE"
         lastMotherName = "RESPONSABLE"
         rfcOffenfer = ""
-        stateOffender = States()
+        stateOffender = GenericCatalog()
         townshipOffender = Townships()
         colonyOffender = ""
         streetOffender = ""
@@ -109,7 +108,7 @@ object SingletonInfraction {
         noIntOffender = ""
         noLicenseOffender = ""
         typeLicenseOffender = LicenseType(0, "")
-        licenseIssuedInOffender = States()
+        licenseIssuedInOffender = GenericCatalog()
 
         /* Calculated Variables Reset */
         idNewInfraction = 0L

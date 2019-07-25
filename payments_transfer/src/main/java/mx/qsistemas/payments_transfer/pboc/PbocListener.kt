@@ -476,11 +476,11 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                 ?: ""
         map[USER] = Preferences(activity).loadData(R.string.pt_sp_banorte_user, "") ?: ""
         map[PASSWORD] = Preferences(activity).loadData(R.string.pt_sp_banorte_black_box, "") ?: ""
-        val idTownship = Preferences(activity).loadDataInt(R.string.pt_sp_quetz_id_township)
+        val idTownship = Preferences(activity).loadData(R.string.pt_sp_quetz_prefix, "") ?: ""
         val terminalCode = Preferences(activity).loadData(R.string.pt_sp_quetz_id_terminal, "")
         val controlCounter = Preferences(activity).loadDataInt(R.string.pt_sp_banorte_counter_control) + 1
-        map[CONTROL_NUMBER] =
-                CONTROL_NUMBER_TOWNSHIP + idTownship + CONTROL_NUMBER_TERMINAL + terminalCode + CONTROL_NUMBER_ID + controlCounter.toString()
+        map[CONTROL_NUMBER] =/*
+                CONTROL_NUMBER_TOWNSHIP +*/ idTownship + CONTROL_NUMBER_TERMINAL + terminalCode + CONTROL_NUMBER_ID + controlCounter.toString()
         map[TERMINAL_ID] = Preferences(activity).loadData(R.string.pt_sp_banorte_serial_number, "")
                 ?: ""
         map[AMOUNT] = amount

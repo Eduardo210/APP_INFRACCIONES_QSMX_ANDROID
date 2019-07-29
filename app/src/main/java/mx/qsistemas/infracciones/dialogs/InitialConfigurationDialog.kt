@@ -17,7 +17,10 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.DialogInitialConfigurationBinding
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.Townships
-import mx.qsistemas.infracciones.utils.*
+import mx.qsistemas.infracciones.utils.FS_COL_CITIES
+import mx.qsistemas.infracciones.utils.FS_COL_STATES
+import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
+import mx.qsistemas.infracciones.utils.Utils
 import java.util.*
 
 
@@ -124,9 +127,9 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
     }
 
     override fun savePrefix(prefix: String, township: Townships, townKey: String) {
-        Application.firestore?.collection(FS_COL_TOWNSHIPS)?.document(townKey)?.update("counter_prefix", township.counter_prefix + 1)?.addOnCompleteListener { t1 ->
+        Application.firestore?.collection(FS_COL_CITIES)?.document(townKey)?.update("counter_prefix", township.counter_prefix + 1)?.addOnCompleteListener { t1 ->
             if (t1.isSuccessful) {
-                val map = hashMapOf("id_city" to township.childReference?.id,
+                val map = hashMapOf("city" to township.childReference,
                         "prefix" to prefix,
                         "last_geo" to GeoPoint(0.0, 0.0),
                         "time_geo" to Date(),

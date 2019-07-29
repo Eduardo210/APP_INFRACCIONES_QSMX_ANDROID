@@ -98,7 +98,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun getTownshipsList(posState: Int) {
-        Application.firestore?.collection(FS_COL_TOWNSHIPS)?.whereEqualTo("reference", statesList[posState].documentReference)?.whereEqualTo("enable", true)?.addSnapshotListener { querySnapshot, exception ->
+        Application.firestore?.collection(FS_COL_CITIES)?.whereEqualTo("reference", statesList[posState].documentReference)?.whereEqualTo("is_active", true)?.addSnapshotListener { querySnapshot, exception ->
             if (exception != null) {
                 listener?.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))

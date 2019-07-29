@@ -234,9 +234,11 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     chipTvr = BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_TVR))
                     chipArqc = BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_ARQC))
                     chipTsi = BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_TSI))
-                    chipApn = Utils.hexToAscii(BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_APN)))
+                    chipApn = Utils.hexToAscii(BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_APN))
+                            ?: "")
                     if (chipApn.isEmpty()) {
-                        chipAppLbl = Utils.hexToAscii(BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_AL)))
+                        chipAppLbl = Utils.hexToAscii(BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_AL))
+                                ?: "")
                     }
                     val panSeq =
                             "5F3401" + BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_PAN_SEQ))

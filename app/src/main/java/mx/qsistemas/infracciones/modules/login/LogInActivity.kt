@@ -44,11 +44,6 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                 dialog.listener = this
                 dialog.isCancelable = false
                 dialog.show(supportFragmentManager, InitialConfigurationDialog::class.java.simpleName)
-            } else {
-                /* If the user has config the device, check if he has already session. If hasn't session then,
-                 * must need to download catalogs */
-                showLoader(getString(R.string.l_download_catalogs))
-                iterator.downloadCatalogs()
             }
         } else {
             onError(Application.getContext().getString(R.string.e_without_internet))
@@ -73,9 +68,6 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                 override fun onLoadKey(success: Boolean, value: String) {
                     if (!success) {
                         onError(value)
-                    } else {
-                        showLoader(getString(R.string.l_download_catalogs))
-                        iterator.downloadCatalogs()
                     }
                 }
             })

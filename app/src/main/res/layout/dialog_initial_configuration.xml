@@ -64,6 +64,29 @@
             android:layout_marginRight="8dp"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:theme="@style/TextInputStyle"
+            app:layout_constraintTop_toBottomOf="@+id/spn_township"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_psw_config"
+                style="@style/EditText_InputItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/t_input_password"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/btn_accept"
             style="@style/DialogButton_Custom"
@@ -76,7 +99,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/spn_township" />
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"

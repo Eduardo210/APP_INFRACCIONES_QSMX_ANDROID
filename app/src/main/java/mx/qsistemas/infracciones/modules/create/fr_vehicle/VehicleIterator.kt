@@ -68,6 +68,8 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                         list.add(data.value)
                         subBrandList.add(data)
                     }
+                    subBrandList.add(GenericSubCatalog("Otra...", null, true))
+                    list.add("Otra...")
                     val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
                     adapter.setDropDownViewResource(R.layout.custom_spinner_item)
                     listener.onSubBrandReady(adapter)
@@ -133,6 +135,8 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                     list.add(data.value)
                     colorList.add(data)
                 }
+                colorList.add(GenericCatalog("Otro...", true, null))
+                list.add("Otro...")
                 val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
                 adapter.setDropDownViewResource(R.layout.custom_spinner_item)
                 listener.onColorsReady(adapter)

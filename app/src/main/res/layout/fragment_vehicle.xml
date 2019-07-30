@@ -266,6 +266,24 @@
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
                         app:layout_constraintTop_toBottomOf="@+id/txt_title_subtype_incidence" />
 
+                    <EditText
+                        android:id="@+id/edt_new_sub_brand"
+                        style="@style/EditText_InputItem"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/h_new_sub_brand"
+                        android:imeOptions="actionDone"
+                        android:inputType="textNoSuggestions|textCapWords"
+                        android:maxLength="30"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/font_size_small"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintTop_toBottomOf="@+id/spn_sub_brand_vehicle" />
+
                     <!--<androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/autxt_sub_brand_vehicle"
                         style="@style/EditText_InputItem"
@@ -306,6 +324,25 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
+                    <EditText
+                        android:id="@+id/edt_new_color"
+                        style="@style/EditText_InputItem"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="5dp"
+                        android:ems="10"
+                        android:hint="@string/h_new_color"
+                        android:imeOptions="actionNext"
+                        android:inputType="textNoSuggestions|textCapWords"
+                        android:maxLength="20"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/font_size_small"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/spn_color_vehicle" />
+
                     <!--<androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         android:id="@+id/autxt_color"
                         style="@style/EditText_InputItem"
@@ -334,7 +371,7 @@
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
-                        app:layout_constraintTop_toBottomOf="@+id/spn_sub_brand_vehicle" />
+                        app:layout_constraintTop_toBottomOf="@+id/edt_new_sub_brand" />
 
                     <Spinner
                         android:id="@+id/spn_type"
@@ -357,7 +394,7 @@
                         android:textSize="13sp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spn_color_vehicle" />
+                        app:layout_constraintTop_toBottomOf="@+id/edt_new_color" />
 
                     <EditText
                         android:id="@+id/edt_no_card"

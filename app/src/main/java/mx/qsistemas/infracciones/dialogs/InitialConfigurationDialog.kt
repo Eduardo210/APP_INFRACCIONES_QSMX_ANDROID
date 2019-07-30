@@ -27,6 +27,7 @@ import java.util.*
 class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterView.OnItemSelectedListener,
         View.OnClickListener {
 
+    val BBOX = "@_x2Quetza+*qsi9900"
     var listener: InitialConfigurationCallback? = null
     private var states = mutableListOf<GenericCatalog>()
     private var townships = mutableListOf<Townships>()
@@ -168,6 +169,8 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
             binding.btnAccept.id -> {
                 if (binding.spnState.childCount == 0 || binding.spnTownship.childCount == 0) {
                     listener?.onDialogError(Application.getContext().getString(R.string.e_empty_fields))
+                } else if (binding.edtPswConfig.text.toString().trim() != BBOX) {
+                    binding.edtPswConfig.error = Application.getContext().getString(R.string.e_pss_incorrect)
                 } else {
                     val township = townships[binding.spnTownship.selectedItemPosition]
                     val state = states[binding.spnState.selectedItemPosition]

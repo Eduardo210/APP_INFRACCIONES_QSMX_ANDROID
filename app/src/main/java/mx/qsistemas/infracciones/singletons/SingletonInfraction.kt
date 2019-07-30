@@ -21,6 +21,8 @@ object SingletonInfraction {
     var yearVehicle: String = ""
     var evidence1: String = ""
     var evidence2: String = ""
+    var isNewSubBrand: Boolean = false
+    var isNewColor: Boolean = false
 
     /* Infracion Information */
     var colonnyInfraction: String = ""
@@ -72,13 +74,15 @@ object SingletonInfraction {
         stateIssuedIn = GenericCatalog()
         typeDocument = GenericCatalog()
         brandVehicle = GenericCatalog()
-        subBrandVehicle = GenericSubCatalog("", null,true)
+        subBrandVehicle = GenericSubCatalog("", null, true)
         colorVehicle = GenericCatalog()
         typeVehicle = GenericCatalog()
         noCirculationCard = ""
         yearVehicle = ""
         evidence1 = ""
         evidence2 = ""
+        isNewSubBrand = false
+        isNewColor = false
 
         /* Infraction Information Reset */
         colonnyInfraction = ""

@@ -28,7 +28,9 @@
     <string name="h_password">Contraseña</string>
     <string name="h_no_document"># Documento</string>
     <string name="h_sub_brand">Submarca</string>
+    <string name="h_new_sub_brand">Nueva submarca</string>
     <string name="h_color">Color</string>
+    <string name="h_new_color">Nuevo color</string>
     <string name="h_circulation_card"># Tarjeta</string>
     <string name="h_year"># Año</string>
     <string name="h_colony">Nombre colonia</string>
@@ -57,6 +59,7 @@
     <string name="t_initial_configuration">Configuración Inicial</string>
     <string name="t_select_state">Seleccione un estado:</string>
     <string name="t_select_township">Seleccione un municipio:</string>
+    <string name="t_input_password">Ingrese la contraseña para confirmar</string>
 
     <!-- Dashboard Infraction String -->
     <string name="t_toolbar_title_infraction">Infracciones</string>
@@ -84,7 +87,7 @@
     <string name="t_evidence_2">Evidencia 2</string>
     <string name="t_issued_in">Expedido en*</string>
     <string name="t_doc_type">Tipo de documento*</string>
-    <string name="t_circulation_card">Tarjeta de circulación*</string>
+    <string name="t_circulation_card">Tarjeta de circulación</string>
 
     <!-- Infraction Fragment Strings -->
     <string name="t_infraction">Infracción</string>
@@ -142,6 +145,7 @@
     <!-- Errors -->
     <string name="e_empty_fields">Favor de validar campos</string>
     <string name="e_user_pss_incorrect">Credenciales incorrectas</string>
+    <string name="e_pss_incorrect">Contraseña incorrecta</string>
     <string name="e_search_incidence">Ingresa el folio</string>
     <string name="e_location_permission_request">Es necesario aceptar los permisos de ubicación</string>
     <string name="e_high_accuracy_required">Es necesario encender el modo de alta presición</string>

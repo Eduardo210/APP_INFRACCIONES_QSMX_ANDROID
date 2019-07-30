@@ -16,9 +16,12 @@ import android.text.InputFilter
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -29,6 +32,8 @@ import mx.qsistemas.infracciones.helpers.BitmapHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
+import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
+import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.RC_INTENT_CAMERA_EV1
 import mx.qsistemas.infracciones.utils.RC_INTENT_CAMERA_EV2
@@ -96,6 +101,11 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             }
             SingletonInfraction.yearVehicle = text.trim().toString()
         }
+        binding.edtNewSubBrand.doOnTextChanged { text, start, count, after ->
+            val parent = iterator.value.brandList[binding.spnBrandVehicle.selectedItemPosition]
+            SingletonInfraction.subBrandVehicle = GenericSubCatalog(text.toString(), parent.documentReference, true, null)
+        }
+        binding.edtNewColor.doOnTextChanged { text, start, count, after -> SingletonInfraction.colorVehicle = GenericCatalog(text.toString(), true) }
         binding.imgEvidence1.setOnClickListener(this)
         binding.imgEvidence2.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
@@ -133,7 +143,13 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
 
     override fun onSubBrandReady(adapter: ArrayAdapter<String>) {
         binding.spnSubBrandVehicle.adapter = adapter
-        binding.spnSubBrandVehicle.setSelection(iterator.value.getPositionSubBrand(SingletonInfraction.subBrandVehicle))
+        if (SingletonInfraction.isNewSubBrand) {
+            binding.edtNewSubBrand.visibility = VISIBLE
+            binding.edtNewSubBrand.setText(SingletonInfraction.subBrandVehicle.value)
+            binding.spnSubBrandVehicle.setSelection(iterator.value.subBrandList.size - 1)
+        } else {
+            binding.spnSubBrandVehicle.setSelection(iterator.value.getPositionSubBrand(SingletonInfraction.subBrandVehicle))
+        }
     }
 
     override fun onIssuedInReady(adapter: ArrayAdapter<String>) {
@@ -143,7 +159,13 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
 
     override fun onColorsReady(adapter: ArrayAdapter<String>) {
         binding.spnColorVehicle.adapter = adapter
-        binding.spnColorVehicle.setSelection(iterator.value.getPositionColor(SingletonInfraction.colorVehicle))
+        if (SingletonInfraction.isNewColor) {
+            binding.edtNewColor.visibility = VISIBLE
+            binding.edtNewColor.setText(SingletonInfraction.colorVehicle.value)
+            binding.spnColorVehicle.setSelection(iterator.value.colorList.size - 1)
+        } else {
+            binding.spnColorVehicle.setSelection(iterator.value.getPositionColor(SingletonInfraction.colorVehicle))
+        }
     }
 
     override fun onIdentifierDocReady(adapter: ArrayAdapter<String>) {
@@ -247,10 +269,26 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 SingletonInfraction.typeVehicle = iterator.value.typeVehicleList[p2]
             }
             binding.spnSubBrandVehicle.id -> {
-                SingletonInfraction.subBrandVehicle = iterator.value.subBrandList[p2]
+                if (binding.spnBrandVehicle.selectedItemPosition > 0 && binding.spnSubBrandVehicle.selectedItem.toString() == "Otra...") {
+                    SingletonInfraction.subBrandVehicle = GenericSubCatalog("", null, true)
+                    SingletonInfraction.isNewSubBrand = true
+                    binding.edtNewSubBrand.visibility = VISIBLE
+                } else {
+                    SingletonInfraction.subBrandVehicle = iterator.value.subBrandList[p2]
+                    SingletonInfraction.isNewSubBrand = false
+                    binding.edtNewSubBrand.visibility = GONE
+                }
             }
             binding.spnColorVehicle.id -> {
-                SingletonInfraction.colorVehicle = iterator.value.colorList[p2]
+                if (binding.spnColorVehicle.selectedItem.toString() == "Otro...") {
+                    SingletonInfraction.colorVehicle = GenericCatalog("", true)
+                    SingletonInfraction.isNewColor = true
+                    binding.edtNewColor.visibility = VISIBLE
+                } else {
+                    SingletonInfraction.colorVehicle = iterator.value.colorList[p2]
+                    SingletonInfraction.isNewColor = false
+                    binding.edtNewColor.visibility = GONE
+                }
             }
         }
     }
@@ -290,11 +328,11 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 isValid = false
                 onError(getString(R.string.e_brand_vehicle))
             }
-            SingletonInfraction.subBrandVehicle.childReference == null -> {
+            binding.spnSubBrandVehicle.selectedItemPosition == 0 || (binding.edtNewSubBrand.isVisible && binding.edtNewSubBrand.text.isBlank()) -> {
                 isValid = false
                 onError(getString(R.string.e_sub_brand_vehicle))
             }
-            SingletonInfraction.colorVehicle.documentReference == null -> {
+            binding.spnColorVehicle.selectedItemPosition == 0 || (binding.edtNewColor.isVisible && binding.edtNewColor.text.isBlank()) -> {
                 isValid = false
                 onError(getString(R.string.e_color_vehicle))
             }

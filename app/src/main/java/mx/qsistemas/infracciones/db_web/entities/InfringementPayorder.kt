@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import org.jetbrains.annotations.NotNull
-import java.util.*
 
 @Entity(tableName = "infringement_payoder")
 data class InfringementPayorder(@PrimaryKey(autoGenerate = true) @NotNull val id: Int,
@@ -13,7 +12,7 @@ data class InfringementPayorder(@PrimaryKey(autoGenerate = true) @NotNull val id
                                 @ColumnInfo(name = "discount") val discount: Float,
                                 @ColumnInfo(name = "rounding") val rounding: Float,
                                 @ColumnInfo(name = "total") val total: Float,
-                                @ColumnInfo(name = "payment_date") val payment_date:Date,
+                                @ColumnInfo(name = "payment_date") val payment_date: String,
                                 @ColumnInfo(name = "concept") val concept: String,
                                 @ColumnInfo(name = "observations") val observations: String,
                                 @ColumnInfo(name = "folio_box") val folio_box: String,

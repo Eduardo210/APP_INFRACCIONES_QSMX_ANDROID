@@ -111,7 +111,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         } else {
             binding.rdbReferralNo.isChecked = true
         }
-        binding.spnRetainedDoc.setSelection(iterator.value.getPositionRetainedDoc(SingletonInfraction.retainedDocument))
+        binding.spnRetainedDoc.setSelection(iterator.value.getPositionRetainedDoc(SingletonInfraction.retainedDocument.documentReference))
         binding.spnDisposition.setSelection(iterator.value.getPositionDisposition(SingletonInfraction.dispositionRemited))
     }
 
@@ -305,7 +305,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
     override fun validFields(): Boolean {
         var isValid = true
         when {
-            SingletonInfraction.colonnyInfraction.isEmpty() -> {
+            SingletonInfraction.colonnyInfraction.value.isEmpty() -> {
                 isValid = false
                 onError(getString(R.string.e_colonny))
             }
@@ -317,7 +317,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                 isValid = false
                 onError(getString(R.string.e_articles_empty))
             }
-            SingletonInfraction.isRemited && SingletonInfraction.dispositionRemited.id == 0 -> {
+            SingletonInfraction.isRemited && SingletonInfraction.dispositionRemited.value == "" -> { //TODO: Verificar que sea una correcta comparación
                 isValid = false
                 onError(getString(R.string.e_disposition_remitted))
             }
@@ -329,7 +329,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                     }
                 }
             }
-            SingletonInfraction.retainedDocument.id == 0 -> {
+            SingletonInfraction.retainedDocument.value.isEmpty() -> { //TODO: Verificar que sea una correcta comparación
                 isValid = false
                 onError(getString(R.string.e_retained_doc))
             }

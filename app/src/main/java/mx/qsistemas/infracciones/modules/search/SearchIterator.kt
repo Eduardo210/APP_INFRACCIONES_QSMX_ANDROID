@@ -213,8 +213,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (SingletonInfraction.noIntOffender.isNotEmpty()) {
             SingletonTicket.noIntOffender = SingletonInfraction.noIntOffender
         }
-        if (SingletonInfraction.colonyOffender.isNotEmpty()) {
-            SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender
+        if (SingletonInfraction.colonyOffender.value.isNotEmpty()) {
+            SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender.value
         }
         if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
@@ -247,11 +247,11 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
         SingletonTicket.andStreetInfraction = SingletonInfraction.betweenStreet2
-        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction
-        SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.document
+        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction.value
+        SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.value
         SingletonTicket.isRemitedInfraction = SingletonInfraction.isRemited
         if (SingletonInfraction.isRemited) {
-            SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.disposition
+            SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
         SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
         SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))

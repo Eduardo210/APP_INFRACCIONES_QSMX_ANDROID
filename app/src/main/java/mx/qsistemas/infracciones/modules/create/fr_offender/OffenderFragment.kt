@@ -170,9 +170,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.spnTownship.adapter = adapter
         binding.lytOffender.spnTownship.setSelection(iterator.value.getPositionTownship(SingletonInfraction.townshipOffender))
     }
-    override fun onTypeLicenseReady(array: ArrayAdapter<String>) {
+    /*override fun onTypeLicenseReady(array: ArrayAdapter<String>) {
         binding.lytOffender.spnLicenseType.adapter
-    }
+    }*/
 
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
@@ -305,7 +305,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 isValid = false
                                 onError(getString(R.string.e_township_offender))
                             }
-                            SingletonInfraction.colonyOffender.isEmpty() -> {
+                            SingletonInfraction.colonyOffender.documentReference ==null -> {
                                 isValid = false
                                 onError(getString(R.string.e_colony_offender))
                             }
@@ -346,7 +346,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when {
             SingletonInfraction.stateOffender.documentReference != null -> isAnswered = true
             SingletonInfraction.townshipOffender.childReference != null -> isAnswered = true
-            SingletonInfraction.colonyOffender.isNotEmpty() -> isAnswered = true
+            SingletonInfraction.colonyOffender.documentReference !=null -> isAnswered = true
             SingletonInfraction.streetOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noExtOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noIntOffender.isNotEmpty() -> isAnswered = true

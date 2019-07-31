@@ -27,15 +27,14 @@ object SingletonInfraction {
     var isNewColor: Boolean = false
 
     /* Infracion Information */
-    var colonnyInfraction: GenericCatalog = GenericCatalog()
+    var zipCodeInfraction: GenericSubCatalog = GenericSubCatalog()
+    var colonnyInfraction: GenericSubCatalog = GenericSubCatalog()
     var streetInfraction: String = ""
     var betweenStreet1: String = ""
     var betweenStreet2: String = ""
     var motivationList: MutableList<DtoMotivation> = mutableListOf()
     var retainedDocument: GenericCatalog = GenericCatalog()
-    var townshipInfraction: GenericCatalog = GenericCatalog()
     var stateInfraction: GenericCatalog = GenericCatalog()
-    var zipCodeInfraction: GenericCatalog = GenericCatalog()
     var isRemited: Boolean = false
     var dispositionRemited: GenericCatalog = GenericCatalog()
     var latitudeInfraction: Double = 0.0
@@ -75,12 +74,12 @@ object SingletonInfraction {
 
     fun cleanSingleton() {
         /* Vehicle Information Reset */
-        identifierDocument = GenericCatalog("", true)
+        identifierDocument = GenericCatalog()
         noDocument = ""
         stateIssuedIn = GenericCatalog()
         typeDocument = GenericCatalog()
         brandVehicle = GenericCatalog()
-        subBrandVehicle = GenericSubCatalog("", null, true)
+        subBrandVehicle = GenericSubCatalog()
         colorVehicle = GenericCatalog()
         typeVehicle = GenericCatalog()
         noCirculationCard = ""
@@ -91,7 +90,8 @@ object SingletonInfraction {
         isNewColor = false
 
         /* Infraction Information Reset */
-        colonnyInfraction = GenericCatalog()
+        zipCodeInfraction = GenericSubCatalog()
+        colonnyInfraction = GenericSubCatalog()
         streetInfraction = ""
         betweenStreet1 = ""
         betweenStreet2 = ""

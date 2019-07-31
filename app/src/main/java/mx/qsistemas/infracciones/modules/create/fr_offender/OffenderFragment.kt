@@ -117,7 +117,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderFln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastFatherName = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderMln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastMotherName = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderRfc.doOnTextChanged { text, start, count, after -> SingletonInfraction.rfcOffenfer = text?.trim().toString().toUpperCase() }
-        binding.lytOffender.edtColony.doOnTextChanged { text, start, count, after -> SingletonInfraction.colonyOffender = text?.trim().toString().toUpperCase() }
+        /*binding.lytOffender.edtColony.doOnTextChanged { text, start, count, after -> SingletonInfraction.colonyOffender = text?.trim().toString().toUpperCase() }*/
         binding.lytOffender.edtStreet.doOnTextChanged { text, start, count, after -> SingletonInfraction.streetOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderNoExt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noExtOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderNoInt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noIntOffender = text?.trim().toString().toUpperCase() }
@@ -170,9 +170,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.spnTownship.adapter = adapter
         binding.lytOffender.spnTownship.setSelection(iterator.value.getPositionTownship(SingletonInfraction.townshipOffender))
     }
-    /*override fun onTypeLicenseReady(array: ArrayAdapter<String>) {
-        binding.lytOffender.spnLicenseType.adapter
-    }*/
 
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
@@ -305,10 +302,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 isValid = false
                                 onError(getString(R.string.e_township_offender))
                             }
-                            SingletonInfraction.colonyOffender.documentReference ==null -> {
+                            /*SingletonInfraction.colonyOffender.isEmpty() -> {
                                 isValid = false
                                 onError(getString(R.string.e_colony_offender))
-                            }
+                            }*/
                             SingletonInfraction.streetOffender.isEmpty() -> {
                                 isValid = false
                                 onError(getString(R.string.e_street_offender))
@@ -346,7 +343,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when {
             SingletonInfraction.stateOffender.documentReference != null -> isAnswered = true
             SingletonInfraction.townshipOffender.childReference != null -> isAnswered = true
-            SingletonInfraction.colonyOffender.documentReference !=null -> isAnswered = true
+            /*SingletonInfraction.colonyOffender.isNotEmpty() -> isAnswered = true*/
             SingletonInfraction.streetOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noExtOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noIntOffender.isNotEmpty() -> isAnswered = true

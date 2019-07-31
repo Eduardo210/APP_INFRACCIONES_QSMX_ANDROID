@@ -213,9 +213,9 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (SingletonInfraction.noIntOffender.isNotEmpty()) {
             SingletonTicket.noIntOffender = SingletonInfraction.noIntOffender
         }
-        if (SingletonInfraction.colonyOffender.value.isNotEmpty()) {
-            SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender.value
-        }
+        /*if (SingletonInfraction.colonyOffender.isNotEmpty()) {
+            SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender
+        }*/
         if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
         }

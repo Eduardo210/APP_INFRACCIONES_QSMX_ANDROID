@@ -10,6 +10,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
@@ -26,7 +27,6 @@ import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentInfractionBinding
-import mx.qsistemas.infracciones.db.entities.RetainedDocument
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
@@ -83,6 +83,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
     override fun initAdapters() {
         binding.rcvArticles.layoutManager = GridLayoutManager(activity, 1, RecyclerView.VERTICAL, false)
         /* Init listener of components*/
+        binding.spnZipCode.onItemSelectedListener = this
         binding.spnArticle.onItemSelectedListener = this
         binding.spnFraction.onItemSelectedListener = this
         binding.spnRetainedDoc.onItemSelectedListener = this
@@ -90,11 +91,11 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         binding.rdbReferralYes.setOnCheckedChangeListener(this)
         binding.btnAdd.setOnClickListener(this)
         binding.btnNext.setOnClickListener(this)
-        binding.edtColony.doOnTextChanged { text, start, count, after -> SingletonInfraction.colonnyInfraction = text?.trim().toString().toUpperCase() }
         binding.edtStreet.doOnTextChanged { text, start, count, after -> SingletonInfraction.streetInfraction = text?.trim().toString().toUpperCase() }
         binding.edtBetweenStreet1.doOnTextChanged { text, start, count, after -> SingletonInfraction.betweenStreet1 = text?.trim().toString().toUpperCase() }
         binding.edtBetweenStreet2.doOnTextChanged { text, start, count, after -> SingletonInfraction.betweenStreet2 = text?.trim().toString().toUpperCase() }
         /* Init adapters */
+        iterator.value.getZipCodes()  // Download From Firebase
         binding.spnArticle.adapter = iterator.value.getArticlesAdapter()
         binding.spnRetainedDoc.adapter = iterator.value.getRetainedDocAdapter()
         binding.spnDisposition.adapter = iterator.value.getDispositionAdapter()
@@ -102,7 +103,6 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
     }
 
     override fun fillFields() {
-        binding.edtColony.setText(SingletonInfraction.colonnyInfraction)
         binding.edtStreet.setText(SingletonInfraction.streetInfraction)
         binding.edtBetweenStreet1.setText(SingletonInfraction.betweenStreet1)
         binding.edtBetweenStreet2.setText(SingletonInfraction.betweenStreet2)
@@ -111,8 +111,16 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         } else {
             binding.rdbReferralNo.isChecked = true
         }
-        binding.spnRetainedDoc.setSelection(iterator.value.getPositionRetainedDoc(SingletonInfraction.retainedDocument.documentReference))
-        binding.spnDisposition.setSelection(iterator.value.getPositionDisposition(SingletonInfraction.dispositionRemited))
+        /*binding.spnRetainedDoc.setSelection(iterator.value.getPositionRetainedDoc(SingletonInfraction.retainedDocument))
+        binding.spnDisposition.setSelection(iterator.value.getPositionDisposition(SingletonInfraction.dispositionRemited))*/
+    }
+
+    override fun onZipCodesReady(adapter: ArrayAdapter<String>) {
+        binding.spnZipCode.adapter = adapter
+    }
+
+    override fun onColoniesReady(adapter: ArrayAdapter<String>) {
+        binding.spnColony.adapter = adapter
     }
 
     @SuppressLint("MissingPermission")
@@ -196,18 +204,22 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         when (p0?.id) {
+            binding.spnZipCode.id -> {
+                SingletonInfraction.zipCodeInfraction = iterator.value.zipCodesList[p2]
+                iterator.value.getColonies(iterator.value.zipCodesList[p2].childReference)
+            }
             binding.spnArticle.id -> {
                 binding.spnFraction.adapter = iterator.value.getFractionAdapter(p2)
             }
             binding.spnRetainedDoc.id -> {
-                if (p2 == 0) {
-                    SingletonInfraction.retainedDocument = RetainedDocument(0, "NINGUNO")
-                } else {
-                    SingletonInfraction.retainedDocument = iterator.value.retainedDocList[p2]
-                }
+                /* if (p2 == 0) {
+                     SingletonInfraction.retainedDocument = RetainedDocument(0, "NINGUNO")
+                 } else {
+                     SingletonInfraction.retainedDocument = iterator.value.retainedDocList[p2]
+                 }*/
             }
             binding.spnDisposition.id -> {
-                SingletonInfraction.dispositionRemited = iterator.value.dispositionList[p2]
+                //SingletonInfraction.dispositionRemited = iterator.value.dispositionList[p2]
             }
         }
     }
@@ -226,7 +238,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
     }
 
     override fun onAddressLocated(colony: String, street: String, betweenStreet: String, andStreet: String) {
-        if (binding.edtColony.text.isEmpty()) binding.edtColony.setText(colony)
+        //if (binding.edtColony.text.isEmpty()) binding.edtColony.setText(colony)
         if (binding.edtStreet.text.isEmpty()) binding.edtStreet.setText(street)
         if (binding.edtBetweenStreet1.text.isEmpty()) binding.edtBetweenStreet1.setText(betweenStreet)
         if (binding.edtBetweenStreet2.text.isEmpty()) binding.edtBetweenStreet2.setText(andStreet)
@@ -258,7 +270,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         }
     }
 
-    fun fractionExist(fraction: String, article: String): Boolean {
+    private fun fractionExist(fraction: String, article: String): Boolean {
         SingletonInfraction.motivationList.forEach { item ->
             if (item.fraction.fraccion == fraction && item.article.article == article) {
                 return true
@@ -305,10 +317,10 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
     override fun validFields(): Boolean {
         var isValid = true
         when {
-            SingletonInfraction.colonnyInfraction.value.isEmpty() -> {
+            /*SingletonInfraction.colonnyInfraction.isEmpty() -> {
                 isValid = false
                 onError(getString(R.string.e_colonny))
-            }
+            }*/
             SingletonInfraction.streetInfraction.isEmpty() -> {
                 isValid = false
                 onError(getString(R.string.e_street))
@@ -317,10 +329,10 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                 isValid = false
                 onError(getString(R.string.e_articles_empty))
             }
-            SingletonInfraction.isRemited && SingletonInfraction.dispositionRemited.value == "" -> { //TODO: Verificar que sea una correcta comparación
+            /*SingletonInfraction.isRemited && SingletonInfraction.dispositionRemited.id == 0 -> {
                 isValid = false
                 onError(getString(R.string.e_disposition_remitted))
-            }
+            }*/
             SingletonInfraction.motivationList.isNotEmpty() -> {
                 SingletonInfraction.motivationList.forEach {
                     if (it.motivation.trim().isEmpty()) {
@@ -329,10 +341,10 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                     }
                 }
             }
-            SingletonInfraction.retainedDocument.value.isEmpty() -> { //TODO: Verificar que sea una correcta comparación
+            /*SingletonInfraction.retainedDocument.id == 0 -> {
                 isValid = false
                 onError(getString(R.string.e_retained_doc))
-            }
+            }*/
         }
         return isValid
     }

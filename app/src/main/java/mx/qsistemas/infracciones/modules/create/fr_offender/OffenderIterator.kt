@@ -179,9 +179,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         config = SaveInfractionManager.getConfig()
         /* Calculate infraction article variables */
         SingletonInfraction.motivationList.forEach {
-            totalImport += config.minimum_salary * it.fraction.minimum_wages
-            totalPoints += it.fraction.penalty_points
-            totalUmas += it.fraction.minimum_wages
+            totalImport += config.minimum_salary * it.fraction.uma
+            /*totalPoints += it.fraction.penalty_points
+            totalUmas += it.fraction.minimum_wages*/
         }
         SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport).replace(",", ".")
         val fiftiethDiscount = totalImport * .5
@@ -239,7 +239,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             SaveInfractionManager.saveInfractionAddressRelation(AddressInfringement(idInfractionAddress.toInt(), SingletonInfraction.idNewInfraction.toInt()))
             /* Step 8. Save Fractions List */
             SingletonInfraction.motivationList.forEach {
-                val trafficViolation = TrafficViolationFraction(0, SingletonInfraction.idNewInfraction, it.fraction.id.toInt(), it.fraction.minimum_wages, SingletonInfraction.idPersonTownship, it.fraction.penalty_points, it.motivation)
+                val trafficViolation = TrafficViolationFraction(0, SingletonInfraction.idNewInfraction, 0/*it.fraction.id.toInt()*/, 0/*it.fraction.minimum_wages*/, SingletonInfraction.idPersonTownship, 0/*it.fraction.penalty_points*/, it.motivation)
                 SaveInfractionManager.saveTrafficViolation(trafficViolation)
             }
             /* Step 9. Save Evidence Photos */
@@ -376,9 +376,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         //SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
         SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value
         SingletonInfraction.motivationList.forEach { art ->
-            val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),
+           /* val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),
                     art.fraction.penalty_points.toString(), art.motivation)
-            SingletonTicket.fractionsList.add(article)
+            SingletonTicket.fractionsList.add(article)*/
         }
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1

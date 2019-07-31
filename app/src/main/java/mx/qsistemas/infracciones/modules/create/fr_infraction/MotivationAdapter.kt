@@ -30,13 +30,13 @@ class MotivationAdapter : RecyclerView.Adapter<ViewHolderMotivation>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolderMotivation, position: Int) {
-        holder.itemView.txt_article_item.text = SingletonInfraction.motivationList[position].article.article
-        holder.itemView.txt_fraction_item.text = SingletonInfraction.motivationList[position].fraction.fraccion
+        holder.itemView.txt_article_item.text = SingletonInfraction.motivationList[position].article.number
+        holder.itemView.txt_fraction_item.text = SingletonInfraction.motivationList[position].fraction.number
         holder.itemView.txt_description_item.text = SingletonInfraction.motivationList[position].fraction.description
         holder.itemView.edt_motivation_item.setText(SingletonInfraction.motivationList[position].motivation)
         holder.itemView.edt_motivation_item.imeOptions = EditorInfo.IME_ACTION_DONE
         holder.itemView.edt_motivation_item.setRawInputType(InputType.TYPE_CLASS_TEXT)
-        val spannable = SpannableString("U.M.A. ${SingletonInfraction.motivationList[position].fraction.minimum_wages}")
+        val spannable = SpannableString("U.M.A. ${SingletonInfraction.motivationList[position].fraction.uma}")
         spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(Application.getContext(), R.color.colorPrimaryDark)), 0, 6, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannable.setSpan(ForegroundColorSpan(ContextCompat.getColor(Application.getContext(), R.color.colorBlack)), 6, spannable.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         holder.itemView.txt_umas.text = spannable

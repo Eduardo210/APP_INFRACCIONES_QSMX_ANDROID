@@ -1,11 +1,7 @@
 package mx.qsistemas.infracciones.singletons
 
-import mx.qsistemas.infracciones.db.entities.Articles
-import mx.qsistemas.infracciones.db.entities.InfractionFraction
 import mx.qsistemas.infracciones.db.entities.LicenseType
-import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
-import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.catalogs.*
 import java.util.*
 
 object SingletonInfraction {
@@ -34,6 +30,7 @@ object SingletonInfraction {
     var betweenStreet2: String = ""
     var motivationList: MutableList<DtoMotivation> = mutableListOf()
     var retainedDocument: GenericCatalog = GenericCatalog()
+    var townshipInfraction: Townships = Townships()
     var stateInfraction: GenericCatalog = GenericCatalog()
     var isRemited: Boolean = false
     var dispositionRemited: GenericCatalog = GenericCatalog()
@@ -134,5 +131,5 @@ object SingletonInfraction {
         paymentAuthCode = ""
     }
 
-    class DtoMotivation(var article: Articles, var fraction: InfractionFraction, var motivation: String)
+    class DtoMotivation(var article: Articles, var fraction: Fractions, var motivation: String)
 }

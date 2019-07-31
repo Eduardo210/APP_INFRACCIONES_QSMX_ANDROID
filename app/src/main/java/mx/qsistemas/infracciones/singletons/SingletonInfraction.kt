@@ -1,6 +1,8 @@
 package mx.qsistemas.infracciones.singletons
 
-import mx.qsistemas.infracciones.db.entities.*
+import mx.qsistemas.infracciones.db.entities.Articles
+import mx.qsistemas.infracciones.db.entities.InfractionFraction
+import mx.qsistemas.infracciones.db.entities.LicenseType
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 import mx.qsistemas.infracciones.net.catalogs.Townships
@@ -25,14 +27,16 @@ object SingletonInfraction {
     var isNewColor: Boolean = false
 
     /* Infracion Information */
-    var colonnyInfraction: String = ""
+    var zipCodeInfraction: GenericSubCatalog = GenericSubCatalog()
+    var colonnyInfraction: GenericSubCatalog = GenericSubCatalog()
     var streetInfraction: String = ""
     var betweenStreet1: String = ""
     var betweenStreet2: String = ""
     var motivationList: MutableList<DtoMotivation> = mutableListOf()
-    var retainedDocument: RetainedDocument = RetainedDocument(0, "")
+    var retainedDocument: GenericCatalog = GenericCatalog()
+    var stateInfraction: GenericCatalog = GenericCatalog()
     var isRemited: Boolean = false
-    var dispositionRemited: Disposition = Disposition(0, "")
+    var dispositionRemited: GenericCatalog = GenericCatalog()
     var latitudeInfraction: Double = 0.0
     var longitudeInfraction: Double = 0.0
     var dateInfraction: String = ""
@@ -46,7 +50,8 @@ object SingletonInfraction {
     var rfcOffenfer: String = ""
     var stateOffender: GenericCatalog = GenericCatalog()
     var townshipOffender: Townships = Townships()
-    var colonyOffender: String = ""
+    var zipCodeOffender: GenericCatalog = GenericCatalog()
+    var colonyOffender: GenericCatalog = GenericCatalog()
     var streetOffender: String = ""
     var noExtOffender: String = ""
     var noIntOffender: String = ""
@@ -69,12 +74,12 @@ object SingletonInfraction {
 
     fun cleanSingleton() {
         /* Vehicle Information Reset */
-        identifierDocument = GenericCatalog("", true)
+        identifierDocument = GenericCatalog()
         noDocument = ""
         stateIssuedIn = GenericCatalog()
         typeDocument = GenericCatalog()
         brandVehicle = GenericCatalog()
-        subBrandVehicle = GenericSubCatalog("", null, true)
+        subBrandVehicle = GenericSubCatalog()
         colorVehicle = GenericCatalog()
         typeVehicle = GenericCatalog()
         noCirculationCard = ""
@@ -85,14 +90,15 @@ object SingletonInfraction {
         isNewColor = false
 
         /* Infraction Information Reset */
-        colonnyInfraction = ""
+        zipCodeInfraction = GenericSubCatalog()
+        colonnyInfraction = GenericSubCatalog()
         streetInfraction = ""
         betweenStreet1 = ""
         betweenStreet2 = ""
         motivationList = mutableListOf()
-        retainedDocument = RetainedDocument(0, "")
+        retainedDocument = GenericCatalog()
         isRemited = false
-        dispositionRemited = Disposition(0, "")
+        dispositionRemited = GenericCatalog()
         latitudeInfraction = 0.0
         longitudeInfraction = 0.0
         dateInfraction = ""
@@ -106,7 +112,7 @@ object SingletonInfraction {
         rfcOffenfer = ""
         stateOffender = GenericCatalog()
         townshipOffender = Townships()
-        colonyOffender = ""
+        colonyOffender = GenericCatalog()
         streetOffender = ""
         noExtOffender = ""
         noIntOffender = ""

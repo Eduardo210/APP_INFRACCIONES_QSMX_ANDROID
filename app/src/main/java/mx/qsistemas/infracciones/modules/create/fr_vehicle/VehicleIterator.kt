@@ -24,29 +24,22 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            brandList = mutableListOf()
+            brandList.add(GenericCatalog("Seleccionar...", true))
+            val list = mutableListOf<String>()
+            list.add("Seleccionar...")
             if (snapshot != null && !snapshot.isEmpty) {
-                brandList = mutableListOf()
-                brandList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
                 for (document in snapshot.documents) {
                     val data = document.toObject(GenericCatalog::class.java)!!
                     data.documentReference = document.reference
                     list.add(data.value)
                     brandList.add(data)
                 }
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onBrandReady(adapter)
-            } else {
-                brandList = mutableListOf()
-                brandList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onBrandReady(adapter)
+
             }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onBrandReady(adapter)
         }
     }
 
@@ -57,11 +50,11 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                     listener.onError(exception.message
                             ?: Application.getContext().getString(R.string.e_firestore_not_available))
                 }
+                subBrandList = mutableListOf()
+                subBrandList.add(GenericSubCatalog("Seleccionar...", reference, true))
+                val list = mutableListOf<String>()
+                list.add("Seleccionar...")
                 if (snapshot != null && !snapshot.isEmpty) {
-                    subBrandList = mutableListOf()
-                    subBrandList.add(GenericSubCatalog("Seleccionar...", reference, true))
-                    val list = mutableListOf<String>()
-                    list.add("Seleccionar...")
                     for (document in snapshot.documents) {
                         val data = document.toObject(GenericSubCatalog::class.java)!!
                         data.childReference = document.reference
@@ -70,10 +63,10 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                     }
                     subBrandList.add(GenericSubCatalog("Otra...", null, true))
                     list.add("Otra...")
-                    val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                    adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                    listener.onSubBrandReady(adapter)
                 }
+                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+                listener.onSubBrandReady(adapter)
             }
         } else {
             subBrandList = mutableListOf()
@@ -92,29 +85,21 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            typeVehicleList = mutableListOf()
+            typeVehicleList.add(GenericCatalog("Seleccionar...", true))
+            val list = mutableListOf<String>()
+            list.add("Seleccionar...")
             if (snapshot != null && !snapshot.isEmpty) {
-                typeVehicleList = mutableListOf()
-                typeVehicleList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
                 for (document in snapshot.documents) {
                     val data = document.toObject(GenericCatalog::class.java)!!
                     data.documentReference = document.reference
                     list.add(data.value)
                     typeVehicleList.add(data)
                 }
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onTypeVehicleReady(adapter)
-            } else {
-                typeVehicleList = mutableListOf()
-                typeVehicleList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onTypeVehicleReady(adapter)
             }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onTypeVehicleReady(adapter)
         }
     }
 
@@ -124,11 +109,11 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            colorList = mutableListOf()
+            colorList.add(GenericCatalog("Seleccionar...", true))
+            val list = mutableListOf<String>()
+            list.add("Seleccionar...")
             if (snapshot != null && !snapshot.isEmpty) {
-                colorList = mutableListOf()
-                colorList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
                 for (document in snapshot.documents) {
                     val data = document.toObject(GenericCatalog::class.java)!!
                     data.documentReference = document.reference
@@ -137,18 +122,10 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                 }
                 colorList.add(GenericCatalog("Otro...", true, null))
                 list.add("Otro...")
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onColorsReady(adapter)
-            } else {
-                colorList = mutableListOf()
-                colorList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onColorsReady(adapter)
             }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onColorsReady(adapter)
         }
     }
 
@@ -158,29 +135,21 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            identifierDocList = mutableListOf()
+            identifierDocList.add(GenericCatalog("Seleccionar...", true))
+            val list = mutableListOf<String>()
+            list.add("Seleccionar...")
             if (snapshot != null && !snapshot.isEmpty) {
-                identifierDocList = mutableListOf()
-                identifierDocList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
                 for (document in snapshot.documents) {
                     val data = document.toObject(GenericCatalog::class.java)!!
                     data.documentReference = document.reference
                     list.add(data.value)
                     identifierDocList.add(data)
                 }
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onIdentifierDocReady(adapter)
-            } else {
-                identifierDocList = mutableListOf()
-                identifierDocList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onIdentifierDocReady(adapter)
             }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onIdentifierDocReady(adapter)
         }
     }
 
@@ -190,29 +159,21 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            statesList = mutableListOf()
+            statesList.add(GenericCatalog("Seleccionar...", true))
+            val list = mutableListOf<String>()
+            list.add("Seleccionar...")
             if (snapshot != null && !snapshot.isEmpty) {
-                statesList = mutableListOf()
-                statesList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
                 for (document in snapshot.documents) {
                     val data = document.toObject(GenericCatalog::class.java)!!
                     data.documentReference = document.reference
                     list.add(data.value)
                     statesList.add(data)
                 }
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onIssuedInReady(adapter)
-            } else {
-                statesList = mutableListOf()
-                statesList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onIssuedInReady(adapter)
             }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onIssuedInReady(adapter)
         }
     }
 
@@ -222,29 +183,21 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            authorityIssuesList = mutableListOf()
+            authorityIssuesList.add(GenericCatalog("Seleccionar...", true))
+            val list = mutableListOf<String>()
+            list.add("Seleccionar...")
             if (snapshot != null && !snapshot.isEmpty) {
-                authorityIssuesList = mutableListOf()
-                authorityIssuesList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
                 for (document in snapshot.documents) {
                     val data = document.toObject(GenericCatalog::class.java)!!
                     data.documentReference = document.reference
                     list.add(data.value)
                     authorityIssuesList.add(data)
                 }
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onTypeDocReady(adapter)
-            } else {
-                authorityIssuesList = mutableListOf()
-                authorityIssuesList.add(GenericCatalog("Seleccionar...", true))
-                val list = mutableListOf<String>()
-                list.add("Seleccionar...")
-                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                listener.onTypeDocReady(adapter)
             }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onTypeDocReady(adapter)
         }
     }
 

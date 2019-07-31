@@ -39,7 +39,9 @@ const val FS_COL_COLORS = "colors"
 const val FS_COL_CLASS_TYPE = "class_type"
 const val FS_COL_STATES = "state"
 const val FS_COL_CITIES = "cities"
+const val FS_COL_COLONIES = "colonies"
 const val FS_COL_TERMINALS = "terminals"
+const val FS_COL_ZIP_CODES = "zip_codes"
 
 /* JOB CHANNELS */
 const val CHANNEL_ID_REPORT = "infractionChannelId"

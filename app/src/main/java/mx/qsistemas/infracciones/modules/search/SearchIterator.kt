@@ -213,9 +213,9 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (SingletonInfraction.noIntOffender.isNotEmpty()) {
             SingletonTicket.noIntOffender = SingletonInfraction.noIntOffender
         }
-        if (SingletonInfraction.colonyOffender.isNotEmpty()) {
+        /*if (SingletonInfraction.colonyOffender.isNotEmpty()) {
             SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender
-        }
+        }*/
         if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
         }
@@ -247,12 +247,12 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
         SingletonTicket.andStreetInfraction = SingletonInfraction.betweenStreet2
-        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction
-        SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.document
+        /*SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction
+        SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.document*/
         SingletonTicket.isRemitedInfraction = SingletonInfraction.isRemited
-        if (SingletonInfraction.isRemited) {
+        /*if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.disposition
-        }
+        }*/
         SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
         SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
         Ticket.printTicket(activity, object : Ticket.TicketListener {

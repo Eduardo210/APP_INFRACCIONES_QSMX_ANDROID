@@ -3,9 +3,9 @@ package mx.qsistemas.infracciones.net.catalogs
 import com.google.firebase.firestore.DocumentReference
 
 /* Generic Headers */
-data class GenericCatalog(val value: String = "", val is_active: Boolean = true, var documentReference: DocumentReference? = null)
+data class GenericCatalog(var value: String = "", val is_active: Boolean = true, var documentReference: DocumentReference? = null)
 
-data class GenericSubCatalog(val value: String = "", val reference: DocumentReference? = null, val is_active: Boolean = true,
+data class GenericSubCatalog(var value: String = "", val reference: DocumentReference? = null, val is_active: Boolean = true,
                              var childReference: DocumentReference? = null)
 
 /* Collection Headers */

@@ -2,8 +2,8 @@ package mx.qsistemas.infracciones.modules.create.fr_infraction
 
 import android.widget.ArrayAdapter
 import com.google.firebase.firestore.DocumentReference
-import mx.qsistemas.infracciones.db.entities.Disposition
-import mx.qsistemas.infracciones.db.entities.RetainedDocument
+import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
+import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 
 class InfractionContracts {
     interface Presenter {
@@ -15,18 +15,25 @@ class InfractionContracts {
         fun onError(msg: String)
         fun onZipCodesReady(adapter: ArrayAdapter<String>)
         fun onColoniesReady(adapter: ArrayAdapter<String>)
+        fun onArticlesReady(adapter: ArrayAdapter<String>)
+        fun onFractionsReady(adapter: ArrayAdapter<String>)
+        fun onRetainedDocReady(adapter: ArrayAdapter<String>)
+        fun onDispositionReady(adapter: ArrayAdapter<String>)
     }
 
     interface Iterator {
         fun getZipCodes()
         fun getColonies(reference: DocumentReference?)
-        fun getArticlesAdapter(): ArrayAdapter<String>
-        fun getFractionAdapter(positionArticle: Int): ArrayAdapter<String>
-        fun getRetainedDocAdapter(): ArrayAdapter<String>
-        fun getDispositionAdapter(): ArrayAdapter<String>
+        fun getArticlesAdapter()
+        fun getFractionAdapter(reference: DocumentReference?)
+        fun getRetainedDocAdapter()
+        fun getDispositionAdapter()
         fun saveNewArticle(posArticle: Int, posFraction: Int)
-        fun getPositionRetainedDoc(obj: RetainedDocument): Int
-        fun getPositionDisposition(obj: Disposition): Int
+        fun saveTownship()
+        fun getPositionZipCode(obj: GenericSubCatalog): Int
+        fun getPositionColony(obj: GenericSubCatalog): Int
+        fun getPositionRetainedDoc(obj: GenericCatalog): Int
+        fun getPositionDisposition(obj: GenericCatalog): Int
         fun getAddressFromCoordinates(lat: Double, lon: Double)
     }
 }

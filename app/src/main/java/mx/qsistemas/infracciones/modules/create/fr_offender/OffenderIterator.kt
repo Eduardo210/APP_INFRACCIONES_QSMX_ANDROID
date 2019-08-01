@@ -182,9 +182,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         config = SaveInfractionManager.getConfig()
         /* Calculate infraction article variables */
         SingletonInfraction.motivationList.forEach {
-            totalImport += config.minimum_salary * it.fraction.minimum_wages
-            totalPoints += it.fraction.penalty_points
-            totalUmas += it.fraction.minimum_wages
+            totalImport += config.minimum_salary * it.fraction.uma
+            /*totalPoints += it.fraction.penalty_points
+            totalUmas += it.fraction.minimum_wages*/
         }
         SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport).replace(",", ".")
         val fiftiethDiscount = totalImport * .5
@@ -323,8 +323,10 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     } else {
                         listener.onError(data.message)
                     }
+
                 }
             }
+
             override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
@@ -418,19 +420,19 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         //SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
         SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value
         SingletonInfraction.motivationList.forEach { art ->
-            val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),
+           /* val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),
                     art.fraction.penalty_points.toString(), art.motivation)
-            SingletonTicket.fractionsList.add(article)
+            SingletonTicket.fractionsList.add(article)*/
         }
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
         SingletonTicket.andStreetInfraction = SingletonInfraction.betweenStreet2
-        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction.value
-        SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.value
+        /*SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction
+        SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.document*/
         SingletonTicket.isRemitedInfraction = SingletonInfraction.isRemited
-        if (SingletonInfraction.isRemited) {
-            SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
-        }
+        /*if (SingletonInfraction.isRemited) {
+            SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.disposition
+        }*/
         SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_f_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_m_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_name, "")}"
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
         SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))

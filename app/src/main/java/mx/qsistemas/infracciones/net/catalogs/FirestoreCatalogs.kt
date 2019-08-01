@@ -12,9 +12,10 @@ data class GenericSubCatalog(var value: String = "", val reference: DocumentRefe
 data class Townships(val prefix: String = "PRX", val counter_prefix: Int = 0, val value: String = "", val reference: DocumentReference? = null, val is_active: Boolean = true,
                      var childReference: DocumentReference? = null)
 
-data class Articles(val number: String = "", val description: String = "", val is_active: Boolean)
+data class Articles(val number: String = "", val description: String = "", val is_active: Boolean = true, var documentReference: DocumentReference? = null)
 
-data class Fractions(val number: String = "", val description: String = "", val is_active: Boolean, val reference: String = "", val uma: Int)
+data class Fractions(val number: String = "", val description: String = "", val is_active: Boolean = true, val reference: DocumentReference? = null, val uma: Int = 0,
+                     var childReference: DocumentReference? = null)
 
 /* Remote Config Version */
 data class RemoteVersion(val url: String, val version: String)

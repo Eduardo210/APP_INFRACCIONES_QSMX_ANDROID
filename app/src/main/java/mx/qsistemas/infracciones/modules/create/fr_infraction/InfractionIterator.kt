@@ -1,17 +1,13 @@
 package mx.qsistemas.infracciones.modules.create.fr_infraction
 
 import android.location.Geocoder
+import android.util.Log
 import android.widget.ArrayAdapter
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.db.entities.Articles
-import mx.qsistemas.infracciones.db.entities.Disposition
-import mx.qsistemas.infracciones.db.entities.InfractionFraction
-import mx.qsistemas.infracciones.db.entities.RetainedDocument
-import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
-import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
+import mx.qsistemas.infracciones.net.catalogs.*
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.*
 import java.util.*
@@ -20,9 +16,9 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     internal lateinit var zipCodesList: MutableList<GenericSubCatalog>
     internal lateinit var coloniesList: MutableList<GenericSubCatalog>
     internal lateinit var articlesList: MutableList<Articles>
-    internal lateinit var fractionList: MutableList<InfractionFraction>
-    internal lateinit var retainedDocList: MutableList<RetainedDocument>
-    internal lateinit var dispositionList: MutableList<Disposition>
+    internal lateinit var fractionList: MutableList<Fractions>
+    internal lateinit var retainedDocList: MutableList<GenericCatalog>
+    internal lateinit var dispositionList: MutableList<GenericCatalog>
 
     override fun getZipCodes() {
         Application.firestore?.collection(FS_COL_TERMINALS)?.document(Utils.getImeiDevice(Application.getContext()))?.get()?.addOnSuccessListener {
@@ -80,64 +76,100 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
         }
     }
 
-    override fun getArticlesAdapter(): ArrayAdapter<String> {
-        articlesList = CatalogsAdapterManager.getArticlesList()
-        val strings = mutableListOf<String>()
-        articlesList.forEach {
-            if (it.id == 0L) {
-                strings.add("Seleccionar..")
-            } else {
-                strings.add("Artículo ${it.article}")
+    override fun getArticlesAdapter() {
+        Application.firestore?.collection(FS_COL_ARTICLES)?.whereEqualTo("is_active", true)?.orderBy("number", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                listener.onError(exception.message
+                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            articlesList = mutableListOf()
+            articlesList.add(Articles("Selecciona...", "Selecciona...", true))
+            val list = mutableListOf<String>()
+            list.add("Selecciona...")
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (document in snapshot.documents) {
+                    val data = document.toObject(Articles::class.java)!!
+                    data.documentReference = document.reference
+                    list.add("Art. ${data.number}")
+                    articlesList.add(data)
+                }
+            }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onArticlesReady(adapter)
         }
-        val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, strings)
-        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-        return adapter
     }
 
-    override fun getFractionAdapter(positionArticle: Int): ArrayAdapter<String> {
-        fractionList = CatalogsAdapterManager.getFractionsList(articlesList[positionArticle].id.toInt())
-        val strings = mutableListOf<String>()
-        fractionList.forEach {
-            if (it.id == 0L) {
-                strings.add("Seleccionar..")
-            } else {
-                strings.add("Fracción ${it.fraccion}")
+    override fun getFractionAdapter(reference: DocumentReference?) {
+        Application.firestore?.collection(FS_COL_FRACTIONS)?.whereEqualTo("reference", reference)?.whereEqualTo("is_active", true)?.orderBy("number", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                listener.onError(exception.message
+                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            fractionList = mutableListOf()
+            fractionList.add(Fractions("Selecciona...", "Selecciona...", true, reference, 0))
+            val list = mutableListOf<String>()
+            list.add("Selecciona...")
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (document in snapshot.documents) {
+                    val data = document.toObject(Fractions::class.java)!!
+                    data.childReference = document.reference
+                    list.add("Fr. ${data.number}")
+                    fractionList.add(data)
+                }
+            }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onFractionsReady(adapter)
         }
-        val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, strings)
-        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-        return adapter
     }
 
-    override fun getRetainedDocAdapter(): ArrayAdapter<String> {
-        retainedDocList = CatalogsAdapterManager.getRetainedDocList()
-        val strings = mutableListOf<String>()
-        retainedDocList.forEach {
-            if (it.id == 0) {
-                strings.add("Seleccionar..")
-            } else {
-                strings.add(it.document)
+    override fun getRetainedDocAdapter() {
+        Application.firestore?.collection(FS_COL_INSURED_DOC)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                listener.onError(exception.message
+                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            retainedDocList = mutableListOf()
+            retainedDocList.add(GenericCatalog("Selecciona...", true))
+            val list = mutableListOf<String>()
+            list.add("Selecciona...")
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (document in snapshot.documents) {
+                    val data = document.toObject(GenericCatalog::class.java)!!
+                    data.documentReference = document.reference
+                    list.add(data.value)
+                    retainedDocList.add(data)
+                }
+            }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onRetainedDocReady(adapter)
         }
-        val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, strings)
-        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-        return adapter
     }
 
-    override fun getDispositionAdapter(): ArrayAdapter<String> {
-        dispositionList = CatalogsAdapterManager.getDispositionList()
-        val strings = mutableListOf<String>()
-        dispositionList.forEach {
-            if (it.id == 0) {
-                strings.add("Seleccionar..")
-            } else {
-                strings.add(it.disposition)
+    override fun getDispositionAdapter() {
+        Application.firestore?.collection(FS_COL_CRANES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                listener.onError(exception.message
+                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            dispositionList = mutableListOf()
+            dispositionList.add(GenericCatalog("Selecciona...", true))
+            val list = mutableListOf<String>()
+            list.add("Selecciona...")
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (document in snapshot.documents) {
+                    val data = document.toObject(GenericCatalog::class.java)!!
+                    data.documentReference = document.reference
+                    list.add(data.value)
+                    dispositionList.add(data)
+                }
+            }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onDispositionReady(adapter)
         }
-        val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, strings)
-        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-        return adapter
     }
 
     override fun saveNewArticle(posArticle: Int, posFraction: Int) {
@@ -145,18 +177,55 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
                 fractionList[posFraction], ""))
     }
 
-    override fun getPositionRetainedDoc(obj: RetainedDocument): Int {
-        for (i in 0 until retainedDocList.size) {
-            if (retainedDocList[i].id == obj.id) {
+    override fun saveTownship() {
+        Application.firestore?.collection(FS_COL_CITIES)?.document(SingletonInfraction.zipCodeInfraction.reference!!.id)?.get()?.addOnSuccessListener { townshipSnapshot ->
+            if (townshipSnapshot == null) {
+                Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
+            } else {
+                val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
+                SingletonInfraction.townshipInfraction = township
+                Application.firestore?.collection(FS_COL_STATES)?.document(township.reference!!.id)?.get()?.addOnSuccessListener {
+                    if (it == null) {
+                        Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
+                    } else {
+                        val state = it.toObject(GenericCatalog::class.java) ?: GenericCatalog()
+                        SingletonInfraction.stateInfraction = state
+                    }
+                }
+            }
+        }
+    }
+
+    override fun getPositionZipCode(obj: GenericSubCatalog): Int {
+        for (i in 0 until zipCodesList.size) {
+            if (zipCodesList[i].childReference == obj.childReference) {
                 return i
             }
         }
         return 0
     }
 
-    override fun getPositionDisposition(obj: Disposition): Int {
+    override fun getPositionColony(obj: GenericSubCatalog): Int {
+        for (i in 0 until coloniesList.size) {
+            if (coloniesList[i].childReference == obj.childReference) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    override fun getPositionRetainedDoc(obj: GenericCatalog): Int {
+        for (i in 0 until retainedDocList.size) {
+            if (retainedDocList[i].documentReference == obj.documentReference) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    override fun getPositionDisposition(obj: GenericCatalog): Int {
         for (i in 0 until dispositionList.size) {
-            if (dispositionList[i].id == obj.id) {
+            if (dispositionList[i].documentReference == obj.documentReference) {
                 return i
             }
         }

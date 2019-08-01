@@ -31,16 +31,20 @@ const val MAX_ACCURACY = 100.0
 const val TIME_OUT_OF_GEO = 1000 * 60L
 
 /* FIRESTORE COLLECTIONS */
+const val FS_COL_ARTICLES = "articles"
 const val FS_COL_BRANDS = "brands"
-const val FS_COL_MODELS = "models"
-const val FS_COL_IDENTIF_DOC = "identifier_document"
-const val FS_COL_TYPE_DOC = "document_type"
-const val FS_COL_COLORS = "colors"
-const val FS_COL_CLASS_TYPE = "class_type"
-const val FS_COL_STATES = "state"
 const val FS_COL_CITIES = "cities"
+const val FS_COL_CLASS_TYPE = "class_type"
 const val FS_COL_COLONIES = "colonies"
+const val FS_COL_COLORS = "colors"
+const val FS_COL_CRANES = "cranes"
+const val FS_COL_TYPE_DOC = "document_type"
+const val FS_COL_FRACTIONS = "fractions"
+const val FS_COL_IDENTIF_DOC = "identifier_document"
+const val FS_COL_INSURED_DOC = "insured_document"
+const val FS_COL_MODELS = "models"
 const val FS_COL_TERMINALS = "terminals"
+const val FS_COL_STATES = "state"
 const val FS_COL_ZIP_CODES = "zip_codes"
 
 /* JOB CHANNELS */

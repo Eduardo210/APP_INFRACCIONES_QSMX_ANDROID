@@ -161,6 +161,7 @@
     <string name="e_marker_too_distance">El marcador debe estar dentro del radio</string>
     <string name="e_without_address">Sin dirección obtenida</string>
     <string name="e_invalid_article">Artículo incorrecto</string>
+    <string name="e_invalid_fraction">Fracción incorrecta</string>
     <!-- Vehicle Infraction Errors -->
     <string name="e_evidence_1">Evidencia 1 obligatoria</string>
     <string name="e_evidence_2">Evidencia 2 obligatoria</string>
@@ -176,6 +177,7 @@
     <string name="e_year">Año obligatorio</string>
     <string name="e_year_invalid">Año inválido</string>
     <!-- Infraction Information Errors -->
+    <string name="e_zip_code">Código postal obligatorio</string>
     <string name="e_colonny">Colonia obligatoria</string>
     <string name="e_street">Calle obligatoria</string>
     <string name="e_articles_empty">Artículo obligatorio</string>

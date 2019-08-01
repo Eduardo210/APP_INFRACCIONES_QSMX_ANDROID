@@ -13,6 +13,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -84,6 +85,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         binding.rcvArticles.layoutManager = GridLayoutManager(activity, 1, RecyclerView.VERTICAL, false)
         /* Init listener of components*/
         binding.spnZipCode.onItemSelectedListener = this
+        binding.spnColony.onItemSelectedListener = this
         binding.spnArticle.onItemSelectedListener = this
         binding.spnFraction.onItemSelectedListener = this
         binding.spnRetainedDoc.onItemSelectedListener = this
@@ -96,9 +98,9 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         binding.edtBetweenStreet2.doOnTextChanged { text, start, count, after -> SingletonInfraction.betweenStreet2 = text?.trim().toString().toUpperCase() }
         /* Init adapters */
         iterator.value.getZipCodes()  // Download From Firebase
-        binding.spnArticle.adapter = iterator.value.getArticlesAdapter()
-        binding.spnRetainedDoc.adapter = iterator.value.getRetainedDocAdapter()
-        binding.spnDisposition.adapter = iterator.value.getDispositionAdapter()
+        iterator.value.getArticlesAdapter()  // Download From Firebase
+        iterator.value.getRetainedDocAdapter()  // Download From Firebase
+        iterator.value.getDispositionAdapter()  // Download From Firebase
         binding.rcvArticles.adapter = MotivationAdapter()
     }
 
@@ -111,16 +113,34 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         } else {
             binding.rdbReferralNo.isChecked = true
         }
-        /*binding.spnRetainedDoc.setSelection(iterator.value.getPositionRetainedDoc(SingletonInfraction.retainedDocument))
-        binding.spnDisposition.setSelection(iterator.value.getPositionDisposition(SingletonInfraction.dispositionRemited))*/
     }
 
     override fun onZipCodesReady(adapter: ArrayAdapter<String>) {
         binding.spnZipCode.adapter = adapter
+        binding.spnZipCode.setSelection(iterator.value.getPositionZipCode(SingletonInfraction.zipCodeInfraction))
     }
 
     override fun onColoniesReady(adapter: ArrayAdapter<String>) {
         binding.spnColony.adapter = adapter
+        binding.spnColony.setSelection(iterator.value.getPositionColony(SingletonInfraction.colonnyInfraction))
+    }
+
+    override fun onArticlesReady(adapter: ArrayAdapter<String>) {
+        binding.spnArticle.adapter = adapter
+    }
+
+    override fun onFractionsReady(adapter: ArrayAdapter<String>) {
+        binding.spnFraction.adapter = adapter
+    }
+
+    override fun onRetainedDocReady(adapter: ArrayAdapter<String>) {
+        binding.spnRetainedDoc.adapter = adapter
+        binding.spnRetainedDoc.setSelection(iterator.value.getPositionRetainedDoc(SingletonInfraction.retainedDocument))
+    }
+
+    override fun onDispositionReady(adapter: ArrayAdapter<String>) {
+        binding.spnDisposition.adapter = adapter
+        binding.spnDisposition.setSelection(iterator.value.getPositionDisposition(SingletonInfraction.dispositionRemited))
     }
 
     @SuppressLint("MissingPermission")
@@ -208,18 +228,17 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                 SingletonInfraction.zipCodeInfraction = iterator.value.zipCodesList[p2]
                 iterator.value.getColonies(iterator.value.zipCodesList[p2].childReference)
             }
+            binding.spnColony.id -> {
+                SingletonInfraction.colonnyInfraction = iterator.value.coloniesList[p2]
+            }
             binding.spnArticle.id -> {
-                binding.spnFraction.adapter = iterator.value.getFractionAdapter(p2)
+                iterator.value.getFractionAdapter(iterator.value.articlesList[p2].documentReference)
             }
             binding.spnRetainedDoc.id -> {
-                /* if (p2 == 0) {
-                     SingletonInfraction.retainedDocument = RetainedDocument(0, "NINGUNO")
-                 } else {
-                     SingletonInfraction.retainedDocument = iterator.value.retainedDocList[p2]
-                 }*/
+                SingletonInfraction.retainedDocument = iterator.value.retainedDocList[p2]
             }
             binding.spnDisposition.id -> {
-                //SingletonInfraction.dispositionRemited = iterator.value.dispositionList[p2]
+                SingletonInfraction.dispositionRemited = iterator.value.dispositionList[p2]
             }
         }
     }
@@ -248,11 +267,11 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         when (p0?.id) {
             binding.btnAdd.id -> {
                 when {
-                    iterator.value.articlesList[binding.spnArticle.selectedItemPosition].id.toInt() == 0 -> onError(getString(R.string.e_invalid_article))
-                    fractionExist(iterator.value.fractionList[binding.spnFraction.selectedItemPosition].fraccion
-                            , iterator.value.articlesList[binding.spnArticle.selectedItemPosition].article) -> SnackbarHelper.showErrorSnackBar(activity, "La fracción no se puede repetir.", Snackbar.LENGTH_LONG)
+                    binding.spnArticle.selectedItemPosition == 0 -> onError(getString(R.string.e_invalid_article))
+                    binding.spnFraction.selectedItemPosition == 0 -> onError(getString(R.string.e_invalid_fraction))
+                    fractionExist(iterator.value.fractionList[binding.spnFraction.selectedItemPosition].number
+                            , iterator.value.articlesList[binding.spnArticle.selectedItemPosition].number) -> SnackbarHelper.showErrorSnackBar(activity, "La fracción no se puede repetir", Snackbar.LENGTH_LONG)
                     else -> {
-
                         iterator.value.saveNewArticle(binding.spnArticle.selectedItemPosition,
                                 binding.spnFraction.selectedItemPosition)
                         binding.rcvArticles.adapter?.notifyDataSetChanged()
@@ -263,6 +282,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
             }
             binding.btnNext.id -> {
                 if (validFields()) {
+                    iterator.value.saveTownship()
                     activity.stepUp()
                     activity.router.value.presentOffenderFragment(isCreation, Direction.NONE)
                 }
@@ -272,7 +292,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
 
     private fun fractionExist(fraction: String, article: String): Boolean {
         SingletonInfraction.motivationList.forEach { item ->
-            if (item.fraction.fraccion == fraction && item.article.article == article) {
+            if (item.fraction.number == fraction && item.article.number == article) {
                 return true
             }
         }
@@ -317,10 +337,14 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
     override fun validFields(): Boolean {
         var isValid = true
         when {
-            /*SingletonInfraction.colonnyInfraction.isEmpty() -> {
+            binding.spnZipCode.selectedItemPosition == 0 -> {
+                isValid = false
+                onError(getString(R.string.e_zip_code))
+            }
+            binding.spnColony.selectedItemPosition == 0 -> {
                 isValid = false
                 onError(getString(R.string.e_colonny))
-            }*/
+            }
             SingletonInfraction.streetInfraction.isEmpty() -> {
                 isValid = false
                 onError(getString(R.string.e_street))
@@ -329,22 +353,22 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                 isValid = false
                 onError(getString(R.string.e_articles_empty))
             }
-            /*SingletonInfraction.isRemited && SingletonInfraction.dispositionRemited.id == 0 -> {
+            binding.spnDisposition.isVisible && binding.spnDisposition.selectedItemPosition == 0 -> {
                 isValid = false
                 onError(getString(R.string.e_disposition_remitted))
-            }*/
+            }
+            binding.spnRetainedDoc.selectedItemPosition == 0 -> {
+                isValid = false
+                onError(getString(R.string.e_retained_doc))
+            }
             SingletonInfraction.motivationList.isNotEmpty() -> {
                 SingletonInfraction.motivationList.forEach {
                     if (it.motivation.trim().isEmpty()) {
-                        onError("Artículo ${it.article.article}: " + getString(R.string.e_motivation_empty))
+                        onError("Artículo ${it.article.number}: " + getString(R.string.e_motivation_empty))
                         return false
                     }
                 }
             }
-            /*SingletonInfraction.retainedDocument.id == 0 -> {
-                isValid = false
-                onError(getString(R.string.e_retained_doc))
-            }*/
         }
         return isValid
     }

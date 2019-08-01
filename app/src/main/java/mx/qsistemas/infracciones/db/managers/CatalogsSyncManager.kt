@@ -247,4 +247,5 @@ object CatalogsSyncManager {
             Application.m_database?.synchronizationDao()?.insertList(map)
         }
     }
+
 }

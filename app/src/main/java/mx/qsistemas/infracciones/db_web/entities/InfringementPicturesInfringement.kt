@@ -8,5 +8,5 @@ import androidx.room.PrimaryKey
 data class InfringementPicturesInfringement(@PrimaryKey(autoGenerate = true) val id: Long,
                                             @ColumnInfo(name = "image") val image: String,
                                             @ColumnInfo(name = "token") val token: String,
-                                            @ColumnInfo(name = "infringements_id") val infringements_id: Int
+                                            @ColumnInfo(name = "infringements_id") val infringements_id: String
 )

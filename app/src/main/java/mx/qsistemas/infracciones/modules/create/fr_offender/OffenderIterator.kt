@@ -266,9 +266,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.streetInfraction,
                     SingletonInfraction.betweenStreet1,
                     SingletonInfraction.betweenStreet2,
-                    SingletonInfraction.townshipInfraction.documentReference?.id ?: "",
-                    SingletonInfraction.colonnyInfraction.documentReference?.id ?: "",
-                    SingletonInfraction.zipCodeInfraction.documentReference?.id ?: "",
+                    "tokenCity",
+                    SingletonInfraction.colonnyInfraction.childReference?.id ?: "",
+                    SingletonInfraction.zipCodeInfraction.childReference?.id ?: "",
                     SingletonInfraction.stateInfraction.documentReference?.id ?: "")
             val idInfractionAddress = SaveInfractionManagerWeb.saveAddressInfraction(infractionAddress)
             /* Step 7:1. Save Infraction-Address Relation */

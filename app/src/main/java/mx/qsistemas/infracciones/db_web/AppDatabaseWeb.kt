@@ -38,6 +38,7 @@ abstract class AppDatabaseWeb : RoomDatabase() {
     abstract fun addressPersonDaoWeb(): AddressPersonDaoWeb
     abstract fun addressInfringementDaoWeb(): AddressInfringementDaoWeb
     abstract fun infractionFractionDaoWeb(): InfractionFractionDaoWeb
+    abstract fun personTownHallDaoWeb(): PersonTownHallDaoWeb
 
     companion object {
         private var INSTANCE: AppDatabaseWeb? = null

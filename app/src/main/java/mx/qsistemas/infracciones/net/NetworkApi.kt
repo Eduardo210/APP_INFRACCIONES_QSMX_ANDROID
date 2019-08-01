@@ -1,12 +1,16 @@
 package mx.qsistemas.infracciones.net
 
 import mx.qsistemas.infracciones.BuildConfig
+import mx.qsistemas.infracciones.net.RequestNewInfraction.RequestInfraction
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 open class NetworkApi {
@@ -21,7 +25,7 @@ open class NetworkApi {
             customClient.addInterceptor(interceptor)
         }
         val clientBuilder = customClient.build()
-        val builder = Retrofit.Builder().baseUrl("http://189.240.246.19/")
+        val builder = Retrofit.Builder().baseUrl("http://3.17.91.131/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 //.addConverterFactory(GsonConverterFactory.create())
                 .client(clientBuilder).build()
@@ -29,35 +33,12 @@ open class NetworkApi {
     }
 
     interface ApiService {
-        @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Catalogos_Infracciones")
-        fun downloadCatalogs(@Query("FechaSincronizacion") date: String): Call<String>
-
-        @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Resultados_Previos_Busqueda_Infracciones_Mod")
-        fun doSearchByFilter(@Query("Json") json: String): Call<String>
-
-        @GET("ws/mobile/qsistemas/LoginInicial.asmx/Envio_Resultado_Busqueda_Infraccion")
-        fun doSearchByIdInfraction(@Query("Json") json: String): Call<String>
-
-        @FormUrlEncoded
-        @POST("ws/mobile/qsistemas/logininicial.asmx/Receptor_Infracciones_Moviles")
-        fun sendInfractionToServer(@Field("Json") json: String): Call<String>
-
-        @FormUrlEncoded
-        @POST("ws/mobile/qsistemas/logininicial.asmx/Receptor_Imagenes")
-        fun sendImagesToServer(@Field("Json") json: String): Call<String>
-
-        @GET("ws/mobile/qsistemas/logininicial.asmx/UpdatePerson")
-        fun updatePerson(@Query("Json") json: String): Call<String>
-
-        @GET("ws/mobile/qsistemas/LoginInicial.asmx/savePayment")
-        fun savePayment(@Header("id_infraction") idInfraction: Long, @Query("Json") json: String): Call<String>
-
         //Para la migración de la app
-        @GET("api/infringement/add")
-        fun saveInfractionToAws(@Query("Json") json: String): Call<String>
+        @POST("api/infringement/add")
+        fun sendInfractionToServer(@Body  body: RequestInfraction): Call<String>
 
         @GET("api/infringement/search/")
-        fun searchInfractionAws(@Query("Json") json: String): Call<String>
+        fun searchInfractionAws(@Query("name") name: String): Call<String>
 
 
     }

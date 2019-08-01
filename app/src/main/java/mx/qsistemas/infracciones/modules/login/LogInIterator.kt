@@ -6,7 +6,6 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.db.managers.CatalogsSyncManager
 import mx.qsistemas.infracciones.db.managers.LogInManager
-import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.DownloadCatalogs
 import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
@@ -47,7 +46,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
     override fun login(userName: String, psd: String) {
         val user = LogInManager.getUser(userName)
         val hash = MD5.toMD5(psd)
-        if (user == null || hash != user.password) {
+        /*if (user == null || hash != user.password) {
             listener.onError(Application.getContext().getString(R.string.e_user_pss_incorrect))
         } else {
             Application.prefs?.saveDataInt(R.string.sp_id_township_person, user.idPersonTownship)
@@ -58,7 +57,9 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             Application.prefs?.saveData(R.string.sp_no_employee, user.employee)
             FirebaseEvents.registerUserProperties()
             listener.onLoginSuccessful()
-        }
+        }*/
+
+        listener.onLoginSuccessful()
     }
 
     private fun processCatalogs(data: DownloadCatalogs) {

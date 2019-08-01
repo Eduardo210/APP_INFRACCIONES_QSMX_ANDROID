@@ -10,7 +10,11 @@ import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.managers.SendInfractionManager
+import mx.qsistemas.infracciones.db_web.managers.SendInfractionManagerWeb
 import mx.qsistemas.infracciones.net.NetworkApi
+import mx.qsistemas.infracciones.net.RequestNewInfraction.FractionsItem
+import mx.qsistemas.infracciones.net.RequestNewInfraction.PicturesItem
+import mx.qsistemas.infracciones.net.RequestNewInfraction.RequestInfraction
 import mx.qsistemas.infracciones.net.catalogs.*
 import mx.qsistemas.infracciones.utils.*
 import retrofit2.Call
@@ -37,8 +41,8 @@ class ReportsService : JobService() {
         }
         if (Validator.isNetworkEnable(Application.getContext())) {
             /* Get the reports to send */
-            val reportsToSend = SendInfractionManager.getInfractionsToSend()
-            var infractionsList = mutableListOf<SaveInfractionRequest.InfractionRequest>()
+            val reportsToSend = SendInfractionManagerWeb.getInfractionsToSend()
+            var infractionsList = mutableListOf<RequestInfraction>()
             if (reportsToSend.size > 0) {
                 /* Launch Notification */
                 val notification = NotificationManagerCompat.from(this).apply {
@@ -48,26 +52,26 @@ class ReportsService : JobService() {
                 /* Generate each infraction object to send */
                 reportsToSend.forEach {
                     /* Get address of the infraction */
-                    val addresInfraction = SendInfractionManager.getInfractionAddress(it.id.toLong())
+                    val addresInfraction = SendInfractionManagerWeb.getInfractionAddress(it.id)
                     /* Get infraction fractions and motivations list */
-                    val motivationList = SendInfractionManager.getInfractionMotivationList(it.id.toLong())
-                    val motivationListRequest = mutableListOf<SaveInfractionRequest.InfractionRequest.InfractionFractions_Request>()
+                    val motivationList = SendInfractionManagerWeb.getInfractionMotivationList(it.id)
+                    val motivationListRequest = mutableListOf<FractionsItem>()
                     /* Save the motivation list into the request */
                     motivationList.forEach { x ->
-                        motivationListRequest.add(SaveInfractionRequest.InfractionRequest.InfractionFractions_Request(x.id_fraction, x.penalty_points, x.salary, x.motivation))
+                        motivationListRequest.add(FractionsItem(x.reason, x.amount.toString(), x.uma.toString(), x.infringements_id))
                     }
                     /* Get offender address */
-                    val personAddress = SendInfractionManager.getPersonAddress(it.id.toLong())
+                    val personAddress = SendInfractionManagerWeb.getPersonAddress(it.id)
                     /* Get person information */
-                    val personInfo = SendInfractionManager.getPersonInformation(it.id.toLong())
+                    val personInfo = SendInfractionManagerWeb.getPersonInformation(it.id)
                     /* Get payment information of the infraction */
-                    val paymentInfringement = SendInfractionManager.getPaymentInfrigment(it.id.toLong())
+                    val paymentInfringement = SendInfractionManagerWeb.getPaymentInfrigment(it.id.toLong())
                     /* Get payment transaction information of the infraction */
-                    val transactionInfo = SendInfractionManager.getPaymentTransactionInfo(it.id.toLong())
+                    val transactionInfo = SendInfractionManagerWeb.getPaymentTransactionInfo(it.id.toLong())
                     /* Get vehicle information of infraction */
-                    val vehicleInfraction = SendInfractionManager.getVehileInformation(it.id.toLong())
+                    val vehicleInfraction = SendInfractionManagerWeb.getVehileInformation(it.id.toLong())
                     /* Create the infraction subheader */
-                    val infractionRequest = SaveInfractionRequest.InfractionRequest(it.is_absent, it.is_paid, it.forwarded_deposit, it.retained_document,
+                    val infractionRequest = RequestInfraction(it.is_absent, it.is_paid, it.forwarded_deposit, it.retained_document,
                             addresInfraction.street, addresInfraction.colony, addresInfraction.between_street, Application.prefs?.loadDataInt(R.string.sp_id_state).toString(),
                             Application.prefs?.loadDataInt(R.string.sp_id_township).toString(), addresInfraction.id_country.toString(),
                             0, 0, addresInfraction.and_street, it.registration_date,
@@ -102,9 +106,9 @@ class ReportsService : JobService() {
                             if (result.flag) {
                                 Log.e(this.javaClass.simpleName, "All items were saved!!!")
                                 reportsToSend.forEach {
-                                    SendInfractionManager.updateInfractionToSend(it.folio)
+                                    SendInfractionManagerWeb.updateInfractionToSend(it.folio)
                                     if (it.is_paid == 1) {
-                                        SendInfractionManager.updatePaymentToSend(it.id.toLong())
+                                        SendInfractionManagerWeb.updatePaymentToSend(it.id.toLong())
                                     }
                                 }
                                 sendPayments()
@@ -116,9 +120,9 @@ class ReportsService : JobService() {
                                 Log.e(this.javaClass.simpleName, "Items that weren't saved: ${result.folios}")
                                 reportsToSend.forEach {
                                     if (it.folio !in result.folios) {
-                                        SendInfractionManager.updateInfractionToSend(it.folio)
+                                        SendInfractionManagerWeb.updateInfractionToSend(it.folio)
                                         if (it.is_paid == 1) {
-                                            SendInfractionManager.updatePaymentToSend(it.id.toLong())
+                                            SendInfractionManagerWeb.updatePaymentToSend(it.id.toLong())
                                         }
                                     }
                                 }
@@ -167,12 +171,10 @@ class ReportsService : JobService() {
                 builderPhotos.setProgress(0, 0, true)
                 notify(NOTIF_SEND_IMAGES, builderPhotos.build())
             }
-            val photosToSend = mutableListOf<InfractionPhotoRequest.PhotoData>()
+            val photosToSend = mutableListOf<PicturesItem>()
             photos.forEach {
-                val vehicleInfraction = SendInfractionManager.getVehileInformation(it.idInfraction.toLong())
-                val folioInfraction = SendInfractionManager.getFolioOfInfraction(it.idInfraction.toLong())
-                photosToSend.add(InfractionPhotoRequest.PhotoData(4, "${vehicleInfraction.id_identifier_document}_${vehicleInfraction.no_ident_document}_${folioInfraction}_I.bmp", it.evidence1))
-                photosToSend.add(InfractionPhotoRequest.PhotoData(4, "${vehicleInfraction.id_identifier_document}_${vehicleInfraction.no_ident_document}_${folioInfraction}_II.bmp", it.evidence2))
+                photosToSend.add(PicturesItem(it.evidence1))
+                photosToSend.add(PicturesItem(it.evidence2))
             }
             /* Create request header */
             val request = InfractionPhotoRequest(photosToSend, "CF2E3EF25C90EB567243ADFACD4AA868", "Mobile")

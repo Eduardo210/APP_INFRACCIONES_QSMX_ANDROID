@@ -8,10 +8,10 @@ import androidx.room.PrimaryKey
 data class VehicleVehicles(@PrimaryKey(autoGenerate = true) val id: Long,
                            @ColumnInfo(name = "year") val year: String,
                            //@ColumnInfo(name = "origin") val origin: String,
+                           @ColumnInfo(name = "circulation_card") val circulation_card: String,
                            @ColumnInfo(name = "colour_id") val colour_id: String,
                           /* @ColumnInfo(name = "plate") val plate: String,
                            @ColumnInfo(name = "niv") val niv: String,
-                           @ColumnInfo(name = "circulation_card") val circulation_card: String,
                            @ColumnInfo(name = "class_type_id") val class_type_id: Long,*/
                            @ColumnInfo(name = "sub_brand_id") val sub_brand_id: String,
                            @ColumnInfo(name = "identifier_document_id") val identifier_document_id: String,

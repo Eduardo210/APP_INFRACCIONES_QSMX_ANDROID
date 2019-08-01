@@ -3,6 +3,7 @@ package mx.qsistemas.infracciones.db_web.dao_web
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import mx.qsistemas.infracciones.db_web.entities.InfringementRelfractionInfringements
 
 @Dao
@@ -13,6 +14,6 @@ interface InfractionFractionDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(list: InfringementRelfractionInfringements)
 
-   /* @Query("SELECT DISTINCT infraction_fraction.* FROM infraction_fraction INNER JOIN articles ON articles.ID = ID_ARTICULO AND ID_ARTICULO = :idArticle ORDER BY FRACCION ASC")
-    fun selectByArticle(idArticle: Int): MutableList<InfringementRelfractionInfringements>*/
+    @Query("SELECT * FROM infringementRelInfractionInfringements WHERE infringements_id = :idArticle")//TODO: Preguntar a Maik por la entidad de Artículos
+    fun selectByArticle(idArticle: Long): MutableList<InfringementRelfractionInfringements>
 }

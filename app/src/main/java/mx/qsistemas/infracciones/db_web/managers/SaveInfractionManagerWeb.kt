@@ -2,6 +2,8 @@ package mx.qsistemas.infracciones.db_web.managers
 
 import android.annotation.SuppressLint
 import android.os.AsyncTask
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.db_web.entities.*
 import java.util.concurrent.Executors
@@ -50,6 +52,11 @@ object SaveInfractionManagerWeb {
     fun saveTrafficViolation(trafficViolationFraction: InfringementRelfractionInfringements) {
         Executors.newSingleThreadExecutor().execute {
             Application.m_database_web?.infractionFractionDaoWeb()?.insert(trafficViolationFraction)
+        }
+    }
+    fun savePersonTownHall(personTown: PersonTownhall){
+        GlobalScope.launch {
+            Application.m_database_web?.personTownHallDaoWeb()?.insert(personTown)
         }
     }
 

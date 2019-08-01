@@ -3,6 +3,7 @@ package mx.qsistemas.infracciones.db_web.dao_web
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import mx.qsistemas.infracciones.db_web.entities.InfringementInfringements
 
 @Dao
@@ -13,6 +14,9 @@ interface InfractionDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(infraction: InfringementInfringements): Long
 
+    @Query(" SELECT * FROM infraction WHERE SYNC = 0")
+    fun selectInfractionsToSend(): MutableList<InfringementInfringements>
+
     /*@Query("SELECT FOLIO FROM infraction WHERE FOLIO LIKE :prefix ORDER BY ID_INFRACCION DESC LIMIT 1")
     fun selectLastFolio(prefix: String): String
 
@@ -22,8 +26,7 @@ interface InfractionDaoWeb {
     @Query("SELECT DISTINCT * FROM infraction WHERE ID_INFRACCION = :idInfraction")
     fun selectByIdInfraction(idInfraction: Long): Infraction
 
-    @Query(" SELECT * FROM infraction WHERE SYNC = 0")
-    fun selectInfractionsToSend(): MutableList<Infraction>
+
 
     @Query("UPDATE infraction SET BAN_PAGADA = 1 WHERE ID_INFRACCION = :idInfraction")
     fun updatePaidById(idInfraction: Long)

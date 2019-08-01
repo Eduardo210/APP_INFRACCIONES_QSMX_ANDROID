@@ -13,5 +13,5 @@ data class InfringementAddressInfringement(@PrimaryKey(autoGenerate = true) @Not
                                            @ColumnInfo(name = "city_id") val city_id: String,
                                            @ColumnInfo(name = "colony_id") val colony_id:String,
                                            @ColumnInfo(name = "cp_id") val cp_id: String,
-                                           @ColumnInfo(name = "state_id") val state_id: String)
-                                           /*@ColumnInfo(name = "infringement_id") val infringement_id: Long)*/
+                                           @ColumnInfo(name = "state_id") val state_id: String,
+                                           @ColumnInfo(name = "infringement_id") val infringement_id: String)

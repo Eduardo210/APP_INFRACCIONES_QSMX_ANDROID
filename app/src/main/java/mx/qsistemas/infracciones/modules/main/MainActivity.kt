@@ -2,10 +2,13 @@ package mx.qsistemas.infracciones.modules.main
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivityMainBinding
+import mx.qsistemas.infracciones.db_web.entities.PersonTownhall
+import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
@@ -19,6 +22,9 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        //TODO: Sólo para crear base web, quitar después
+        SaveInfractionManagerWeb.savePersonTownHall(PersonTownhall(1,"666666",true))
+        Log.d("BASE_WEB", "---------> SUCCESS")
         router.value.presentInfractionList(Direction.NONE)
     }
 

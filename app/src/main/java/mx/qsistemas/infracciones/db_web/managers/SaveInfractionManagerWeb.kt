@@ -59,5 +59,17 @@ object SaveInfractionManagerWeb {
             Application.m_database_web?.personTownHallDaoWeb()?.insert(personTown)
         }
     }
-
+    fun getLastFolioSaved(prefix: String): String {
+        return object : AsyncTask<Void, Void, String>() {
+            override fun doInBackground(vararg p0: Void?): String {
+                return Application.m_database_web?.infractionDaoWeb()?.selectLastFolio(prefix)
+                        ?: "$prefix-0".replace("%", "")
+            }
+        }.execute().get()
+    }
+    fun saveInfractionEvidence(infracionEvidence: InfringementPicturesInfringement) {
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database_web?.infractionEvidenceDaoWeb()?.insert(infracionEvidence)
+        }
+    }
 }

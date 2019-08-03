@@ -14,13 +14,13 @@ interface InfractionDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(infraction: InfringementInfringements): Long
 
-    @Query(" SELECT * FROM infraction WHERE SYNC = 0")
+    @Query(" SELECT * FROM infringement_infringements WHERE SYNC = 0")
     fun selectInfractionsToSend(): MutableList<InfringementInfringements>
 
-    /*@Query("SELECT FOLIO FROM infraction WHERE FOLIO LIKE :prefix ORDER BY ID_INFRACCION DESC LIMIT 1")
+    @Query("SELECT folio FROM infringement_infringements WHERE folio LIKE :prefix ORDER BY id DESC LIMIT 1")
     fun selectLastFolio(prefix: String): String
 
-    @Query("SELECT DISTINCT FOLIO FROM infraction WHERE ID_INFRACCION = :idInfraction")
+    /*@Query("SELECT DISTINCT FOLIO FROM infraction WHERE ID_INFRACCION = :idInfraction")
     fun selectFolioByIdInfraction(idInfraction: Long): String
 
     @Query("SELECT DISTINCT * FROM infraction WHERE ID_INFRACCION = :idInfraction")

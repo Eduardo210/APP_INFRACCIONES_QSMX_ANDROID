@@ -9,7 +9,7 @@ import java.util.concurrent.Executors
 @SuppressLint("StaticFieldLeak")
 object SaveInfractionManager {
 
-    fun getConfig(): Config {
+    /*fun getConfig(): Config {
         return object : AsyncTask<Void, Void, Config>() {
             override fun doInBackground(vararg p0: Void?): Config {
                 return Application.m_database?.configDao()?.selectFirstConfig()!!
@@ -32,7 +32,7 @@ object SaveInfractionManager {
                         ?: "$prefix-0".replace("%", "")
             }
         }.execute().get()
-    }
+    }*/
 
     fun insertInfraction(infraction: Infraction): Long {
         return object : AsyncTask<Void, Void, Long>() {

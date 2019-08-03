@@ -2,26 +2,16 @@ package mx.qsistemas.infracciones.alarm
 
 import android.app.job.JobParameters
 import android.app.job.JobService
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.managers.SendInfractionManager
-import mx.qsistemas.infracciones.db_web.managers.SendInfractionManagerWeb
-import mx.qsistemas.infracciones.net.NetworkApi
-import mx.qsistemas.infracciones.net.RequestNewInfraction.FractionsItem
 import mx.qsistemas.infracciones.net.RequestNewInfraction.PicturesItem
-import mx.qsistemas.infracciones.net.RequestNewInfraction.RequestInfraction
-import mx.qsistemas.infracciones.net.catalogs.*
-import mx.qsistemas.infracciones.utils.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.net.HttpURLConnection
-import javax.net.ssl.HttpsURLConnection
+import mx.qsistemas.infracciones.net.catalogs.UpdatePaymentRequest
+import mx.qsistemas.infracciones.utils.CHANNEL_ID_IMAGES
+import mx.qsistemas.infracciones.utils.NOTIF_SEND_IMAGES
 
 
 class ReportsService : JobService() {
@@ -32,7 +22,7 @@ class ReportsService : JobService() {
 
     override fun onStartJob(params: JobParameters?): Boolean {
         /* Create Infraction Notification Builder */
-        val builderInfraction = NotificationCompat.Builder(this, CHANNEL_ID_REPORT).apply {
+       /* val builderInfraction = NotificationCompat.Builder(this, CHANNEL_ID_REPORT).apply {
             setContentTitle(getString(R.string.app_name))
             setContentText("Enviando infracciones...")
             setSmallIcon(R.drawable.transparent_launcher)
@@ -40,37 +30,37 @@ class ReportsService : JobService() {
             priority = NotificationCompat.PRIORITY_HIGH
         }
         if (Validator.isNetworkEnable(Application.getContext())) {
-            /* Get the reports to send */
+             //Get the reports to send
             val reportsToSend = SendInfractionManagerWeb.getInfractionsToSend()
             var infractionsList = mutableListOf<RequestInfraction>()
             if (reportsToSend.size > 0) {
-                /* Launch Notification */
+                 //Launch Notification
                 val notification = NotificationManagerCompat.from(this).apply {
                     builderInfraction.setProgress(0, 0, true)
                     notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                 }
-                /* Generate each infraction object to send */
+                 //Generate each infraction object to send
                 reportsToSend.forEach {
-                    /* Get address of the infraction */
+                     //Get address of the infraction
                     val addresInfraction = SendInfractionManagerWeb.getInfractionAddress(it.id)
-                    /* Get infraction fractions and motivations list */
+                    // Get infraction fractions and motivations list
                     val motivationList = SendInfractionManagerWeb.getInfractionMotivationList(it.id)
                     val motivationListRequest = mutableListOf<FractionsItem>()
-                    /* Save the motivation list into the request */
+                    // Save the motivation list into the request
                     motivationList.forEach { x ->
                         motivationListRequest.add(FractionsItem(x.reason, x.amount.toString(), x.uma.toString(), x.infringements_id))
                     }
-                    /* Get offender address */
+                    // Get offender address
                     val personAddress = SendInfractionManagerWeb.getPersonAddress(it.id)
-                    /* Get person information */
+                    // Get person information
                     val personInfo = SendInfractionManagerWeb.getPersonInformation(it.id)
-                    /* Get payment information of the infraction */
+                    // Get payment information of the infraction
                     val paymentInfringement = SendInfractionManagerWeb.getPaymentInfrigment(it.id.toLong())
-                    /* Get payment transaction information of the infraction */
+                     //Get payment transaction information of the infraction
                     val transactionInfo = SendInfractionManagerWeb.getPaymentTransactionInfo(it.id.toLong())
-                    /* Get vehicle information of infraction */
+                     //Get vehicle information of infraction
                     val vehicleInfraction = SendInfractionManagerWeb.getVehileInformation(it.id.toLong())
-                    /* Create the infraction subheader */
+                     //Create the infraction subheader
                     val infractionRequest = RequestInfraction(it.is_absent, it.is_paid, it.forwarded_deposit, it.retained_document,
                             addresInfraction.street, addresInfraction.colony, addresInfraction.between_street, Application.prefs?.loadDataInt(R.string.sp_id_state).toString(),
                             Application.prefs?.loadDataInt(R.string.sp_id_township).toString(), addresInfraction.id_country.toString(),
@@ -96,9 +86,9 @@ class ReportsService : JobService() {
                             vehicleInfraction.sub_brand, vehicleInfraction.circulation_card, vehicleInfraction.type)
                     infractionsList.add(infractionRequest)
                 }
-                /* Create request header */
+                 //Create request header
                 val saveInfractionRequest = SaveInfractionRequest(infractionsList, "CF2E3EF25C90EB567243ADFACD4AA868", "InfraMobile")
-                /* Send the infractions list */
+                 //Send the infractions list
                 NetworkApi().getNetworkService().sendInfractionToServer(Gson().toJson(saveInfractionRequest)).enqueue(object : Callback<String> {
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         if (response.code() == HttpsURLConnection.HTTP_OK) {
@@ -150,7 +140,7 @@ class ReportsService : JobService() {
             }
             sendPayments()
             sendPhotos()
-        }
+        }*/
         return true
     }
 
@@ -177,7 +167,7 @@ class ReportsService : JobService() {
                 photosToSend.add(PicturesItem(it.evidence2))
             }
             /* Create request header */
-            val request = InfractionPhotoRequest(photosToSend, "CF2E3EF25C90EB567243ADFACD4AA868", "Mobile")
+           /* val request = InfractionPhotoRequest(photosToSend, "CF2E3EF25C90EB567243ADFACD4AA868", "Mobile")
             NetworkApi().getNetworkService().sendImagesToServer(Gson().toJson(request)).enqueue(object : Callback<String> {
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     if (response.code() == HttpsURLConnection.HTTP_OK) {
@@ -222,7 +212,7 @@ class ReportsService : JobService() {
                             .setProgress(0, 0, false)
                     notificationPhotos.notify(NOTIF_SEND_IMAGES, builderPhotos.build())
                 }
-            })
+            })*/
         } else {
             /* If there aren't any images to send, proceed to delete the send images from DB */
             SendInfractionManager.deleteSendImages()
@@ -246,7 +236,7 @@ class ReportsService : JobService() {
                         transaction.auth_nb, it.observation, idPerson)
                 val request = UpdatePaymentRequest("", folio, "InfraMobile", "CF2E3EF25C90EB567243ADFACD4AA868", paymentCardData,
                         paymentData)
-                NetworkApi().getNetworkService().savePayment(it.id_infringement.toLong(), Gson().toJson(request)).enqueue(object : Callback<String> {
+               /* NetworkApi().getNetworkService().savePayment(it.id_infringement.toLong(), Gson().toJson(request)).enqueue(object : Callback<String> {
                     override fun onResponse(call: Call<String>, response: Response<String>) {
                         if (response.code() == HttpURLConnection.HTTP_OK) {
                             val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
@@ -259,7 +249,7 @@ class ReportsService : JobService() {
 
                     override fun onFailure(call: Call<String>, t: Throwable) {
                     }
-                })
+                })*/
             }
         }
     }

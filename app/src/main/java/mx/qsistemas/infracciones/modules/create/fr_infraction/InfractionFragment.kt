@@ -291,11 +291,11 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
     }
 
     private fun fractionExist(fraction: String, article: String): Boolean {
-        SingletonInfraction.motivationList.forEach { item ->
+        /*SingletonInfraction.motivationList.forEach { item ->
             if (item.fraction.number == fraction && item.article.number == article) {
                 return true
             }
-        }
+        }*/
         return false
     }
 
@@ -363,8 +363,8 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
             }
             SingletonInfraction.motivationList.isNotEmpty() -> {
                 SingletonInfraction.motivationList.forEach {
-                    if (it.motivation.trim().isEmpty()) {
-                        onError("Artículo ${it.article.number}: " + getString(R.string.e_motivation_empty))
+                    if (it.motivation?.trim()?.isEmpty()!!) {
+                        onError("Artículo ${it.fraction}: " + getString(R.string.e_motivation_empty))
                         return false
                     }
                 }

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
 import android.widget.ArrayAdapter
-import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.*
@@ -13,8 +12,9 @@ import mx.qsistemas.infracciones.db.managers.SaveInfractionManager
 import mx.qsistemas.infracciones.db_web.entities.*
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
 import mx.qsistemas.infracciones.net.FirebaseEvents
-import mx.qsistemas.infracciones.net.NetworkApi
-import mx.qsistemas.infracciones.net.catalogs.*
+import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
+import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.catalogs.UpdatePaymentRequest
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.*
@@ -23,10 +23,6 @@ import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import mx.qsistemas.payments_transfer.dtos.Voucher
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,8 +36,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     internal lateinit var txInfo: TransactionInfo
 
     /* Variable From Saved Infraction */
-    private val actualDay = SimpleDateFormat("YYYY-MM-DD").format(Date())
-    private val actualTime = SimpleDateFormat("HH:MM:SS").format(Date())
+    private val actualDay = SimpleDateFormat("yyyy-MM-dd").format(Date())
+    private val actualTime = SimpleDateFormat("HH:mm:ss").format(Date())
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy")
     private lateinit var nonWorkingDays: MutableList<NonWorkingDay>
     private lateinit var config: Config
@@ -179,10 +175,10 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     override fun saveData(notify: Boolean) {
         SingletonInfraction.idPersonTownship = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
         /* Get configuration */
-        config = SaveInfractionManager.getConfig()
+        //config = SaveInfractionManager.getConfig()
         /* Calculate infraction article variables */
         SingletonInfraction.motivationList.forEach {
-            totalImport += config.minimum_salary * it.fraction.uma
+            totalImport +=60.00f * it.fraction.uma
             /*totalPoints += it.fraction.penalty_points
             totalUmas += it.fraction.minimum_wages*/
         }
@@ -191,9 +187,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SingletonInfraction.discountInfraction = "%.2f".format(fiftiethDiscount).replace(",", ".")
         SingletonInfraction.totalInfraction = "%.2f".format(totalImport - fiftiethDiscount).replace(",", ".")
         /* Get future working days */
-        nonWorkingDays = SaveInfractionManager.getNonWorkingDays()
-        fifteenthDay = getFutureWorkingDay(15)
-        thirtythDay = getFutureWorkingDay(30)
+        //nonWorkingDays = SaveInfractionManager.getNonWorkingDays()
+        fifteenthDay = "03/08/2019"//getFutureWorkingDay(15)
+        thirtythDay = "18/08/2019"//getFutureWorkingDay(30)
         newFolio = generateNewFolio()
         /* Generate all banking capture lines */
         captureLine1 = Utils.generateCaptureLine(newFolio.replace("-", ""), fifteenthDay, "%.2f".format(fiftiethDiscount), "2")
@@ -204,17 +200,23 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             val infraction = InfringementInfringements(
                     0,
                     newFolio,
+                    20, //umas
+                    false,
                     "active",
                     SingletonInfraction.isPersonAbstent,
                     SingletonInfraction.retainedDocument.documentReference?.id ?: "",
                     SingletonInfraction.dispositionRemited.documentReference?.id ?:"",
                     SingletonInfraction.idPersonTownship,
-                    SingletonInfraction.dispositionRemited.documentReference?.id ?:"",
+                    "Vehicle_id",
                     actualDay,
                     actualTime,
-                    SingletonInfraction.retainedDocument.documentReference?.id?.toBoolean() ?:false,
-                    false)
-
+                    "Condonation",
+                    "IS insured jejej".toBoolean(),
+                    false,
+                    "driver_license_id",
+                    "100".toFloat(), //amount
+                    "eldriverid",
+                    "50".toFloat()) //total de umas
             SingletonInfraction.idNewInfraction = SaveInfractionManagerWeb.insertInfraction(infraction)
             /* Step 2. Validate that sub brand doesn't exists */
             /*val brandExisting = SaveInfractionManager.getSubBrandExist(SingletonInfraction.subBrandVehicle, SingletonInfraction.brandVehicle.id)
@@ -231,6 +233,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.subBrandVehicle.childReference?.id ?: "", //TODO: Pendiente de hacer el proceso
                     SingletonInfraction.identifierDocument.documentReference?.id ?: "",
                     SingletonInfraction.stateIssuedIn.documentReference?.id ?: "",
+                    "issued_in_id",
                     SingletonInfraction.noDocument)
 
             SaveInfractionManagerWeb.saveVehicleInfraction(vehicleInfraction)
@@ -253,7 +256,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         SingletonInfraction.townshipOffender.reference?.id ?: "",
                         SingletonInfraction.colonyOffender.documentReference?.id ?: "",
                         SingletonInfraction.zipCodeOffender.documentReference?.id ?: "",
-                        SingletonInfraction.idNewPersonInfraction,
+                        SingletonInfraction.idNewPersonInfraction.toString(),
                         SingletonInfraction.stateOffender.documentReference?.id ?: "")
                 val idNewPersonAddress = SaveInfractionManagerWeb.saveAddressPerson(personAddress)
                 /* Step 6:1. Save Person-Address Relation */
@@ -269,7 +272,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     "tokenCity",
                     SingletonInfraction.colonnyInfraction.childReference?.id ?: "",
                     SingletonInfraction.zipCodeInfraction.childReference?.id ?: "",
-                    SingletonInfraction.stateInfraction.documentReference?.id ?: "")
+                    SingletonInfraction.stateInfraction.documentReference?.id ?: "","infringement_id")
             val idInfractionAddress = SaveInfractionManagerWeb.saveAddressInfraction(infractionAddress)
             /* Step 7:1. Save Infraction-Address Relation */
             //TODO:Pendiente, preguntar
@@ -278,17 +281,23 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             SingletonInfraction.motivationList.forEach {
                 val trafficViolation = InfringementRelfractionInfringements(
                         0,
-                        it.fraction.minimum_wages,
-                        it.fraction.penalty_points,
-                        it.fraction.fraccion,//TODO: Tiene que existir una Referencia a firebase
+                        it.fraction.uma,
+                        it.fraction.reference!!.id,
+                        //TODO: Tiene que existir una Referencia a firebase
+                        "Infringments.id",
                         it.motivation,
-                        "AMOUNT".toFloat()) //TODO: No sé de donde viene el monto xd
+                        "250".toFloat()) //TODO: No sé de donde viene el monto xd
                 SaveInfractionManagerWeb.saveTrafficViolation(trafficViolation)
             }
             /* Step 9. Save Evidence Photos */
             //TODO:Aquí me quedé xd
-            val evidencePhoto = InfractionEvidence(0, SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.evidence1, SingletonInfraction.evidence2, false)
-            SaveInfractionManager.saveInfractionEvidence(evidencePhoto)
+            val evidence1 = InfringementPicturesInfringement(0,SingletonInfraction.evidence1, "algúnToken", SingletonInfraction.idNewInfraction.toString())
+            val evidence2 = InfringementPicturesInfringement(0,SingletonInfraction.evidence1, "algúnToken", SingletonInfraction.idNewInfraction.toString())
+            //val evidencePhoto = InfractionEvidence(0, SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.evidence1, SingletonInfraction.evidence2, false)
+            SaveInfractionManagerWeb.saveInfractionEvidence(evidence1)
+            SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
+
+
             /* Step 10. Register Event Infraction */
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
@@ -313,7 +322,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
         Log.d("JSON-UPDATE_PERSON", rootObj.toString())
 
-        NetworkApi().getNetworkService().updatePerson(rootObj.toString()).enqueue(object : Callback<String> {
+       /* NetworkApi().getNetworkService().updatePerson(rootObj.toString()).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), ServiceResponsePerson::class.java)
@@ -330,7 +339,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
-        })
+        })*/
     }
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
@@ -345,7 +354,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 txInfo.authorization, "", idPerson)
         val request = UpdatePaymentRequest(idInfraction, "", "InfraMobile", "CF2E3EF25C90EB567243ADFACD4AA868", paymentCardData,
                 paymentData)
-        NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), Gson().toJson(request)).enqueue(object : Callback<String> {
+        /*NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), Gson().toJson(request)).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
@@ -356,7 +365,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
-        })
+        })*/
     }
 
     override fun savePayment(info: TransactionInfo) {
@@ -459,7 +468,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     private fun Boolean.toInt() = if (this) 1 else 0
 
     private fun generateNewFolio(): String {
-        val lastFolio = SaveInfractionManager.getLastFolioSaved("%${Application.prefs?.loadData(R.string.sp_prefix, "")}%")
+        val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs?.loadData(R.string.sp_prefix, "")}%")
         val incremental = lastFolio.split("-")[1].toInt() + 1
         return "${lastFolio.split("-")[0]}-$incremental"
     }

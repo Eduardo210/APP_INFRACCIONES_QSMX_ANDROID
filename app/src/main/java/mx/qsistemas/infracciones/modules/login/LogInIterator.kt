@@ -1,21 +1,10 @@
 package mx.qsistemas.infracciones.modules.login
 
-import com.google.gson.Gson
-import mx.qsistemas.infracciones.Application
-import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.db.managers.CatalogsSyncManager
 import mx.qsistemas.infracciones.db.managers.LogInManager
-import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.DownloadCatalogs
-import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
 import mx.qsistemas.infracciones.utils.MD5
-import mx.qsistemas.infracciones.utils.Utils
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.net.HttpURLConnection
-import java.util.*
 
 class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContracts.Iterator {
 
@@ -24,7 +13,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
     }
 
     override fun downloadCatalogs() {
-        NetworkApi().getNetworkService().downloadCatalogs("01/01/2000").enqueue(object : Callback<String> {
+       /* NetworkApi().getNetworkService().downloadCatalogs("01/01/2000").enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), DownloadCatalogs::class.java)
@@ -40,7 +29,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
-        })
+        })*/
     }
 
     override fun login(userName: String, psd: String) {

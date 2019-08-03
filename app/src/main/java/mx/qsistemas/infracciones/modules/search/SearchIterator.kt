@@ -3,7 +3,6 @@ package mx.qsistemas.infracciones.modules.search
 import android.app.Activity
 import android.util.Log
 import android.widget.ArrayAdapter
-import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.IdentifierDocument
@@ -11,19 +10,12 @@ import mx.qsistemas.infracciones.db.entities.InfractionItem
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
 import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
 import mx.qsistemas.infracciones.db.managers.SearchManager
-import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
-import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
-import mx.qsistemas.infracciones.net.catalogs.ServiceResponse
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.Ticket
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -84,7 +76,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             rootObject.put("NumeroDocumentoIdentificador", filter)
         }
         Log.d("JSON-SEARCH", rootObject.toString())
-        NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
+       /* NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), InfractionList::class.java)
@@ -104,11 +96,11 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                 listener.onError(t.message ?: "")
             }
 
-        })
+        })*/
     }
 
     override fun doSearchByIdInfraction(id: String, origin: Int) {
-        val rootObject = JSONObject()
+       /* val rootObject = JSONObject()
         rootObject.put("IdInfraccion", id)
         rootObject.put("username", "InfraMobile")
         rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
@@ -126,7 +118,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                 Log.e("SEARCH_BY_ID", t.message.toString())
                 listener.onError(t.message ?: "")
             }
-        })
+        })*/
     }
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
@@ -176,7 +168,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         jPayment.put("id_registro_usuario", idPerson)
         rootObj.put("payment", jPayment)
         Log.d("JSON-SAVE-PAYMENT", rootObj.toString())
-        NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), rootObj.toString()).enqueue(object : Callback<String> {
+       /* NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), rootObj.toString()).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
@@ -187,7 +179,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             override fun onFailure(call: Call<String>, t: Throwable) {
                 listener.onError(t.message ?: "")
             }
-        })
+        })*/
     }
 
     override fun doSearchByFilterOffLine(id: Int, filter: String) {

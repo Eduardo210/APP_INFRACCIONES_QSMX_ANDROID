@@ -14,6 +14,6 @@ interface PersonDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(person: DriverDrivers): Long
 
-    @Query("SELECT DISTINCT p.* from person p INNER JOIN person_infringement pi ON pi.ID_PERSONA = p.id AND pi.ID_INFRACCION = :idInfraction")
+    @Query("SELECT DISTINCT drivers.* from infringement_infringements infringements INNER JOIN driver_divers drivers on infringements.driver_id = drivers.id  WHERE infringements.id= :idInfraction")
     fun selectPersonInfo(idInfraction: Long): DriverDrivers
 }

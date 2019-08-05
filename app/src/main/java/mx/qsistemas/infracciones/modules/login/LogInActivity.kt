@@ -118,13 +118,14 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         when (v?.id) {
             binding.btnLogIn.id -> {
                 val fields = arrayOf(binding.edtUserLogIn.text.toString(), binding.edtDwpLogIn.text.toString())
-                if (!Validator.isNetworkEnable(Application.getContext())) {
+                /*if (!Validator.isNetworkEnable(Application.getContext())) {
                     onError(Application.getContext().getString(R.string.e_without_internet))
                 } else if (!Validator.isValidFields(*fields)) {
                     onError(getString(R.string.e_empty_fields))
                 } else {
                     iterator.login(binding.edtUserLogIn.text.toString().toUpperCase(), binding.edtDwpLogIn.text.toString().toUpperCase())
-                }
+                }*/
+                onLoginSuccessful()
             }
         }
     }

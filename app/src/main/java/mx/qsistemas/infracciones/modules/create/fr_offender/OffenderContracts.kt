@@ -2,9 +2,10 @@ package mx.qsistemas.infracciones.modules.create.fr_offender
 
 import android.app.Activity
 import android.widget.ArrayAdapter
+import com.google.firebase.firestore.DocumentReference
 import mx.qsistemas.infracciones.db.entities.LicenseType
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
@@ -14,8 +15,10 @@ class OffenderContracts {
         fun fillFields()
         fun onError(msg: String)
         fun onStatesReady(adapter: ArrayAdapter<String>)
-        fun onStatesIssuedReady(adapter: ArrayAdapter<String>)
         fun onTownshipsReady(adapter: ArrayAdapter<String>)
+        fun onZipCodesReady(adapter: ArrayAdapter<String>)
+        fun onColoniesReady(adapter: ArrayAdapter<String>)
+        fun onStatesIssuedReady(adapter: ArrayAdapter<String>)
         fun validFields(): Boolean
         fun isDirectionAnswered(): Boolean
         fun isLicenseAnswered(): Boolean
@@ -28,13 +31,15 @@ class OffenderContracts {
 
     interface Iterator {
         fun getStatesList()
-        fun getStatesIssuedList()
-        fun getTownshipsList(posState: Int)
+        fun getTownshipsList(reference: DocumentReference?)
+        fun getZipCodesList(reference: DocumentReference?)
+        fun getColoniesList(reference: DocumentReference?)
         fun getTypeLicenseAdapter(): ArrayAdapter<String>
-        fun getPositionState(obj: GenericCatalog): Int
-        fun getPositionStateLicense(obj: GenericCatalog): Int
-        fun getPositionTownship(obj: Townships): Int
+        fun getStatesIssuedList()
+        fun searchZipCodeLocal(zipCode: String): GenericSubCatalog
+        fun getPositionColony(obj: GenericSubCatalog): Int
         fun getPositionTypeLicense(obj: LicenseType): Int
+        fun getPositionStateLicense(obj: GenericCatalog): Int
         fun saveData(notify: Boolean)
         fun savePayment(info: TransactionInfo)
         fun updateData()

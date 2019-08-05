@@ -78,27 +78,29 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             binding.textView.visibility = GONE
             binding.rdgReferralDeposit.visibility = GONE
             binding.lytOffender.root.visibility = VISIBLE
-            binding.lytOffender.textView7.visibility = GONE
             binding.lytOffender.edtOffenderRfc.visibility = GONE
+            binding.lytOffender.spnState.visibility = GONE
+            binding.lytOffender.spnTownship.visibility = GONE
+            binding.lytOffender.spnZipCode.visibility = GONE
+            binding.lytOffender.spnColony.visibility = GONE
+            binding.lytOffender.edtStreet.visibility = GONE
+            binding.lytOffender.edtOffenderNoExt.visibility = GONE
+            binding.lytOffender.edtOffenderNoInt.visibility = GONE
+            binding.lytOffender.edtOffenderLicenseNo.visibility = GONE
+            binding.lytOffender.spnLicenseType.visibility = GONE
+            binding.lytOffender.textView7.visibility = GONE
             binding.lytOffender.textView8.visibility = GONE
             binding.lytOffender.textView9.visibility = GONE
-            binding.lytOffender.spnState.visibility = GONE
             binding.lytOffender.textView10.visibility = GONE
-            binding.lytOffender.spnTownship.visibility = GONE
-            binding.lytOffender.textView11.visibility = GONE
-            binding.lytOffender.edtColony.visibility = GONE
-            binding.lytOffender.textView18.visibility = GONE
-            binding.lytOffender.edtStreet.visibility = GONE
             binding.lytOffender.textView12.visibility = GONE
-            binding.lytOffender.edtOffenderNoExt.visibility = GONE
             binding.lytOffender.textView13.visibility = GONE
-            binding.lytOffender.edtOffenderNoInt.visibility = GONE
             binding.lytOffender.textView14.visibility = GONE
             binding.lytOffender.textView15.visibility = GONE
-            binding.lytOffender.edtOffenderLicenseNo.visibility = GONE
             binding.lytOffender.textView16.visibility = GONE
-            binding.lytOffender.spnLicenseType.visibility = GONE
             binding.lytOffender.textView17.visibility = GONE
+            binding.lytOffender.textView18.visibility = GONE
+            binding.lytOffender.textView19.visibility = GONE
+            binding.lytOffender.textView20.visibility = GONE
             binding.lytOffender.spnLicenseIssuedIn.visibility = GONE
         }
         return binding.root
@@ -109,6 +111,8 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.rdbAbsentYes.setOnCheckedChangeListener(this)
         binding.lytOffender.spnState.onItemSelectedListener = this
         binding.lytOffender.spnTownship.onItemSelectedListener = this
+        binding.lytOffender.spnZipCode.onItemSelectedListener = this
+        binding.lytOffender.spnColony.onItemSelectedListener = this
         binding.lytOffender.spnLicenseType.onItemSelectedListener = this
         binding.lytOffender.spnLicenseIssuedIn.onItemSelectedListener = this
         binding.btnPay.setOnClickListener(this)
@@ -117,7 +121,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderFln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastFatherName = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderMln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastMotherName = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderRfc.doOnTextChanged { text, start, count, after -> SingletonInfraction.rfcOffenfer = text?.trim().toString().toUpperCase() }
-        /*binding.lytOffender.edtColony.doOnTextChanged { text, start, count, after -> SingletonInfraction.colonyOffender = text?.trim().toString().toUpperCase() }*/
         binding.lytOffender.edtStreet.doOnTextChanged { text, start, count, after -> SingletonInfraction.streetOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderNoExt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noExtOffender = text?.trim().toString().toUpperCase() }
         binding.lytOffender.edtOffenderNoInt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noIntOffender = text?.trim().toString().toUpperCase() }
@@ -158,7 +161,14 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onStatesReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnState.adapter = adapter
-        binding.lytOffender.spnState.setSelection(iterator.value.getPositionState(SingletonInfraction.stateOffender))
+    }
+
+    override fun onTownshipsReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnTownship.adapter = adapter
+    }
+
+    override fun onZipCodesReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnZipCode.adapter = adapter
     }
 
     override fun onStatesIssuedReady(adapter: ArrayAdapter<String>) {
@@ -166,9 +176,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.spnLicenseIssuedIn.setSelection(iterator.value.getPositionStateLicense(SingletonInfraction.licenseIssuedInOffender))
     }
 
-    override fun onTownshipsReady(adapter: ArrayAdapter<String>) {
-        binding.lytOffender.spnTownship.adapter = adapter
-        binding.lytOffender.spnTownship.setSelection(iterator.value.getPositionTownship(SingletonInfraction.townshipOffender))
+    override fun onColoniesReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnColony.adapter = adapter
+        binding.lytOffender.spnColony.setSelection(iterator.value.getPositionColony(SingletonInfraction.colonnyInfraction))
     }
 
     override fun onError(msg: String) {
@@ -192,10 +202,18 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when (p0?.id) {
             binding.lytOffender.spnState.id -> {
                 SingletonInfraction.stateOffender = iterator.value.statesList[p2]
-                iterator.value.getTownshipsList(binding.lytOffender.spnState.selectedItemPosition)
+                iterator.value.getTownshipsList(SingletonInfraction.stateOffender.documentReference)
             }
             binding.lytOffender.spnTownship.id -> {
-                SingletonInfraction.townshipOffender = iterator.value.townshipsList[p2]
+                SingletonInfraction.townshipOffender = iterator.value.townshipList[p2]
+                iterator.value.getZipCodesList(SingletonInfraction.townshipOffender.childReference)
+            }
+            binding.lytOffender.spnZipCode.id -> {
+                SingletonInfraction.zipCodeOffender = iterator.value.zipCodesList[p2]
+                iterator.value.getColoniesList(SingletonInfraction.zipCodeOffender.childReference)
+            }
+            binding.lytOffender.spnColony.id -> {
+                SingletonInfraction.colonnyInfraction = iterator.value.coloniesList[p2]
             }
             binding.lytOffender.spnLicenseType.id -> {
                 SingletonInfraction.typeLicenseOffender = iterator.value.licenseTypeList[p2]

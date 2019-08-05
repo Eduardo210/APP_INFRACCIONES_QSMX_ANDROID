@@ -112,8 +112,7 @@ object PaymentsTransfer : Interfaces.Contracts {
             var posEmvParam = ServiceManager.getInstence().pboc.posTermPara
             System.arraycopy(byteArrayOf(0x04, 132.toByte()), 0, posEmvParam.TransCurrCode, 0, 2)
             System.arraycopy(byteArrayOf(0x04, 132.toByte()), 0, posEmvParam.CountryCode, 0, 2)
-            posEmvParam.TerminalType =
-                    0x22  // https://www.emvco.com/wp-content/uploads/2017/05/EMV_v4.3_Book_4_Other_Interfaces_20120607062305603.pdf (Pag. 129)
+            posEmvParam.TerminalType = 0x16  // https://www.emvco.com/wp-content/uploads/2017/05/EMV_v4.3_Book_4_Other_Interfaces_20120607062305603.pdf (Pag. 129)
             posEmvParam.Capability[0] = 0xe0.toByte()
             posEmvParam.Capability[1] = 0xb8.toByte()
             posEmvParam.Capability[2] = 0xc8.toByte()

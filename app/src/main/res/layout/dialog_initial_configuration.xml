@@ -72,6 +72,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
             android:theme="@style/TextInputStyle"
+            app:errorTextAppearance="@style/TextLabelError"
             app:layout_constraintTop_toBottomOf="@+id/spn_township"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/colorPrimary">
@@ -83,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/t_input_password"
                 android:imeOptions="actionDone"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -47,8 +47,8 @@ object SingletonInfraction {
     var rfcOffenfer: String = ""
     var stateOffender: GenericCatalog = GenericCatalog()
     var townshipOffender: Townships = Townships()
-    var zipCodeOffender: GenericCatalog = GenericCatalog()
-    var colonyOffender: GenericCatalog = GenericCatalog()
+    var zipCodeOffender: GenericSubCatalog = GenericSubCatalog()
+    var colonyOffender: GenericSubCatalog = GenericSubCatalog()
     var streetOffender: String = ""
     var noExtOffender: String = ""
     var noIntOffender: String = ""
@@ -109,7 +109,8 @@ object SingletonInfraction {
         rfcOffenfer = ""
         stateOffender = GenericCatalog()
         townshipOffender = Townships()
-        colonyOffender = GenericCatalog()
+        zipCodeOffender = GenericSubCatalog()
+        colonyOffender = GenericSubCatalog()
         streetOffender = ""
         noExtOffender = ""
         noIntOffender = ""

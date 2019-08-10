@@ -222,8 +222,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (SingletonInfraction.noCirculationCard.isNotEmpty()) {
             SingletonTicket.noLicenseOffender = SingletonInfraction.noCirculationCard
         }
-        if (SingletonInfraction.typeLicenseOffender.id != 0) {
-            SingletonTicket.typeLicenseOffender = SingletonInfraction.typeLicenseOffender.license_type
+        if (SingletonInfraction.typeLicenseOffender.documentReference != null) {
+            SingletonTicket.typeLicenseOffender = SingletonInfraction.typeLicenseOffender.value
         }
         if (SingletonInfraction.licenseIssuedInOffender.documentReference != null) {
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value

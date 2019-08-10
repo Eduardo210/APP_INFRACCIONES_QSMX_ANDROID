@@ -1,6 +1,5 @@
 package mx.qsistemas.infracciones.singletons
 
-import mx.qsistemas.infracciones.db.entities.LicenseType
 import mx.qsistemas.infracciones.net.catalogs.*
 import java.util.*
 
@@ -53,7 +52,7 @@ object SingletonInfraction {
     var noExtOffender: String = ""
     var noIntOffender: String = ""
     var noLicenseOffender: String = ""
-    var typeLicenseOffender: LicenseType = LicenseType(0, "")
+    var typeLicenseOffender: GenericCatalog = GenericCatalog()
     var licenseIssuedInOffender: GenericCatalog = GenericCatalog()
 
     /* Calculated Variables */
@@ -115,7 +114,7 @@ object SingletonInfraction {
         noExtOffender = ""
         noIntOffender = ""
         noLicenseOffender = ""
-        typeLicenseOffender = LicenseType(0, "")
+        typeLicenseOffender = GenericCatalog()
         licenseIssuedInOffender = GenericCatalog()
 
         /* Calculated Variables Reset */

@@ -128,7 +128,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         /* Init adapters */
         iterator.value.getStatesList()
         iterator.value.getStatesIssuedList()
-        binding.lytOffender.spnLicenseType.adapter = iterator.value.getTypeLicenseAdapter()
+        iterator.value.getTypeLicenseAdapter()
     }
 
     override fun fillFields() {
@@ -141,7 +141,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderNoExt.setText(SingletonInfraction.noExtOffender)
         binding.lytOffender.edtOffenderNoInt.setText(SingletonInfraction.noIntOffender)
         binding.lytOffender.edtOffenderLicenseNo.setText(SingletonInfraction.noLicenseOffender)
-        binding.lytOffender.spnLicenseType.setSelection(iterator.value.getPositionTypeLicense(SingletonInfraction.typeLicenseOffender))
     }
 
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
@@ -161,14 +160,17 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onStatesReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnState.adapter = adapter
+        binding.lytOffender.spnState.setSelection(iterator.value.getPositionState(SingletonInfraction.stateOffender))
     }
 
     override fun onTownshipsReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnTownship.adapter = adapter
+        binding.lytOffender.spnTownship.setSelection(iterator.value.getPositionTownship(SingletonInfraction.townshipOffender))
     }
 
     override fun onZipCodesReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnZipCode.adapter = adapter
+        binding.lytOffender.spnZipCode.setSelection(iterator.value.getPositionZipCode(SingletonInfraction.zipCodeOffender))
     }
 
     override fun onStatesIssuedReady(adapter: ArrayAdapter<String>) {
@@ -179,6 +181,11 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun onColoniesReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnColony.adapter = adapter
         binding.lytOffender.spnColony.setSelection(iterator.value.getPositionColony(SingletonInfraction.colonnyInfraction))
+    }
+
+    override fun onTypeLicenseReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnLicenseType.adapter = adapter
+        binding.lytOffender.spnLicenseType.setSelection(iterator.value.getPositionTypeLicense(SingletonInfraction.typeLicenseOffender))
     }
 
     override fun onError(msg: String) {
@@ -320,10 +327,14 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 isValid = false
                                 onError(getString(R.string.e_township_offender))
                             }
-                            /*SingletonInfraction.colonyOffender.isEmpty() -> {
+                            SingletonInfraction.zipCodeOffender.childReference == null -> {
+                                isValid = false
+                                onError(getString(R.string.e_zip_code))
+                            }
+                            SingletonInfraction.colonyOffender.childReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_colony_offender))
-                            }*/
+                            }
                             SingletonInfraction.streetOffender.isEmpty() -> {
                                 isValid = false
                                 onError(getString(R.string.e_street_offender))
@@ -340,7 +351,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 isValid = false
                                 onError(getString(R.string.e_no_license_offender))
                             }
-                            SingletonInfraction.typeLicenseOffender.id == 0 -> {
+                            SingletonInfraction.typeLicenseOffender.documentReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_type_license_offender))
                             }
@@ -361,7 +372,8 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when {
             SingletonInfraction.stateOffender.documentReference != null -> isAnswered = true
             SingletonInfraction.townshipOffender.childReference != null -> isAnswered = true
-            /*SingletonInfraction.colonyOffender.isNotEmpty() -> isAnswered = true*/
+            SingletonInfraction.zipCodeOffender.childReference != null -> isAnswered = true
+            SingletonInfraction.colonyOffender.childReference != null -> isAnswered = true
             SingletonInfraction.streetOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noExtOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noIntOffender.isNotEmpty() -> isAnswered = true
@@ -374,7 +386,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when {
             SingletonInfraction.noLicenseOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.licenseIssuedInOffender.documentReference != null -> isAnswered = true
-            SingletonInfraction.typeLicenseOffender.id != 0 -> isAnswered = true
+            SingletonInfraction.typeLicenseOffender.documentReference != null -> isAnswered = true
         }
         return isAnswered
     }

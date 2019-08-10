@@ -10,7 +10,6 @@ import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.*
-import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
 import mx.qsistemas.infracciones.db.managers.SaveInfractionManager
 import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.net.NetworkApi
@@ -38,7 +37,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     internal lateinit var zipCodesList: MutableList<GenericSubCatalog>
     internal lateinit var stateIssuedLicenseList: MutableList<GenericCatalog>
     internal lateinit var coloniesList: MutableList<GenericSubCatalog>
-    internal lateinit var licenseTypeList: MutableList<LicenseType>
+    internal lateinit var licenseTypeList: MutableList<GenericCatalog>
     internal lateinit var txInfo: TransactionInfo
 
     /* Variable From Saved Infraction */
@@ -152,19 +151,28 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         }
     }
 
-    override fun getTypeLicenseAdapter(): ArrayAdapter<String> {
-        licenseTypeList = CatalogsAdapterManager.getLicenseTypeList()
-        val strings = mutableListOf<String>()
-        licenseTypeList.forEach {
-            if (it.id == 0) {
-                strings.add("Seleccionar..")
-            } else {
-                strings.add(it.license_type)
+    override fun getTypeLicenseAdapter() {
+        Application.firestore?.collection(FS_COL_TYPE_LIC)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                listener.onError(exception.message
+                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
+            licenseTypeList = mutableListOf()
+            licenseTypeList.add(GenericCatalog("Selecciona...", true))
+            val list = mutableListOf<String>()
+            list.add("Selecciona...")
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (document in snapshot.documents) {
+                    val data = document.toObject(GenericCatalog::class.java)!!
+                    data.documentReference = document.reference
+                    list.add(data.value)
+                    licenseTypeList.add(data)
+                }
+            }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onTypeLicenseReady(adapter)
         }
-        val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, strings)
-        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-        return adapter
     }
 
     override fun getStatesIssuedList() {
@@ -191,37 +199,45 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         }
     }
 
-    override fun searchZipCodeLocal(zipCode: String): GenericSubCatalog {
-        zipCodesList.forEach {
-            if (it.value == zipCode) return it
-        }
-        return GenericSubCatalog()
+    override fun getPositionState(obj: GenericCatalog): Int {
+        for (i in 0 until statesList.size)
+            if (statesList[i].documentReference == obj.documentReference)
+                return i
+        return 0
+    }
+
+    override fun getPositionTownship(obj: Townships): Int {
+        for (i in 0 until townshipList.size)
+            if (townshipList[i].childReference == obj.childReference)
+                return i
+        return 0
+    }
+
+    override fun getPositionZipCode(obj: GenericSubCatalog): Int {
+        for (i in 0 until zipCodesList.size)
+            if (zipCodesList[i].childReference == obj.childReference)
+                return i
+        return 0
     }
 
     override fun getPositionStateLicense(obj: GenericCatalog): Int {
-        for (i in 0 until stateIssuedLicenseList.size) {
-            if (stateIssuedLicenseList[i].documentReference == obj.documentReference) {
+        for (i in 0 until stateIssuedLicenseList.size)
+            if (stateIssuedLicenseList[i].documentReference == obj.documentReference)
                 return i
-            }
-        }
         return 0
     }
 
     override fun getPositionColony(obj: GenericSubCatalog): Int {
-        for (i in 0 until coloniesList.size) {
-            if (coloniesList[i].childReference == obj.childReference) {
+        for (i in 0 until coloniesList.size)
+            if (coloniesList[i].childReference == obj.childReference)
                 return i
-            }
-        }
         return 0
     }
 
-    override fun getPositionTypeLicense(obj: LicenseType): Int {
-        for (i in 0 until licenseTypeList.size) {
-            if (licenseTypeList[i].id == obj.id) {
+    override fun getPositionTypeLicense(obj: GenericCatalog): Int {
+        for (i in 0 until licenseTypeList.size)
+            if (licenseTypeList[i].documentReference == obj.documentReference)
                 return i
-            }
-        }
         return 0
     }
 
@@ -250,7 +266,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /* Validate if is the first time to insert the infraction */
         if (SingletonInfraction.idNewInfraction == 0L) {
             /* Step 1. Save the infraction information */
-            val infraction = Infraction(0, newFolio, SingletonInfraction.noLicenseOffender, SingletonInfraction.typeLicenseOffender.id, ""/*SingletonInfraction.licenseIssuedInOffender.id.toString()*/,
+            val infraction = Infraction(0, newFolio, SingletonInfraction.noLicenseOffender, 0/*SingletonInfraction.typeLicenseOffender.id*/, ""/*SingletonInfraction.licenseIssuedInOffender.id.toString()*/,
                     "", SingletonInfraction.isRemited.toInt(), ""/*SingletonInfraction.retainedDocument.document*/, totalUmas, totalImport, config.minimum_salary,
                     Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong(), actualDay, false.toInt(), 1, 4, SingletonInfraction.idPersonTownship.toInt(), 1, 0,
                     0/*SingletonInfraction.typeDocument.id*/, "", 0/*SingletonInfraction.dispositionRemited.id*/, SingletonInfraction.isPersonAbstent.toInt(), 0,
@@ -410,8 +426,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.noCirculationCard.isNotEmpty()) {
             SingletonTicket.noLicenseOffender = SingletonInfraction.noCirculationCard
         }
-        if (SingletonInfraction.typeLicenseOffender.id != 0) {
-            SingletonTicket.typeLicenseOffender = SingletonInfraction.typeLicenseOffender.license_type
+        if (SingletonInfraction.typeLicenseOffender.documentReference != null) {
+            SingletonTicket.typeLicenseOffender = SingletonInfraction.typeLicenseOffender.value
         }
         if (SingletonInfraction.licenseIssuedInOffender.documentReference != null) {
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value

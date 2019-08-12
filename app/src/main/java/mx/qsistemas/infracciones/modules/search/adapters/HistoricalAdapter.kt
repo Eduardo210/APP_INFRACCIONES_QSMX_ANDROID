@@ -8,13 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_resume_infra.view.*
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.db.entities.InfractionItem
+import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
 import mx.qsistemas.infracciones.modules.search.SearchContracts
-import java.text.FieldPosition
 
 var PRINT_LOCAL = 101
 var PAYMENT_LOCAL = 201
-class HistoricalAdapter(private val infraction: MutableList<InfractionItem>
+class HistoricalAdapter(private val infraction: MutableList<InfractionItemList>
                         , listener: SearchContracts.OnInfractionClick) : RecyclerView.Adapter<HistoricalAdapter.ViewHolderInfra>() {
 
 
@@ -37,11 +36,11 @@ class HistoricalAdapter(private val infraction: MutableList<InfractionItem>
 
 
     class ViewHolderInfra(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(data: InfractionItem, listener: SearchContracts.OnInfractionClick, position: Int) {
+        fun bindView(data: InfractionItemList, listener: SearchContracts.OnInfractionClick, position: Int) {
             with(data) {
-                itemView.txt_vehicle_header?.text = title_vehicle
+                itemView.txt_vehicle_header?.text = "$brand $sub_brand $colour"
                 itemView.txt_folio?.text = folio
-                if (send) {
+                if (sync) {
                     itemView.txt_status_infra.text = itemView.context.getString(R.string.status_send)
                     itemView.txt_status_infra.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorGreen))
                     itemView.txt_status_infra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.green_circle), null, null, null)
@@ -51,8 +50,8 @@ class HistoricalAdapter(private val infraction: MutableList<InfractionItem>
                     itemView.txt_status_infra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.yellow_circle), null, null, null)
                 }
 
-                itemView.txt_resume_art_frac.text = motivation
-                itemView.txt_date_infra.text = date_infra
+                itemView.txt_resume_art_frac.text = reason
+                itemView.txt_date_infra.text = date
                 itemView.btn_payment.visibility = View.GONE
                 itemView.btn_print.setOnClickListener { view -> listener.onPrintClick(view, position, PRINT_LOCAL) }
                 itemView.btn_payment.setOnClickListener { view -> listener.onPaymentClick(view, position, PAYMENT_LOCAL) }

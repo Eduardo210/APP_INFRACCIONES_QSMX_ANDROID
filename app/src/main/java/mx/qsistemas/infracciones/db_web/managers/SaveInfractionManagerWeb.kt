@@ -72,4 +72,10 @@ object SaveInfractionManagerWeb {
             Application.m_database_web?.infractionEvidenceDaoWeb()?.insert(infracionEvidence)
         }
     }
+    fun saveDriverLicense(driverLicense: DriverDriverLicense) {
+        GlobalScope.launch {
+            Application.m_database_web?.driverLicenseDaoWeb()?.insert(driverLicense)!!
+        }
+
+    }
 }

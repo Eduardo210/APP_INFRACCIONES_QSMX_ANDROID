@@ -3,16 +3,24 @@ package mx.qsistemas.infracciones.modules.search
 import android.app.Activity
 import android.util.Log
 import android.widget.ArrayAdapter
+import androidx.sqlite.db.SimpleSQLiteQuery
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.IdentifierDocument
-import mx.qsistemas.infracciones.db.entities.InfractionItem
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
 import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
-import mx.qsistemas.infracciones.db.managers.SearchManager
+import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
+import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
+import mx.qsistemas.infracciones.db_web.managers.SearchManagerWeb
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
+import mx.qsistemas.infracciones.utils.FS_COL_COLORS
+import mx.qsistemas.infracciones.utils.FS_COL_INSURED_DOC
+import mx.qsistemas.infracciones.utils.FS_COL_MODELS
 import mx.qsistemas.infracciones.utils.Ticket
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import org.json.JSONObject
@@ -27,7 +35,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     private lateinit var nonWorkingDays: MutableList<NonWorkingDay>
 
     private var itemInfraOnline: MutableList<InfractionList.Results> = ArrayList()
-    private var itemInfraOffLine: MutableList<InfractionItem> = ArrayList()
+    private var itemInfraOffLine: MutableList<mx.qsistemas.infracciones.db_web.entities.InfractionItem> = ArrayList()
+    private var itemInfraOffLineList: MutableList<InfractionItemList> = ArrayList()
 
     //Para la impresión de la boleta
     private val actualDay = SimpleDateFormat("dd/MM/yyyy HH:mm").format(Date())
@@ -76,49 +85,49 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             rootObject.put("NumeroDocumentoIdentificador", filter)
         }
         Log.d("JSON-SEARCH", rootObject.toString())
-       /* NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    val data = Gson().fromJson(response.body(), InfractionList::class.java)
-                    itemInfraOnline = data.results
-                    when {
-                        data.flag -> listener.onResultSearch(itemInfraOnline)
-                        data.message.contains("No se encontraron") -> listener.onResultSearch(data.results)
-                        else -> listener.onError(data.message)
-                    }
-                    Log.d("SEARCH ---->>>>>", data.toString())
+        /* NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
+             override fun onResponse(call: Call<String>, response: Response<String>) {
+                 if (response.code() == HttpURLConnection.HTTP_OK) {
+                     val data = Gson().fromJson(response.body(), InfractionList::class.java)
+                     itemInfraOnline = data.results
+                     when {
+                         data.flag -> listener.onResultSearch(itemInfraOnline)
+                         data.message.contains("No se encontraron") -> listener.onResultSearch(data.results)
+                         else -> listener.onError(data.message)
+                     }
+                     Log.d("SEARCH ---->>>>>", data.toString())
 
-                }
-            }
+                 }
+             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.d("SEARCH ---->>>>>", t.message.toString())
-                listener.onError(t.message ?: "")
-            }
+             override fun onFailure(call: Call<String>, t: Throwable) {
+                 Log.d("SEARCH ---->>>>>", t.message.toString())
+                 listener.onError(t.message ?: "")
+             }
 
-        })*/
+         })*/
     }
 
     override fun doSearchByIdInfraction(id: String, origin: Int) {
-       /* val rootObject = JSONObject()
-        rootObject.put("IdInfraccion", id)
-        rootObject.put("username", "InfraMobile")
-        rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-        Log.d("JSON-SEARCH", rootObject.toString())
-        NetworkApi().getNetworkService().doSearchByIdInfraction(rootObject.toString()).enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    val data = Gson().fromJson(response.body(), InfractionSearch::class.java)
-                    listener.onResultInfractionById(data, origin)
-                    Log.d("SEARCH_BY_ID", data.toString())
-                }
-            }
+        /* val rootObject = JSONObject()
+         rootObject.put("IdInfraccion", id)
+         rootObject.put("username", "InfraMobile")
+         rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
+         Log.d("JSON-SEARCH", rootObject.toString())
+         NetworkApi().getNetworkService().doSearchByIdInfraction(rootObject.toString()).enqueue(object : Callback<String> {
+             override fun onResponse(call: Call<String>, response: Response<String>) {
+                 if (response.code() == HttpURLConnection.HTTP_OK) {
+                     val data = Gson().fromJson(response.body(), InfractionSearch::class.java)
+                     listener.onResultInfractionById(data, origin)
+                     Log.d("SEARCH_BY_ID", data.toString())
+                 }
+             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.e("SEARCH_BY_ID", t.message.toString())
-                listener.onError(t.message ?: "")
-            }
-        })*/
+             override fun onFailure(call: Call<String>, t: Throwable) {
+                 Log.e("SEARCH_BY_ID", t.message.toString())
+                 listener.onError(t.message ?: "")
+             }
+         })*/
     }
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
@@ -168,24 +177,104 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         jPayment.put("id_registro_usuario", idPerson)
         rootObj.put("payment", jPayment)
         Log.d("JSON-SAVE-PAYMENT", rootObj.toString())
-       /* NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), rootObj.toString()).enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
-                    listener.onResultSavePayment(data.message, data.flag)
-                }
-            }
+        /* NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), rootObj.toString()).enqueue(object : Callback<String> {
+             override fun onResponse(call: Call<String>, response: Response<String>) {
+                 if (response.code() == HttpURLConnection.HTTP_OK) {
+                     val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
+                     listener.onResultSavePayment(data.message, data.flag)
+                 }
+             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                listener.onError(t.message ?: "")
-            }
-        })*/
+             override fun onFailure(call: Call<String>, t: Throwable) {
+                 listener.onError(t.message ?: "")
+             }
+         })*/
     }
 
-    override fun doSearchByFilterOffLine(id: Int, filter: String) {
-        itemInfraOffLine = SearchManager.getItemInfraction()
+    override suspend fun doSearchByFilterOffLine(id: Int, filter: String) {
+        var insuredDocument = ""
+        var brand = ""
+        var model = ""
+        var colour = ""
+
+        /*Empiezo con la nueva búsqueda*/
+        val query = when (id) {
+            0 -> {
+                if (filter.isBlank()) { //Traer el último registro
+                    SimpleSQLiteQuery("SELECT infra.id, " +
+                            "infra.folio, " +
+                            "infra.date, " +
+                            "vehicle.num_document, " +
+                            "(SELECT reason " +
+                            "   FROM infringement_relInfraction_infringements " +
+                            "   WHERE infringements_id = infra.id LIMIT 1) reason, " +
+                            "infra.sync, " +
+                            "vehicle.identifier_document_id, " +
+                            "vehicle.sub_brand_id, " +
+                            "vehicle.colour_id " +
+                            "FROM infringement_infringements infra " +
+                            "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id LIMIT 1")
+                } else {//Búsqueda por folio
+                    SimpleSQLiteQuery("SELECT infra.id, " +
+                            "infra.folio, " +
+                            "infra.date, " +
+                            "vehicle.num_document, " +
+                            "(SELECT reason FROM infringement_relInfraction_infringements WHERE infringements_id = infra.id LIMIT 1) reason, " +
+                            "infra.sync " +
+                            "vehicle.identifier_document_id, " +
+                            "vehicle.sub_brand_id, " +
+                            "vehicle.colour_id " +
+                            "FROM infringement_infringements infra " +
+                            "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
+                            "WHERE infra.folio = \'$filter\' " +
+                            "ORDER BY infra.folio DESC LIMIT 1")
+                }
+            }
+            else -> {
+                SimpleSQLiteQuery("SELECT infra.id, " +
+                        "infra.folio, " +
+                        "infra.date, " +
+                        "vehicle.num_document, " +
+                        "(SELECT reason " +
+                        "   FROM infringement_relInfraction_infringements " +
+                        "   WHERE infringements_id = infra.id LIMIT 1) reason, " +
+                        "infra.sync " +
+                        "vehicle.identifier_document_id, " +
+                        "vehicle.sub_brand_id, " +
+                        "vehicle.colour_id " +
+                        "FROM infringement_infringements infra " +
+                        "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
+                        "WHERE vehicle.identifier_document_id = $id " +
+                        "AND vehicle.num_document = \'$filter\'")
+            }
+        }
+        itemInfraOffLine = SearchManagerWeb.getItemInfraction(query)
         if (itemInfraOffLine.size > 0) {
-            listener.onResultSearchOffLine(itemInfraOffLine)
+            //1.-Iterar la lista y hacer consulta a firebase para obtener elementos de catálogos.
+            //1.1.- Generar la nueva lista.
+            itemInfraOffLine.forEach { infra ->
+                val job = GlobalScope.launch(Dispatchers.Main) {
+                    insuredDocument = CatalogsFirebaseManager.getValue(infra.id_doc_ident, FS_COL_INSURED_DOC)
+                    //brand = CatalogsFirebaseManager.getValue("G3PYAeJ289WSeJMliq3l", FS_COL_BRANDS)
+                    model = CatalogsFirebaseManager.getValue(infra.sub_brand_id, FS_COL_MODELS)
+                    colour = CatalogsFirebaseManager.getValue(infra.colour_id, FS_COL_COLORS)
+                }
+                job.join()
+
+                itemInfraOffLineList.add(InfractionItemList(
+                        infra.id_infraction,
+                        infra.folio,
+                        infra.num_document,
+                        infra.reason,
+                        infra.sync,
+                        insuredDocument,
+                        "",
+                        model,
+                        colour,
+                        infra.date
+                ))
+            }
+            listener.onResultSearchOffLine(itemInfraOffLineList)
         } else {
             listener.onError("No se encontraron infracciones")
         }
@@ -214,8 +303,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (SingletonInfraction.noCirculationCard.isNotEmpty()) {
             SingletonTicket.noLicenseOffender = SingletonInfraction.noCirculationCard
         }
-        if (SingletonInfraction.typeLicenseOffender.id != 0) {
-            SingletonTicket.typeLicenseOffender = SingletonInfraction.typeLicenseOffender.license_type
+        if (SingletonInfraction.typeLicenseOffender.documentReference != null) {
+            SingletonTicket.typeLicenseOffender = SingletonInfraction.typeLicenseOffender.value
         }
         if (SingletonInfraction.licenseIssuedInOffender.documentReference != null) {
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
@@ -232,9 +321,9 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         //SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
         SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value
         SingletonInfraction.motivationList.forEach { art ->
-           /* val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),
-                    art.fraction.penalty_points.toString(), art.motivation)
-            SingletonTicket.fractionsList.add(article)*/
+            /* val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),
+                     art.fraction.penalty_points.toString(), art.motivation)
+             SingletonTicket.fractionsList.add(article)*/
         }
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
@@ -259,11 +348,14 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     }
 
     override fun doSearchByIdInfractionOffLine(id: String, origin: Int) {
-
-        val infraction = SearchManager.getInfractionById(id.toLong())
-        val infraFracc = SearchManager.getInfraFracc(id.toLong())
-        listener.onResultInfractionByIdOffline(infraction, infraFracc, origin)
+        /* val insuredDocument = CatalogsFirebaseManager.getInsuredDocument("0QAIC5Vofiw5Xh7s3mS1")
+         //Log.d("INSURED_FIREBASE", insuredDocument)
+         val infraction = SearchManager.getInfractionById(id.toLong())
+         val infraFracc = SearchManager.getInfraFracc(id.toLong())
+         listener.onResultInfractionByIdOffline(infraction, infraFracc, origin)*/
     }
+
+
 }
 
 class NewIdentDocument {

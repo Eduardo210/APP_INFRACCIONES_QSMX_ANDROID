@@ -44,6 +44,7 @@ private const val ARG_IS_CREATION = "is_creation"
  */
 class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener,
         OnClickListener, IPaymentsTransfer.TransactionListener {
+
     private var isCreation: Boolean = true
 
     private val CURRENT_DATE = Date()
@@ -125,7 +126,8 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         /* Init adapters */
         iterator.value.getStatesList()
         iterator.value.getStatesIssuedList()
-        binding.lytOffender.spnLicenseType.adapter = iterator.value.getTypeLicenseAdapter()
+        iterator.value.getTypeLicenseList()
+        /*binding.lytOffender.spnLicenseType.adapter = iterator.value.getTypeLicenseAdapter()*/
     }
 
     override fun fillFields() {
@@ -138,7 +140,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.edtOffenderNoExt.setText(SingletonInfraction.noExtOffender)
         binding.lytOffender.edtOffenderNoInt.setText(SingletonInfraction.noIntOffender)
         binding.lytOffender.edtOffenderLicenseNo.setText(SingletonInfraction.noLicenseOffender)
-        binding.lytOffender.spnLicenseType.setSelection(iterator.value.getPositionTypeLicense(SingletonInfraction.typeLicenseOffender))
+        //binding.lytOffender.spnLicenseType.setSelection(iterator.value.getPositionTypeLicense(SingletonInfraction.typeLicenseOffender))
     }
 
     override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
@@ -169,6 +171,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun onTownshipsReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnTownship.adapter = adapter
         binding.lytOffender.spnTownship.setSelection(iterator.value.getPositionTownship(SingletonInfraction.townshipOffender))
+    }
+    override fun onTypeLicenseReady(adapter: ArrayAdapter<String>) {
+        binding.lytOffender.spnLicenseType.adapter = adapter
+        binding.lytOffender.spnLicenseType.setSelection(iterator.value.getPositionTypeLicense(SingletonInfraction.typeLicenseOffender))
     }
 
     override fun onError(msg: String) {
@@ -322,7 +328,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 isValid = false
                                 onError(getString(R.string.e_no_license_offender))
                             }
-                            SingletonInfraction.typeLicenseOffender.id == 0 -> {
+                            SingletonInfraction.typeLicenseOffender.documentReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_type_license_offender))
                             }
@@ -356,7 +362,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when {
             SingletonInfraction.noLicenseOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.licenseIssuedInOffender.documentReference != null -> isAnswered = true
-            SingletonInfraction.typeLicenseOffender.id != 0 -> isAnswered = true
+            SingletonInfraction.typeLicenseOffender.documentReference != null -> isAnswered = true
         }
         return isAnswered
     }

@@ -46,6 +46,7 @@ const val FS_COL_MODELS = "models"
 const val FS_COL_TERMINALS = "terminals"
 const val FS_COL_STATES = "state"
 const val FS_COL_ZIP_CODES = "zip_codes"
+const val FS_COL_LICENSE_TYPE = "license_type"
 
 /* JOB CHANNELS */
 const val CHANNEL_ID_REPORT = "infractionChannelId"

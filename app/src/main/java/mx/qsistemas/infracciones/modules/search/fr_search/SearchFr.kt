@@ -11,15 +11,17 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
-import mx.qsistemas.infracciones.db.entities.InfractionItem
 import mx.qsistemas.infracciones.db.entities.InfractionLocal
+import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
@@ -34,7 +36,6 @@ import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.EXTRA_OPTION_INFRACTION
 import mx.qsistemas.infracciones.utils.Ticket
-import mx.qsistemas.infracciones.utils.Validator
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
@@ -84,7 +85,7 @@ class SearchFr : Fragment()
     private var idPerson: Long = 0
 
     private var itemInfraOnline: MutableList<InfractionList.Results> = ArrayList()
-    private var itemInfraOffLine: MutableList<InfractionItem> = ArrayList()
+    private var itemInfraOffLine: MutableList<InfractionItemList> = ArrayList()
 
 
     private lateinit var activity: SearchActivity
@@ -115,9 +116,10 @@ class SearchFr : Fragment()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         binding.btnShowInfra.setOnClickListener {
             if (isValidFilter()) {
-                if (Validator.isNetworkEnable(activity)) {
+                if (!true/*Validator.isNetworkEnable(activity)*/) {
                     activity.showLoader("Buscando infracciones")
                     if (!binding.edtFilterFolio.text.toString().equals("")) {
                         iterator.value.doSearchByFilter(0, binding.edtFilterFolio.text.toString())
@@ -128,11 +130,14 @@ class SearchFr : Fragment()
                     activity.hideLoader()
                     activity.showLoader("Buscando infracciones")
                     if (!binding.edtFilterFolio.text.toString().equals("")) {
-                        iterator.value.doSearchByFilterOffLine(idDocIdent, binding.edtFilterFolio.text.toString())
+                        lifecycleScope.launch {
+                            iterator.value.doSearchByFilterOffLine(idDocIdent, binding.edtFilterFolio.text.toString())
+                        }
                     } else {
-                        iterator.value.doSearchByFilterOffLine(idDocIdent, binding.etFilterAny.text.toString())
+                        lifecycleScope.launch {
+                            iterator.value.doSearchByFilterOffLine(idDocIdent, binding.etFilterAny.text.toString())
+                        }
                     }
-
                 }
             } else {
 
@@ -292,23 +297,23 @@ class SearchFr : Fragment()
         SingletonTicket.completeNameOffender = "${infraction.name} ${infraction.last_name} ${infraction.mother_last_name}"
         SingletonTicket.rfcOffender = infraction.rfc
 
-        if(infraction.infractor_street.isNotBlank()){
+        if (infraction.infractor_street.isNotBlank()) {
             SingletonTicket.streetOffender = infraction.infractor_street
         }
 
-        if(infraction.infractor_external_number.isNotBlank()){
+        if (infraction.infractor_external_number.isNotBlank()) {
             SingletonTicket.noExtOffender = infraction.infractor_external_number
         }
 
-        if(infraction.infractor_internal_number.isNotBlank()){
+        if (infraction.infractor_internal_number.isNotBlank()) {
             SingletonTicket.noIntOffender = infraction.infractor_internal_number
         }
 
-        if(infraction.infractor_colony.isNotBlank()){
+        if (infraction.infractor_colony.isNotBlank()) {
             SingletonTicket.colonyOffender = infraction.infractor_colony
         }
 
-        if(infraction.infractor_state.isNotBlank()){
+        if (infraction.infractor_state.isNotBlank()) {
             SingletonTicket.stateOffender = infraction.infractor_state
         }
 
@@ -537,9 +542,13 @@ class SearchFr : Fragment()
         } else {
             activity.showLoader("Buscando infracciones")
             if (!binding.edtFilterFolio.text.toString().equals("")) {
-                iterator.value.doSearchByFilterOffLine(idDocIdent, binding.edtFilterFolio.text.toString())
+                lifecycleScope.launch {
+                    iterator.value.doSearchByFilterOffLine(idDocIdent, binding.edtFilterFolio.text.toString())
+                }
             } else {
-                iterator.value.doSearchByFilterOffLine(idDocIdent, binding.etFilterAny.text.toString())
+                lifecycleScope.launch {
+                    iterator.value.doSearchByFilterOffLine(idDocIdent, binding.etFilterAny.text.toString())
+                }
             }
         }
 
@@ -610,7 +619,7 @@ class SearchFr : Fragment()
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
     }
 
-    override fun onResultSearchOffLine(listInfractions: MutableList<InfractionItem>) {
+    override fun onResultSearchOffLine(listInfractions: MutableList<InfractionItemList>) {
         activity.hideLoader()
         itemInfraOffLine = listInfractions
         val totalResults = listInfractions.size

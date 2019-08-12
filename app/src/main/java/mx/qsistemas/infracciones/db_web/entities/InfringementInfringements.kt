@@ -16,7 +16,7 @@ data class InfringementInfringements(@PrimaryKey(autoGenerate = true) val id: Lo
                                      @ColumnInfo(name = "insured_document_id") val insured_document_id: String,
                                      @ColumnInfo(name = "third_impound_id") val third_impound_id: String,
                                      @ColumnInfo(name = "town_hall_id") val town_hall_id: Long,
-                                     @ColumnInfo(name = "vehicle_id") val vehicle_id: String,
+                                     @ColumnInfo(name = "vehicle_id") val vehicle_id: Long,
                                      @ColumnInfo(name = "date") val date: String,
                                      @ColumnInfo(name = "time") val time:String,
                                      @ColumnInfo(name = "num_document_condonation") val condonation: String,
@@ -24,6 +24,6 @@ data class InfringementInfringements(@PrimaryKey(autoGenerate = true) val id: Lo
                                      @ColumnInfo(name = "sync") val sync: Boolean,
                                      @ColumnInfo(name = "driver_license_id") val driver_license_id: String,
                                      @ColumnInfo(name = "amount") val amount: Float,
-                                     @ColumnInfo(name = "driver_id") val driver_id: String,
+                                     @ColumnInfo(name = "driver_id") val driver_id: Long,
                                      @ColumnInfo(name = "total_uma") val total_uma: Float)
 

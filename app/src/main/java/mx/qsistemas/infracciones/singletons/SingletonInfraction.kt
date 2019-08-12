@@ -46,13 +46,13 @@ object SingletonInfraction {
     var rfcOffenfer: String = ""
     var stateOffender: GenericCatalog = GenericCatalog()
     var townshipOffender: Townships = Townships()
-    var zipCodeOffender: GenericCatalog = GenericCatalog()
-    var colonyOffender: GenericCatalog = GenericCatalog()
+    var zipCodeOffender: GenericSubCatalog = GenericSubCatalog()
+    var colonyOffender: GenericSubCatalog = GenericSubCatalog()
     var streetOffender: String = ""
     var noExtOffender: String = ""
     var noIntOffender: String = ""
     var noLicenseOffender: String = ""
-    var typeLicenseOffender: GenericCatalog = GenericCatalog()//LicenseType = LicenseType(0, "")
+    var typeLicenseOffender: GenericCatalog = GenericCatalog()
     var licenseIssuedInOffender: GenericCatalog = GenericCatalog()
 
     /* Calculated Variables */
@@ -108,12 +108,13 @@ object SingletonInfraction {
         rfcOffenfer = ""
         stateOffender = GenericCatalog()
         townshipOffender = Townships()
-        colonyOffender = GenericCatalog()
+        zipCodeOffender = GenericSubCatalog()
+        colonyOffender = GenericSubCatalog()
         streetOffender = ""
         noExtOffender = ""
         noIntOffender = ""
         noLicenseOffender = ""
-        typeLicenseOffender = GenericCatalog()//LicenseType(0, "")
+        typeLicenseOffender = GenericCatalog()
         licenseIssuedInOffender = GenericCatalog()
 
         /* Calculated Variables Reset */

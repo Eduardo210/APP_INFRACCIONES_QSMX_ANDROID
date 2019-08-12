@@ -118,7 +118,8 @@
     <string name="t_offender_lm_name">Apellido Materno*</string>
     <string name="t_offender_rfc">R.F.C.</string>
     <string name="t_offender_direction">Dirección del infractor</string>
-    <string name="t_offender_state">Entidad</string>
+    <string name="t_offender_state">Estado</string>
+    <string name="t_offender_zip_code">Código Postal</string>
     <string name="t_offender_township">Municipio</string>
     <string name="t_offender_colony">Colonia</string>
     <string name="t_offender_street">Calle</string>

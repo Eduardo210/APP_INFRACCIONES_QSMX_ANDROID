@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
-import com.google.gson.Gson
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.*
@@ -15,6 +14,7 @@ import mx.qsistemas.infracciones.db_web.entities.*
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
 import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
+import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.net.catalogs.UpdatePaymentRequest
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
@@ -326,8 +326,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         SingletonInfraction.noExtOffender,
                         SingletonInfraction.noIntOffender,
                         SingletonInfraction.townshipOffender.reference?.id ?: "",
-                        SingletonInfraction.colonyOffender.documentReference?.id ?: "",
-                        SingletonInfraction.zipCodeOffender.documentReference?.id ?: "",
+                        SingletonInfraction.colonyOffender.childReference?.id ?: "",
+                        SingletonInfraction.zipCodeOffender.childReference?.id ?: "",
                         SingletonInfraction.idNewPersonInfraction.toString(),
                         SingletonInfraction.stateOffender.documentReference?.id ?: "")
 

@@ -188,7 +188,7 @@
     <!-- Offender Information Errors -->
     <string name="e_name_offender">Nombre obligatorio</string>
     <string name="e_last_father_offender">Apellido paterno obligatorio</string>
-    <string name="e_last_mother_offender">Apellido materno obligatorio</string>
+    <string name="e_last_mother_offender">Apellido materno obligatorio</string>Utils
     <string name="e_state_offender">Entidad obligatoria</string>
     <string name="e_township_offender">Municipio obligatorio</string>
     <string name="e_colony_offender">Colonia obligatoria</string>

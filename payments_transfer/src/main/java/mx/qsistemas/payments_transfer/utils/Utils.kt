@@ -43,7 +43,7 @@ class Utils {
         }
 
         fun getTokenDevice(context: Context): String =
-            Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
 
         fun getImeiDevice(context: Context): String {
             try {
@@ -135,13 +135,13 @@ class Utils {
         /** El AES CBC PKCS es un algoritmo de cifrado necesario para obtener ciertos datos de
          * cadenas cifradas en el QR de CoDi así como para poder cifrar los mismos datos para poder
          * desplegarlos posteriormente en el celular */
-        fun AesCbcPkcs(key: String, initVector: String, value: String, mode: Int, transformation: String): String? {
+        fun AesCbcPkcs(key: String, initVector: String, value: String, mode: Int): String? {
             var result: String?
             try {
                 val iv = IvParameterSpec(Hex.decodeHex(initVector.toCharArray()))
                 val skeySpec = SecretKeySpec(Hex.decodeHex(key.toCharArray()), "AES")
 
-                val cipher = Cipher.getInstance(/*"AES/CBC/PKCS5PADDING"*/transformation)
+                val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
                 cipher.init(mode, skeySpec, iv)
                 if (mode == Cipher.ENCRYPT_MODE) {
                     val encrypted = cipher.doFinal(value.toByteArray())
@@ -298,7 +298,7 @@ class Utils {
          * Método empleado para procesar el cifrado traido desde la notificación por Banxico
          */
         fun processAccountValidation(key: String, iv: String, infoCuenta: Info_Cuenta): String {
-            val dechyperPush = AesCbcPkcs(key, iv, infoCuenta.infCif, Cipher.DECRYPT_MODE, AES_CBC_PKCS5)
+            val dechyperPush = AesCbcPkcs(key, iv, infoCuenta.infCif, Cipher.DECRYPT_MODE)
             val data = Gson().fromJson(dechyperPush, ValidacionCuentasDecryp_Data::class.java)
             return when (data.rv) {
                 0 -> CODI_ACCOUNT_PENDENT

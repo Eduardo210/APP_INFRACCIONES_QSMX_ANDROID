@@ -1,10 +1,14 @@
 package mx.qsistemas.infracciones.modules.login
 
+import android.util.Log
+import com.google.firebase.functions.FirebaseFunctionsException
+import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.db.managers.CatalogsSyncManager
-import mx.qsistemas.infracciones.db.managers.LogInManager
 import mx.qsistemas.infracciones.net.catalogs.DownloadCatalogs
-import mx.qsistemas.infracciones.utils.MD5
+import mx.qsistemas.infracciones.utils.BBOX_KEY
+import mx.qsistemas.infracciones.utils.FF_CIPHER_DATA
 
 class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContracts.Iterator {
 
@@ -12,29 +16,21 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
         Alarms()
     }
 
-    override fun downloadCatalogs() {
-       /* NetworkApi().getNetworkService().downloadCatalogs("01/01/2000").enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    val data = Gson().fromJson(response.body(), DownloadCatalogs::class.java)
-                    processCatalogs(data)
-                    val imei = Utils.getImeiDevice(Application.getContext())
-                    Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.update("last_synch", Date())
-                    listener.onCatalogsDownloaded()
-                } else {
-                    listener.onError(Application.getContext().getString(R.string.e_other_problem_internet))
-                }
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                listener.onError(t.message ?: "")
-            }
-        })*/
-    }
-
     override fun login(userName: String, psd: String) {
-        val user = LogInManager.getUser(userName)
-        val hash = MD5.toMD5(psd)
+        val request = hashMapOf("key" to BBOX_KEY, "value" to psd)
+        Application.firebaseFunctions?.getHttpsCallable(FF_CIPHER_DATA)?.call(request)?.addOnCompleteListener {
+            if (!it.isSuccessful) {
+                val e = it.exception
+                if (e is FirebaseFunctionsException)
+                    listener.onError(e.details.toString())
+                else
+                    listener.onError(Application.getContext().getString(R.string.e_without_internet))
+                return@addOnCompleteListener
+            }
+            if (it.exception == null && it.result != null){
+                Log.e(this.javaClass.simpleName, "result ${it.result?.data}")
+            }
+        }
         /*if (user == null || hash != user.password) {
             listener.onError(Application.getContext().getString(R.string.e_user_pss_incorrect))
         } else {
@@ -48,7 +44,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             listener.onLoginSuccessful()
         }*/
 
-        listener.onLoginSuccessful()
+        //listener.onLoginSuccessful()
     }
 
     private fun processCatalogs(data: DownloadCatalogs) {

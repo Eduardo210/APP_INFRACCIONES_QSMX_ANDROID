@@ -11,7 +11,6 @@ class LogInContracts {
 
     interface Iterator {
         fun registerAlarm()
-        fun downloadCatalogs()
         fun login(userName: String, psd: String)
     }
 

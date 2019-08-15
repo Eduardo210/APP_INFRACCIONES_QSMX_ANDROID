@@ -141,6 +141,7 @@
     <string name="t_save">Guardar</string>
 
     <!-- Loader Strings -->
+    <string name="l_log_in">Iniciando sesión</string>
     <string name="l_config_terminal">Configurando terminal</string>
     <string name="l_download_catalogs">Descargando catálogos</string>
     <string name="l_preparing_printer">Preparando impresión</string>

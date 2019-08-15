@@ -9,6 +9,7 @@ import mx.qsistemas.infracciones.db.managers.CatalogsSyncManager
 import mx.qsistemas.infracciones.net.catalogs.DownloadCatalogs
 import mx.qsistemas.infracciones.utils.BBOX_KEY
 import mx.qsistemas.infracciones.utils.FF_CIPHER_DATA
+import java.util.*
 
 class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContracts.Iterator {
 
@@ -29,6 +30,8 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             }
             if (it.exception == null && it.result != null){
                 Log.e(this.javaClass.simpleName, "result ${it.result?.data}")
+                val cipher = ((it.result?.data) as HashMap<*, *>)["encrypted"].toString()
+
             }
         }
         /*if (user == null || hash != user.password) {

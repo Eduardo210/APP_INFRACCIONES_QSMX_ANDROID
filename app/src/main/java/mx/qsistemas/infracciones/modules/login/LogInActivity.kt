@@ -123,6 +123,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                 } else if (!Validator.isValidFields(*fields)) {
                     onError(getString(R.string.e_empty_fields))
                 } else {
+                    showLoader(getString(R.string.l_log_in))
                     iterator.login(binding.edtUserLogIn.text.toString().toUpperCase(), binding.edtDwpLogIn.text.toString().toUpperCase())
                 }
             }

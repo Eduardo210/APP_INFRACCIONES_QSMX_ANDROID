@@ -25,7 +25,7 @@ open class NetworkApi {
             customClient.addInterceptor(interceptor)
         }
         val clientBuilder = customClient.build()
-        val builder = Retrofit.Builder().baseUrl("http://3.17.91.131/")
+        val builder = Retrofit.Builder().baseUrl("http://189.240.246.23:8000/")
                 .addConverterFactory(SimpleXmlConverterFactory.create())
                 //.addConverterFactory(GsonConverterFactory.create())
                 .client(clientBuilder).build()

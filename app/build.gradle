@@ -68,6 +68,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf:18.0.1'
     implementation 'com.google.firebase:firebase-storage:18.1.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    // Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
     // Show C_Configuration App By Google Chrome
     implementation 'com.facebook.stetho:stetho:1.5.1'
     // Apache

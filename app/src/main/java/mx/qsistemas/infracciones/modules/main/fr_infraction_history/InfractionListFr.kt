@@ -11,8 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
+import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentInfractionListBinding
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
@@ -42,6 +43,11 @@ class InfractionListFr : Fragment(), View.OnClickListener {
         binding.btnSearchInfraction.setOnClickListener(this)
         binding.btnPrintVoucher.setOnClickListener(this)
         binding.include.imgSearchInfraction.setOnClickListener(this)
+        val name = Application.prefs?.loadData(R.string.sp_person_name, "")
+        val lastName = Application.prefs?.loadData(R.string.sp_person_f_last_name, "")
+        val mLastName = Application.prefs?.loadData(R.string.sp_person_m_last_name, "")
+        binding.include.txtNameDashboard.text = "$name $lastName $mLastName"
+        Picasso.get().load(Application.prefs?.loadData(R.string.sp_person_photo_url, "")).error(R.drawable.ic_add_photo).into(binding.include.imgUserPhoto)
         return binding.root
     }
 

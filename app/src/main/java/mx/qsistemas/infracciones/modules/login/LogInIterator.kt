@@ -5,10 +5,15 @@ import com.google.firebase.functions.FirebaseFunctionsException
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
-import mx.qsistemas.infracciones.db.managers.CatalogsSyncManager
-import mx.qsistemas.infracciones.net.catalogs.DownloadCatalogs
+import mx.qsistemas.infracciones.net.NetworkApi
+import mx.qsistemas.infracciones.net.request_web.LogInRequest
+import mx.qsistemas.infracciones.net.result_web.LogInResult
 import mx.qsistemas.infracciones.utils.BBOX_KEY
 import mx.qsistemas.infracciones.utils.FF_CIPHER_DATA
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.net.HttpURLConnection
 import java.util.*
 
 class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContracts.Iterator {
@@ -28,51 +33,40 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                     listener.onError(Application.getContext().getString(R.string.e_without_internet))
                 return@addOnCompleteListener
             }
-            if (it.exception == null && it.result != null){
+            if (it.exception == null && it.result != null) {
                 Log.e(this.javaClass.simpleName, "result ${it.result?.data}")
                 val cipher = ((it.result?.data) as HashMap<*, *>)["encrypted"].toString()
+                val request = LogInRequest(userName, cipher)
+                NetworkApi().getNetworkService().login(request).enqueue(object : Callback<LogInResult> {
+                    override fun onResponse(call: Call<LogInResult>, response: Response<LogInResult>) {
+                        when (response.code()) {
+                            HttpURLConnection.HTTP_OK -> {
+                                Application.prefs?.saveData(R.string.sp_access_token, response.body()?.access_token
+                                        ?: "")
+                                Application.prefs?.saveDataInt(R.string.sp_id_person, response.body()?.idPerson
+                                        ?: 0)
+                                Application.prefs?.saveData(R.string.sp_person_name, response.body()?.nameOfficer
+                                        ?: "")
+                                Application.prefs?.saveData(R.string.sp_person_f_last_name, response.body()?.lastNameOfficer
+                                        ?: "")
+                                Application.prefs?.saveData(R.string.sp_person_m_last_name, response.body()?.secLastNameOfficer
+                                        ?: "")
+                                Application.prefs?.saveData(R.string.sp_person_photo_url, response.body()?.urlPhoto
+                                        ?: "")
+                                Application.prefs?.saveDataBool(R.string.sp_has_session, true)
+                                listener.onLoginSuccessful()
+                            }
+                            HttpURLConnection.HTTP_UNAUTHORIZED -> listener.onError(Application.getContext().getString(R.string.e_user_pss_incorrect))
+                            else -> listener.onError(Application.getContext().getString(R.string.e_other_problem_internet))
+                        }
+                    }
 
+                    override fun onFailure(call: Call<LogInResult>, t: Throwable) {
+                        listener.onError(t.message
+                                ?: Application.getContext().getString(R.string.e_other_problem_internet))
+                    }
+                })
             }
         }
-        /*if (user == null || hash != user.password) {
-            listener.onError(Application.getContext().getString(R.string.e_user_pss_incorrect))
-        } else {
-            Application.prefs?.saveDataInt(R.string.sp_id_township_person, user.idPersonTownship)
-            Application.prefs?.saveDataInt(R.string.sp_id_person, user.idPerson)
-            Application.prefs?.saveData(R.string.sp_person_name, user.name)
-            Application.prefs?.saveData(R.string.sp_person_f_last_name, user.fLastName)
-            Application.prefs?.saveData(R.string.sp_person_m_last_name, user.mLastName)
-            Application.prefs?.saveData(R.string.sp_no_employee, user.employee)
-            FirebaseEvents.registerUserProperties()
-            listener.onLoginSuccessful()
-        }*/
-
-        //listener.onLoginSuccessful()
-    }
-
-    private fun processCatalogs(data: DownloadCatalogs) {
-        CatalogsSyncManager.savePersonAttribute(data.personAttribute)
-        CatalogsSyncManager.savePersonAccount(data.personAccount)
-        CatalogsSyncManager.saveAdscription(data.adscription)
-        CatalogsSyncManager.saveAttribute(data.attribute)
-        CatalogsSyncManager.saveColor(data.color)
-        CatalogsSyncManager.saveConfiguration(data.configuration)
-        CatalogsSyncManager.saveNonWorkingDay(data.nonWorkingDay)
-        CatalogsSyncManager.saveState(data.state)
-        CatalogsSyncManager.saveArticleInfraction(data.articleInfraction)
-        CatalogsSyncManager.saveAuthorityExpedition(data.authorityExpedition)
-        CatalogsSyncManager.saveInfractionDisposition(data.infractionDisposition)
-        CatalogsSyncManager.saveIdentifierDocument(data.identifierDocument)
-        CatalogsSyncManager.saveRetainedDocument(data.retainedDocument)
-        CatalogsSyncManager.saveFractionInfraction(data.fractionInfraction)
-        CatalogsSyncManager.saveTypeLicense(data.typeLicense)
-        CatalogsSyncManager.saveTypeVehicle(data.typeVehicle)
-        CatalogsSyncManager.saveBrandVehicle(data.brandVehicle)
-        CatalogsSyncManager.saveModule(data.module)
-        CatalogsSyncManager.saveSepomex(data.townshipSepomex)
-        CatalogsSyncManager.savePerson(data.person)
-        CatalogsSyncManager.saveTownhallPerson(data.townhallPerson)
-        CatalogsSyncManager.saveSubBrandVehicle(data.subBrandVehicle)
-        CatalogsSyncManager.saveSynch(data.synchonization)
     }
 }

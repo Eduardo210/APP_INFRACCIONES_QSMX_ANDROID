@@ -3,17 +3,19 @@
 
     <!-- Shared Preferences -->
     <string name="sp_has_config_prefix">has_config_prefix</string>
-    <string name="sp_ip_address">ip_address</string>
+    <string name="sp_access_token">access_token</string>
+    <string name="sp_id_person">id_person</string>
+    <string name="sp_person_name">person_name</string>
+    <string name="sp_person_f_last_name">person_f_last_name</string>
+    <string name="sp_person_m_last_name">person_m_last_name</string>
+    <string name="sp_person_photo_url">person_photo_url</string>
+    <string name="sp_has_session">has_session</string>
     <string name="sp_firebase_token_push">firebase_token_push</string>
     <string name="sp_id_state">id_state</string>
     <string name="sp_id_township">id_township</string>
     <string name="sp_township_name">township_name</string>
     <string name="sp_prefix">prefix</string>
-    <string name="sp_id_person">id_person</string>
     <string name="sp_id_township_person">id_township_person</string>
-    <string name="sp_person_name">person_name</string>
-    <string name="sp_person_f_last_name">person_f_last_name</string>
-    <string name="sp_person_m_last_name">person_m_last_name</string>
     <string name="sp_no_employee">no_employee</string>
 
     <!-- Remote Config Strings -->
@@ -65,6 +67,7 @@
     <!-- Dashboard Infraction String -->
     <string name="t_toolbar_title_infraction">Infracciones</string>
     <string name="t_toolbar_subtitle_infraction">Control y registro de infracciones</string>
+    <string name="t_toolbar_hello">¡Hola! Bienvenid@</string>
     <string name="t_last_infractions">Últimas infracciones</string>
 
     <!-- New Infraction Strings -->

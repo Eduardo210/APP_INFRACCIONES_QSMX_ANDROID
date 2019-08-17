@@ -44,7 +44,11 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                 dialog.listener = this
                 dialog.isCancelable = false
                 dialog.show(supportFragmentManager, InitialConfigurationDialog::class.java.simpleName)
+            } else if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
+                router.presentMainActivity()
             }
+        } else if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
+            router.presentMainActivity()
         } else {
             onError(Application.getContext().getString(R.string.e_without_internet))
         }
@@ -124,7 +128,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                     onError(getString(R.string.e_empty_fields))
                 } else {
                     showLoader(getString(R.string.l_log_in))
-                    iterator.login(binding.edtUserLogIn.text.toString().toUpperCase(), binding.edtDwpLogIn.text.toString().toUpperCase())
+                    iterator.login(binding.edtUserLogIn.text.toString(), binding.edtDwpLogIn.text.toString())
                 }
             }
         }

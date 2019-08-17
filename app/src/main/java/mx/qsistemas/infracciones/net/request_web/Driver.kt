@@ -1,4 +1,4 @@
-package mx.qsistemas.infracciones.net.RequestNewInfraction
+package mx.qsistemas.infracciones.net.request_web
 
 import com.google.gson.annotations.SerializedName
 

@@ -261,10 +261,10 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         //1.1.- Generar la nueva lista.
         itemInfraOffLine.forEach { infra ->
             val job = GlobalScope.launch(Dispatchers.Main) {
-                insuredDocument = CatalogsFirebaseManager.getValue(infra.id_doc_ident, FS_COL_INSURED_DOC)
-                brand = CatalogsFirebaseManager.getValue(infra.brand_reference, FS_COL_BRANDS)
-                model = CatalogsFirebaseManager.getValue(infra.sub_brand_id, FS_COL_MODELS)
-                colour = CatalogsFirebaseManager.getValue(infra.colour_id, FS_COL_COLORS)
+                insuredDocument = CatalogsFirebaseManager.getValue(infra.id_doc_ident, FS_COL_INSURED_DOC,"value")
+                brand = CatalogsFirebaseManager.getValue(infra.brand_reference, FS_COL_BRANDS,"value")
+                model = CatalogsFirebaseManager.getValue(infra.sub_brand_id, FS_COL_MODELS,"value")
+                colour = CatalogsFirebaseManager.getValue(infra.colour_id, FS_COL_COLORS,"value")
             }
             job.join()
 
@@ -361,6 +361,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         infringement.infringement = SearchManagerWeb.getInfraction(id.toLong())
         infringement.vehicleVehicles = SearchManagerWeb.getVehicle(id.toLong())
         infringement.driverLicense = SearchManagerWeb.getDriverLicense(id.toLong())
+        infringement.fractions = SearchManagerWeb.getFractionsInfringements(id.toLong())
 
         listener.onResultInfractionByIdOffline(infringement, origin)
     }

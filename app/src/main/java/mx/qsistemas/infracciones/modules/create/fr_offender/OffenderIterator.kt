@@ -258,14 +258,14 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         return 0
     }
 
-    override fun saveData(notify: Boolean) {
-        var totalUmas: Float = 0F
-        SingletonInfraction.idPersonTownship = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
-        /* Get configuration */
-        //config = SaveInfractionManager.getConfig()
-        /* Calculate infraction article variables */
-        SingletonInfraction.motivationList.forEach {
-            totalImport +=SingletonInfraction.townshipInfraction.uma_rate * it.fraction.uma
+            override fun saveData(notify: Boolean) {
+                var totalUmas: Float = 0F
+                SingletonInfraction.idPersonTownship = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
+                /* Get configuration */
+                //config = SaveInfractionManager.getConfig()
+                /* Calculate infraction article variables */
+                SingletonInfraction.motivationList.forEach {
+                    totalImport +=SingletonInfraction.townshipInfraction.uma_rate * it.fraction.uma
             totalUmas+= it.fraction.uma
         }
         SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport).replace(",", ".")
@@ -408,11 +408,11 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 val trafficViolation = InfringementRelfractionInfringements(
                         0,
                         it.fraction.uma,
+                        it.article.documentReference?.id ?:"",
                         it.fraction.childReference?.id!!,
-                        //TODO: Tiene que existir una Referencia a firebase
                         SingletonInfraction.idNewInfraction,
                         it.motivation,
-                        "250".toFloat()) //TODO: No sé de donde viene el monto xd
+                        "250".toFloat())
                 SaveInfractionManagerWeb.saveTrafficViolation(trafficViolation)
             }
             /* Step 9. Save Evidence Photos */

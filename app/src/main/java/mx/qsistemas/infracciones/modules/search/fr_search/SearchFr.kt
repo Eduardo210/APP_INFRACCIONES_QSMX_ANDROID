@@ -130,7 +130,6 @@ class SearchFr : Fragment()
                         iterator.value.doSearchByFilter(idDocIdent, binding.etFilterAny.text.toString())
                     }
                 } else {
-                    activity.hideLoader()
                     activity.showLoader("Buscando infracciones")
                     if (!binding.edtFilterFolio.text.toString().equals("")) {
                         lifecycleScope.launch {
@@ -166,7 +165,7 @@ class SearchFr : Fragment()
 
     }
 
-    override suspend fun onPrintClick(view: View, position: Int, origin: Int) {
+    override fun onPrintClick(view: View, position: Int, origin: Int) {
 
         activity.showLoader("Espere ...")
         val idInfrac: Long
@@ -174,7 +173,9 @@ class SearchFr : Fragment()
             PRINT_LOCAL -> {
                 idInfrac = itemInfraOffLine[position].id_infraction
                 Log.d("ID_INFRACCION_LIST", "$idInfrac")
-                iterator.value.doSearchByIdInfractionOffLine(idInfrac.toString(), PRINT)
+                lifecycleScope.launch {
+                    iterator.value.doSearchByIdInfractionOffLine(idInfrac.toString(), PRINT)
+                }
             }
             PRINT_ONLINE -> {
                 idInfrac = itemInfraOnline[position].id_infraction
@@ -193,6 +194,9 @@ class SearchFr : Fragment()
         var doc_ident = ""
         var authority = ""
         var issued_in = ""
+        var article = ""
+        var fraction = ""
+
 
 
         SingletonTicket.dateTicket = infraction.infringement?.date ?: ""
@@ -214,13 +218,13 @@ class SearchFr : Fragment()
         }
         /*Obtener catálogos desde firebase*/
         val job = GlobalScope.launch(Dispatchers.Main) {
-            brand = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.brand_reference.toString(), FS_COL_BRANDS)
-            model = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.sub_brand_id.toString(), FS_COL_MODELS)
-            type = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.class_type_id.toString(), FS_COL_CLASS_TYPE)
-            colour = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.colour_id.toString(), FS_COL_COLORS)
-            doc_ident = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.identifier_document_id.toString(), FS_COL_IDENTIF_DOC)
-            authority = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.document_type.toString(), FS_COL_TYPE_DOC)
-            issued_in = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.issued_in_id.toString(), FS_COL_STATES)
+            brand = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.brand_reference.toString(), FS_COL_BRANDS, "value")
+            model = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.sub_brand_id.toString(), FS_COL_MODELS, "value")
+            type = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.class_type_id.toString(), FS_COL_CLASS_TYPE, "value")
+            colour = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.colour_id.toString(), FS_COL_COLORS, "value")
+            doc_ident = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.identifier_document_id.toString(), FS_COL_IDENTIF_DOC, "value")
+            authority = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.document_type.toString(), FS_COL_TYPE_DOC, "value")
+            issued_in = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.issued_in_id.toString(), FS_COL_STATES, "value")
 
         }
         job.join()
@@ -265,27 +269,36 @@ class SearchFr : Fragment()
 
         SingletonTicket.noIdentifierVehicle = infraction.vehicleVehicles?.num_document ?: ""
 
-        if(authority.isNotEmpty()){
-            SingletonTicket.expeditionAuthVehicle = infraction.vehicleVehicles?.document_type ?: ""
+        if (authority.isNotEmpty()) {
+            SingletonTicket.expeditionAuthVehicle = authority
         }
 
-        if(issued_in.isNotEmpty()){
+        if (issued_in.isNotEmpty()) {
             SingletonTicket.stateExpVehicle = issued_in
         }
 
-        /*infra_fracc.forEach { fracc ->
-            val article = fracc.motivation.let {
-                SingletonTicket.ArticleFraction(
-                        fracc.article,
-                        fracc.fraction,
-                        fracc.umas,
-                        fracc.points, it)
-            }
+        infraction.fractions?.forEach { fracc ->
 
-            article.let { SingletonTicket.fractionsList.add(it) }
+            val jobFractions = GlobalScope.launch(Dispatchers.Main) {
+                article = CatalogsFirebaseManager.getValue(fracc.articles_reference, FS_COL_ARTICLES, "number")
+                fraction = CatalogsFirebaseManager.getValue(fracc.fraction_id, FS_COL_FRACTIONS, "number")
+            }
+            jobFractions.join()
+
+            Log.d("FRACTIONS", article)
+            Log.d("FRACTIONS", fraction)
+
+            SingletonTicket.ArticleFraction(
+                    article,
+                    fraction,
+                    fracc.uma.toString(),
+                    "",
+                    fracc.reason)
+
+            //articulos.let { SingletonTicket.fractionsList.add(it) }
         }
 
-
+/*
         SingletonTicket.streetInfraction = infraction.CALLE_INFRA.toString()
 
         if (!infraction.ENTRE_CALLE_INFRA.isNullOrEmpty()) {

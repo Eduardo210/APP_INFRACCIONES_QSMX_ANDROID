@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_resume_infra.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
@@ -55,9 +53,7 @@ class HistoricalAdapter(private val infraction: MutableList<InfractionItemList>
                 itemView.txt_resume_art_frac.text = reason
                 itemView.txt_date_infra.text = date
                 itemView.btn_payment.visibility = View.GONE
-                itemView.btn_print.setOnClickListener { view -> GlobalScope.launch {
-                    listener.onPrintClick(view, position, PRINT_LOCAL) }
-                }
+                itemView.btn_print.setOnClickListener { view -> listener.onPrintClick(view, position, PRINT_LOCAL) }
                 itemView.btn_payment.setOnClickListener { view -> listener.onPaymentClick(view, position, PAYMENT_LOCAL) }
                 itemView.txt_status_payment.visibility = View.GONE
                 ID_INFRACTION = id_infraction.toString()

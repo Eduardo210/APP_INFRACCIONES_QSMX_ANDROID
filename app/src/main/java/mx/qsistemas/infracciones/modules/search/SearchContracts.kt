@@ -37,7 +37,7 @@ class SearchContracts {
     }
 
     interface OnInfractionClick {
-        suspend fun onPrintClick(view: View, position: Int, origin: Int)
+        fun onPrintClick(view: View, position: Int, origin: Int)
         fun onPaymentClick(view: View, position: Int, origin: Int)
     }
 

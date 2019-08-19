@@ -4,7 +4,7 @@
     <!-- Shared Preferences -->
     <string name="sp_has_config_prefix">has_config_prefix</string>
     <string name="sp_access_token">access_token</string>
-    <string name="sp_id_person">id_person</string>
+    <string name="sp_id_officer">id_officer</string>
     <string name="sp_person_name">person_name</string>
     <string name="sp_person_f_last_name">person_f_last_name</string>
     <string name="sp_person_m_last_name">person_m_last_name</string>
@@ -15,8 +15,6 @@
     <string name="sp_id_township">id_township</string>
     <string name="sp_township_name">township_name</string>
     <string name="sp_prefix">prefix</string>
-    <string name="sp_id_township_person">id_township_person</string>
-    <string name="sp_no_employee">no_employee</string>
 
     <!-- Remote Config Strings -->
     <string name="rc_version">desarrollo_version</string>

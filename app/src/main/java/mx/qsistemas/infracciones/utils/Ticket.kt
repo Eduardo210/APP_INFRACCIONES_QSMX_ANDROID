@@ -133,7 +133,7 @@ class Ticket {
             printTest.put(getPrintObject("FIRMA\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("AGENTE:\n", "2", "center", "0"))
             printTest.put(getPrintObject("${SingletonTicket.nameAgent}\n\n", "2", "center", "0"))
-            printTest.put(getPrintObject("EMPLEADO: ${Application.prefs?.loadData(R.string.sp_no_employee, "")}\n\n\n\n\n\n", "2", "center", "0"))
+            printTest.put(getPrintObject("EMPLEADO: ${SingletonTicket.idAgent}\n\n\n\n\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("FIRMA\n\n", "2", "center", "0"))
 
             // Referencia de pago

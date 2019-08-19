@@ -216,6 +216,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             }
         }
     }
+
     override fun getPositionState(obj: GenericCatalog): Int {
         for (i in 0 until statesList.size)
             if (statesList[i].documentReference == obj.documentReference)
@@ -258,15 +259,15 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         return 0
     }
 
-            override fun saveData(notify: Boolean) {
-                var totalUmas: Float = 0F
-                SingletonInfraction.idPersonTownship = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
-                /* Get configuration */
-                //config = SaveInfractionManager.getConfig()
-                /* Calculate infraction article variables */
-                SingletonInfraction.motivationList.forEach {
-                    totalImport +=SingletonInfraction.townshipInfraction.uma_rate * it.fraction.uma
-            totalUmas+= it.fraction.uma
+    override fun saveData(notify: Boolean) {
+        var totalUmas: Float = 0F
+        SingletonInfraction.idOfficer = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
+        /* Get configuration */
+        //config = SaveInfractionManager.getConfig()
+        /* Calculate infraction article variables */
+        SingletonInfraction.motivationList.forEach {
+            totalImport += SingletonInfraction.townshipInfraction.uma_rate * it.fraction.uma
+            totalUmas += it.fraction.uma
         }
         SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport).replace(",", ".")
         val fiftiethDiscount = totalImport * .5
@@ -294,9 +295,11 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     0,
                     SingletonInfraction.yearVehicle,
                     SingletonInfraction.colorVehicle.documentReference?.id ?: "",
+                    SingletonInfraction.isNewColor,
                     SingletonInfraction.typeVehicle.documentReference?.id ?: "",
                     SingletonInfraction.subBrandVehicle.reference?.id ?: "",
                     SingletonInfraction.subBrandVehicle.childReference?.id ?: "",
+                    SingletonInfraction.isNewSubBrand,
                     SingletonInfraction.identifierDocument.documentReference?.id ?: "",
                     SingletonInfraction.stateIssuedIn.documentReference?.id ?: "",
                     SingletonInfraction.noDocument,
@@ -318,8 +321,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     "active",
                     SingletonInfraction.isPersonAbstent,
                     SingletonInfraction.retainedDocument.documentReference?.id ?: "",
-                    SingletonInfraction.dispositionRemited.documentReference?.id ?:"",
-                    SingletonInfraction.idPersonTownship,
+                    SingletonInfraction.dispositionRemited.documentReference?.id ?: "",
+                    SingletonInfraction.idOfficer,
                     idVehicle,
                     actualDay,
                     actualTime,
@@ -363,9 +366,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 /* Step 6:1. Save Person-Address Relation */
 
 
-
                 val previousFifteen = dateFormat.parse(fifteenthDay)!!
-                val previousThirty = dateFormat.parse(thirtythDay) !!
+                val previousThirty = dateFormat.parse(thirtythDay)!!
 
                 val fifteenthDayF = SimpleDateFormat("dd/MM/yyyy").format(previousFifteen)
                 val thirtythDayF = SimpleDateFormat("dd/MM/yyyy").format(previousThirty)
@@ -395,10 +397,13 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.streetInfraction,
                     SingletonInfraction.betweenStreet1,
                     SingletonInfraction.betweenStreet2,
+                    SingletonInfraction.townshipInfraction.childReference?.id ?: "",
                     SingletonInfraction.colonnyInfraction.childReference?.id ?: "",
                     SingletonInfraction.zipCodeInfraction.childReference?.id ?: "",
                     SingletonInfraction.stateInfraction.documentReference?.id ?: "",
-                    SingletonInfraction.idNewInfraction.toString() )
+                    SingletonInfraction.idNewInfraction,
+                    SingletonInfraction.latitudeInfraction,
+                    SingletonInfraction.longitudeInfraction)
             val idInfractionAddress = SaveInfractionManagerWeb.saveAddressInfraction(infractionAddress)
             /* Step 7:1. Save Infraction-Address Relation */
             //TODO:Pendiente, preguntar
@@ -417,8 +422,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             }
             /* Step 9. Save Evidence Photos */
             //TODO:Aquí me quedé xd
-            val evidence1 = InfringementPicturesInfringement(0,SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction.toString())
-            val evidence2 = InfringementPicturesInfringement(0,SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction.toString())
+            val evidence1 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
+            val evidence2 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
             //val evidencePhoto = InfractionEvidence(0, SingletonInfraction.idNewInfraction.toInt(), SingletonInfraction.evidence1, SingletonInfraction.evidence2, false)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence1)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
@@ -435,7 +440,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
     override fun updateData() {
         val rootObj = JSONObject()
-        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong()
+        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
 
 
         rootObj.put("IdInfraccion", SingletonInfraction.idNewInfraction)
@@ -448,29 +453,29 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
         Log.d("JSON-UPDATE_PERSON", rootObj.toString())
 
-       /* NetworkApi().getNetworkService().updatePerson(rootObj.toString()).enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    val data = Gson().fromJson(response.body(), ServiceResponsePerson::class.java)
-                    Log.d("UPDATE-PERSON", "${data.ids[0]}")
-                    if (data.flag) {
-                        listener.onDataUpdated(data.ids[0])
-                    } else {
-                        listener.onError(data.message)
-                    }
+        /* NetworkApi().getNetworkService().updatePerson(rootObj.toString()).enqueue(object : Callback<String> {
+             override fun onResponse(call: Call<String>, response: Response<String>) {
+                 if (response.code() == HttpURLConnection.HTTP_OK) {
+                     val data = Gson().fromJson(response.body(), ServiceResponsePerson::class.java)
+                     Log.d("UPDATE-PERSON", "${data.ids[0]}")
+                     if (data.flag) {
+                         listener.onDataUpdated(data.ids[0])
+                     } else {
+                         listener.onError(data.message)
+                     }
 
-                }
-            }
+                 }
+             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                listener.onError(t.message ?: "")
-            }
-        })*/
+             override fun onFailure(call: Call<String>, t: Throwable) {
+                 listener.onError(t.message ?: "")
+             }
+         })*/
     }
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
         this.txInfo = txInfo
-        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
+        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
         val paymentCardData = UpdatePaymentRequest.UpdatePaymentCardData(txInfo.aid, txInfo.apn, txInfo.arqc, txInfo.authorization,
                 txInfo.entryType, txInfo.maskedPan, txInfo.txDate, "", txInfo.txTime, "", idRegUser.toString(),
                 txInfo.affiliation, txInfo.expirationDate, "Aprobado", txInfo.brandCard, txInfo.typeCard,
@@ -555,8 +560,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.value
         SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value
         SingletonInfraction.motivationList.forEach { art ->
-             val article = SingletonTicket.ArticleFraction(art.article.number, art.fraction.number, art.fraction.uma.toString(), art.motivation)
-             SingletonTicket.fractionsList.add(article)
+            val article = SingletonTicket.ArticleFraction(art.article.number, art.fraction.number, art.fraction.uma.toString(), art.motivation)
+            SingletonTicket.fractionsList.add(article)
         }
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
@@ -573,7 +578,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /*Regresar la fecha a su forma original*/
 
         val previousFifteen = dateFormat.parse(fifteenthDay)!!
-        val previousThirty = dateFormat.parse(thirtythDay) !!
+        val previousThirty = dateFormat.parse(thirtythDay)!!
 
         val fifteenthDayF = SimpleDateFormat("dd/MM/yyyy").format(previousFifteen)
         val thirtythDayF = SimpleDateFormat("dd/MM/yyyy").format(previousThirty)

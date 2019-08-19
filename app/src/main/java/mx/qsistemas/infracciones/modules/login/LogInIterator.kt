@@ -43,7 +43,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                             HttpURLConnection.HTTP_OK -> {
                                 Application.prefs?.saveData(R.string.sp_access_token, response.body()?.access_token
                                         ?: "")
-                                Application.prefs?.saveDataInt(R.string.sp_id_person, response.body()?.idPerson
+                                Application.prefs?.saveDataInt(R.string.sp_id_officer, response.body()?.idPerson
                                         ?: 0)
                                 Application.prefs?.saveData(R.string.sp_person_name, response.body()?.nameOfficer
                                         ?: "")

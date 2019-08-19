@@ -38,6 +38,7 @@ object SingletonTicket {
     var isRemitedInfraction: Boolean = false
     var remitedDispositionInfraction: String = ""
     var nameAgent: String = ""
+    var idAgent: String = ""
 
     var paymentAuthCode: String = ""
     var captureLineList: MutableList<CaptureLine> = mutableListOf()

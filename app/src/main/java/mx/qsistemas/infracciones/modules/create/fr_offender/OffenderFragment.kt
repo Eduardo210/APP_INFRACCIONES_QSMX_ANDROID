@@ -129,6 +129,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         iterator.value.getStatesList()
         iterator.value.getStatesIssuedList()
         iterator.value.getTypeLicenseAdapter()
+        iterator.value.getHolidays()
     }
 
     override fun fillFields() {
@@ -220,7 +221,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                 iterator.value.getColoniesList(SingletonInfraction.zipCodeOffender.childReference)
             }
             binding.lytOffender.spnColony.id -> {
-                SingletonInfraction.colonnyInfraction = iterator.value.coloniesList[p2]
+                SingletonInfraction.colonyOffender = iterator.value.coloniesList[p2]
             }
             binding.lytOffender.spnLicenseType.id -> {
                 SingletonInfraction.typeLicenseOffender = iterator.value.licenseTypeList[p2]
@@ -322,7 +323,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                             SingletonInfraction.stateOffender.documentReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_state_offender))
-                            }
+         1                   }
                             SingletonInfraction.townshipOffender.childReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_township_offender))

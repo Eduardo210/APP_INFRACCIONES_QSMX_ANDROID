@@ -74,8 +74,13 @@ object SaveInfractionManagerWeb {
     }
     fun saveDriverLicense(driverLicense: DriverDriverLicense) {
         GlobalScope.launch {
-            Application.m_database_web?.driverLicenseDaoWeb()?.insert(driverLicense)!!
+            Application.m_database_web?.driverLicenseDaoWeb()?.insert(driverLicense)
         }
 
+    }
+    fun saveCaptureLine(captureLine: InfringementCapturelines) {
+       GlobalScope.launch {
+           Application.m_database_web?.captureLineDaoWeb()?.insert(captureLine)
+       }
     }
 }

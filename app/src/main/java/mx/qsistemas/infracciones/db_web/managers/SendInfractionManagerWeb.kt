@@ -29,7 +29,7 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, InfringementAddressInfringement>() {
             override fun doInBackground(vararg p0: Void?): InfringementAddressInfringement {
                 return Application.m_database_web?.addressInfringementDaoWeb()?.selectInfractionAddres(idInfraction)
-                        ?: InfringementAddressInfringement(0, "", "", "", "", "", "", "", "", 0.0, 0.0)
+                        ?: InfringementAddressInfringement(0, "", "", "", "", "", "", "")
             }
         }.execute().get()
     }
@@ -37,16 +37,16 @@ object SendInfractionManagerWeb {
     fun getInfractionMotivationList(idInfraction: Long): MutableList<InfringementRelfractionInfringements> {
         return object : AsyncTask<Void, Void, MutableList<InfringementRelfractionInfringements>>() {
             override fun doInBackground(vararg p0: Void?): MutableList<InfringementRelfractionInfringements> {
-                return Application.m_database_web?.infractionFractionDaoWeb()?.selectByArticle(idInfraction)
+                return Application.m_database_web?.infractionFractionDaoWeb()?.selectFractions(idInfraction)
                         ?: mutableListOf()
             }
         }.execute().get()
     }
 
-    fun getPersonLicense(idDriver: Long): DriverDriverLicense {
+    fun getPersonLicense(idInfraction: Long): DriverDriverLicense {
         return object : AsyncTask<Void, Void, DriverDriverLicense>() {
             override fun doInBackground(vararg p0: Void?): DriverDriverLicense {
-                return Application.m_database_web?.driverLicenseDaoWeb()?.selectDriverLicense(idDriver)
+                return Application.m_database_web?.driverLicenseDaoWeb()?.selectDriverLicense(idInfraction)
                         ?: DriverDriverLicense(0, "", 0, "", "")
             }
         }.execute().get()

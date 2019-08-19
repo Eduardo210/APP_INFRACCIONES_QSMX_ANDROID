@@ -16,6 +16,10 @@ interface InfractionDaoWeb {
     @Query(" SELECT * FROM infringement_infringements WHERE SYNC = 0")
     fun selectInfractionsToSend(): MutableList<InfringementInfringements>
 
+    @Query("SELECT * FROM infringement_infringements WHERE id = :idInfraction")
+    fun selectInfraction(idInfraction: Long): InfringementInfringements
+
+
     @Query("SELECT folio FROM infringement_infringements WHERE folio LIKE :prefix ORDER BY id DESC LIMIT 1")
     fun selectLastFolio(prefix: String): String
 

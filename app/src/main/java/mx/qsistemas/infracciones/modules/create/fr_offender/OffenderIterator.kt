@@ -34,6 +34,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     internal lateinit var statesList: MutableList<GenericCatalog>
     internal lateinit var townshipList: MutableList<Townships>
     internal lateinit var zipCodesList: MutableList<GenericSubCatalog>
+    internal lateinit var holidayList: MutableList<String>
     internal lateinit var stateIssuedLicenseList: MutableList<GenericCatalog>
     internal lateinit var coloniesList: MutableList<GenericSubCatalog>
     internal lateinit var licenseTypeList: MutableList<GenericCatalog>
@@ -42,7 +43,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     /* Variable From Saved Infraction */
     private val actualDay = SimpleDateFormat("yyyy-MM-dd").format(Date())
     private val actualTime = SimpleDateFormat("HH:mm:ss").format(Date())
-    private val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd") //"dd/MM/yyyy"
     private lateinit var nonWorkingDays: MutableList<NonWorkingDay>
     private lateinit var config: Config
     private var totalImport = 0F
@@ -53,6 +54,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     private var newFolio = ""
     private var captureLine1 = ""
     private var captureLine2 = ""
+    private var uma_rate: Float = 0.0f
 
     override fun getStatesList() {
         Application.firestore?.collection(FS_COL_STATES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
@@ -199,6 +201,21 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         }
     }
 
+    override fun getHolidays() {
+        Application.firestore?.collection(FS_COL_HOLIDAYS)?.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                listener.onError(exception.message
+                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
+            }
+            holidayList = mutableListOf()
+            val list = mutableListOf<String>()
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (document in snapshot.documents) {
+                    holidayList.add(document.id)
+                }
+            }
+        }
+    }
     override fun getPositionState(obj: GenericCatalog): Int {
         for (i in 0 until statesList.size)
             if (statesList[i].documentReference == obj.documentReference)
@@ -242,23 +259,22 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun saveData(notify: Boolean) {
+        var totalUmas: Float = 0F
         SingletonInfraction.idOfficer = Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong()
         /* Get configuration */
         //config = SaveInfractionManager.getConfig()
         /* Calculate infraction article variables */
         SingletonInfraction.motivationList.forEach {
-            totalImport +=60.00f * it.fraction.uma
-            /*totalPoints += it.fraction.penalty_points
-            totalUmas += it.fraction.minimum_wages*/
+            totalImport +=SingletonInfraction.townshipInfraction.uma_rate * it.fraction.uma
+            totalUmas+= it.fraction.uma
         }
         SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport).replace(",", ".")
         val fiftiethDiscount = totalImport * .5
         SingletonInfraction.discountInfraction = "%.2f".format(fiftiethDiscount).replace(",", ".")
         SingletonInfraction.totalInfraction = "%.2f".format(totalImport - fiftiethDiscount).replace(",", ".")
         /* Get future working days */
-        //nonWorkingDays = SaveInfractionManager.getNonWorkingDays()
-        fifteenthDay = "03/08/2019"//getFutureWorkingDay(15)
-        thirtythDay = "18/08/2019"//getFutureWorkingDay(30)
+        fifteenthDay = getFutureWorkingDay(15)
+        thirtythDay = getFutureWorkingDay(30)
         newFolio = generateNewFolio()
         /* Generate all banking capture lines */
         captureLine1 = Utils.generateCaptureLine(newFolio.replace("-", ""), fifteenthDay, "%.2f".format(fiftiethDiscount), "2")
@@ -278,10 +294,13 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     0,
                     SingletonInfraction.yearVehicle,
                     SingletonInfraction.colorVehicle.documentReference?.id ?: "",
-                    SingletonInfraction.subBrandVehicle.childReference?.id ?: "", //TODO: Pendiente de hacer el proceso
+                    SingletonInfraction.typeVehicle.documentReference?.id ?: "",
+                    SingletonInfraction.subBrandVehicle.reference?.id ?: "",
+                    SingletonInfraction.subBrandVehicle.childReference?.id ?: "",
                     SingletonInfraction.identifierDocument.documentReference?.id ?: "",
                     SingletonInfraction.stateIssuedIn.documentReference?.id ?: "",
-                    SingletonInfraction.noDocument)
+                    SingletonInfraction.noDocument,
+                    SingletonInfraction.typeDocument.documentReference?.id ?: "")
 
             val idVehicle = SaveInfractionManagerWeb.saveVehicleInfraction(vehicleInfraction)
 
@@ -294,7 +313,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             val infraction = InfringementInfringements(
                     0,
                     newFolio,
-                    20, //umas
+                    0, //TODO: umas
                     false,
                     "active",
                     SingletonInfraction.isPersonAbstent,
@@ -308,9 +327,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     retainedAnyDocument, // is insured
                     false,
                     SingletonInfraction.typeLicenseOffender.documentReference?.id ?: "",
-                    "100".toFloat(), //amount
+                    0.0f, //amount //TODO: AMOUNT
                     SingletonInfraction.idNewPersonInfraction,
-                    "50".toFloat()) //total de umas
+                    totalUmas)
             SingletonInfraction.idNewInfraction = SaveInfractionManagerWeb.insertInfraction(infraction)
 
             /* Step 5. Save Person-Infraction Relation */
@@ -342,8 +361,33 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
                 SaveInfractionManagerWeb.saveDriverLicense(driverLicense)
                 /* Step 6:1. Save Person-Address Relation */
-                //TODO:Pendiente, preguntar
-                //SaveInfractionManager.savePersonAddressRelation(AddressPerson(idNewPersonAddress.toInt(), SingletonInfraction.idNewPersonInfraction))
+
+
+
+                val previousFifteen = dateFormat.parse(fifteenthDay)!!
+                val previousThirty = dateFormat.parse(thirtythDay) !!
+
+                val fifteenthDayF = SimpleDateFormat("dd/MM/yyyy").format(previousFifteen)
+                val thirtythDayF = SimpleDateFormat("dd/MM/yyyy").format(previousThirty)
+
+                val captureLine1 = InfringementCapturelines(0,
+                        captureLine1,
+                        fifteenthDayF.toString(),
+                        SingletonInfraction.totalInfraction.toFloat(),
+                        "Bancaria",
+                        1,
+                        SingletonInfraction.idNewInfraction.toString())
+
+                SaveInfractionManagerWeb.saveCaptureLine(captureLine1)
+                val captureLine2 = InfringementCapturelines(0,
+                        captureLine2,
+                        thirtythDayF.toString(),
+                        SingletonInfraction.subTotalInfraction.toFloat(),
+                        "Bancaria",
+                        2,
+                        SingletonInfraction.idNewInfraction.toString())
+
+                SaveInfractionManagerWeb.saveCaptureLine(captureLine2)
             }
             /* Step 7. Save Address Information */
             val infractionAddress = InfringementAddressInfringement(
@@ -351,7 +395,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.streetInfraction,
                     SingletonInfraction.betweenStreet1,
                     SingletonInfraction.betweenStreet2,
-                    "tokenCity",
                     SingletonInfraction.colonnyInfraction.childReference?.id ?: "",
                     SingletonInfraction.zipCodeInfraction.childReference?.id ?: "",
                     SingletonInfraction.stateInfraction.documentReference?.id ?: "",
@@ -367,7 +410,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         it.fraction.uma,
                         it.fraction.childReference?.id!!,
                         //TODO: Tiene que existir una Referencia a firebase
-                        SingletonInfraction.idNewInfraction ,
+                        SingletonInfraction.idNewInfraction,
                         it.motivation,
                         "250".toFloat()) //TODO: No sé de donde viene el monto xd
                 SaveInfractionManagerWeb.saveTrafficViolation(trafficViolation)
@@ -427,7 +470,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
         this.txInfo = txInfo
-        val idRegUser = 0//Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
+        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
         val paymentCardData = UpdatePaymentRequest.UpdatePaymentCardData(txInfo.aid, txInfo.apn, txInfo.arqc, txInfo.authorization,
                 txInfo.entryType, txInfo.maskedPan, txInfo.txDate, "", txInfo.txTime, "", idRegUser.toString(),
                 txInfo.affiliation, txInfo.expirationDate, "Aprobado", txInfo.brandCard, txInfo.typeCard,
@@ -485,9 +528,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.noIntOffender.isNotEmpty()) {
             SingletonTicket.noIntOffender = SingletonInfraction.noIntOffender
         }
-        /*if (SingletonInfraction.colonyOffender.isNotEmpty()) {
-            SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender
-        }*/
+        if (SingletonInfraction.colonyOffender.reference != null) {
+            SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender.value
+        }
         if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
         }
@@ -500,35 +543,43 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.licenseIssuedInOffender.documentReference != null) {
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
         }
-        //SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.vehicle_brand
-        /*if (SingletonInfraction.subBrandVehicle.isNotEmpty()) {
-            SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle
-        }*/
-        //SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.type_string
-        //SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle
+        SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.value
+        if (SingletonInfraction.subBrandVehicle.reference != null) {
+            SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle.value
+        }
+        SingletonTicket.typeVehicle = SingletonInfraction.typeVehicle.value
+        SingletonTicket.colorVehicle = SingletonInfraction.colorVehicle.value
         SingletonTicket.modelVehicle = SingletonInfraction.yearVehicle
-        //SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.document
+        SingletonTicket.identifierVehicle = SingletonInfraction.identifierDocument.value
         SingletonTicket.noIdentifierVehicle = SingletonInfraction.noDocument
-        //SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.authority
+        SingletonTicket.expeditionAuthVehicle = SingletonInfraction.typeDocument.value
         SingletonTicket.stateExpVehicle = SingletonInfraction.stateIssuedIn.value
         SingletonInfraction.motivationList.forEach { art ->
-            /* val article = SingletonTicket.ArticleFraction(art.article.article, art.fraction.fraccion, art.fraction.minimum_wages.toString(),
-                     art.fraction.penalty_points.toString(), art.motivation)
-             SingletonTicket.fractionsList.add(article)*/
+             val article = SingletonTicket.ArticleFraction(art.article.number, art.fraction.number, art.fraction.uma.toString(), art.motivation)
+             SingletonTicket.fractionsList.add(article)
         }
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
         SingletonTicket.andStreetInfraction = SingletonInfraction.betweenStreet2
-        /*SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction
-        SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.document*/
+        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction.value
+        SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.value
         SingletonTicket.isRemitedInfraction = SingletonInfraction.isRemited
-        /*if (SingletonInfraction.isRemited) {
-            SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.disposition
-        }*/
+        if (SingletonInfraction.isRemited) {
+            SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
+        }
         SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_f_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_m_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_name, "")}"
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
+
+        /*Regresar la fecha a su forma original*/
+
+        val previousFifteen = dateFormat.parse(fifteenthDay)!!
+        val previousThirty = dateFormat.parse(thirtythDay) !!
+
+        val fifteenthDayF = SimpleDateFormat("dd/MM/yyyy").format(previousFifteen)
+        val thirtythDayF = SimpleDateFormat("dd/MM/yyyy").format(previousThirty)
+
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDayF.toString(), SingletonInfraction.totalInfraction))
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDayF.toString(), SingletonInfraction.subTotalInfraction))
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 listener.onTicketPrinted()
@@ -564,8 +615,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
                 val calculateDay = dateFormat.format(calendar.time)
                 var isNoHabil = false
-                nonWorkingDays.forEach {
-                    if (it.date == calculateDay) {
+                holidayList.forEach {
+                    if (it == calculateDay) {
                         isNoHabil = true
                     }
                 }

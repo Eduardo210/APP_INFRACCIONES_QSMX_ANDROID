@@ -11,6 +11,6 @@ interface DriverDriverLicenseDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(driverLicense: DriverDriverLicense)
 
-    @Query("SELECT * FROM driver_driverlicense WHERE driver_id = :idDriver")
-    fun selectDriverLicense(idDriver: Long): DriverDriverLicense
+    @Query("SELECT driver_lic.* FROM infringement_infringements infra LEFT JOIN driver_divers driver ON infra.driver_id = driver.id LEFT JOIN driver_driverlicense driver_lic ON driver.id = driver_lic.driver_id WHERE infra.id = :idInfraction")
+    fun selectDriverLicense(idInfraction: Long): DriverDriverLicense
 }

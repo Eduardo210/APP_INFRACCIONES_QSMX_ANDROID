@@ -17,13 +17,7 @@ object SaveInfractionManager {
         }.execute().get()
     }
 
-    fun getNonWorkingDays(): MutableList<NonWorkingDay> {
-        return object : AsyncTask<Void, Void, MutableList<NonWorkingDay>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<NonWorkingDay> {
-                return Application.m_database?.nonWorkingDayDao()?.selectFutureDays()!!
-            }
-        }.execute().get()
-    }
+
 
     fun getLastFolioSaved(prefix: String): String {
         return object : AsyncTask<Void, Void, String>() {
@@ -33,6 +27,13 @@ object SaveInfractionManager {
             }
         }.execute().get()
     }*/
+    fun getNonWorkingDays(): MutableList<NonWorkingDay> {
+        return object : AsyncTask<Void, Void, MutableList<NonWorkingDay>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<NonWorkingDay> {
+                return Application.m_database?.nonWorkingDayDao()?.selectFutureDays()!!
+            }
+        }.execute().get()
+    }
 
     fun insertInfraction(infraction: Infraction): Long {
         return object : AsyncTask<Void, Void, Long>() {

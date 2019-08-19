@@ -9,5 +9,6 @@ data class InfractionItem(@ColumnInfo(name = "id") val id_infraction: Long,
                           @ColumnInfo(name = "sync") val sync: Boolean,
                           @ColumnInfo(name = "identifier_document_id") val id_doc_ident: String,
                           @ColumnInfo(name = "sub_brand_id") val sub_brand_id: String,
+                          @ColumnInfo(name = "brand_reference") val brand_reference: String,
                           @ColumnInfo(name = "colour_id") val colour_id: String,
                           @ColumnInfo(name = "date") val date: String)

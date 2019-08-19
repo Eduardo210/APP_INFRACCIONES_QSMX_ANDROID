@@ -14,6 +14,6 @@ interface InfractionFractionDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(list: InfringementRelfractionInfringements)
 
-    @Query("SELECT * FROM infringement_relInfraction_infringements WHERE infringements_id = :idFraction")//TODO: Preguntar a Maik por la entidad de Artículos
-    fun selectByArticle(idFraction: Long): MutableList<InfringementRelfractionInfringements>
+    @Query("SELECT * FROM infringement_relInfraction_infringements WHERE infringements_id = :idInfraction")
+    fun selectFractions(idInfraction: Long): MutableList<InfringementRelfractionInfringements>
 }

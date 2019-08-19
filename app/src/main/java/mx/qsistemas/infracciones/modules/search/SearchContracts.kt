@@ -4,12 +4,12 @@ package mx.qsistemas.infracciones.modules.search
 import android.app.Activity
 import android.view.View
 import android.widget.ArrayAdapter
-import mx.qsistemas.infracciones.db.entities.InfractionLocal
 import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
+import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
+import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
-import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
 class SearchContracts {
@@ -18,23 +18,26 @@ class SearchContracts {
         fun onResultSearch(listInfractions: MutableList<InfractionList.Results>)
         fun onResultSearchOffLine(listInfractions: MutableList<InfractionItemList>)
         fun onResultInfractionById(infraction: InfractionSearch, origin: Int)
-        fun onResultInfractionByIdOffline(infraction: InfractionLocal, infra_fracc: MutableList<SingletonTicket.ArticleFraction> ,origin: Int)
+        suspend fun onResultInfractionByIdOffline(infraction: InfringementData,origin: Int)
         fun onResultSavePayment(msg: String, flag: Boolean)
         fun onTicketPrinted()
+        fun onIdentifierDocReady(adapter: ArrayAdapter<String>)
     }
 
     interface Iterator {
-        fun getDocIdentAdapter(): ArrayAdapter<NewIdentDocument>
-        fun doSearchByFilter(id: Int, filter: String)
-        suspend fun doSearchByFilterOffLine(id: Int, filter: String)
+        //fun getDocIdentAdapter(): ArrayAdapter<NewIdentDocument>
+        fun doSearchByFilter(id: String, filter: String)
+        suspend fun doSearchByFilterOffLine(id: String, filter: String)
         fun doSearchByIdInfraction(id: String, origin: Int)
-        fun doSearchByIdInfractionOffLine(id: String, origin: Int)
+        suspend fun doSearchByIdInfractionOffLine(id: String, origin: Int)
         fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long)
         fun printTicket(activity: Activity)
+        fun getIdentifierDocAdapter()
+        fun getPositionIdentifiedDoc(obj: GenericCatalog): Int
     }
 
     interface OnInfractionClick {
-        fun onPrintClick(view: View, position: Int, origin: Int)
+        suspend fun onPrintClick(view: View, position: Int, origin: Int)
         fun onPaymentClick(view: View, position: Int, origin: Int)
     }
 

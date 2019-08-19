@@ -37,6 +37,7 @@ class OffenderContracts {
         fun getColoniesList(reference: DocumentReference?)
         fun getTypeLicenseAdapter()
         fun getStatesIssuedList()
+        fun getHolidays()
         fun getPositionState(obj: GenericCatalog): Int
         fun getPositionTownship(obj: Townships): Int
         fun getPositionZipCode(obj: GenericSubCatalog): Int

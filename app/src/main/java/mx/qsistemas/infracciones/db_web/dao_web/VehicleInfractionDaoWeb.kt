@@ -14,6 +14,6 @@ interface VehicleInfractionDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vehicleInfraction: VehicleVehicles): Long
 
-    @Query("SELECT DISTINCT vi.* FROM vehicle_infraction vi INNER JOIN infringement_infringements i ON i.id = vi.ID_INFRACCION AND i.id = :idInfraction")
-    fun selectVehicleOfInfraction(idInfraction: Long): VehicleVehicles
+    @Query("SELECT vehicle.* FROM infringement_infringements infra INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id WHERE infra.id =:idInfraction")
+    fun selectVehicle(idInfraction: Long): VehicleVehicles
 }

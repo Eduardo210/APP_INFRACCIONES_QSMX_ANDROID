@@ -17,7 +17,7 @@ data class AddressDriver(
 	val street: String? = null,
 
 	@field:SerializedName("exterior_num")
-	val exteriorNum: Int? = null,
+	val exteriorNum: String? = null,
 
 	@field:SerializedName("state")
 	val state: String? = null,

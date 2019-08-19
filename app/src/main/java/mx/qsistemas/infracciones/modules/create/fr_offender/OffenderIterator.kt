@@ -242,7 +242,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun saveData(notify: Boolean) {
-        SingletonInfraction.idPersonTownship = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
+        SingletonInfraction.idOfficer = Application.prefs?.loadDataInt(R.string.sp_id_person)!!.toLong()
         /* Get configuration */
         //config = SaveInfractionManager.getConfig()
         /* Calculate infraction article variables */
@@ -300,7 +300,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.isPersonAbstent,
                     SingletonInfraction.retainedDocument.documentReference?.id ?: "",
                     SingletonInfraction.dispositionRemited.documentReference?.id ?:"",
-                    SingletonInfraction.idPersonTownship,
+                    SingletonInfraction.idOfficer,
                     idVehicle,
                     actualDay,
                     actualTime,
@@ -427,7 +427,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
         this.txInfo = txInfo
-        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
+        val idRegUser = 0//Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
         val paymentCardData = UpdatePaymentRequest.UpdatePaymentCardData(txInfo.aid, txInfo.apn, txInfo.arqc, txInfo.authorization,
                 txInfo.entryType, txInfo.maskedPan, txInfo.txDate, "", txInfo.txTime, "", idRegUser.toString(),
                 txInfo.affiliation, txInfo.expirationDate, "Aprobado", txInfo.brandCard, txInfo.typeCard,

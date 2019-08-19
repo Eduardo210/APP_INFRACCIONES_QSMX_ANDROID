@@ -44,7 +44,11 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                 dialog.listener = this
                 dialog.isCancelable = false
                 dialog.show(supportFragmentManager, InitialConfigurationDialog::class.java.simpleName)
+            } else if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
+                router.presentMainActivity()
             }
+        } else if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
+            router.presentMainActivity()
         } else {
             onError(Application.getContext().getString(R.string.e_without_internet))
         }
@@ -118,14 +122,14 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         when (v?.id) {
             binding.btnLogIn.id -> {
                 val fields = arrayOf(binding.edtUserLogIn.text.toString(), binding.edtDwpLogIn.text.toString())
-                /*if (!Validator.isNetworkEnable(Application.getContext())) {
+                if (!Validator.isNetworkEnable(Application.getContext())) {
                     onError(Application.getContext().getString(R.string.e_without_internet))
                 } else if (!Validator.isValidFields(*fields)) {
                     onError(getString(R.string.e_empty_fields))
                 } else {
-                    iterator.login(binding.edtUserLogIn.text.toString().toUpperCase(), binding.edtDwpLogIn.text.toString().toUpperCase())
-                }*/
-                onLoginSuccessful()
+                    showLoader(getString(R.string.l_log_in))
+                    iterator.login(binding.edtUserLogIn.text.toString(), binding.edtDwpLogIn.text.toString())
+                }
             }
         }
     }

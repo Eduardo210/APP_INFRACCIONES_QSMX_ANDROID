@@ -1,8 +1,5 @@
 package mx.qsistemas.payments_transfer.utils
 
-/* AES Transformation Options */
-const val AES_CBC_PKCS5 = "AES/CBC/PKCS5PADDING"
-
 /* Selector components */
 internal const val SELECTOR_KEY = "F40379AB9E0EC533F40379AB9E0EC533"
 internal const val SELECTOR_NO_SERIE = "38383838383838382020202020202020"

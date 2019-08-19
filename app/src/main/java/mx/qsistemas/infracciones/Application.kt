@@ -15,6 +15,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -42,6 +43,7 @@ class Application : MultiDexApplication() {
         var firestore: FirebaseFirestore? = null
         var remoteConfig: FirebaseRemoteConfig? = null
         var firebaseAnalytics: FirebaseAnalytics? = null
+        var firebaseFunctions: FirebaseFunctions? = null
         var firebaseStorage: FirebaseStorage? = null
 
         fun getContext(): Context {
@@ -90,6 +92,8 @@ class Application : MultiDexApplication() {
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         /* Initialize Firebase Storage */
         firebaseStorage = FirebaseStorage.getInstance()
+        /* Initialize Firebase Functions */
+        firebaseFunctions = FirebaseFunctions.getInstance()
         /* Initialize Firebase Remote Config */
         remoteConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder()

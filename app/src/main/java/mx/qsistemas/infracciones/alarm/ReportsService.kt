@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.managers.SendInfractionManager
-import mx.qsistemas.infracciones.net.RequestNewInfraction.PicturesItem
+import mx.qsistemas.infracciones.net.request_web.PicturesItem
 import mx.qsistemas.infracciones.net.catalogs.UpdatePaymentRequest
 import mx.qsistemas.infracciones.utils.CHANNEL_ID_IMAGES
 import mx.qsistemas.infracciones.utils.NOTIF_SEND_IMAGES

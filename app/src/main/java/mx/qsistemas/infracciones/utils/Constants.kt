@@ -1,5 +1,8 @@
 package mx.qsistemas.infracciones.utils
 
+/* BLACK BOX KEY */
+const val BBOX_KEY = "Stzvy`OoS7Dc6wYy"
+
 /* BANORTE CONTANTS */
 const val PTX_SERIAL_NUMBER = "88888888"
 const val PTX_MERCHANT_ID = "7455440"
@@ -49,6 +52,9 @@ const val FS_COL_STATES = "state"
 const val FS_COL_ZIP_CODES = "zip_codes"
 const val FS_COL_HOLIDAYS = "holidays"
 
+/* FIREBASE FUNCTIONS */
+const val FF_CIPHER_DATA = "cipherData"
+
 /* JOB CHANNELS */
 const val CHANNEL_ID_REPORT = "infractionChannelId"
 const val CHANNEL_ID_IMAGES = "imageChannelId"
@@ -58,7 +64,7 @@ const val NOTIF_SEND_REPORTS = 0x1
 const val NOTIF_SEND_GEOS = 0x2
 const val NOTIF_SEND_IMAGES = 0x3
 
-/* Firebase Push Data Tokens */
+/* FIREBASE Push DATA TOKENS */
 const val FCM_TOKEN_OPERATION = "id_operation"
 
 /* Firebase Push Operations */

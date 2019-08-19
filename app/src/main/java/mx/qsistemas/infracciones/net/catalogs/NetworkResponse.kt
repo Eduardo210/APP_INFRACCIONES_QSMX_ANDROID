@@ -278,10 +278,10 @@ data class SendInfractionResponse(@SerializedName("Flag") val flag: Boolean,
                                   @SerializedName("Mensaje") val message: String,
                                   @SerializedName("Ids") val folios: MutableList<String>)
 
-data class ServiceResponse(@SerializedName("Flag") val flag:Boolean,
+data class ServiceResponse(@SerializedName("Flag") val flag: Boolean,
                            @SerializedName("Mensaje") val message: String,
                            @SerializedName("Ids") val data: Unit)
 
-data class ServiceResponsePerson(@SerializedName("Flag") val flag:Boolean,
-                           @SerializedName("Mensaje") val message: String,
-                           @SerializedName("Ids") val ids: MutableList<Long>)
+data class ServiceResponsePerson(@SerializedName("Flag") val flag: Boolean,
+                                 @SerializedName("Mensaje") val message: String,
+                                 @SerializedName("Ids") val ids: MutableList<Long>)

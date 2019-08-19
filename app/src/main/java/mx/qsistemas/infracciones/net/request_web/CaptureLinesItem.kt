@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class CaptureLinesItem(
 
 	@field:SerializedName("amount")
-	val amount: Int? = null,
+	val amount: Float? = null,
 
 	@field:SerializedName("key")
 	val key: String? = null,

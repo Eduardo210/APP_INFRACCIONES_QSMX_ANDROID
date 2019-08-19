@@ -13,6 +13,4 @@ interface CaptureLineDaoWeb {
 
     @Query("SELECT * FROM infringement_capturelines WHERE infringements_id =:idInfraction")
     fun selectCaptureLine(idInfraction: Long): MutableList<InfringementCapturelines>
-
-
 }

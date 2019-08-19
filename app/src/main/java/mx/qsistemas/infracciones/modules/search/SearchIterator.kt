@@ -133,7 +133,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         val rootObj = JSONObject()
         val jPayment = JSONObject()
         val jPaymentCard = JSONObject()
-        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_township_person)!!.toLong()
+        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
         //val totalPayment =totalToPay
 
         rootObj.put("IdInfraccion", idInfraction)

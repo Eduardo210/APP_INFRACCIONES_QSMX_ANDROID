@@ -14,6 +14,6 @@ data class InfringementAddressInfringement(@PrimaryKey(autoGenerate = true) @Not
                                            @ColumnInfo(name = "colony_id") val colony_id:String,
                                            @ColumnInfo(name = "cp_id") val cp_id: String,
                                            @ColumnInfo(name = "state_id") val state_id: String,
-                                           @ColumnInfo(name = "infringement_id") val infringement_id: String,
+                                           @ColumnInfo(name = "infringement_id") val infringement_id: Long,
                                            @ColumnInfo(name = "latitude") val latitude: Double,
                                            @ColumnInfo(name = "longitude") val longitude: Double)

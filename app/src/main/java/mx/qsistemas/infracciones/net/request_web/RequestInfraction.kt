@@ -95,7 +95,7 @@ data class RequestInfraction(
         val captureLines: List<CaptureLinesItem?>? = null,
 
         @field:SerializedName("insured_document")
-        val insuredDocument: Int? = null,
+        val insuredDocument: String? = null,
 
         @field:SerializedName("folio")
         val folio: String? = null,
@@ -107,5 +107,5 @@ data class RequestInfraction(
         val fractions: List<FractionsItem?>? = null,
 
         @field:SerializedName("status")
-        val status: String = "ACTIVO"
+        val status: String? = null
 )

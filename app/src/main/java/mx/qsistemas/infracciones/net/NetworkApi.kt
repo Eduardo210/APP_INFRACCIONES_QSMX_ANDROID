@@ -39,7 +39,7 @@ open class NetworkApi {
         @POST("api/accounts/login/")
         fun login(@Body body: LogInRequest): Call<LogInResult>
 
-        @POST("api/infringement/add")
+        @POST("api/infringement/add/")
         fun sendInfractionToServer(@Body body: RequestInfraction): Call<String>
 
         @GET("api/infringement/search/")

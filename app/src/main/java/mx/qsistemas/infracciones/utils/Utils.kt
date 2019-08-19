@@ -224,11 +224,21 @@ class Utils {
             return idCondensed
         }
 
-        private fun getDateCondensed(date: String): String {
+        /*private fun getDateCondensed(date: String): String {
             val splitDate = date.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             var day = Integer.parseInt(splitDate[0])
             var month = Integer.parseInt(splitDate[1])
             var year = Integer.parseInt(splitDate[2])
+            year = (year - 1988) * 372
+            month = (month - 1) * 31
+            day -= 1
+            return (year + month + day).toString()
+        }*/
+        private fun getDateCondensed(date: String): String {
+            val splitDate = date.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            var day = Integer.parseInt(splitDate[2])
+            var month = Integer.parseInt(splitDate[1])
+            var year = Integer.parseInt(splitDate[0])
             year = (year - 1988) * 372
             month = (month - 1) * 31
             day -= 1

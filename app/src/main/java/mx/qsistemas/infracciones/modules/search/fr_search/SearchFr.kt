@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -16,12 +17,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
-import mx.qsistemas.infracciones.db.entities.InfractionLocal
 import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
+import mx.qsistemas.infracciones.db_web.entities.InfringementData
+import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
@@ -34,8 +38,7 @@ import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
-import mx.qsistemas.infracciones.utils.EXTRA_OPTION_INFRACTION
-import mx.qsistemas.infracciones.utils.Ticket
+import mx.qsistemas.infracciones.utils.*
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
@@ -70,7 +73,7 @@ class SearchFr : Fragment()
 
     private lateinit var binding: FragmentSearchBinding
     private val iterator = lazy { SearchIterator(this) }
-    private var idDocIdent: Int = 0
+    private var idDocIdent: String = ""
 
     private val PRINT: Int = 100
     private val PAYMENT: Int = 200
@@ -122,7 +125,7 @@ class SearchFr : Fragment()
                 if (!true/*Validator.isNetworkEnable(activity)*/) {
                     activity.showLoader("Buscando infracciones")
                     if (!binding.edtFilterFolio.text.toString().equals("")) {
-                        iterator.value.doSearchByFilter(0, binding.edtFilterFolio.text.toString())
+                        iterator.value.doSearchByFilter("", binding.edtFilterFolio.text.toString())
                     } else {
                         iterator.value.doSearchByFilter(idDocIdent, binding.etFilterAny.text.toString())
                     }
@@ -159,11 +162,11 @@ class SearchFr : Fragment()
 
     private fun initAdapters() {
         binding.spSearchFilter.onItemSelectedListener = this
-        binding.spSearchFilter.adapter = iterator.value.getDocIdentAdapter()
+        iterator.value.getIdentifierDocAdapter()
 
     }
 
-    override fun onPrintClick(view: View, position: Int, origin: Int) {
+    override suspend fun onPrintClick(view: View, position: Int, origin: Int) {
 
         activity.showLoader("Espere ...")
         val idInfrac: Long
@@ -181,27 +184,49 @@ class SearchFr : Fragment()
         }
     }
 
-    fun printLocalInfraction(infraction: InfractionLocal, infra_fracc: MutableList<SingletonTicket.ArticleFraction>) {
+    private suspend fun printLocalInfraction(infraction: InfringementData) {
         SingletonTicket.cleanData()
+        var brand = ""
+        var model = ""
+        var type = ""
+        var colour = ""
+        var doc_ident = ""
+        var authority = ""
+        var issued_in = ""
 
-        SingletonTicket.dateTicket = infraction.REGISTRO_FECHA
-        SingletonTicket.folioTicket = infraction.FOLIO
 
-        SingletonTicket.completeNameOffender = "${infraction.NOMBRE} ${infraction.A_PATERNO} ${infraction.A_MATERNO}"
-        if (!infraction.RFC.isNullOrEmpty()) {
-            SingletonTicket.rfcOffender = infraction.RFC.toString()
+        SingletonTicket.dateTicket = infraction.infringement?.date ?: ""
+        SingletonTicket.folioTicket = infraction.infringement?.folio ?: ""
+
+        SingletonTicket.completeNameOffender = "${infraction.driver?.name} ${infraction.driver?.paternal} ${infraction.driver?.maternal}"
+        if (!infraction.driver?.rfc.isNullOrEmpty()) {
+            SingletonTicket.rfcOffender = infraction.driver?.rfc ?: ""
         }
-        if (!infraction.CALLE_PERSON.isNullOrEmpty()) {
-            SingletonTicket.streetOffender = infraction.CALLE_PERSON.toString()
+        if (!infraction.driverAddressDriver?.street.isNullOrEmpty()) {
+            SingletonTicket.streetOffender = infraction.driverAddressDriver?.street.toString()
         }
-        if (!infraction.EXTERIOR.isNullOrEmpty()) {
-            SingletonTicket.noExtOffender = infraction.EXTERIOR.toString()
+        if (!infraction.driverAddressDriver?.exterior_num.isNullOrEmpty()) {
+            SingletonTicket.noExtOffender = infraction.driverAddressDriver?.exterior_num ?: ""
         }
 
-        if (!infraction.INTERIOR.isNullOrEmpty()) {
-            SingletonTicket.noIntOffender = infraction.INTERIOR.toString()
+        if (!infraction.driverAddressDriver?.internal_num.isNullOrEmpty()) {
+            SingletonTicket.noIntOffender = infraction.driverAddressDriver?.internal_num ?: ""
         }
-        if (!infraction.COL_PERSON.isNullOrEmpty()) {
+        /*Obtener catálogos desde firebase*/
+        val job = GlobalScope.launch(Dispatchers.Main) {
+            brand = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.brand_reference.toString(), FS_COL_BRANDS)
+            model = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.sub_brand_id.toString(), FS_COL_MODELS)
+            type = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.class_type_id.toString(), FS_COL_CLASS_TYPE)
+            colour = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.colour_id.toString(), FS_COL_COLORS)
+            doc_ident = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.identifier_document_id.toString(), FS_COL_IDENTIF_DOC)
+            authority = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.document_type.toString(), FS_COL_TYPE_DOC)
+            issued_in = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.issued_in_id.toString(), FS_COL_STATES)
+
+        }
+        job.join()
+
+
+        /*if (!infraction.COL_PERSON.isNullOrEmpty()) {
             SingletonTicket.colonyOffender = infraction.COL_PERSON.toString()
         }
         if (!infraction.ESTADO_INFRACTOR.isNullOrEmpty()) {
@@ -216,18 +241,39 @@ class SearchFr : Fragment()
         if (!infraction.EXPEDIDA_EN_LICENCIA.isNullOrEmpty()) {
             SingletonTicket.stateLicenseOffender = infraction.EXPEDIDA_EN_LICENCIA.toString()
         }
-        SingletonTicket.nameAgent = infraction.OFICIAL.toString()
-        SingletonTicket.brandVehicle = infraction.MARCA_VEHICULO.toString()
-        SingletonTicket.subBrandVehicle = infraction.SUBMARCA.toString()
-        SingletonTicket.typeVehicle = infraction.TIPO.toString()
-        SingletonTicket.colorVehicle = infraction.COLOR.toString()
-        SingletonTicket.modelVehicle = infraction.MODELO.toString()
-        SingletonTicket.identifierVehicle = infraction.DOCUMENTO.toString()
-        SingletonTicket.noIdentifierVehicle = infraction.NUM_DOCUMENTO_IDENTIFICADOR
-        SingletonTicket.expeditionAuthVehicle = infraction.AUTORIDAD.toString()
-        SingletonTicket.stateExpVehicle = infraction.DOCUMENTO_EXPEDIDO_EN.toString()
+        SingletonTicket.nameAgent = infraction.OFICIAL.toString()*/
+        if (brand.isNotEmpty()) {
+            SingletonTicket.brandVehicle = brand
+        }
+        if (model.isNotEmpty()) {
+            SingletonTicket.subBrandVehicle = model
+        }
 
-        infra_fracc.forEach { fracc ->
+        if (type.isNotEmpty()) {
+            SingletonTicket.typeVehicle = type
+        }
+
+        if (colour.isNotEmpty()) {
+            SingletonTicket.colorVehicle = colour
+        }
+
+        SingletonTicket.modelVehicle = infraction.vehicleVehicles?.year ?: ""
+
+        if (doc_ident.isNotEmpty()) {
+            SingletonTicket.identifierVehicle = doc_ident
+        }
+
+        SingletonTicket.noIdentifierVehicle = infraction.vehicleVehicles?.num_document ?: ""
+
+        if(authority.isNotEmpty()){
+            SingletonTicket.expeditionAuthVehicle = infraction.vehicleVehicles?.document_type ?: ""
+        }
+
+        if(issued_in.isNotEmpty()){
+            SingletonTicket.stateExpVehicle = issued_in
+        }
+
+        /*infra_fracc.forEach { fracc ->
             val article = fracc.motivation.let {
                 SingletonTicket.ArticleFraction(
                         fracc.article,
@@ -271,7 +317,7 @@ class SearchFr : Fragment()
                         infraction.FEC_LINEA_CAPTURA_III,
                         infraction.IMPORTE_LINEA_CAPTURA_III.toString()
                 )
-        )
+        )*/
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 activity.hideLoader()
@@ -463,7 +509,8 @@ class SearchFr : Fragment()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        idDocIdent = returnCorrectNumber(p2)
+        idDocIdent = iterator.value.identifierDocList[p2].documentReference?.id ?: ""
+        Log.d("DOC_IDENT", idDocIdent)
         if (p2 > 0) {
             binding.etFilterAny.visibility = View.VISIBLE
             if (!binding.edtFilterFolio.text.equals("")) {
@@ -473,6 +520,18 @@ class SearchFr : Fragment()
         } else {
             binding.etFilterAny.visibility = View.GONE
         }
+
+
+        /*idDocIdent = returnCorrectNumber(p2)
+        if (p2 > 0) {
+            binding.etFilterAny.visibility = View.VISIBLE
+            if (!binding.edtFilterFolio.text.equals("")) {
+                binding.edtFilterFolio.setText("")
+            }
+
+        } else {
+            binding.etFilterAny.visibility = View.GONE
+        }*/
 
     }
 
@@ -491,7 +550,7 @@ class SearchFr : Fragment()
     fun isValidFilter(): Boolean {
         return if (binding.edtFilterFolio.text != null) {
             true
-        } else idDocIdent > 0 && binding.etFilterAny.text != null
+        } else idDocIdent != null && binding.etFilterAny.text != null
     }
 
     override fun onResultInfractionById(infraction: InfractionSearch, origin: Int) {
@@ -623,6 +682,7 @@ class SearchFr : Fragment()
         activity.hideLoader()
         itemInfraOffLine = listInfractions
         val totalResults = listInfractions.size
+
         if (totalResults > 0) {
             constraint_results.visibility = View.VISIBLE
             binding.rclResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
@@ -645,12 +705,12 @@ class SearchFr : Fragment()
 
     }
 
-    override fun onResultInfractionByIdOffline(infraction: InfractionLocal, infra_fracc: MutableList<SingletonTicket.ArticleFraction>, origin: Int) {
+    override suspend fun onResultInfractionByIdOffline(infraction: InfringementData, origin: Int) {
         when (origin) {
             PAYMENT -> doPaymentLocalProcess() //Hacer el proceso de pago
             PRINT -> {
                 activity.showLoader(getString(R.string.l_preparing_printer))
-                printLocalInfraction(infraction, infra_fracc)
+                printLocalInfraction(infraction)
             }
         }
 
@@ -658,6 +718,11 @@ class SearchFr : Fragment()
 
     private fun doPaymentLocalProcess() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onIdentifierDocReady(adapter: ArrayAdapter<String>) {
+        binding.spSearchFilter.adapter = adapter
+        //binding.spSearchFilter.setSelection(iterator.value.getPositionIdentifiedDoc(SingletonInfraction.identifierDocument)) //TODO: Reemplazar la propiedad del singleton
     }
 
     override fun onTicketPrinted() {

@@ -20,14 +20,14 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, InfringementAddressInfringement>() {
             override fun doInBackground(vararg p0: Void?): InfringementAddressInfringement {
                 return Application.m_database_web?.addressInfringementDaoWeb()?.selectInfractionAddres(idInfraction)
-                        ?: InfringementAddressInfringement(0, "", "", "", "", "", "", "", "")
+                        ?: InfringementAddressInfringement(0, "", "", "", "", "", "", "")
             }
         }.execute().get()
     }
     fun getInfractionMotivationList(idInfraction: Long): MutableList<InfringementRelfractionInfringements> {
         return object : AsyncTask<Void, Void, MutableList<InfringementRelfractionInfringements>>() {
             override fun doInBackground(vararg p0: Void?): MutableList<InfringementRelfractionInfringements> {
-                return Application.m_database_web?.infractionFractionDaoWeb()?.selectByArticle(idInfraction)
+                return Application.m_database_web?.infractionFractionDaoWeb()?.selectFractions(idInfraction)
                         ?: mutableListOf()
             }
         }.execute().get()

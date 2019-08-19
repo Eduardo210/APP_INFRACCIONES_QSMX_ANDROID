@@ -20,9 +20,7 @@ private const val DB_VERSION_WEB = 1
             InfringementInfringements::class,
             InfringementPayorder::class,
             InfringementPicturesInfringement::class,
-            InfringementRelcondonation::class,
             InfringementRelfractionInfringements::class,
-            InfringementThirdImpound::class,
             PersonTownhall::class,
             VehicleVehicles::class
         ], version = DB_VERSION_WEB, exportSchema = false
@@ -41,6 +39,7 @@ abstract class AppDatabaseWeb : RoomDatabase() {
     abstract fun personTownHallDaoWeb(): PersonTownHallDaoWeb
     abstract fun infractionEvidenceDaoWeb(): InfractionEvidenceDaoWeb
     abstract fun driverLicenseDaoWeb(): DriverDriverLicenseDaoWeb
+    abstract fun captureLineDaoWeb(): CaptureLineDaoWeb
 
 
     companion object {

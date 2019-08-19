@@ -8,9 +8,12 @@ data class GenericCatalog(var value: String = "", val is_active: Boolean = true,
 data class GenericSubCatalog(var value: String = "", val reference: DocumentReference? = null, val is_active: Boolean = true,
                              var childReference: DocumentReference? = null)
 
+data class Holidays(var key: String = "", val data: DocumentReference? = null, var description: String= "",
+                             var reference: DocumentReference? = null)
+
 /* Collection Headers */
 data class Townships(val prefix: String = "PRX", val counter_prefix: Int = 0, val value: String = "", val reference: DocumentReference? = null, val is_active: Boolean = true,
-                     var childReference: DocumentReference? = null)
+                     var childReference: DocumentReference? = null, var uma_rate: Float =0F)
 
 data class Articles(val number: String = "", val description: String = "", val is_active: Boolean = true, var documentReference: DocumentReference? = null)
 

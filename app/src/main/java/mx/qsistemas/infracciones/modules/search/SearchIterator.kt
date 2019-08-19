@@ -4,24 +4,22 @@ import android.app.Activity
 import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.db.entities.IdentifierDocument
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
-import mx.qsistemas.infracciones.db.managers.CatalogsAdapterManager
 import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
+import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.db_web.managers.SearchManagerWeb
+import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
-import mx.qsistemas.infracciones.utils.FS_COL_COLORS
-import mx.qsistemas.infracciones.utils.FS_COL_INSURED_DOC
-import mx.qsistemas.infracciones.utils.FS_COL_MODELS
-import mx.qsistemas.infracciones.utils.Ticket
+import mx.qsistemas.infracciones.utils.*
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -31,7 +29,8 @@ import kotlin.collections.ArrayList
 
 class SearchIterator(private val listener: SearchContracts.Presenter) : SearchContracts.Iterator {
 
-    internal lateinit var identifierDocList: MutableList<IdentifierDocument>
+
+    internal lateinit var identifierDocList: MutableList<GenericCatalog>
     private lateinit var nonWorkingDays: MutableList<NonWorkingDay>
 
     private var itemInfraOnline: MutableList<InfractionList.Results> = ArrayList()
@@ -47,8 +46,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     private var captureLine2 = ""
 
 
-    override fun getDocIdentAdapter(): ArrayAdapter<NewIdentDocument> {
-        identifierDocList = CatalogsAdapterManager.getIdentifierDocList()
+    /*override fun getDocIdentAdapter(): ArrayAdapter<NewIdentDocument> {
+        //identifierDocList = CatalogsAdapterManager.getIdentifierDocList()
         val newFilterDocList: MutableList<NewIdentDocument> = ArrayList()
 
         identifierDocList.forEach { document ->
@@ -69,13 +68,13 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, newFilterDocList)
         adapter.setDropDownViewResource(R.layout.custom_spinner_item)
         return adapter
-    }
+    }*/
 
-    override fun doSearchByFilter(id: Int, filter: String) {
+    override fun doSearchByFilter(id: String, filter: String) {
         val rootObject = JSONObject()
         rootObject.put("username", "InfraMobile")
         rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-        if (id == 0) {
+        if (id.isEmpty()) {
             rootObject.put("Folio", filter)
             rootObject.put("IdDocumentoIdentificador", 0)
             rootObject.put("NumeroDocumentoIdentificador", "")
@@ -191,15 +190,18 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
          })*/
     }
 
-    override suspend fun doSearchByFilterOffLine(id: Int, filter: String) {
+    override suspend fun doSearchByFilterOffLine(id: String, filter: String) {
         var insuredDocument = ""
         var brand = ""
         var model = ""
         var colour = ""
 
+        if (itemInfraOffLineList.size > 0)
+            itemInfraOffLineList.clear()
+
         /*Empiezo con la nueva búsqueda*/
         val query = when (id) {
-            0 -> {
+            "" -> {
                 if (filter.isBlank()) { //Traer el último registro
                     SimpleSQLiteQuery("SELECT infra.id, " +
                             "infra.folio, " +
@@ -211,23 +213,26 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                             "infra.sync, " +
                             "vehicle.identifier_document_id, " +
                             "vehicle.sub_brand_id, " +
-                            "vehicle.colour_id " +
+                            "vehicle.colour_id, " +
+                            "vehicle.brand_reference " +
                             "FROM infringement_infringements infra " +
-                            "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id LIMIT 1")
+                            "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
+                            "ORDER BY infra.id DESC LIMIT 1")
                 } else {//Búsqueda por folio
                     SimpleSQLiteQuery("SELECT infra.id, " +
                             "infra.folio, " +
                             "infra.date, " +
                             "vehicle.num_document, " +
                             "(SELECT reason FROM infringement_relInfraction_infringements WHERE infringements_id = infra.id LIMIT 1) reason, " +
-                            "infra.sync " +
+                            "infra.sync, " +
                             "vehicle.identifier_document_id, " +
                             "vehicle.sub_brand_id, " +
-                            "vehicle.colour_id " +
+                            "vehicle.colour_id, " +
+                            "vehicle.brand_reference " +
                             "FROM infringement_infringements infra " +
                             "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
-                            "WHERE infra.folio = \'$filter\' " +
-                            "ORDER BY infra.folio DESC LIMIT 1")
+                            "WHERE infra.folio = \'${filter.toUpperCase()}\' " +
+                            "ORDER BY infra.id DESC LIMIT 1")
                 }
             }
             else -> {
@@ -238,46 +243,45 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                         "(SELECT reason " +
                         "   FROM infringement_relInfraction_infringements " +
                         "   WHERE infringements_id = infra.id LIMIT 1) reason, " +
-                        "infra.sync " +
+                        "infra.sync, " +
                         "vehicle.identifier_document_id, " +
                         "vehicle.sub_brand_id, " +
-                        "vehicle.colour_id " +
+                        "vehicle.colour_id, " +
+                        "vehicle.brand_reference " +
                         "FROM infringement_infringements infra " +
                         "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
-                        "WHERE vehicle.identifier_document_id = $id " +
-                        "AND vehicle.num_document = \'$filter\'")
+                        "WHERE vehicle.identifier_document_id = \'$id\'" +
+
+                        "AND vehicle.num_document = \'${filter.toUpperCase().replace(" ", "")}\' " +
+                        " ORDER BY infra.id DESC LIMIT 1")
             }
         }
         itemInfraOffLine = SearchManagerWeb.getItemInfraction(query)
-        if (itemInfraOffLine.size > 0) {
-            //1.-Iterar la lista y hacer consulta a firebase para obtener elementos de catálogos.
-            //1.1.- Generar la nueva lista.
-            itemInfraOffLine.forEach { infra ->
-                val job = GlobalScope.launch(Dispatchers.Main) {
-                    insuredDocument = CatalogsFirebaseManager.getValue(infra.id_doc_ident, FS_COL_INSURED_DOC)
-                    //brand = CatalogsFirebaseManager.getValue("G3PYAeJ289WSeJMliq3l", FS_COL_BRANDS)
-                    model = CatalogsFirebaseManager.getValue(infra.sub_brand_id, FS_COL_MODELS)
-                    colour = CatalogsFirebaseManager.getValue(infra.colour_id, FS_COL_COLORS)
-                }
-                job.join()
-
-                itemInfraOffLineList.add(InfractionItemList(
-                        infra.id_infraction,
-                        infra.folio,
-                        infra.num_document,
-                        infra.reason,
-                        infra.sync,
-                        insuredDocument,
-                        "",
-                        model,
-                        colour,
-                        infra.date
-                ))
+        //1.-Iterar la lista y hacer consulta a firebase para obtener elementos de catálogos.
+        //1.1.- Generar la nueva lista.
+        itemInfraOffLine.forEach { infra ->
+            val job = GlobalScope.launch(Dispatchers.Main) {
+                insuredDocument = CatalogsFirebaseManager.getValue(infra.id_doc_ident, FS_COL_INSURED_DOC)
+                brand = CatalogsFirebaseManager.getValue(infra.brand_reference, FS_COL_BRANDS)
+                model = CatalogsFirebaseManager.getValue(infra.sub_brand_id, FS_COL_MODELS)
+                colour = CatalogsFirebaseManager.getValue(infra.colour_id, FS_COL_COLORS)
             }
-            listener.onResultSearchOffLine(itemInfraOffLineList)
-        } else {
-            listener.onError("No se encontraron infracciones")
+            job.join()
+
+            itemInfraOffLineList.add(InfractionItemList(
+                    infra.id_infraction,
+                    infra.folio,
+                    infra.num_document,
+                    infra.reason,
+                    infra.sync,
+                    insuredDocument,
+                    brand,
+                    model,
+                    colour,
+                    infra.date
+            ))
         }
+        listener.onResultSearchOffLine(itemInfraOffLineList)
     }
 
     override fun printTicket(activity: Activity) {
@@ -347,22 +351,93 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         })
     }
 
-    override fun doSearchByIdInfractionOffLine(id: String, origin: Int) {
-        /* val insuredDocument = CatalogsFirebaseManager.getInsuredDocument("0QAIC5Vofiw5Xh7s3mS1")
-         //Log.d("INSURED_FIREBASE", insuredDocument)
-         val infraction = SearchManager.getInfractionById(id.toLong())
-         val infraFracc = SearchManager.getInfraFracc(id.toLong())
-         listener.onResultInfractionByIdOffline(infraction, infraFracc, origin)*/
+    override suspend fun doSearchByIdInfractionOffLine(id: String, origin: Int) {
+
+        val infringement = InfringementData()
+        infringement.driver = SearchManagerWeb.getDriverDriver(id.toLong())
+        infringement.driverAddressDriver = SearchManagerWeb.getAddressDriver(id.toLong())
+        infringement.infringementAddress = SearchManagerWeb.getAddressInfringement(id.toLong())
+        infringement.captureLines = SearchManagerWeb.getCaptureLines(id.toLong())
+        infringement.infringement = SearchManagerWeb.getInfraction(id.toLong())
+        infringement.vehicleVehicles = SearchManagerWeb.getVehicle(id.toLong())
+        infringement.driverLicense = SearchManagerWeb.getDriverLicense(id.toLong())
+
+        listener.onResultInfractionByIdOffline(infringement, origin)
+    }
+
+    override fun getIdentifierDocAdapter() {
+        Application.firestore?.collection(FS_COL_IDENTIF_DOC)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                listener.onError(exception.message
+                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
+            }
+            identifierDocList = mutableListOf()
+            identifierDocList.add(GenericCatalog("Seleccionar...", true))
+            val list = mutableListOf<String>()
+            list.add("Seleccionar...")
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (document in snapshot.documents) {
+                    val data = document.toObject(GenericCatalog::class.java)!!
+                    data.documentReference = document.reference
+                    list.add(data.value)
+                    identifierDocList.add(data)
+                }
+            }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onIdentifierDocReady(adapter)
+        }
+    }
+    /*override fun getIdentifierDocAdapter() {
+        Application.firestore?.collection(FS_COL_IDENTIF_DOC)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                listener.onError(exception.message
+                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
+            }
+            //identifierDocList = mutableListOf()
+            //identifierDocList.add(GenericCatalog("Seleccionar...", true))
+            val list = mutableListOf<NewIdentDocument>()
+            list.add(NewIdentDocument("0", "Seleccionar..."))
+            //list.add("Seleccionar...")
+
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (document in snapshot.documents) {
+                    val data = document.toObject(GenericCatalog::class.java)!!
+                    val newDoc = NewIdentDocument()
+                    newDoc.reference = data.documentReference?.id ?:""
+                    newDoc.value = data.value
+                    list.add(newDoc)
+                    *//*data.documentReference = document.reference
+                    list.add(data.value)*//*
+                    //identifierDocList.add(data)
+                }
+            }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onIdentifierDocReady(adapter)
+        }
+    }*/
+
+    override fun getPositionIdentifiedDoc(obj: GenericCatalog): Int {
+        for (i in 0 until identifierDocList.size) {
+            if (identifierDocList[i].documentReference == obj.documentReference) {
+                return i
+            }
+        }
+        return 0
     }
 
 
 }
 
-class NewIdentDocument {
-    var id: Int = 0
-    var value: String = ""
-
+data class NewIdentDocument(
+        var reference: String = "",
+        var value: String = "") {
     override fun toString(): String {
         return value
     }
 }
+
+
+
+

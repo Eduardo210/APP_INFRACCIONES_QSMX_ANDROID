@@ -573,6 +573,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
         SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_f_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_m_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_name, "")}"
+        SingletonTicket.idAgent = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toString()
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
         /*Regresar la fecha a su forma original*/

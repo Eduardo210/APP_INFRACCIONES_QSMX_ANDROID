@@ -45,7 +45,7 @@ class MotivationAdapter : RecyclerView.Adapter<ViewHolderMotivation>() {
             notifyDataSetChanged()
         }
         holder.itemView.edt_motivation_item.doOnTextChanged { text, start, count, after ->
-            SingletonInfraction.motivationList[position].motivation = text?.trim().toString().toUpperCase()
+            SingletonInfraction.motivationList[position].motivation = text?.trim().toString()
         }
     }
 }

@@ -383,7 +383,7 @@ class SearchFr : Fragment()
                         fracc.art,
                         fracc.fracc,
                         fracc.minimum_wages.toString(),
-                        fracc.penalty_points.toString(), it)
+                        it)
             }
 
             article?.let { SingletonTicket.fractionsList.add(it) }

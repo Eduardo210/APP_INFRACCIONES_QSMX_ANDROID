@@ -44,7 +44,7 @@ object SingletonTicket {
     var captureLineList: MutableList<CaptureLine> = mutableListOf()
 
     class ArticleFraction(var article: String = "-", var fraction: String = "-", var umas: String = "-",
-                          var points: String = "-", var motivation: String = "-")
+                          var motivation: String = "-")
 
     class CaptureLine(var captureLine: String = "0", var labelDiscount: String = "", var expirationDiscount: String = "",
                       var importInfraction: String = "")

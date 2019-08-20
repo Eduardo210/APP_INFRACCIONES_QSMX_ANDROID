@@ -5,7 +5,7 @@ object SingletonTicket {
     var dateTicket: String = "-"
     var folioTicket: String = "-"
 
-    var completeNameOffender: String = "QUIEN RESULTE RESPONSABLE"
+    var completeNameOffender: String = "Quien Resulte Responsable"
     var rfcOffender: String = ""
     var streetOffender: String = "-"
     var noExtOffender: String = "-"
@@ -53,7 +53,7 @@ object SingletonTicket {
         dateTicket = "-"
         folioTicket = "-"
 
-        completeNameOffender = "QUIEN RESULTE RESPONSABLE"
+        completeNameOffender = "Quien Resulte Responsable"
         rfcOffender = ""
         streetOffender = "-"
         noExtOffender = "-"

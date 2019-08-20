@@ -1,6 +1,5 @@
 package mx.qsistemas.infracciones.modules.create.fr_offender
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -148,9 +147,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         SingletonInfraction.isPersonAbstent = p1
         if (p1) {
             binding.lytOffender.root.visibility = GONE
-            binding.lytOffender.edtOffenderName.setText("QUIEN")
-            binding.lytOffender.edtOffenderFln.setText("RESULTE")
-            binding.lytOffender.edtOffenderMln.setText("RESPONSABLE")
+            binding.lytOffender.edtOffenderName.setText("Quien")
+            binding.lytOffender.edtOffenderFln.setText("Resulte")
+            binding.lytOffender.edtOffenderMln.setText("Responsable")
         } else {
             binding.lytOffender.root.visibility = VISIBLE
             binding.lytOffender.edtOffenderName.setText("")
@@ -473,7 +472,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     }
 
     override fun onTicketPrinted() {
-        Activity.RESULT_OK
         if (!isTicketCopy) {
             val builder = AlertDialogHelper.getGenericBuilder(
                     getString(R.string.w_dialog_title_reprint_ticket), getString(R.string.w_want_to_reprint_ticket), activity

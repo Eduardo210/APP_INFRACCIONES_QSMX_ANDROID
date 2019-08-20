@@ -16,9 +16,13 @@ object DialogStatusHelper {
     }
 
     fun closeDialog() {
-        if (dialog != null) {
-            dialog?.dismiss()
-            dialog = null
+        try {
+            if (dialog != null) {
+                dialog?.dismiss()
+                dialog = null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 }

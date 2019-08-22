@@ -372,7 +372,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 val fifteenthDayF = SimpleDateFormat("dd/MM/yyyy").format(previousFifteen)
                 val thirtythDayF = SimpleDateFormat("dd/MM/yyyy").format(previousThirty)
 
-                val captureLine1 = InfringementCapturelines(0,
+                val captureL1 = InfringementCapturelines(0,
                         captureLine1,
                         fifteenthDayF.toString(),
                         SingletonInfraction.totalInfraction.toFloat(),
@@ -380,8 +380,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         1,
                         SingletonInfraction.idNewInfraction.toString())
 
-                SaveInfractionManagerWeb.saveCaptureLine(captureLine1)
-                val captureLine2 = InfringementCapturelines(0,
+                SaveInfractionManagerWeb.saveCaptureLine(captureL1)
+                val captureL2 = InfringementCapturelines(0,
                         captureLine2,
                         thirtythDayF.toString(),
                         SingletonInfraction.subTotalInfraction.toFloat(),
@@ -389,7 +389,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         2,
                         SingletonInfraction.idNewInfraction.toString())
 
-                SaveInfractionManagerWeb.saveCaptureLine(captureLine2)
+                SaveInfractionManagerWeb.saveCaptureLine(captureL2)
             }
             /* Step 7. Save Address Information */
             val infractionAddress = InfringementAddressInfringement(

@@ -285,9 +285,6 @@ class SearchFr : Fragment()
             }
             jobFractions.join()
 
-            Log.d("FRACTIONS", article)
-            Log.d("FRACTIONS", fraction)
-
             SingletonTicket.ArticleFraction(
                     article,
                     fraction,
@@ -295,20 +292,18 @@ class SearchFr : Fragment()
                     "",
                     fracc.reason)
 
-            //articulos.let { SingletonTicket.fractionsList.add(it) }
+            SingletonTicket.fractionsList.add(SingletonTicket.ArticleFraction(article, fraction, fracc.uma.toString(), "", fracc.reason))
+        }
+        SingletonTicket.streetInfraction = infraction.infringementAddress?.street ?: ""
+
+        if (!infraction.infringementAddress?.street_a.isNullOrEmpty()) {
+            SingletonTicket.betweenStreetInfraction = infraction.infringementAddress?.street_a ?: ""
         }
 
+        if (!infraction.infringementAddress?.street_b.isNullOrEmpty()) {
+            SingletonTicket.andStreetInfraction = infraction.infringementAddress?.street_b ?: ""
+        }
 /*
-        SingletonTicket.streetInfraction = infraction.CALLE_INFRA.toString()
-
-        if (!infraction.ENTRE_CALLE_INFRA.isNullOrEmpty()) {
-            SingletonTicket.betweenStreetInfraction = infraction.ENTRE_CALLE_INFRA.toString()
-        }
-
-        if (!infraction.Y_CALLE_INFRA.isNullOrBlank()) {
-            SingletonTicket.andStreetInfraction = infraction.Y_CALLE_INFRA.toString()
-        }
-
         SingletonTicket.colonyInfraction = infraction.COL_INFRA.toString()
         SingletonTicket.retainedDocumentInfraction = infraction.DOCUMENTO_RETENIDO.toString()
 
@@ -316,21 +311,21 @@ class SearchFr : Fragment()
             SingletonTicket.isRemitedInfraction = true
             SingletonTicket.remitedDispositionInfraction = infraction.DISPOSICION.toString()
         }
-
+*/
         SingletonTicket.captureLineList.add(
                 SingletonTicket.CaptureLine(
-                        infraction.LINEA_CAPTURA_II,
+                        infraction.captureLines?.get(0)?.key ?: "",
                         "CON 50% DE DESCUENTO",
-                        infraction.FEC_LINEA_CAPTURA_II,
-                        infraction.IMPORTE_LINEA_CAPTURA_II.toString()))
+                        infraction.captureLines?.get(0)?.date ?: "",
+                        infraction.captureLines?.get(0)?.amount.toString()))
         SingletonTicket.captureLineList.add(
                 SingletonTicket.CaptureLine(
-                        infraction.LINEA_CAPTURA_III,
+                        infraction.captureLines?.get(1)?.key ?: "",
                         "SIN DESCUENTO",
-                        infraction.FEC_LINEA_CAPTURA_III,
-                        infraction.IMPORTE_LINEA_CAPTURA_III.toString()
+                        infraction.captureLines?.get(1)?.date ?: "",
+                        infraction.captureLines?.get(1)?.amount.toString()
                 )
-        )*/
+        )
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 activity.hideLoader()

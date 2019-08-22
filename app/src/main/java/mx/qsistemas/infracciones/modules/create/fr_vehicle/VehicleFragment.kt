@@ -91,8 +91,8 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         binding.spnIssuedIn.onItemSelectedListener = this
         binding.spnColorVehicle.onItemSelectedListener = this
         binding.spnIdentifierDoc.onItemSelectedListener = this
-        binding.edtNoDoc.doOnTextChanged { text, start, count, after -> SingletonInfraction.noDocument = text?.trim().toString().toUpperCase() }
-        binding.edtNoCard.doOnTextChanged { text, start, count, after -> SingletonInfraction.noCirculationCard = text?.trim().toString().toUpperCase() }
+        binding.edtNoDoc.doOnTextChanged { text, start, count, after -> SingletonInfraction.noDocument = text?.trim().toString() }
+        binding.edtNoCard.doOnTextChanged { text, start, count, after -> SingletonInfraction.noCirculationCard = text?.trim().toString() }
         binding.edtYear.doOnTextChanged { text, start, count, after ->
             when {
                 text?.toString()!!.contentEquals("-") -> binding.edtYear.filters = arrayOf(InputFilter.LengthFilter(1))

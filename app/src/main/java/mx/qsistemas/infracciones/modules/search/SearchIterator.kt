@@ -252,7 +252,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                         "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
                         "WHERE vehicle.identifier_document_id = \'$id\'" +
 
-                        "AND vehicle.num_document = \'${filter.toUpperCase().replace(" ", "")}\' " +
+                        "AND vehicle.num_document = \'${filter.replace(" ", "")}\' " +
                         " ORDER BY infra.id DESC LIMIT 1")
             }
         }

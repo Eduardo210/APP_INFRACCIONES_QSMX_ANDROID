@@ -49,16 +49,13 @@ object SaveInfractionManagerWeb {
             }
         }.execute().get()
     }
+
     fun saveTrafficViolation(trafficViolationFraction: InfringementRelfractionInfringements) {
         Executors.newSingleThreadExecutor().execute {
             Application.m_database_web?.infractionFractionDaoWeb()?.insert(trafficViolationFraction)
         }
     }
-    fun savePersonTownHall(personTown: PersonTownhall){
-        GlobalScope.launch {
-            Application.m_database_web?.personTownHallDaoWeb()?.insert(personTown)
-        }
-    }
+
     fun getLastFolioSaved(prefix: String): String {
         return object : AsyncTask<Void, Void, String>() {
             override fun doInBackground(vararg p0: Void?): String {
@@ -67,20 +64,23 @@ object SaveInfractionManagerWeb {
             }
         }.execute().get()
     }
+
     fun saveInfractionEvidence(infracionEvidence: InfringementPicturesInfringement) {
         Executors.newSingleThreadExecutor().execute {
             Application.m_database_web?.infractionEvidenceDaoWeb()?.insert(infracionEvidence)
         }
     }
+
     fun saveDriverLicense(driverLicense: DriverDriverLicense) {
         GlobalScope.launch {
             Application.m_database_web?.driverLicenseDaoWeb()?.insert(driverLicense)
         }
 
     }
+
     fun saveCaptureLine(captureLine: InfringementCapturelines) {
-       GlobalScope.launch {
-           Application.m_database_web?.captureLineDaoWeb()?.insert(captureLine)
-       }
+        GlobalScope.launch {
+            Application.m_database_web?.captureLineDaoWeb()?.insert(captureLine)
+        }
     }
 }

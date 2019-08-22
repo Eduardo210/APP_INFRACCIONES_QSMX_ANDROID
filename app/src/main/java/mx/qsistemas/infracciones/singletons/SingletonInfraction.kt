@@ -40,9 +40,9 @@ object SingletonInfraction {
 
     /* Offender Information */
     var isPersonAbstent: Boolean = true
-    var nameOffender: String = "QUIEN"
-    var lastFatherName: String = "RESULTE"
-    var lastMotherName: String = "RESPONSABLE"
+    var nameOffender: String = "Quien"
+    var lastFatherName: String = "Resulte"
+    var lastMotherName: String = "Responsable"
     var rfcOffenfer: String = ""
     var stateOffender: GenericCatalog = GenericCatalog()
     var townshipOffender: Townships = Townships()
@@ -102,9 +102,9 @@ object SingletonInfraction {
 
         /* Offender Information Reset */
         isPersonAbstent = true
-        nameOffender = "QUIEN"
-        lastFatherName = "RESULTE"
-        lastMotherName = "RESPONSABLE"
+        nameOffender = "Quien"
+        lastFatherName = "Resulte"
+        lastMotherName = "Responsable"
         rfcOffenfer = ""
         stateOffender = GenericCatalog()
         townshipOffender = Townships()

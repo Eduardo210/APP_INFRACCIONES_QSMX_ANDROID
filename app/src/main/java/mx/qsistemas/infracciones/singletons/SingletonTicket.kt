@@ -5,7 +5,7 @@ object SingletonTicket {
     var dateTicket: String = "-"
     var folioTicket: String = "-"
 
-    var completeNameOffender: String = "QUIEN RESULTE RESPONSABLE"
+    var completeNameOffender: String = "Quien Resulte Responsable"
     var rfcOffender: String = ""
     var streetOffender: String = "-"
     var noExtOffender: String = "-"
@@ -44,7 +44,7 @@ object SingletonTicket {
     var captureLineList: MutableList<CaptureLine> = mutableListOf()
 
     class ArticleFraction(var article: String = "-", var fraction: String = "-", var umas: String = "-",
-                          var points: String = "-", var motivation: String = "-")
+                          var motivation: String = "-")
 
     class CaptureLine(var captureLine: String = "0", var labelDiscount: String = "", var expirationDiscount: String = "",
                       var importInfraction: String = "")
@@ -53,7 +53,7 @@ object SingletonTicket {
         dateTicket = "-"
         folioTicket = "-"
 
-        completeNameOffender = "QUIEN RESULTE RESPONSABLE"
+        completeNameOffender = "Quien Resulte Responsable"
         rfcOffender = ""
         streetOffender = "-"
         noExtOffender = "-"

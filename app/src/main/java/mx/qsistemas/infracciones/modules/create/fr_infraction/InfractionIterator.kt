@@ -184,12 +184,14 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
             } else {
                 val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
                 SingletonInfraction.townshipInfraction = township
+                SingletonInfraction.townshipInfraction.childReference = townshipSnapshot.reference
                 Application.firestore?.collection(FS_COL_STATES)?.document(township.reference!!.id)?.get()?.addOnSuccessListener {
                     if (it == null) {
                         Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
                     } else {
                         val state = it.toObject(GenericCatalog::class.java) ?: GenericCatalog()
                         SingletonInfraction.stateInfraction = state
+                        SingletonInfraction.stateInfraction.documentReference = it.reference
                     }
                 }
             }

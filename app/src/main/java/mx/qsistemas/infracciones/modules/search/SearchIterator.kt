@@ -70,8 +70,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         return adapter
     }*/
 
-    override fun doSearchByFilter(id: String, filter: String) {
-        val rootObject = JSONObject()
+    override fun doSearchByFilter(filter: String) {
+       /* val rootObject = JSONObject()
         rootObject.put("username", "InfraMobile")
         rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
         if (id.isEmpty()) {
@@ -80,11 +80,11 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             rootObject.put("NumeroDocumentoIdentificador", "")
         } else {
             rootObject.put("Folio", "")
-            rootObject.put("IdDocumentoIdentificador", id)
+            rootObject.put("IdDocumentoIdentificador", )
             rootObject.put("NumeroDocumentoIdentificador", filter)
         }
         Log.d("JSON-SEARCH", rootObject.toString())
-        /* NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
+         NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
              override fun onResponse(call: Call<String>, response: Response<String>) {
                  if (response.code() == HttpURLConnection.HTTP_OK) {
                      val data = Gson().fromJson(response.body(), InfractionList::class.java)
@@ -261,10 +261,10 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         //1.1.- Generar la nueva lista.
         itemInfraOffLine.forEach { infra ->
             val job = GlobalScope.launch(Dispatchers.Main) {
-                insuredDocument = CatalogsFirebaseManager.getValue(infra.id_doc_ident, FS_COL_INSURED_DOC)
-                brand = CatalogsFirebaseManager.getValue(infra.brand_reference, FS_COL_BRANDS)
-                model = CatalogsFirebaseManager.getValue(infra.sub_brand_id, FS_COL_MODELS)
-                colour = CatalogsFirebaseManager.getValue(infra.colour_id, FS_COL_COLORS)
+                insuredDocument = CatalogsFirebaseManager.getValue(infra.id_doc_ident, FS_COL_INSURED_DOC,"value")
+                brand = CatalogsFirebaseManager.getValue(infra.brand_reference, FS_COL_BRANDS,"value")
+                model = CatalogsFirebaseManager.getValue(infra.sub_brand_id, FS_COL_MODELS,"value")
+                colour = CatalogsFirebaseManager.getValue(infra.colour_id, FS_COL_COLORS,"value")
             }
             job.join()
 
@@ -361,6 +361,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         infringement.infringement = SearchManagerWeb.getInfraction(id.toLong())
         infringement.vehicleVehicles = SearchManagerWeb.getVehicle(id.toLong())
         infringement.driverLicense = SearchManagerWeb.getDriverLicense(id.toLong())
+        infringement.fractions = SearchManagerWeb.getFractionsInfringements(id.toLong())
 
         listener.onResultInfractionByIdOffline(infringement, origin)
     }

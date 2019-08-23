@@ -44,6 +44,6 @@ open class NetworkApi {
         fun sendInfractionToServer(@Body body: InfractionRequest): Call<InfractionResult>
 
         @GET("api/infringement/search/")
-        fun searchInfractionAws(@Query("name") name: String): Call<String>
+        fun searchInfraction(@Query("name") name: String): Call<String>
     }
 }

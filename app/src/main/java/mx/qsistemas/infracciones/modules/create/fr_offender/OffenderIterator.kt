@@ -325,7 +325,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.typeLicenseOffender.documentReference?.id ?: "",
                     0.0f, //amount //TODO: AMOUNT
                     SingletonInfraction.idNewPersonInfraction,
-                    totalUmas)
+                    totalUmas,
+                    "")
             SingletonInfraction.idNewInfraction = SaveInfractionManagerWeb.insertInfraction(infraction)
             /* Step 4. Save Person Address If Offender Was On The Moment */
             if (!SingletonInfraction.isPersonAbstent) {
@@ -572,7 +573,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     override fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener) {
         val voucher = Voucher(txInfo.noControl, txInfo.maskedPan.substring(txInfo.maskedPan.length - 4, txInfo.maskedPan.length), txInfo.expirationDate, txInfo.brandCard,
                 txInfo.typeCard, txInfo.bank, txInfo.authorization, txInfo.reference, txInfo.amount, txInfo.cardOwner,
-                txInfo.txDate, txInfo.txTime, txInfo.aid, txInfo.tvr, txInfo.tsi, txInfo.apn, txInfo.al, txInfo.flagTransaction,
+                txInfo.txDate, txInfo.txTime, txInfo.aid, txInfo.tvr, txInfo.tsi, txInfo.apn, txInfo.al, txInfo.arqc, txInfo.flagTransaction,
                 txInfo.needSign, PTX_MERCHANT_ID, Utils.getImeiDevice(activity), txInfo.entryType)
         PaymentsTransfer.reprintVoucher(activity, listener, voucher)
     }

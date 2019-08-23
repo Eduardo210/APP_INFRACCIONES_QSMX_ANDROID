@@ -2,12 +2,15 @@ package mx.qsistemas.payments_transfer
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.BitmapFactory
 import com.basewin.aidl.OnPrinterListener
+import com.basewin.models.BitmapPrintLine
+import com.basewin.models.PrintLine
+import com.basewin.models.TextPrintLine
 import com.basewin.services.PrinterBinder
 import com.basewin.services.ServiceManager
 import mx.qsistemas.payments_transfer.dtos.Voucher
 import mx.qsistemas.payments_transfer.utils.*
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -24,53 +27,62 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
         try {
             activity.runOnUiThread { DialogStatusHelper.showDialog(activity, activity.getString(R.string.pt_t_printing_voucher)) }
             ServiceManager.getInstence().printer.setPrintGray(1000)
-            val printTest = JSONArray()
             ServiceManager.getInstence().printer.setPrintFontByAsserts("sans_bold.ttf")
-            printTest.put(getPrintObject("Banorte", "3", "center"))
-            printTest.put(getPrintObject("Venta\n\n", "2", "center"))
-            printTest.put(getPrintObject("Quetzalcoátl Sistemas S.A de C.V.", "2", "center"))
-            printTest.put(getPrintObject("Cto. Puericultores 18, Ciudad Satélite", "1", "center"))
-            printTest.put(getPrintObject("Naucalpan de Juárez, Edo. de México CP 53100\n\n", "1", "center"))
-            printTest.put(getPrintObject("Afiliación: ${voucherInfo.afiliacion}", "2", "left"))
-            printTest.put(getPrintObject("Terminal ID: ${voucherInfo.terminalId}", "2", "left"))
-            printTest.put(getPrintObject("No. de control: ${voucherInfo.noControl}\n\n", "2", "left"))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Banorte", TextPrintLine.FONT_LARGE, PrintLine.CENTER))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Venta\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Quetzalcoátl Sistemas S.A. de C.V.", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Cto. Puericultores 18, Ciudad Satélite", TextPrintLine.FONT_SMALL, PrintLine.CENTER))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Naucalpan de Juárez, Edo. de México CP 53100\n\n", TextPrintLine.FONT_SMALL, PrintLine.CENTER))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Afiliación: ${voucherInfo.afiliacion}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Terminal ID: ${voucherInfo.terminalId}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("No. de control: ${voucherInfo.noControl}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
             if (isCopy) {
-                printTest.put(getPrintObject("Copia Cliente\n\n", "3", "center"))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Copia Cliente\n\n", TextPrintLine.FONT_LARGE, PrintLine.CENTER))
             }
-            printTest.put(getPrintObject("Número de tarjeta     Vigencia", "2", "center"))
-            printTest.put(getPrintObject("     **** **** **** ${voucherInfo.noCard}        ${voucherInfo.caducity}\n\n", "2", "left"))
-            printTest.put(getPrintObject("${voucherInfo.flagTrans}\n\n", "3", "center"))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Número de tarjeta", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("**** **** **** ${voucherInfo.noCard}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("${voucherInfo.flagTrans}\n\n", TextPrintLine.FONT_LARGE, PrintLine.CENTER))
             if (voucherInfo.flagTrans == FLAG_TRANS_APPROVE) {
-                printTest.put(getPrintObject("Tipo de tarjeta: ${voucherInfo.cardBrand}", "2", "left"))
-                printTest.put(getPrintObject("Tipo:  ${voucherInfo.cardType}", "2", "left"))
-                printTest.put(getPrintObject("Banco Emisor: ${voucherInfo.bank}\n\n", "2", "left"))
-                printTest.put(getPrintObject("Codigo Autorización: ${voucherInfo.authCode}", "2", "left"))
-                printTest.put(getPrintObject("Referencia: ${voucherInfo.reference}\n\n", "2", "left"))
-                printTest.put(getPrintObject("Importe:    $${voucherInfo.amount}\n\n\n\n", "2", "left"))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Tipo de tarjeta: ${voucherInfo.cardBrand}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Tipo:  ${voucherInfo.cardType}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Banco Emisor: ${voucherInfo.bank}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Codigo Autorización: ${voucherInfo.authCode}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Referencia: ${voucherInfo.reference}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Importe:    $${voucherInfo.amount}\n\n\n", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
                 if (voucherInfo.needSign) {
-                    printTest.put(getPrintObject("-----------------------------------------------", "2", "center"))
-                    printTest.put(getPrintObject("${voucherInfo.cardBeneficiary}\n\n", "2", "center"))
+                    ServiceManager.getInstence().printer.addPrintLine(getPrintLine("-----------------------------------------------", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
                 } else {
                     if (voucherInfo.entryMode == ENTRY_MODE_CHIP)
-                        printTest.put(getPrintObject("Autorizado con firma electrónica\n\n\n", "2", "center"))
-                    else if (voucherInfo.entryMode == ENTRY_MODE_CONTACTLESS)
-                        printTest.put(getPrintObject("Autorizado sin firma\n\n\n", "2", "center"))
+                        ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Autorizado con firma electrónica\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+                    else if (voucherInfo.entryMode == ENTRY_MODE_CONTACTLESS) {
+                        val icon = BitmapFactory.decodeResource(activity.resources, R.drawable.ic_contactless)
+                        val bitmapPrintLine = BitmapPrintLine()
+                        bitmapPrintLine.type = PrintLine.BITMAP
+                        bitmapPrintLine.position = PrintLine.CENTER
+                        bitmapPrintLine.bitmap = icon
+                        ServiceManager.getInstence().printer.addPrintLine(bitmapPrintLine)
+                        ServiceManager.getInstence().printer.addPrintLine(getPrintLine("CONTACTLESS\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+                        ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Autorizado sin firma\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+                    }
                 }
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("${voucherInfo.cardBeneficiary}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+            } else {
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("${voucherInfo.detailError.replace("+", " ")}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
             }
-            printTest.put(getPrintObject("Fecha: ${voucherInfo.date}", "2", "center"))
-            printTest.put(getPrintObject("Hora: ${voucherInfo.hour}\n\n", "2", "center"))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Fecha: ${voucherInfo.date}", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Hora: ${voucherInfo.hour}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
             if ((voucher.entryMode == ENTRY_MODE_CHIP || voucher.entryMode == ENTRY_MODE_CONTACTLESS) && voucherInfo.flagTrans == FLAG_TRANS_APPROVE) {
-                printTest.put(getPrintObject("AID: ${voucherInfo.AID}", "2", "left"))
-                printTest.put(getPrintObject("TVR: ${voucherInfo.TVR}", "2", "left"))
-                printTest.put(getPrintObject("TSI: ${voucherInfo.TSI}", "2", "left"))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("ARQC: ${maskedField(voucherInfo.ARQC)}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("AID: ${voucherInfo.AID}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("TVR: ${voucherInfo.TVR}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("TSI: ${voucherInfo.TSI}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
                 if (voucherInfo.APN.isNotEmpty())
-                    printTest.put(getPrintObject("APN: ${voucherInfo.APN}\n\n", "2", "left"))
+                    ServiceManager.getInstence().printer.addPrintLine(getPrintLine("APN: ${voucherInfo.APN}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
                 else
-                    printTest.put(getPrintObject("AL: ${voucherInfo.AL}\n\n", "2", "left"))
+                    ServiceManager.getInstence().printer.addPrintLine(getPrintLine("AL: ${voucherInfo.AL}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
             }
-            printTest.put(getPrintObject("\n\n\n", "2", "left"))
-            printJson.put("spos", printTest)
-            ServiceManager.getInstence().printer.print(printJson.toString(), null, this)
+            ServiceManager.getInstence().printer.addPrintLine(getPrintLine("\n\n\n.", TextPrintLine.FONT_NORMAL, PrintLine.LEFT))
+            ServiceManager.getInstence().printer.beginPrint(this)
         } catch (e: JSONException) {
             e.printStackTrace()
             DialogStatusHelper.closeDialog()
@@ -82,8 +94,14 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
         }
     }
 
-    private fun getPrintObject(text: String, size: String, position: String): JSONObject {
-        val json = JSONObject()
+    private fun getPrintLine(text: String, size: Int, position: Int): TextPrintLine {
+        val textPrintLine = TextPrintLine()
+        textPrintLine.type = PrintLine.TEXT
+        textPrintLine.position = position
+        textPrintLine.size = size
+        textPrintLine.content = text
+        return textPrintLine
+        /*val json = JSONObject()
         try {
             json.put("content-type", "txt")
             json.put("content", text)
@@ -96,7 +114,16 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
         } catch (e: JSONException) {
             e.printStackTrace()
         }
-        return json
+        return json*/
+    }
+
+    private fun maskedField(field: String): String {
+        val range = field.length - 4 until field.length
+        var masked = ""
+        field.forEachIndexed { index, c ->
+            if (index !in range) masked += "*" else masked += c
+        }
+        return masked
     }
 
     override fun onFinish() {

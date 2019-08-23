@@ -669,9 +669,13 @@ class SearchFr : Fragment()
         }
     }
 
-    override fun onTxFailed(message: String) {
+    override fun onTxFailed(retry: Boolean, message: String) {
         isPaid = false
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
+    }
+
+    override fun onCtlsDoubleTap() {
+        // TODO("not implemented") To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onTxVoucherFailer(message: String) {

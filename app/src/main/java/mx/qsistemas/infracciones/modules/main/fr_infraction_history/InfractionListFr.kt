@@ -78,8 +78,11 @@ class InfractionListFr : Fragment(), View.OnClickListener {
             binding.btnPrintVoucher.id -> {
                 PaymentsTransfer.printLastVoucher(activity, object : IPaymentsTransfer.TransactionListener {
                     override fun onTxApproved(txInfo: TransactionInfo) {}
-                    override fun onTxFailed(message: String) {
+                    override fun onTxFailed(retry: Boolean, message: String) {
                         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
+                    }
+
+                    override fun onCtlsDoubleTap() {
                     }
 
                     override fun onTxVoucherFailer(message: String) {}

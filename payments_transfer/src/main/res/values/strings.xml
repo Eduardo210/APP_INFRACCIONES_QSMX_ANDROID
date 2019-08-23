@@ -3,7 +3,8 @@
     <string name="pt_t_pin_input">Ingresar firma electrónica</string>
     <string name="pt_t_config_terminal">Configurando terminal</string>
     <string name="pt_t_obtaining_key">Obteniendo llave de cifrado</string>
-    <string name="pt_t_waiting_card">Inserte/Deslice la tarjeta\no\nAproxime contactless</string>
+    <string name="pt_t_waiting_card">Inserte/Deslice la tarjeta</string>
+    <string name="pt_t_waiting_card2">Inserte/Deslice la tarjeta\no\nAproxime contactless</string>
     <string name="pt_t_waiting_nfc_card">Aproxime tarjeta</string>
     <string name="pt_t_reading_card">Leyendo tarjeta</string>
     <string name="pt_t_confirming_card">Confirmando tarjeta</string>
@@ -14,6 +15,7 @@
 
     <!-- Shared Preferences -->
     <string name="pt_sp_name">payments_transfer</string>
+    <string name="pt_sp_quetz_version">quetz_version</string>
     <string name="pt_sp_quetz_prefix">quetz_prefix</string>
     <string name="pt_sp_quetz_id_terminal">quetz_id_terminal</string>
     <string name="pt_sp_quetz_is_device_config">is_device_config</string>
@@ -37,11 +39,12 @@
     <!-- Errors -->
     <string name="pt_e_unknown">Error desconocido</string>
     <string name="pt_e_declined">Operación declinada</string>
-    <string name="pt_e_declined_contactless">No se puede pagar un monto mayor a $400°° vía contactless</string>
+    <string name="pt_e_declined_emv">Declinado EMV</string>
     <string name="pt_e_rejected">Operación rechazada</string>
     <string name="pt_e_terminated">Operación terminada</string>
     <string name="pt_e_canceled">Operación cancelada</string>
     <string name="pt_e_no_response">No se obtuvo respuesta</string>
+    <string name="pt_e_incorrect_pin">NIP incorrecto</string>
     <string name="pt_e_card_not_found">No se pudo identificar la tarjeta</string>
     <string name="pt_e_need_to_load_key">Dispositivo no cuenta con llave de cifrado</string>
     <string name="pt_e_card_input_incorrect">Favor de insertar tarjeta por medio de chip</string>
@@ -49,4 +52,10 @@
     <string name="pt_e_print_overheat">Sobrecalentamiento de la terminal</string>
     <string name="pt_e_print_other_error">Ha ocurrido un error en la impresión</string>
     <string name="pt_e_voucher_not_found">No se ha encontrado una transacción pagada</string>
+    <string name="pt_e_icc_block">Chip bloqueado</string>
+    <string name="pt_e_emv_app_block">Aplicación bloqueada</string>
+    <string name="pt_e_emv_data">Información EMV incorrecta</string>
+    <string name="pt_e_emv_pin_block">NIP bloqueado</string>
+    <string name="pt_e_channel_incorrect">Tarjeta ilegible</string>
+    <string name="pt_e_timeout">Tiempo de espera agotado</string>
 </resources>

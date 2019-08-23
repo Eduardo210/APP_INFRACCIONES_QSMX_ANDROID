@@ -1,6 +1,5 @@
 package mx.qsistemas.payments_transfer
 
-import com.basewin.aidl.OnPrinterListener
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
 class IPaymentsTransfer {
@@ -11,11 +10,12 @@ class IPaymentsTransfer {
     interface TransactionListener {
         fun onTxApproved(txInfo: TransactionInfo)
         fun onTxVoucherPrinted()
-        fun onTxFailed(message: String)
+        fun onTxFailed(retry: Boolean, message: String)
+        fun onCtlsDoubleTap()
         fun onTxVoucherFailer(message: String)
     }
 
-    interface PrintListener{
+    interface PrintListener {
         fun onError(var1: Int, var2: String)
         fun onFinish()
         fun onStart()

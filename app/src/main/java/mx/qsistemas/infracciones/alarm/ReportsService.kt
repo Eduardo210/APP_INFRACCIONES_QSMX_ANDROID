@@ -89,6 +89,7 @@ class ReportsService : JobService() {
                                 val result = response.body()
                                 if (result?.status == "success") {
                                     SendInfractionManagerWeb.updateInfractionSend(result?.infringement.token, result?.infringement.folio)
+                                    reportsSend++
                                     sendPayments()
                                     // When done, update the notification one more time to remove the progress bar
                                     if (reportsSend == index + 1) {
@@ -108,7 +109,7 @@ class ReportsService : JobService() {
                             } else {
                                 // When done, update the notification one more time to remove the progress bar
                                 builderInfraction.setContentText(getString(R.string.e_send_infractions_incomplete) + (reportsToSend.size - reportsSend))
-                                        .setProgress(reportsToSend.size, reportsSend, false)
+                                        .setProgress(0, 0, false)
                                 notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                             }
                         }
@@ -117,7 +118,7 @@ class ReportsService : JobService() {
                             Log.e(this.javaClass.simpleName, "Send Infractions Failed: ${t.message}")
                             // When done, update the notification one more time to remove the progress bar
                             builderInfraction.setContentText(getString(R.string.e_send_infractions))
-                                    .setProgress(reportsToSend.size, reportsSend, false)
+                                    .setProgress(0, 0, false)
                             notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                         }
                     })

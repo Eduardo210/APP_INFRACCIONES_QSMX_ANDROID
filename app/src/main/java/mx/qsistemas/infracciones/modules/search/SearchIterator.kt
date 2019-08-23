@@ -70,8 +70,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         return adapter
     }*/
 
-    override fun doSearchByFilter(id: String, filter: String) {
-        val rootObject = JSONObject()
+    override fun doSearchByFilter(filter: String) {
+       /* val rootObject = JSONObject()
         rootObject.put("username", "InfraMobile")
         rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
         if (id.isEmpty()) {
@@ -80,11 +80,11 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             rootObject.put("NumeroDocumentoIdentificador", "")
         } else {
             rootObject.put("Folio", "")
-            rootObject.put("IdDocumentoIdentificador", id)
+            rootObject.put("IdDocumentoIdentificador", )
             rootObject.put("NumeroDocumentoIdentificador", filter)
         }
         Log.d("JSON-SEARCH", rootObject.toString())
-        /* NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
+         NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
              override fun onResponse(call: Call<String>, response: Response<String>) {
                  if (response.code() == HttpURLConnection.HTTP_OK) {
                      val data = Gson().fromJson(response.body(), InfractionList::class.java)

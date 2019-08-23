@@ -125,9 +125,9 @@ class SearchFr : Fragment()
                 if (!true/*Validator.isNetworkEnable(activity)*/) {
                     activity.showLoader("Buscando infracciones")
                     if (!binding.edtFilterFolio.text.toString().equals("")) {
-                        iterator.value.doSearchByFilter("", binding.edtFilterFolio.text.toString())
+                        iterator.value.doSearchByFilter( binding.edtFilterFolio.text.toString())
                     } else {
-                        iterator.value.doSearchByFilter(idDocIdent, binding.etFilterAny.text.toString())
+                        iterator.value.doSearchByFilter(binding.etFilterAny.text.toString())
                     }
                 } else {
                     activity.showLoader("Buscando infracciones")
@@ -289,10 +289,9 @@ class SearchFr : Fragment()
                     article,
                     fraction,
                     fracc.uma.toString(),
-                    "",
                     fracc.reason)
 
-            SingletonTicket.fractionsList.add(SingletonTicket.ArticleFraction(article, fraction, fracc.uma.toString(), "", fracc.reason))
+            SingletonTicket.fractionsList.add(SingletonTicket.ArticleFraction(article, fraction, fracc.uma.toString(), fracc.reason))
         }
         SingletonTicket.streetInfraction = infraction.infringementAddress?.street ?: ""
 

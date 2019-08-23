@@ -14,7 +14,9 @@ data class InfringementInfringements(@PrimaryKey(autoGenerate = true) val id: Lo
                                      @ColumnInfo(name = "status") val status: String ="active",
                                      @ColumnInfo(name = "is_absent") val is_absent: Boolean,
                                      @ColumnInfo(name = "insured_document_id") val insured_document_id: String,
+                                     @ColumnInfo(name = "insured_document") val insured_document: String,
                                      @ColumnInfo(name = "third_impound_id") val third_impound_id: String,
+                                     @ColumnInfo(name = "third_impound") val third_impound: String,
                                      @ColumnInfo(name = "town_hall_id") val town_hall_id: Long,
                                      @ColumnInfo(name = "vehicle_id") val vehicle_id: Long,
                                      @ColumnInfo(name = "date") val date: String,
@@ -25,5 +27,6 @@ data class InfringementInfringements(@PrimaryKey(autoGenerate = true) val id: Lo
                                      @ColumnInfo(name = "driver_license_id") val driver_license_id: String,
                                      @ColumnInfo(name = "amount") val amount: Float,
                                      @ColumnInfo(name = "driver_id") val driver_id: Long,
-                                     @ColumnInfo(name = "total_uma") val total_uma: Float)
+                                     @ColumnInfo(name = "total_uma") val total_uma: Float,
+                                     @ColumnInfo(name = "token_server") val token_server: String)
 

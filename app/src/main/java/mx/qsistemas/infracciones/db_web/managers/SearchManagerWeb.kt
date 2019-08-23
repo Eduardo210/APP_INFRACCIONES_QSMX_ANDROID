@@ -22,7 +22,21 @@ object SearchManagerWeb {
         object : AsyncTask<Void, Void, InfringementAddressInfringement>() {
             override fun doInBackground(vararg p0: Void?): InfringementAddressInfringement {
                 return Application.m_database_web?.addressInfringementDaoWeb()?.selectInfractionAddres(idInfraction)
-                        ?: InfringementAddressInfringement(0, "", "", "", "", "", "", "", 0, 0.0, 0.0)
+                        ?: InfringementAddressInfringement(0,
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                0,
+                                0.0,
+                                0.0)
             }
         }.execute().get()
 
@@ -32,7 +46,19 @@ object SearchManagerWeb {
         object : AsyncTask<Void, Void, DriverAddressDriver>() {
             override fun doInBackground(vararg p0: Void?): DriverAddressDriver {
                 return Application.m_database_web?.addressPersonDaoWeb()?.selectPersonAddress(idInfraction)
-                        ?: DriverAddressDriver(0, "", "", "", "", "", "", "", "")
+                        ?: DriverAddressDriver(0,
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "")
             }
         }.execute().get()
 

@@ -29,7 +29,21 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, InfringementAddressInfringement>() {
             override fun doInBackground(vararg p0: Void?): InfringementAddressInfringement {
                 return Application.m_database_web?.addressInfringementDaoWeb()?.selectInfractionAddres(idInfraction)
-                        ?: InfringementAddressInfringement(0, "", "", "", "", "", "", "", 0, 0.0, 0.0)
+                        ?: InfringementAddressInfringement(0,
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                0,
+                                0.0,
+                                0.0)
             }
         }.execute().get()
     }
@@ -56,7 +70,7 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, DriverAddressDriver>() {
             override fun doInBackground(vararg p0: Void?): DriverAddressDriver {
                 return Application.m_database_web?.addressPersonDaoWeb()?.selectPersonAddress(idDriver)
-                        ?: DriverAddressDriver(0, "", "", "", "", "", "", "", "")
+                        ?: DriverAddressDriver(0, "", "", "", "", "","", "", "", "", "","","")
             }
         }.execute().get()
     }
@@ -74,7 +88,25 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, VehicleVehicles>() {
             override fun doInBackground(vararg p0: Void?): VehicleVehicles {
                 return Application.m_database_web?.vehicleInfractionDaoWeb()?.selectVehicle(idInfraction)
-                        ?: VehicleVehicles(0, "", "", false, "", "", "", false, "", "", "", "")
+                        ?: VehicleVehicles(0,
+                                "",
+                                "",
+                                "",
+                                false,
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                false,
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "")
             }
         }.execute().get()
     }

@@ -290,16 +290,25 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.yearVehicle,
                     SingletonInfraction.colorVehicle.documentReference?.id
                             ?: SingletonInfraction.colorVehicle.value,
+                    SingletonInfraction.colorVehicle.value,
                     SingletonInfraction.isNewColor,
                     SingletonInfraction.typeVehicle.documentReference?.id ?: "",
+                    SingletonInfraction.typeVehicle.value,
                     SingletonInfraction.subBrandVehicle.reference?.id ?: "",
+                    SingletonInfraction.subBrandVehicle.value,
                     SingletonInfraction.subBrandVehicle.childReference?.id
                             ?: SingletonInfraction.subBrandVehicle.value,
+                    SingletonInfraction.subBrandVehicle.value,
                     SingletonInfraction.isNewSubBrand,
                     SingletonInfraction.identifierDocument.documentReference?.id ?: "",
+                    SingletonInfraction.identifierDocument.value,
                     SingletonInfraction.stateIssuedIn.documentReference?.id ?: "",
+                    SingletonInfraction.stateIssuedIn.value,
                     SingletonInfraction.noDocument,
-                    SingletonInfraction.typeDocument.documentReference?.id ?: "")
+                    SingletonInfraction.typeDocument.documentReference?.id ?: "",
+                    SingletonInfraction.typeDocument.value)
+
+
             val idVehicle = SaveInfractionManagerWeb.saveVehicleInfraction(vehicleInfraction)
             /* Step 2. Save Person Information */
             val person = DriverDrivers(0, SingletonInfraction.nameOffender, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName, SingletonInfraction.rfcOffenfer)
@@ -314,7 +323,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     "active",
                     SingletonInfraction.isPersonAbstent,
                     SingletonInfraction.retainedDocument.documentReference?.id ?: "",
+                    SingletonInfraction.retainedDocument.value,
                     SingletonInfraction.dispositionRemited.documentReference?.id ?: "",
+                    SingletonInfraction.dispositionRemited.value,
                     SingletonInfraction.idOfficer,
                     idVehicle,
                     actualDay,
@@ -325,7 +336,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.typeLicenseOffender.documentReference?.id ?: "",
                     0.0f, //amount //TODO: AMOUNT
                     SingletonInfraction.idNewPersonInfraction,
-                    totalUmas)
+                    totalUmas,
+                    "token_server")
             SingletonInfraction.idNewInfraction = SaveInfractionManagerWeb.insertInfraction(infraction)
             /* Step 4. Save Person Address If Offender Was On The Moment */
             if (!SingletonInfraction.isPersonAbstent) {
@@ -335,10 +347,16 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         SingletonInfraction.noExtOffender,
                         SingletonInfraction.noIntOffender,
                         SingletonInfraction.townshipOffender.childReference?.id ?: "",
+                        SingletonInfraction.townshipOffender.value,
                         SingletonInfraction.colonyOffender.childReference?.id ?: "",
+                        SingletonInfraction.colonyOffender.value,
                         SingletonInfraction.zipCodeOffender.childReference?.id ?: "",
+                        SingletonInfraction.zipCodeOffender.value,
                         SingletonInfraction.idNewPersonInfraction.toString(),
-                        SingletonInfraction.stateOffender.documentReference?.id ?: "")
+                        SingletonInfraction.stateOffender.documentReference?.id ?: "",
+                        SingletonInfraction.stateOffender.value)
+
+
                 val idNewPersonAddress = SaveInfractionManagerWeb.saveAddressPerson(personAddress)
                 /* Step 4.1 Save Driver License */
                 val driverLicense = DriverDriverLicense(
@@ -377,9 +395,13 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.betweenStreet1,
                     SingletonInfraction.betweenStreet2,
                     SingletonInfraction.townshipInfraction.childReference?.id ?: "",
+                    SingletonInfraction.townshipInfraction.value,
                     SingletonInfraction.colonnyInfraction.childReference?.id ?: "",
+                    SingletonInfraction.colonnyInfraction.value,
                     SingletonInfraction.zipCodeInfraction.childReference?.id ?: "",
+                    SingletonInfraction.zipCodeInfraction.value,
                     SingletonInfraction.stateInfraction.documentReference?.id ?: "",
+                    SingletonInfraction.stateInfraction.value,
                     SingletonInfraction.idNewInfraction,
                     SingletonInfraction.latitudeInfraction,
                     SingletonInfraction.longitudeInfraction)
@@ -390,10 +412,10 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         0,
                         it.fraction.uma,
                         it.fraction.childReference?.id!!,
-                        //TODO: Tiene que existir una Referencia a firebase
+                        it.fraction.reference?.id ?: "",
+                        it.fraction.number,
                         SingletonInfraction.idNewInfraction,
-                        it.motivation,
-                        "250".toFloat()) //TODO: No sé de donde viene el monto xd
+                        it.motivation, 0.0F) //TODO: No sé de donde viene el monto xd
                 SaveInfractionManagerWeb.saveTrafficViolation(trafficViolation)
             }
             /* Step 8. Save Evidence Photos */

@@ -83,4 +83,10 @@ object SaveInfractionManagerWeb {
             Application.m_database_web?.captureLineDaoWeb()?.insert(captureLine)
         }
     }
+
+    fun savePayOrder(payorder: InfringementPayorder) {
+        GlobalScope.launch {
+            Application.m_database_web?.payorderDaoWeb()?.insert(payorder)
+        }
+    }
 }

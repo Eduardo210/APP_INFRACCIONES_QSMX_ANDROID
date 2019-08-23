@@ -31,6 +31,7 @@ abstract class AppDatabaseWeb : RoomDatabase() {
 
     /*Para la migración a web*/
     abstract fun infractionDaoWeb(): InfractionDaoWeb
+
     abstract fun personDaoWeb(): PersonDaoWeb
     abstract fun vehicleInfractionDaoWeb(): VehicleInfractionDaoWeb
     abstract fun addressPersonDaoWeb(): AddressPersonDaoWeb
@@ -41,6 +42,7 @@ abstract class AppDatabaseWeb : RoomDatabase() {
     abstract fun driverLicenseDaoWeb(): DriverDriverLicenseDaoWeb
     abstract fun pictureInfractionDaoWeb(): PictureInfractionDaoWeb
     abstract fun captureLineDaoWeb(): CaptureLineDaoWeb
+    abstract fun payorderDaoWeb(): InfractionPayorderDaoWeb
 
     companion object {
         private var INSTANCE: AppDatabaseWeb? = null

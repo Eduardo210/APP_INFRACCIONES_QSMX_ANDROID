@@ -36,7 +36,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             if (it.exception == null && it.result != null) {
                 Log.e(this.javaClass.simpleName, "result ${it.result?.data}")
                 val cipher = ((it.result?.data) as HashMap<*, *>)["encrypted"].toString()
-                val request = LogInRequest(userName, cipher)
+                val request = LogInRequest(userName.trim(), cipher)
                 NetworkApi().getNetworkService().login(request).enqueue(object : Callback<LogInResult> {
                     override fun onResponse(call: Call<LogInResult>, response: Response<LogInResult>) {
                         when (response.code()) {

@@ -10,9 +10,6 @@ import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.Config
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
-import mx.qsistemas.infracciones.db.entities.PaymentInfringement
-import mx.qsistemas.infracciones.db.entities.PaymentInfringementCard
-import mx.qsistemas.infracciones.db.managers.SaveInfractionManager
 import mx.qsistemas.infracciones.db_web.entities.*
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
 import mx.qsistemas.infracciones.net.FirebaseEvents
@@ -491,19 +488,11 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
     override fun savePayment(info: TransactionInfo) {
         this.txInfo = info
-        /* Step 1. Save Payment Infraction */
-        val paymentInfringement = PaymentInfringement(0, SingletonInfraction.idNewInfraction.toInt(), 1, SingletonInfraction.subTotalInfraction.toFloat(), SingletonInfraction.discountInfraction.toFloat(),
-                SingletonInfraction.totalInfraction.toFloat(), info.authorization, "", SingletonInfraction.idNewPersonInfraction, 0F)
-        SaveInfractionManager.savePaymentInfringement(paymentInfringement)
-        /* Step 2. Save Payment Transaction Information */
-        val paymentInfringementCard = PaymentInfringementCard(0, info.aid, info.apn, info.arqc, info.authorization, info.entryType, info.maskedPan,
-                info.txDate, "", info.txTime, Application.prefs?.loadData(R.string.sp_prefix, "")!!, SingletonInfraction.idNewPersonInfraction, info.affiliation, info.expirationDate, info.flagTransaction, info.brandCard,
-                info.typeCard, info.bank, info.reference, SingletonInfraction.totalInfraction, info.tvr, info.tsi, info.noControl, info.cardOwner,
-                "", info.typeTx, SingletonInfraction.idNewInfraction)
-        SaveInfractionManager.savePaymentInfringementCard(paymentInfringementCard)
-        /* Step 3. Update Infraction To Paid */
-        SaveInfractionManager.updateInfrationToPaid(SingletonInfraction.idNewInfraction)
-        /* Step 4. Save Authorization Code into Singleton */
+        /* Step 1. Save Pay Order Into Database */
+        val payorder = InfringementPayorder(0, SingletonInfraction.subTotalInfraction.toFloat(), 0F, SingletonInfraction.discountInfraction.toFloat(), 0F, SingletonInfraction.totalInfraction.toFloat(),
+                actualDay, "", "", "CARD", info.authorization.toLong(), SingletonInfraction.idNewInfraction, info.reference, false)
+        SaveInfractionManagerWeb.savePayOrder(payorder)
+        /* Step 2. Save Authorization Code into Singleton */
         SingletonInfraction.paymentAuthCode = info.authorization
     }
 

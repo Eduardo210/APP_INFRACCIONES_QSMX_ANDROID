@@ -13,7 +13,7 @@ data class Holidays(var key: String = "", val data: DocumentReference? = null, v
 
 /* Collection Headers */
 data class Townships(val prefix: String = "PRX", val counter_prefix: Int = 0, val value: String = "", val reference: DocumentReference? = null, val is_active: Boolean = true,
-                     var childReference: DocumentReference? = null, var uma_rate: Float =0F)
+                     var childReference: DocumentReference? = null, var uma_rate: Float =1F)
 
 data class Articles(val number: String = "", val description: String = "", val is_active: Boolean = true, var documentReference: DocumentReference? = null)
 

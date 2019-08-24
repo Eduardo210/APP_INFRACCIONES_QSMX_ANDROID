@@ -8,8 +8,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.db.entities.Config
-import mx.qsistemas.infracciones.db.entities.NonWorkingDay
 import mx.qsistemas.infracciones.db_web.entities.*
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
 import mx.qsistemas.infracciones.net.FirebaseEvents
@@ -44,17 +42,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     private val actualDay = SimpleDateFormat("yyyy-MM-dd").format(Date())
     private val actualTime = SimpleDateFormat("HH:mm:ss").format(Date())
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd") //"dd/MM/yyyy"
-    private lateinit var nonWorkingDays: MutableList<NonWorkingDay>
-    private lateinit var config: Config
     private var totalImport = 0F
-    private var totalPoints = 0
-    private var totalUmas = 0
-    private var fifteenthDay = ""
-    private var thirtythDay = ""
     private var newFolio = ""
-    private var captureLine1 = ""
-    private var captureLine2 = ""
-    private var uma_rate: Float = 0.0f
+    private var captureLineList = mutableListOf<InfringementCapturelines>()
 
     override fun getStatesList() {
         Application.firestore?.collection(FS_COL_STATES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
@@ -208,7 +198,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
             }
             holidayList = mutableListOf()
-            val list = mutableListOf<String>()
             if (snapshot != null && !snapshot.isEmpty) {
                 for (document in snapshot.documents) {
                     holidayList.add(document.id)
@@ -270,16 +259,14 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             totalUmas += it.fraction.uma
         }
         SingletonInfraction.subTotalInfraction = "%.2f".format(totalImport).replace(",", ".")
-        val fiftiethDiscount = totalImport * .5
-        SingletonInfraction.discountInfraction = "%.2f".format(fiftiethDiscount).replace(",", ".")
-        SingletonInfraction.totalInfraction = "%.2f".format(totalImport - fiftiethDiscount).replace(",", ".")
-        /* Get future working days */
-        fifteenthDay = getFutureWorkingDay(15)
-        thirtythDay = getFutureWorkingDay(30)
+        /* Get the percent discount of the same day */
+        var percentSameDay = 0F
+        SingletonInfraction.townshipInfraction.discount.entries.forEach { if (it.value.size == 1 && it.value[0] == 0) percentSameDay = it.key.replace("%", "").toFloat() / 100 }
+        val discount = totalImport * percentSameDay
+        SingletonInfraction.discountInfraction = "%.2f".format(discount).replace(",", ".")
+        SingletonInfraction.totalInfraction = "%.2f".format(totalImport - discount).replace(",", ".")
+        /* Generate new folio of infraction */
         newFolio = generateNewFolio()
-        /* Generate all banking capture lines */
-        captureLine1 = Utils.generateCaptureLine(newFolio.replace("-", ""), fifteenthDay, "%.2f".format(fiftiethDiscount), "2")
-        captureLine2 = Utils.generateCaptureLine(newFolio.replace("-", ""), thirtythDay, "%.2f".format(totalImport), "2")
         /* Validate if is the first time to insert the infraction */
         if (SingletonInfraction.idNewInfraction == 0L) {
             /* Step 1. Save Vehicle Information */
@@ -313,7 +300,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             val infraction = InfringementInfringements(
                     0,
                     newFolio,
-                    0, //TODO: umas
+                    totalUmas.toInt(),
                     false,
                     "active",
                     SingletonInfraction.isPersonAbstent,
@@ -329,7 +316,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     retainedAnyDocument, // is insured
                     false,
                     SingletonInfraction.typeLicenseOffender.documentReference?.id ?: "",
-                    0.0f, //amount //TODO: AMOUNT
+                    "%.2f".format(totalImport).toFloat(),
                     SingletonInfraction.idNewPersonInfraction,
                     totalUmas,
                     "")
@@ -360,28 +347,19 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         SingletonInfraction.licenseIssuedInOffender.documentReference?.id ?: "")
                 SaveInfractionManagerWeb.saveDriverLicense(driverLicense)
             }
-            /* Step 5. Save Capture Lines */
-            val previousFifteen = dateFormat.parse(fifteenthDay)!!
-            val previousThirty = dateFormat.parse(thirtythDay)!!
-            val fifteenthDayF = SimpleDateFormat("dd/MM/yyyy").format(previousFifteen)
-            val thirtythDayF = SimpleDateFormat("dd/MM/yyyy").format(previousThirty)
-            val captureLine1 = InfringementCapturelines(0,
-                    captureLine1,
-                    fifteenthDayF.toString(),
-                    SingletonInfraction.totalInfraction.toFloat(),
-                    "Bancaria",
-                    1,
-                    SingletonInfraction.idNewInfraction.toString())
-            SaveInfractionManagerWeb.saveCaptureLine(captureLine1)
-            val captureLine2 = InfringementCapturelines(0,
-                    captureLine2,
-                    thirtythDayF.toString(),
-                    SingletonInfraction.subTotalInfraction.toFloat(),
-                    "Bancaria",
-                    2,
-                    SingletonInfraction.idNewInfraction.toString())
-            SaveInfractionManagerWeb.saveCaptureLine(captureLine2)
-            /* Step 6. Save Address Information */
+            /* Step 5. Generate Capture Lines */
+            captureLineList = mutableListOf()
+            SingletonInfraction.townshipInfraction.discount.entries.forEachIndexed { index, mutableEntry ->
+                val expDate = getFutureWorkingDay(mutableEntry.value[mutableEntry.value.size - 1])  // Get last day of validity
+                val discount = totalImport * mutableEntry.key.replace("%", "").toFloat() / 100
+                val total = totalImport - discount
+                val codeCaptureLine = Utils.generateCaptureLine(newFolio.replace("-", ""), expDate, "%.2f".format(total), "2")
+                captureLineList.add(InfringementCapturelines(0, codeCaptureLine, SimpleDateFormat("dd/MM/yyyy").format(dateFormat.parse(expDate)),
+                        "%.2f".format(total).toFloat(), "Bancaria", index + 1, SingletonInfraction.idNewInfraction.toString(), mutableEntry.key))
+            }
+            /* Step 6. Save Capture Lines */
+            SaveInfractionManagerWeb.saveCaptureLine(captureLineList)
+            /* Step 7. Save Address Information */
             val infractionAddress = InfringementAddressInfringement(
                     0,
                     SingletonInfraction.streetInfraction,
@@ -399,7 +377,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.latitudeInfraction,
                     SingletonInfraction.longitudeInfraction)
             SaveInfractionManagerWeb.saveAddressInfraction(infractionAddress)
-            /* Step 7. Save Fractions List */
+            /* Step 8. Save Fractions List */
             SingletonInfraction.motivationList.forEach {
                 val trafficViolation = InfringementRelfractionInfringements(
                         0,
@@ -408,15 +386,15 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         it.fraction.reference?.id ?: "",
                         it.fraction.number,
                         SingletonInfraction.idNewInfraction,
-                        it.motivation, 0.0F) //TODO: No sé de donde viene el monto xd
+                        it.motivation, SingletonInfraction.townshipInfraction.uma_rate * it.fraction.uma)
                 SaveInfractionManagerWeb.saveTrafficViolation(trafficViolation)
             }
-            /* Step 8. Save Evidence Photos */
+            /* Step 9. Save Evidence Photos */
             val evidence1 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
             val evidence2 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence1)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
-            /* Step 9. Register Event Infraction */
+            /* Step 10. Register Event Infraction */
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
             if (notify) listener.onDataSaved()
@@ -497,6 +475,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun printTicket(activity: Activity) {
+        SingletonTicket.headers = SingletonInfraction.townshipInfraction.headers.values.toMutableList()
         SingletonTicket.dateTicket = "$actualDay $actualTime"
         SingletonTicket.folioTicket = newFolio
         SingletonTicket.completeNameOffender = SingletonInfraction.nameOffender + " " + SingletonInfraction.lastFatherName + " " + SingletonInfraction.lastMotherName
@@ -555,16 +534,11 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SingletonTicket.idAgent = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toString()
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
-        /*Regresar la fecha a su forma original*/
+        captureLineList.forEach {
+            SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "SIN DESCUENTO" else "CON ${it.discount} DE DESCUENTO", it.date, "%.2f".format(it.amount)))
+        }
 
-        val previousFifteen = dateFormat.parse(fifteenthDay)!!
-        val previousThirty = dateFormat.parse(thirtythDay)!!
-
-        val fifteenthDayF = SimpleDateFormat("dd/MM/yyyy").format(previousFifteen)
-        val thirtythDayF = SimpleDateFormat("dd/MM/yyyy").format(previousThirty)
-
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDayF.toString(), SingletonInfraction.totalInfraction))
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDayF.toString(), SingletonInfraction.subTotalInfraction))
+        SingletonTicket.footers = SingletonInfraction.townshipInfraction.footer.values.toMutableList()
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 listener.onTicketPrinted()

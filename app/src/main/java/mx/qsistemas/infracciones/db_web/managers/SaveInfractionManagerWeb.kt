@@ -78,9 +78,9 @@ object SaveInfractionManagerWeb {
 
     }
 
-    fun saveCaptureLine(captureLine: InfringementCapturelines) {
+    fun saveCaptureLine(captureLines: MutableList<InfringementCapturelines>) {
         GlobalScope.launch {
-            Application.m_database_web?.captureLineDaoWeb()?.insert(captureLine)
+            Application.m_database_web?.captureLineDaoWeb()?.insertList(captureLines)
         }
     }
 

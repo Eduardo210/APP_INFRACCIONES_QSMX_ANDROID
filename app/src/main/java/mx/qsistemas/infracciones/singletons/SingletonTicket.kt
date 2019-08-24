@@ -2,6 +2,8 @@ package mx.qsistemas.infracciones.singletons
 
 object SingletonTicket {
 
+    var headers: MutableList<String> = mutableListOf()
+
     var dateTicket: String = "-"
     var folioTicket: String = "-"
 
@@ -41,7 +43,9 @@ object SingletonTicket {
     var idAgent: String = ""
 
     var paymentAuthCode: String = ""
-    var captureLineList: MutableList<CaptureLine> = mutableListOf()
+    var captureLines: MutableList<CaptureLine> = mutableListOf()
+
+    var footers: MutableList<String> = mutableListOf()
 
     class ArticleFraction(var article: String = "-", var fraction: String = "-", var umas: String = "-",
                           var motivation: String = "-")
@@ -50,6 +54,8 @@ object SingletonTicket {
                       var importInfraction: String = "")
 
     fun cleanData() {
+        headers = mutableListOf()
+
         dateTicket = "-"
         folioTicket = "-"
 
@@ -88,6 +94,8 @@ object SingletonTicket {
         nameAgent = ""
 
         paymentAuthCode = ""
-        captureLineList = mutableListOf()
+        captureLines = mutableListOf()
+
+        footers = mutableListOf()
     }
 }

@@ -311,13 +311,13 @@ class SearchFr : Fragment()
             SingletonTicket.remitedDispositionInfraction = infraction.DISPOSICION.toString()
         }
 */
-        SingletonTicket.captureLineList.add(
+        SingletonTicket.captureLines.add(
                 SingletonTicket.CaptureLine(
                         infraction.captureLines?.get(0)?.key ?: "",
                         "CON 50% DE DESCUENTO",
                         infraction.captureLines?.get(0)?.date ?: "",
                         infraction.captureLines?.get(0)?.amount.toString()))
-        SingletonTicket.captureLineList.add(
+        SingletonTicket.captureLines.add(
                 SingletonTicket.CaptureLine(
                         infraction.captureLines?.get(1)?.key ?: "",
                         "SIN DESCUENTO",
@@ -408,13 +408,13 @@ class SearchFr : Fragment()
             SingletonTicket.remitedDispositionInfraction = infraction.disposition
         }
 
-        SingletonTicket.captureLineList.add(
+        SingletonTicket.captureLines.add(
                 SingletonTicket.CaptureLine(
                         infraction.capture_line_ii,
                         "CON 50% DE DESCUENTO",
                         infraction.date_capture_line_ii,
                         infraction.amount_capture_line_ii.toString()))
-        SingletonTicket.captureLineList.add(
+        SingletonTicket.captureLines.add(
                 SingletonTicket.CaptureLine(
                         infraction.capture_line_iii,
                         "SIN DESCUENTO",

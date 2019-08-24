@@ -69,24 +69,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_kotlin_kotlin_stdlib_jdk7_1_3_31_jar.xml" beforeDir="false" />
+    <list default="true" id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="* New: Dynamic Capture Lines Generation&#10;* New: Dynamic Amount Generation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db/managers/PrintTicketManager.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/CaptureLineDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/CaptureLineDaoWeb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/InfringementCapturelines.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/InfringementCapturelines.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SaveInfractionManagerWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SaveInfractionManagerWeb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchIterator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/fr_search/SearchFr.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/fr_search/SearchFr.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonTicket.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonTicket.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Ticket.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Ticket.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payments_transfer/payments_transfer.iml" beforeDir="false" afterPath="$PROJECT_DIR$/payments_transfer/payments_transfer.iml" afterDir="false" />
     </list>
     <list id="d4afbee0-550c-400a-8373-a44a946b77b9" name="Ignore" comment="Ignore" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -227,11 +212,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="73" column="101" selection-start-line="73" selection-start-column="101" selection-end-line="73" selection-end-column="101" />
+            <state relative-caret-position="510">
+              <caret line="93" column="114" lean-forward="true" selection-start-line="93" selection-start-column="114" selection-end-line="93" selection-end-column="114" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Ticket.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="612">
+              <caret line="140" column="69" lean-forward="true" selection-start-line="140" selection-start-column="69" selection-end-line="140" selection-end-column="69" />
             </state>
           </provider>
         </entry>
@@ -358,10 +352,10 @@
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SaveInfractionManagerWeb.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/InfringementCapturelines.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonTicket.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Ticket.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Ticket.kt" />
       </list>
     </option>
   </component>
@@ -1141,7 +1135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566335718594</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="* New: Dynamic Capture Lines Generation&#10;* New: Dynamic Amount Generation">
+      <created>1566669923024</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1566669923024</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1189,7 +1190,7 @@
     <frame x="1358" y="-677" width="2576" height="1416" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.650913" visible="true" weight="0.098569155" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.650913" visible="true" weight="0.098569155" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Build Variants" order="2" sideWeight="0.349087" side_tool="true" weight="0.10333864" />
       <window_info id="Capture Tool" order="3" />
@@ -1206,7 +1207,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32936507" />
       <window_info anchor="bottom" id="Android Profiler" order="7" sideWeight="0.49761525" weight="0.32936507" />
-      <window_info anchor="bottom" x="0" y="23" width="1366" height="705" id="Logcat" order="8" sideWeight="0.49570355" type="WINDOWED" visible="true" weight="0.45555556" />
+      <window_info active="true" anchor="bottom" x="0" y="23" width="1366" height="705" id="Logcat" order="8" sideWeight="0.49570355" type="WINDOWED" visible="true" weight="0.45555556" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.15277778" />
       <window_info anchor="bottom" id="Build" order="10" sideWeight="0.74926543" visible="true" weight="0.28333333" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49785176" weight="0.32619047" />
@@ -1314,7 +1315,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="* Update Payment Infraction Strings&#10;* Update Payment Process&#10;* Update Offender Fields Validation" />
     <MESSAGE value="* Update Icons" />
     <MESSAGE value="* Update Offender Validations" />
     <MESSAGE value="* Send Infractions Process&#10;* Send Infractions Alarm / Job&#10;* Send Infraction Request" />
@@ -1339,7 +1339,8 @@
     <MESSAGE value="Update con errores xd" />
     <MESSAGE value="* Update: Send Infractions Reports" />
     <MESSAGE value="* Update: Gradle Version&#10;* Update: Ticket Format" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Update: Gradle Version&#10;* Update: Ticket Format" />
+    <MESSAGE value="* New: Dynamic Capture Lines Generation&#10;* New: Dynamic Amount Generation" />
+    <option name="LAST_COMMIT_MESSAGE" value="* New: Dynamic Capture Lines Generation&#10;* New: Dynamic Amount Generation" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1840,13 +1841,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Ticket.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="110" selection-start-line="110" selection-end-line="110" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
@@ -1890,8 +1884,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="73" column="101" selection-start-line="73" selection-start-column="101" selection-end-line="73" selection-end-column="101" />
+        <state relative-caret-position="510">
+          <caret line="93" column="114" lean-forward="true" selection-start-line="93" selection-start-column="114" selection-end-line="93" selection-end-column="114" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Ticket.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="140" column="69" lean-forward="true" selection-start-line="140" selection-start-column="69" selection-end-line="140" selection-end-column="69" />
         </state>
       </provider>
     </entry>

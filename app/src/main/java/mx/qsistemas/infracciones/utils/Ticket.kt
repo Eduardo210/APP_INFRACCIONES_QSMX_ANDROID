@@ -93,7 +93,7 @@ class Ticket {
             SingletonTicket.fractionsList.forEach {
                 printTest.put(getPrintObject("${it.article} / ${it.fraction}\t\t\t\t\t\t\t\t\t\t\t${it.umas}\n\n", "2", "center", "0"))
                 printTest.put(getPrintObject("Conducta que motiva la infracción\n\n", "2", "center", "1"))
-                printTest.put(getPrintObject("${it.motivation}\n\n", "1", "left", "0"))
+                printTest.put(getPrintObject("${it.motivation}\n\n", "2", "left", "0"))
             }
 
             // Dirección de infracción
@@ -114,7 +114,7 @@ class Ticket {
             printTest.put(getPrintObject("${SingletonTicket.completeNameOffender}\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("Recibo de conformidad\n\n\n\n\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("Firma\n\n", "2", "center", "0"))
-            printTest.put(getPrintObject("Agente:\n", "2", "center", "0"))
+            printTest.put(getPrintObject("Agente:\n", "2", "center", "1"))
             printTest.put(getPrintObject("${SingletonTicket.nameAgent}\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("Empleado: ${SingletonTicket.idAgent}\n\n\n\n\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("Firma\n\n", "2", "center", "0"))
@@ -133,14 +133,14 @@ class Ticket {
                 printTest.put(getPrintObject("${it.captureLine}\n", "2", "center", "0"))
                 printTest.put(getPrintObject("${it.labelDiscount}\n", "2", "center", "0"))
                 printTest.put(getPrintObject("Vigencia: ${it.expirationDiscount}\n", "2", "center", "0"))
-                printTest.put(getPrintObject("Importe: ${it.importInfraction}\n\n\n\n", "2", "center", "0"))
+                printTest.put(getPrintObject("Importe: ${it.importInfraction}\n\n\n", "2", "center", "0"))
             }
 
             // Pie de página
             SingletonTicket.footers.forEach {
                 printTest.put(getPrintObject(it, "2", "center", "0"))
             }
-            printTest.put(getPrintObject("-Aviso de Privacidad-\n\n", "2", "center", "0"))
+            printTest.put(getPrintObject("\n\n-Aviso de Privacidad-\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("Fuente de captura: SIIP\n\n\n\n\n", "2", "center", "0"))
             printJson.put("spos", printTest)
             PaymentsTransfer.print(activity, printJson.toString(), null, object : IPaymentsTransfer.PrintListener {

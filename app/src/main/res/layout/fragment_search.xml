@@ -31,8 +31,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 app:cardCornerRadius="13dp"
                 app:cardElevation="2dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,90 +43,34 @@
                     android:layout_height="match_parent"
                     android:padding="8dp">
 
-                    <TextView
-                        android:id="@+id/txt_filter_folio"
-                        style="@style/TextViewHeaderItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Folio: "
+                    <Button
+                        android:id="@+id/btn_show_infra"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:background="@drawable/small_button_gradient"
+                        android:text="Buscar"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/edt_filter_any" />
 
                     <EditText
-                        android:id="@+id/edt_filter_folio"
+                        android:id="@+id/edt_filter_any"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:hint="Ingrese folio ..."
                         android:imeOptions="actionDone"
                         android:inputType="textNoSuggestions"
                         android:textColor="@color/colorLightBlack"
                         android:textSize="@dimen/font_size_small"
-                        app:layout_constraintEnd_toEndOf="@id/guide_line_center_vertical"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txt_filter_folio" />
-
-                    <TextView
-                        android:id="@+id/txt_search_by_title"
-                        style="@style/TextViewHeaderItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Búsqueda por"
-                        app:layout_constraintStart_toStartOf="@id/guide_line_center_vertical"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Spinner
-                        android:id="@+id/sp_search_filter"
-                        style="@android:style/Widget.DeviceDefault.Light.Spinner"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="4dp"
-                        android:spinnerMode="dialog"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toEndOf="@id/guide_line_center_vertical"
-                        app:layout_constraintTop_toBottomOf="@id/txt_search_by_title" />
-
-                    <EditText
-                        android:id="@+id/et_filter_any"
-                        android:layout_width="0dp"
-                        android:layout_height="40dp"
-                        android:hint="Ingrese ..."
-                        android:imeOptions="actionDone"
-                        android:inputType="textNoSuggestions"
-                        android:textColor="@color/colorLightBlack"
-                        android:textSize="@dimen/font_size_small"
-                        android:visibility="visible"
                         app:layout_constraintBottom_toTopOf="@id/btn_show_infra"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guide_line_center_vertical"
-                        app:layout_constraintTop_toBottomOf="@+id/guide_line_center_horizontal" />
-
-                    <Button
-                        android:id="@+id/btn_show_infra"
-                        android:layout_width="130dp"
-                        android:layout_height="35dp"
-                        android:layout_marginTop="40dp"
-                        android:background="@drawable/small_button_gradient"
-                        android:text="Buscar"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/guide_line_center_horizontal" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guide_line_center_vertical"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent=".5" />
-
-                    <androidx.constraintlayout.widget.Guideline
-                        android:id="@+id/guide_line_center_horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintGuide_percent=".4" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -139,11 +83,40 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:visibility="gone"
                 android:animateLayoutChanges="true"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/cdv_search_filter"
                 app:layout_constraintStart_toStartOf="@id/cdv_search_filter"
                 app:layout_constraintTop_toBottomOf="@id/cdv_search_filter">
+
+                <ImageView
+                    android:id="@+id/img_clean_search"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_close"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_title_total_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Resultados para: "
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txt_total_search"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_filter_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/txt_title_total_search"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Folio ATZ1-15" />
 
                 <TextView
                     android:id="@+id/txt_total_search"
@@ -154,35 +127,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="3" />
-
-                <TextView
-                    android:id="@+id/txt_title_total_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textStyle="bold"
-                    android:text="Resultados para: "
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/txt_total_search"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/txt_filter_search"
-                    android:layout_width="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/txt_title_total_search"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Folio ATZ1-15" />
-
-                <ImageView
-                    android:id="@+id/img_clean_search"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_close"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

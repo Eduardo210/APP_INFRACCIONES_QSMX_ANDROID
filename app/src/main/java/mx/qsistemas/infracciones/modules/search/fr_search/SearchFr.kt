@@ -113,8 +113,6 @@ class SearchFr : Fragment()
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -122,23 +120,14 @@ class SearchFr : Fragment()
 
         binding.btnShowInfra.setOnClickListener {
             if (isValidFilter()) {
+                activity.showLoader("Buscando infracciones")
                 if (!true/*Validator.isNetworkEnable(activity)*/) {
-                    activity.showLoader("Buscando infracciones")
-                    if (!binding.edtFilterFolio.text.toString().equals("")) {
-                        iterator.value.doSearchByFilter( binding.edtFilterFolio.text.toString())
-                    } else {
-                        iterator.value.doSearchByFilter(binding.etFilterAny.text.toString())
-                    }
+
+                    iterator.value.doSearchByFilter(binding.edtFilterAny.text.toString())
+
                 } else {
-                    activity.showLoader("Buscando infracciones")
-                    if (!binding.edtFilterFolio.text.toString().equals("")) {
-                        lifecycleScope.launch {
-                            iterator.value.doSearchByFilterOffLine(idDocIdent, binding.edtFilterFolio.text.toString())
-                        }
-                    } else {
-                        lifecycleScope.launch {
-                            iterator.value.doSearchByFilterOffLine(idDocIdent, binding.etFilterAny.text.toString())
-                        }
+                    lifecycleScope.launch {
+                        iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
                     }
                 }
             } else {
@@ -160,7 +149,6 @@ class SearchFr : Fragment()
     }
 
     private fun initAdapters() {
-        binding.spSearchFilter.onItemSelectedListener = this
         iterator.value.getIdentifierDocAdapter()
 
     }
@@ -516,20 +504,20 @@ class SearchFr : Fragment()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        idDocIdent = iterator.value.identifierDocList[p2].documentReference?.id ?: ""
-        Log.d("DOC_IDENT", idDocIdent)
-        if (p2 > 0) {
-            binding.etFilterAny.visibility = View.VISIBLE
-            if (!binding.edtFilterFolio.text.equals("")) {
-                binding.edtFilterFolio.setText("")
-            }
+        /* idDocIdent = iterator.value.identifierDocList[p2].documentReference?.id ?: ""
+         Log.d("DOC_IDENT", idDocIdent)
+         if (p2 > 0) {
+             binding.etFilterAny.visibility = View.VISIBLE
+             if (!binding.edtFilterFolio.text.equals("")) {
+                 binding.edtFilterFolio.setText("")
+             }
 
-        } else {
-            binding.etFilterAny.visibility = View.GONE
-        }
+         } else {
+             binding.etFilterAny.visibility = View.GONE
+         }
 
 
-        /*idDocIdent = returnCorrectNumber(p2)
+         *//*idDocIdent = returnCorrectNumber(p2)
         if (p2 > 0) {
             binding.etFilterAny.visibility = View.VISIBLE
             if (!binding.edtFilterFolio.text.equals("")) {
@@ -554,10 +542,8 @@ class SearchFr : Fragment()
         }
     }
 
-    fun isValidFilter(): Boolean {
-        return if (binding.edtFilterFolio.text != null) {
-            true
-        } else idDocIdent != null && binding.etFilterAny.text != null
+    private fun isValidFilter(): Boolean {
+        return (binding.edtFilterAny.text != null)
     }
 
     override fun onResultInfractionById(infraction: InfractionSearch, origin: Int) {
@@ -597,25 +583,13 @@ class SearchFr : Fragment()
             binding.rclResults.adapter = SearchAdapter(listInfractions, this)
             binding.txtTotalSearch.text = totalResults.toString()
 
-            val filter =
-                    if (binding.edtFilterFolio.text.toString().equals("")) {
-                        binding.etFilterAny.text.toString()
-                    } else {
-                        binding.edtFilterFolio.text.toString()
-                    }
-
-            binding.txtFilterSearch.text = filter
+            binding.txtFilterSearch.text = binding.edtFilterAny.text.toString()
         } else {
             activity.showLoader("Buscando infracciones")
-            if (!binding.edtFilterFolio.text.toString().equals("")) {
-                lifecycleScope.launch {
-                    iterator.value.doSearchByFilterOffLine(idDocIdent, binding.edtFilterFolio.text.toString())
-                }
-            } else {
-                lifecycleScope.launch {
-                    iterator.value.doSearchByFilterOffLine(idDocIdent, binding.etFilterAny.text.toString())
-                }
+            lifecycleScope.launch {
+                iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
             }
+
         }
 
 
@@ -633,10 +607,7 @@ class SearchFr : Fragment()
     }
 
     private fun clearData() {
-        binding.etFilterAny.setText("")
-        binding.edtFilterFolio.setText("")
-        binding.etFilterAny.visibility = View.GONE
-        binding.spSearchFilter.setSelection(0)
+        binding.edtFilterAny.setText("")
         binding.constraintResults.visibility = View.GONE
         binding.rclResults.adapter = null
 
@@ -696,12 +667,6 @@ class SearchFr : Fragment()
             binding.rclResults.adapter = HistoricalAdapter(listInfractions, this)
 
             binding.txtTotalSearch.text = totalResults.toString()
-            val filter =
-                    if (binding.edtFilterFolio.text.toString().equals("")) {
-                        binding.etFilterAny.text.toString()
-                    } else {
-                        binding.edtFilterFolio.text.toString()
-                    }
 
             binding.txtFilterSearch.text = "Infracciones locales"
         } else {
@@ -728,8 +693,6 @@ class SearchFr : Fragment()
     }
 
     override fun onIdentifierDocReady(adapter: ArrayAdapter<String>) {
-        binding.spSearchFilter.adapter = adapter
-        //binding.spSearchFilter.setSelection(iterator.value.getPositionIdentifiedDoc(SingletonInfraction.identifierDocument)) //TODO: Reemplazar la propiedad del singleton
     }
 
     override fun onTicketPrinted() {

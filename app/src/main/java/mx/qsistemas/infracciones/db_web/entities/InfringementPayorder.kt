@@ -22,5 +22,7 @@ data class InfringementPayorder(@PrimaryKey(autoGenerate = true) @NotNull val id
                                 @ColumnInfo(name = "infringement_id") val infringement_id:String,
                                 @ColumnInfo(name = "responsible_id") val responsible_id: Long,
                                 @ColumnInfo(name = "treasurer_id") val treasurer_id:Long,
-                                @ColumnInfo(name = "reference") val reference: String
+                                @ColumnInfo(name = "reference") val reference: String,
+                                @ColumnInfo(name = "token_server") val token_server: String,
+                                @ColumnInfo(name = "sync") val sync: Boolean
                                  )

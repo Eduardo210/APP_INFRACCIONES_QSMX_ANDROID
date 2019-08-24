@@ -27,7 +27,7 @@ class SearchContracts {
     interface Iterator {
         //fun getDocIdentAdapter(): ArrayAdapter<NewIdentDocument>
         fun doSearchByFilter(filter: String)
-        suspend fun doSearchByFilterOffLine(id: String, filter: String)
+        suspend fun doSearchByFilterOffLine(filter: String)
         fun doSearchByIdInfraction(id: String, origin: Int)
         suspend fun doSearchByIdInfractionOffLine(id: String, origin: Int)
         fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long)

@@ -5,21 +5,18 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
 import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
 import mx.qsistemas.infracciones.db_web.entities.InfringementData
-import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.db_web.managers.SearchManagerWeb
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
-import mx.qsistemas.infracciones.utils.*
+import mx.qsistemas.infracciones.utils.FS_COL_IDENTIF_DOC
+import mx.qsistemas.infracciones.utils.Ticket
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -190,98 +187,56 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
          })*/
     }
 
-    override suspend fun doSearchByFilterOffLine(id: String, filter: String) {
-        var insuredDocument = ""
-        var brand = ""
-        var model = ""
-        var colour = ""
+    override suspend fun doSearchByFilterOffLine(filter: String) {
+        val query: SimpleSQLiteQuery
+        if(filter.isEmpty()){
+            query =SimpleSQLiteQuery("SELECT " +
+                    "infra.id, " +
+                    "infra.folio, " +
+                    "infra.date, " +
+                    "vehicle.num_document, " +
+                    "(SELECT reason FROM infringement_relInfraction_infringements) reason, " +
+                    "infra.sync, " +
+                    "vehicle.sub_brand, " +
+                    "vehicle.colour " +
+                    "FROM Infringement_infringements infra " +
+                    "INNER JOIN Vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
+                    "LEFT JOIN driver_divers driver ON infra.driver_id = driver.id " +
+                    "INNER JOIN person_townhall oficial ON infra.town_hall_id = oficial.idPersona " +
+                    "ORDER BY infra.id DESC LIMIT 1")
 
-        if (itemInfraOffLineList.size > 0)
-            itemInfraOffLineList.clear()
+        }else{
+            query =SimpleSQLiteQuery("SELECT " +
+                    "infra.id, " +
+                    "infra.folio, " +
+                    "infra.date, " +
+                    "vehicle.num_document, " +
+                    "(SELECT reason FROM infringement_relInfraction_infringements) reason, " +
+                    "infra.sync, " +
+                    "vehicle.sub_brand, " +
+                    "vehicle.colour " +
+                    "FROM Infringement_infringements infra " +
+                    "INNER JOIN Vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
+                    "LEFT JOIN driver_divers driver ON infra.driver_id = driver.id " +
+                    "INNER JOIN person_townhall oficial ON infra.town_hall_id = oficial.idPersona " +
+                    "WHERE (infra.folio LIKE \\'%$filter\\%') " +
+                    "OR (driver.paternal LIKE \\'%$filter\\%' " +
+                    "   OR driver.maternal LIKE \\'%$filter\\%' " +
+                    "   OR driver.name LIKE \\'%$filter\\%') " +
+                    "OR (oficial.paternal LIKE \\'%$filter\\%' " +
+                    "   OR oficial.maternal LIKE \\'%$filter\\%' " +
+                    "   OR oficial.name LIKE \\'%$filter\\%' ) " +
+                    "OR (vehicle.num_document LIKE \\'%$filter\\%') LIMIT 10")
 
-        /*Empiezo con la nueva búsqueda*/
-        val query = when (id) {
-            "" -> {
-                if (filter.isBlank()) { //Traer el último registro
-                    SimpleSQLiteQuery("SELECT infra.id, " +
-                            "infra.folio, " +
-                            "infra.date, " +
-                            "vehicle.num_document, " +
-                            "(SELECT reason " +
-                            "   FROM infringement_relInfraction_infringements " +
-                            "   WHERE infringements_id = infra.id LIMIT 1) reason, " +
-                            "infra.sync, " +
-                            "vehicle.identifier_document_id, " +
-                            "vehicle.sub_brand_id, " +
-                            "vehicle.colour_id, " +
-                            "vehicle.brand_reference " +
-                            "FROM infringement_infringements infra " +
-                            "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
-                            "ORDER BY infra.id DESC LIMIT 1")
-                } else {//Búsqueda por folio
-                    SimpleSQLiteQuery("SELECT infra.id, " +
-                            "infra.folio, " +
-                            "infra.date, " +
-                            "vehicle.num_document, " +
-                            "(SELECT reason FROM infringement_relInfraction_infringements WHERE infringements_id = infra.id LIMIT 1) reason, " +
-                            "infra.sync, " +
-                            "vehicle.identifier_document_id, " +
-                            "vehicle.sub_brand_id, " +
-                            "vehicle.colour_id, " +
-                            "vehicle.brand_reference " +
-                            "FROM infringement_infringements infra " +
-                            "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
-                            "WHERE infra.folio = \'${filter.toUpperCase()}\' " +
-                            "ORDER BY infra.id DESC LIMIT 1")
-                }
-            }
-            else -> {
-                SimpleSQLiteQuery("SELECT infra.id, " +
-                        "infra.folio, " +
-                        "infra.date, " +
-                        "vehicle.num_document, " +
-                        "(SELECT reason " +
-                        "   FROM infringement_relInfraction_infringements " +
-                        "   WHERE infringements_id = infra.id LIMIT 1) reason, " +
-                        "infra.sync, " +
-                        "vehicle.identifier_document_id, " +
-                        "vehicle.sub_brand_id, " +
-                        "vehicle.colour_id, " +
-                        "vehicle.brand_reference " +
-                        "FROM infringement_infringements infra " +
-                        "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
-                        "WHERE vehicle.identifier_document_id = \'$id\'" +
-
-                        "AND vehicle.num_document = \'${filter.replace(" ", "")}\' " +
-                        " ORDER BY infra.id DESC LIMIT 1")
-            }
         }
+
         itemInfraOffLine = SearchManagerWeb.getItemInfraction(query)
-        //1.-Iterar la lista y hacer consulta a firebase para obtener elementos de catálogos.
-        //1.1.- Generar la nueva lista.
-        itemInfraOffLine.forEach { infra ->
-            val job = GlobalScope.launch(Dispatchers.Main) {
-                insuredDocument = CatalogsFirebaseManager.getValue(infra.id_doc_ident, FS_COL_INSURED_DOC,"value")
-                brand = CatalogsFirebaseManager.getValue(infra.brand_reference, FS_COL_BRANDS,"value")
-                model = CatalogsFirebaseManager.getValue(infra.sub_brand_id, FS_COL_MODELS,"value")
-                colour = CatalogsFirebaseManager.getValue(infra.colour_id, FS_COL_COLORS,"value")
-            }
-            job.join()
-
-            itemInfraOffLineList.add(InfractionItemList(
-                    infra.id_infraction,
-                    infra.folio,
-                    infra.num_document,
-                    infra.reason,
-                    infra.sync,
-                    insuredDocument,
-                    brand,
-                    model,
-                    colour,
-                    infra.date
-            ))
+        if(itemInfraOffLine.size>0){
+            listener.onResultSearchOffLine(itemInfraOffLineList)
+        }else{
+            listener.onError("No se encontraron datos con el filtro ingresado.")
         }
-        listener.onResultSearchOffLine(itemInfraOffLineList)
+
     }
 
     override fun printTicket(activity: Activity) {

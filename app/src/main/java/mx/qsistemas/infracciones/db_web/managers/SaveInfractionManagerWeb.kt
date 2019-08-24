@@ -83,4 +83,10 @@ object SaveInfractionManagerWeb {
             Application.m_database_web?.captureLineDaoWeb()?.insert(captureLine)
         }
     }
+    fun saveOficial(oficial: PersonTownhall) {
+        GlobalScope.launch {
+            Application.m_database_web?.personTownHallDaoWeb()?.insert(oficial)
+        }
+    }
+
 }

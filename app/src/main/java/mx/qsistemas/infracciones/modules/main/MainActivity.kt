@@ -10,6 +10,7 @@ import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
+import mx.qsistemas.payments_transfer.PaymentsTransfer
 
 class MainActivity : ActivityHelper(), MainContracts.Presenter {
 
@@ -24,6 +25,14 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
 
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(this, msg, Snackbar.LENGTH_LONG)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        /* Always try to run reversal of tx's with no response */
+        PaymentsTransfer.runReversal(this)
+        /* Always reconfigure */
+        PaymentsTransfer.reconfigure()
     }
 
     override fun enableHighAccuracyGps() {

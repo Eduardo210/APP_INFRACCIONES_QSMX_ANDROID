@@ -62,6 +62,13 @@
     <string name="t_select_township">Seleccione un municipio:</string>
     <string name="t_input_password">Ingrese la contraseña para confirmar</string>
 
+    <!-- Detail Payment Dialog -->
+    <string name="t_name_offender">Nombre del Infractor:</string>
+    <string name="t_total_umas">Total de UMAs:</string>
+    <string name="t_subtotal_price">Subtotal:</string>
+    <string name="t_total_discount">Descuento (pago mismo día):</string>
+    <string name="t_total_price">Total a pagar:</string>
+
     <!-- Dashboard Infraction String -->
     <string name="t_toolbar_title_infraction">Infracciones</string>
     <string name="t_toolbar_subtitle_infraction">Control y registro de infracciones</string>
@@ -146,6 +153,7 @@
     <string name="l_config_terminal">Configurando terminal</string>
     <string name="l_download_catalogs">Descargando catálogos</string>
     <string name="l_preparing_printer">Preparando impresión</string>
+    <string name="l_waiting_confirm">Esperando validación del\ndispositivo móvil</string>
 
     <!-- Errors -->
     <string name="e_empty_fields">Favor de validar campos</string>
@@ -190,7 +198,7 @@
     <!-- Offender Information Errors -->
     <string name="e_name_offender">Nombre obligatorio</string>
     <string name="e_last_father_offender">Apellido paterno obligatorio</string>
-    <string name="e_last_mother_offender">Apellido materno obligatorio</string>Utils
+    <string name="e_last_mother_offender">Apellido materno obligatorio</string>
     <string name="e_state_offender">Entidad obligatoria</string>
     <string name="e_township_offender">Municipio obligatorio</string>
     <string name="e_colony_offender">Colonia obligatoria</string>
@@ -238,7 +246,7 @@
     <string name="s_data_saved">Infracción guardada</string>
     <string name="s_person_update">Datos personales actualizados</string>
     <string name="s_infraction_pay">Infracción pagada</string>
-    <string name="s_infraction_send">Infracciones enviadas exitosamente</string>
+    <string name="s_infraction_send">Infracciones enviadas: </string>
     <string name="s_images_send">Imágenes enviadas exitosamente</string>
     <string name="paid">Pagado</string>
     <string name="status_pending_local">Envio pendiente</string>

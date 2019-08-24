@@ -1,6 +1,5 @@
 package mx.qsistemas.payments_transfer.utils
 
-import android.annotation.TargetApi
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager
@@ -135,13 +134,13 @@ class Utils {
         /** El AES CBC PKCS es un algoritmo de cifrado necesario para obtener ciertos datos de
          * cadenas cifradas en el QR de CoDi así como para poder cifrar los mismos datos para poder
          * desplegarlos posteriormente en el celular */
-        fun AesCbcPkcs(key: String, initVector: String, value: String, mode: Int): String? {
+        fun AesCbcPkcs(key: String, initVector: String, value: String, mode: Int, transformation: String): String? {
             var result: String?
             try {
                 val iv = IvParameterSpec(Hex.decodeHex(initVector.toCharArray()))
                 val skeySpec = SecretKeySpec(Hex.decodeHex(key.toCharArray()), "AES")
 
-                val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
+                val cipher = Cipher.getInstance(/*"AES/CBC/PKCS5PADDING"*/transformation)
                 cipher.init(mode, skeySpec, iv)
                 if (mode == Cipher.ENCRYPT_MODE) {
                     val encrypted = cipher.doFinal(value.toByteArray())
@@ -267,7 +266,6 @@ class Utils {
             return "$yearTwoDigits$month$day".toLong()
         }
 
-        @TargetApi(Build.VERSION_CODES.Q)
         fun isAppIsInBackground(context: Context): Boolean {
             Log.e(this.javaClass.simpleName, "isAppIsInBackground: " + "show")
             var isInBackground = true
@@ -298,7 +296,7 @@ class Utils {
          * Método empleado para procesar el cifrado traido desde la notificación por Banxico
          */
         fun processAccountValidation(key: String, iv: String, infoCuenta: Info_Cuenta): String {
-            val dechyperPush = AesCbcPkcs(key, iv, infoCuenta.infCif, Cipher.DECRYPT_MODE)
+            val dechyperPush = AesCbcPkcs(key, iv, infoCuenta.infCif, Cipher.DECRYPT_MODE, AES_CBC_PKCS5)
             val data = Gson().fromJson(dechyperPush, ValidacionCuentasDecryp_Data::class.java)
             return when (data.rv) {
                 0 -> CODI_ACCOUNT_PENDENT
@@ -322,9 +320,9 @@ class Utils {
             return output.toString()
         }
 
-        fun translateTlv(tlv: String): String {
+        fun mapTlv(tlv: String): Map<String, Tags> {
             val b = arrayOfNulls<String>(tlv.length / 2)
-            var translate = String()
+            var map = mutableMapOf<String, Tags>()
             var searchTag = true
             var tagHas2Bytes = false
             var searchLength = false
@@ -333,8 +331,7 @@ class Utils {
             var bytesRead = 1
             var hexToBin: String
             var TAG = ""
-            var exceptionTags1Bytes = mutableListOf("9B", "57")
-            var exceptionTags2Bytes = mutableListOf("DF06", "DF35", "9F06", "9F5A", "9F66", "9F01")
+            var tagObj = Tags()
             for (i in b.indices) {
                 /* Obtención de bytes hexadecimales del String */
                 val index = i * 2
@@ -349,18 +346,12 @@ class Utils {
                  * procede a buscar la longitud del contenido del tag */
                     if (tagHas2Bytes) {
                         TAG += b[i]
-                        if (TAG !in exceptionTags2Bytes) {
-                            translate += b[i]
-                        } else {
-                            translate = translate.removeRange(translate.length - 2, translate.length)
-                        }
                         tagHas2Bytes = false
                         searchTag = false
                         searchLength = true
                     } else {
                         TAG = b[i].toString()
-                        if (TAG !in exceptionTags1Bytes)
-                            translate += TAG
+                        tagObj = Tags()
                         /* Si los ultimos 5 bits del hexadecimal convertido en binario están prendidos entonces
                      * significa que el tag contiene 2 bytes hexadecimales */
                         if (hexToBin.length > 4 && hexToBin.substring(hexToBin.length - 5, hexToBin.length) == "11111") {
@@ -373,8 +364,7 @@ class Utils {
                     }
                     /* Una vez encontrado el TAG procedemos a buscar la longitud del contenido del tag */
                 } else if (searchLength) {
-                    if (TAG !in exceptionTags2Bytes && TAG !in exceptionTags1Bytes)
-                        translate += b[i]
+                    tagObj.lenght = b[i] ?: ""
                     lengthBytesContent = Integer.parseInt(b[i].toString(), 16)
                     searchLength = false
                     searchContent = true
@@ -385,18 +375,15 @@ class Utils {
                  * es 91 y bytes leidos son iguales a la longitud maxima del tag (16 bytes), se
                  * procede a guardar el byte e incrementar el contador de bytes leidos */
                     if (bytesRead < lengthBytesContent) {
-                        if (TAG !in exceptionTags2Bytes && TAG !in exceptionTags1Bytes) {
-                            translate += /*if (TAG == "9F1E") "08" else*/ b[i]
-                        }
+                        tagObj.content += b[i]
                         bytesRead++
                         /* En caso de que no se cumplan las validaciones anteriores, significa que el TAG
                      * es diferente al 91 y que ya se encuentra leyendo el último byte por la longitud
                      * indicada.  Se guarda ese byte y se reinician las banderas para que continue
                      * leyendo TAG. */
                     } else {
-                        if (TAG !in exceptionTags2Bytes && TAG !in exceptionTags1Bytes) {
-                            translate += /*if (TAG == "9F1E") "08" else*/ b[i]
-                        }
+                        tagObj.content += b[i]
+                        map[TAG] = tagObj
                         bytesRead = 1
                         lengthBytesContent = 0
                         searchContent = false
@@ -404,9 +391,10 @@ class Utils {
                     }
                 }
             }
-            Log.e("EMV", "ARPC ORIGINAL: $tlv")
-            Log.e("EMV", "ARPC TRADUCIDO: $translate")
-            return translate
+            return map
         }
+
     }
 }
+
+class Tags(var lenght: String = "", var content: String = "")

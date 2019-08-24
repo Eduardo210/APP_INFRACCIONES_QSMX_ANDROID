@@ -2,7 +2,7 @@ package mx.qsistemas.infracciones.net.request_web
 
 import com.google.gson.annotations.SerializedName
 
-data class RequestInfraction(
+data class InfractionRequest(
 
         @field:SerializedName("date")
         val date: String? = null,

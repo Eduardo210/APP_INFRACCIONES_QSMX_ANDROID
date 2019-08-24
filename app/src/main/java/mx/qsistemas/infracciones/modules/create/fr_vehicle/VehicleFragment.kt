@@ -360,7 +360,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val opts = BitmapFactory.Options()
         opts.inSampleSize = 2
-        galleryAddPic()
+        //galleryAddPic()
         val exif = ExifInterface(pathPhoto)
         try {
             val original = BitmapFactory.decodeFile(pathPhoto, opts)
@@ -407,14 +407,6 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         ).apply {
             // Save a file: path for use with ACTION_VIEW intents
             pathPhoto = absolutePath
-        }
-    }
-
-    private fun galleryAddPic() {
-        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
-            val f = File(pathPhoto)
-            mediaScanIntent.data = Uri.fromFile(f)
-            activity.sendBroadcast(mediaScanIntent)
         }
     }
 

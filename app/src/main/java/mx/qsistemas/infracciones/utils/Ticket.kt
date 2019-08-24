@@ -3,7 +3,6 @@ package mx.qsistemas.infracciones.utils
 import android.app.Activity
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.db.managers.PrintTicketManager
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
@@ -18,16 +17,10 @@ class Ticket {
             val printJson = JSONObject()
             val printTest = JSONArray()
 
-            val config = PrintTicketManager.getConfig()
-            val header1 = "${config.header_print_1}\n"
-            val header2 = "${config.header_print_2}\n"
-            val header3 = "${config.header_print_3}\n"
-            val header4 = "${config.header_print_4}\n"
-            val header5 = "${config.header_print_5}\n"
-            val header6 = "${config.header_print_6}\n"
-
             //Impresión de encabezados
-            printTest.put(getPrintObject(header1 + header2 + header3 + header4 + header5 + header6, "2", "center", "1"))
+            SingletonTicket.headers.forEach {
+                printTest.put(getPrintObject(it, "2", "center", "1"))
+            }
             printTest.put(getPrintObject("\n\nDetección y levantamiento electróni-", "2", "center", "0"))
             printTest.put(getPrintObject("co de  infracciones a  conductores de", "2", "center", "0"))
             printTest.put(getPrintObject("vehiculos  que  contravengan  las  dis-", "2", "center", "0"))
@@ -95,11 +88,11 @@ class Ticket {
             printTest.put(getPrintObject("Artículos del reglamento\n", "2", "center", "1"))
             printTest.put(getPrintObject("de  tránsito del Estado  de\n", "2", "center", "1"))
             printTest.put(getPrintObject("México\n\n", "2", "center", "1"))
-            printTest.put(getPrintObject("Artículo/Fracción\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tU.M.A.\n", "1", "center", "0"))
+            printTest.put(getPrintObject("Artículo/Fracción\t\t\t\t\t\t\tU.M.A.\n", "2", "center", "0"))
             printTest.put(getPrintObject("*******************************\n", "2", "center", "0"))
             SingletonTicket.fractionsList.forEach {
                 printTest.put(getPrintObject("${it.article} / ${it.fraction}\t\t\t\t\t\t\t\t\t\t\t${it.umas}\n\n", "2", "center", "0"))
-                printTest.put(getPrintObject("Conducta que motiva la infracción\n\n", "1", "center", "1"))
+                printTest.put(getPrintObject("Conducta que motiva la infracción\n\n", "2", "center", "1"))
                 printTest.put(getPrintObject("${it.motivation}\n\n", "1", "left", "0"))
             }
 
@@ -135,7 +128,7 @@ class Ticket {
             }
 
             // Descuentos
-            SingletonTicket.captureLineList.forEach {
+            SingletonTicket.captureLines.forEach {
                 printTest.put(getPrintBarCode(it.captureLine))
                 printTest.put(getPrintObject("${it.captureLine}\n", "2", "center", "0"))
                 printTest.put(getPrintObject("${it.labelDiscount}\n", "2", "center", "0"))
@@ -144,9 +137,9 @@ class Ticket {
             }
 
             // Pie de página
-            printTest.put(getPrintObject("QSISTEMAS XI\n", "2", "center", "0"))
-            printTest.put(getPrintObject("QSISTEMAS XII\n", "2", "center", "0"))
-            printTest.put(getPrintObject("QSISTEMAS XIII\n\n", "2", "center", "0"))
+            SingletonTicket.footers.forEach {
+                printTest.put(getPrintObject(it, "2", "center", "0"))
+            }
             printTest.put(getPrintObject("-Aviso de Privacidad-\n\n", "2", "center", "0"))
             printTest.put(getPrintObject("Fuente de captura: SIIP\n\n\n\n\n", "2", "center", "0"))
             printJson.put("spos", printTest)

@@ -17,8 +17,11 @@ import com.bw.jni.entity.KernelType
 import com.bw.jni.message.KernelDataRecord
 import com.bw.jni.message.OutcomeParameterSet
 import com.google.gson.Gson
+import com.pos.sdk.emvcore.PosEmvErrCode
 import mx.qsistemas.payments_transfer.*
 import mx.qsistemas.payments_transfer.PaymentsTransfer.modeTx
+import mx.qsistemas.payments_transfer.db.entities.ReversalData
+import mx.qsistemas.payments_transfer.db.manager.ReversalManager
 import mx.qsistemas.payments_transfer.dialogs.PinInputDialog
 import mx.qsistemas.payments_transfer.dtos.*
 import mx.qsistemas.payments_transfer.net.API_Banorte
@@ -29,14 +32,15 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.Executors
 import javax.net.ssl.HttpsURLConnection
 
 class PbocListener(val amount: String, val activity: Activity, val txListener: IPaymentsTransfer.TransactionListener) :
         OnPBOCListener, OnPinInputListener {
 
-    private var chipExpDate: String
     private var chipMaskedPan: String
     private var chipTrack: String
+    private var chipTrackCipher: String
     private var chipCardNumber: String
     private var chipCardOwner: String
     private var chipIcData: String
@@ -50,11 +54,14 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     private var pinpad_model: Handler
     private var needSignature = false
     private var isOnlinePin = true
+    private var paymentsVoucher: PaymentsVoucher
+    private lateinit var txInfo: TransactionInfo
+    private lateinit var voucher: Voucher
 
     init {
-        chipExpDate = ""
         chipMaskedPan = ""
         chipTrack = ""
+        chipTrackCipher = ""
         chipCardNumber = ""
         chipCardOwner = ""
         chipIcData = ""
@@ -64,6 +71,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
         chipTsi = ""
         chipApn = ""
         chipAppLbl = ""
+        paymentsVoucher = PaymentsVoucher(activity, txListener)
         pinpad_model = @SuppressLint("HandlerLeak") object : Handler() {
             var pinDialog: PinInputDialog? = null
             var keylayout = ByteArray(96)
@@ -119,12 +127,12 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                                 when (GlobalData.getInstance().pinpadVersion) {
                                     PINPAD_INTERFACE_VERSION3 -> ServiceManager.getInstence().pinpad.inputOnlinePinByArea(
                                             GlobalData.getInstance().area, GlobalData.getInstance().tmkId, chipCardNumber,
-                                            byteArrayOf(0, 4, 5, 6, 7, 8, 9, 10, 11, 12))
+                                            byteArrayOf(4, 5, 6, 7, 8, 9, 10, 11, 12))
                                     PINPAD_INTERFACE_DUKPT -> ServiceManager.getInstence().pinpad.inputOnlinePinDukpt(1, 0, 60, chipCardNumber,
-                                            byteArrayOf(0, 4, 5, 6, 7, 8, 9, 10, 11, 12))
+                                            byteArrayOf(4, 5, 6, 7, 8, 9, 10, 11, 12))
                                 }
                             } else {
-                                ServiceManager.getInstence().pinpad.inputOfflinePin(byteArrayOf(0, 4, 5, 6, 7, 8, 9, 10, 11, 12), 60)
+                                ServiceManager.getInstence().pinpad.inputOfflinePin(byteArrayOf(4, 5, 6, 7, 8, 9, 10, 11, 12), 60)
                             }
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -139,43 +147,71 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
         when (cardType) {
             CardType.MAG_CARD -> {
                 val magCardInfo = OutputMagCardInfo(data)
-                val cardBeneficiary = magCardInfo.getTrack(1).split('^')[1]
+                val cardBeneficiary = if (!magCardInfo.getTrack(1).isNullOrBlank()) magCardInfo.getTrack(1).split('^')[1] else ""
                 var cipherTrack1 = ""
                 var cipherTrack2 = ""
                 /* If the terminal has a combined IC and magnetic stripe reader, when the magnetic stripe of the card is read and the service code begins with a '2' or a '6'
                 indicating that an IC is present, the terminal shall process the transaction using the IC */
-                if (magCardInfo.serviceCode == null) {
+                if (magCardInfo.serviceCode == null && magCardInfo.getTrack(3) == null) {
                     DialogStatusHelper.closeDialog()
-                    txListener.onTxFailed(activity.getString(R.string.pt_e_card_not_found))
-                } else if (magCardInfo.serviceCode.startsWith("2") || magCardInfo.serviceCode.startsWith("6")) {
+                    ledsOff()
+                    txListener.onTxFailed(true, activity.getString(R.string.pt_e_card_not_found))
+                } else if (magCardInfo.serviceCode != null && magCardInfo.serviceCode.startsWith("2") || magCardInfo.serviceCode.startsWith("6")) {
                     DialogStatusHelper.closeDialog()
-                    txListener.onTxFailed(activity.getString(R.string.pt_e_card_input_incorrect))
+                    ledsOff()
+                    txListener.onTxFailed(true, activity.getString(R.string.pt_e_card_input_incorrect))
                 } else {
                     needSignature = true
                     /* Step 1: Cipher Track 1 */
-                    cipherData(magCardInfo.getTrack(1), object : Interfaces.CipherDataListener {
-                        override fun onCipherData(success: Boolean, value: String) {
-                            if (success) {
-                                cipherTrack1 = value
-                                /* Step 2: Cipher Track 2 */
-                                cipherData(magCardInfo.getTrack(2), object : Interfaces.CipherDataListener {
-                                    override fun onCipherData(success: Boolean, value: String) {
-                                        if (success) {
-                                            cipherTrack2 = value
-                                            processTx(ENTRY_MODE_BAND, cipherTrack1, cipherTrack2,
-                                                    "", magCardInfo.maskedPAN, magCardInfo.expiredDate, cardBeneficiary, needSignature)
-                                        } else {
-                                            DialogStatusHelper.closeDialog()
-                                            txListener.onTxFailed(value)
-                                        }
+                    when {
+                        magCardInfo.getTrack(1) != null -> {
+                            cipherData(magCardInfo.getTrack(1), object : Interfaces.CipherDataListener {
+                                override fun onCipherData(success: Boolean, value: String) {
+                                    if (success) {
+                                        cipherTrack1 = value
+                                        /* Step 2: Cipher Track 2 */
+                                        cipherData(magCardInfo.getTrack(2), object : Interfaces.CipherDataListener {
+                                            override fun onCipherData(success: Boolean, value: String) {
+                                                if (success) {
+                                                    cipherTrack2 = value
+                                                    processTx(TX_AUTH, ENTRY_MODE_BAND, cipherTrack1, cipherTrack2,
+                                                            "", magCardInfo.maskedPAN, cardBeneficiary, needSignature)
+                                                } else {
+                                                    DialogStatusHelper.closeDialog()
+                                                    ledsOff()
+                                                    txListener.onTxFailed(true, value)
+                                                }
+                                            }
+                                        })
+                                    } else {
+                                        DialogStatusHelper.closeDialog()
+                                        ledsOff()
+                                        txListener.onTxFailed(true, value)
                                     }
-                                })
-                            } else {
-                                DialogStatusHelper.closeDialog()
-                                txListener.onTxFailed(value)
-                            }
+                                }
+                            })
                         }
-                    })
+                        magCardInfo.getTrack(2) != null -> {
+                            cipherData(magCardInfo.getTrack(2), object : Interfaces.CipherDataListener {
+                                override fun onCipherData(success: Boolean, value: String) {
+                                    if (success) {
+                                        cipherTrack2 = value
+                                        processTx(TX_AUTH, ENTRY_MODE_BAND, cipherTrack1, cipherTrack2,
+                                                "", magCardInfo.maskedPAN, cardBeneficiary, needSignature)
+                                    } else {
+                                        DialogStatusHelper.closeDialog()
+                                        ledsOff()
+                                        txListener.onTxFailed(true, value)
+                                    }
+                                }
+                            })
+                        }
+                        else -> {
+                            DialogStatusHelper.closeDialog()
+                            ledsOff()
+                            txListener.onTxFailed(true, activity.getString(R.string.pt_e_card_not_found))
+                        }
+                    }
                 }
             }
             CardType.IC_CARD -> {
@@ -184,7 +220,8 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
             }
             else -> {
                 DialogStatusHelper.closeDialog()
-                txListener.onTxFailed(activity.getString(R.string.pt_e_card_not_found))
+                ledsOff()
+                txListener.onTxFailed(true, activity.getString(R.string.pt_e_card_not_found))
             }
         }
     }
@@ -202,7 +239,6 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     override fun onConfirmCardInfo(info: Intent?) {
         activity.runOnUiThread { DialogStatusHelper.showDialog(activity, activity.getString(R.string.pt_t_confirming_card)) }
         val out = OutputCardInfoData(info)
-        chipExpDate = out.expiredDate
         chipMaskedPan = out.maskedPAN
         chipTrack = out.track
         chipCardNumber = out.pan
@@ -234,20 +270,28 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     chipTvr = BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_TVR))
                     chipArqc = BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_ARQC))
                     chipTsi = BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_TSI))
-                    chipApn = Utils.hexToAscii(BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_APN))
-                            ?: "")
+                    chipApn = Utils.hexToAscii(
+                            BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_APN))
+                                    ?: ""
+                    )
                     if (chipApn.isEmpty()) {
-                        chipAppLbl = Utils.hexToAscii(BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_AL))
-                                ?: "")
+                        chipAppLbl = Utils.hexToAscii(
+                                BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_AL))
+                                        ?: ""
+                        )
                     }
                     val panSeq =
                             "5F3401" + BCDASCII.bytesToHexString(ServiceManager.getInstence().pboc.getEmvTlvData(TAG_PAN_SEQ))
                     chipIcData = /*Utils.translateTlv(*/out.icData + panSeq
-                    processTx(ENTRY_MODE_CHIP, "", value,
-                            chipIcData, chipMaskedPan, chipExpDate, chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn, chipAppLbl)
+                    chipTrackCipher = value
+                    processTx(TX_AUTH,
+                            ENTRY_MODE_CHIP, "", chipTrackCipher, chipIcData, chipMaskedPan, chipCardOwner,
+                            needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn, chipAppLbl
+                    )
                 } else {
                     DialogStatusHelper.closeDialog()
-                    txListener.onTxFailed(value)
+                    ledsOff()
+                    txListener.onTxFailed(true, value)
                 }
             }
         })
@@ -310,6 +354,7 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
             // quick pay to process(快速交易流程)
             val rf_data = OutputQPBOCResult(data)
             val mDataRecord = KernelDataRecord()
+            ledsOff()
             prepareNfcTx(rf_data, mDataRecord)
             //pinpad_model.sendEmptyMessage(PIN_DIALOG_SHOW)
         } else if (result == PBOCTransactionResult.APPROVED) {
@@ -325,17 +370,46 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                     else -> DialogStatusHelper.closeDialog()
                 }
             } else {
-                try {
-                    val data1 = ServiceManager.getInstence().pboc.getEmvTlvData(0x9F26)
-                    val data2 = ServiceManager.getInstence().pboc.getEmvTlvData(0x9F12)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+                Looper.prepare()
+                ReversalManager.finishTransaction(txInfo.noControl)
+                Preferences(activity).saveData(R.string.pt_sp_last_transaction, Gson().toJson(voucher))
+                txListener.onTxApproved(txInfo)
+                paymentsVoucher.printVoucher(activity, voucher, false)
             }
         } else if (result == PBOCTransactionResult.TERMINATED) {
-            Log.e(this.javaClass.simpleName, "Transaction terminated")
-            txListener.onTxFailed(activity.getString(R.string.pt_e_terminated))
+            Log.e(this.javaClass.simpleName, "Transaction terminated - Start Reverse")
             DialogStatusHelper.closeDialog()
+            /* Validate if intent has ui_code for Contactless Tx */
+            if (data?.extras?.get("ui_code") == null) {
+                voucher.detailError = activity.getString(R.string.pt_e_declined_emv)
+                voucher.flagTrans = FLAG_TRANS_DECLINE
+                // Start Reversal
+                processTx(TX_REVERSAL,
+                        ENTRY_MODE_CHIP, "", chipTrackCipher, chipIcData, chipMaskedPan, chipCardOwner,
+                        needSignature, chipAid, chipArqc, chipTvr, chipTsi, chipApn, chipAppLbl, txInfo.reference, true, txInfo.noControl
+                )
+                paymentsVoucher.printVoucher(activity, voucher, false)
+                txListener.onTxFailed(true, activity.getString(R.string.pt_e_declined_emv))
+            } else {
+                when (data?.extras?.get("ui_code").toString().toInt()) {
+                    20 -> txListener.onCtlsDoubleTap()
+                    else -> txListener.onTxFailed(true, activity.getString(R.string.pt_e_channel_incorrect))
+                }
+            }
+        } else if (result == PBOCTransactionResult.DECLINED) {
+            DialogStatusHelper.closeDialog()
+            val error = when (ServiceManager.getInstence().pboc.lastErrorCode) {
+                PosEmvErrCode.ICC_BLOCK -> activity.getString(R.string.pt_e_icc_block)
+                PosEmvErrCode.EMV_APP_BLOCK -> activity.getString(R.string.pt_e_emv_app_block)
+                PosEmvErrCode.EMV_DATA_ERR -> activity.getString(R.string.pt_e_emv_data)
+                PosEmvErrCode.EMV_PIN_BLOCK -> activity.getString(R.string.pt_e_emv_pin_block)
+                PosEmvErrCode.EMV_DENIAL -> activity.getString(R.string.pt_e_declined_emv)
+                else -> {
+                    activity.getString(R.string.pt_e_declined)
+                }
+            }
+            ledsOff()
+            txListener.onTxFailed(true, error)
         }
     }
 
@@ -345,7 +419,14 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
 
     override fun onError(p0: Intent?) {
         DialogStatusHelper.closeDialog()
-        txListener.onTxFailed(activity.getString(R.string.pt_e_unknown))
+        var message = when (p0?.extras!!.getInt("code")) {
+            PosEmvErrCode.ERR_NEED_OTHERCHANL -> activity.getString(R.string.pt_e_channel_incorrect)
+            PosEmvErrCode.EMV_APP_BLOCK -> activity.getString(R.string.pt_e_emv_app_block)
+            PosEmvErrCode.EMV_TIME_OUT -> activity.getString(R.string.pt_e_timeout)
+            else -> activity.getString(R.string.pt_e_unknown)
+        }
+        ledsOff()
+        txListener.onTxFailed(true, message)
     }
 
     /**
@@ -362,16 +443,27 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     }
 
     override fun onError(errorCode: Int) {
-        if (errorCode and 0x63c0 == 0x63c0) {
-            pinpad_model.sendEmptyMessage(PIN_DIALOG_DISMISS)
-            pinpad_model.sendEmptyMessage(PIN_DIALOG_SHOW)
-        } else {
-            pinpad_model.sendEmptyMessage(PIN_DIALOG_DISMISS)
-            try {
-                ServiceManager.getInstence().pboc.comfirmPinpad(null)
-            } catch (e: Exception) {
-                e.printStackTrace()
+        pinpad_model.sendEmptyMessage(PIN_DIALOG_DISMISS)
+        if ((errorCode and 0x63c0) == 0x63c0) {
+            val builder = AlertDialogHelper.getErrorBuilder(
+                    "Error", activity.getString(R.string.pt_e_incorrect_pin), activity
+            )
+            builder.setPositiveButton("Aceptar") { _, _ ->
+                pinpad_model.sendEmptyMessage(PIN_DIALOG_SHOW)
             }
+            builder.show()
+        } else {
+            val builder = AlertDialogHelper.getErrorBuilder(
+                    "Error", activity.getString(R.string.pt_e_emv_pin_block), activity
+            )
+            builder.setPositiveButton("Aceptar") { _, _ ->
+                try {
+                    ServiceManager.getInstence().pboc.comfirmPinpad(null)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            builder.show()
         }
     }
 
@@ -390,7 +482,8 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
 
     override fun onCancel() {
         pinpad_model.sendEmptyMessage(PIN_DIALOG_DISMISS)
-        txListener.onTxFailed(activity.getString(R.string.pt_e_canceled))
+        ledsOff()
+        txListener.onTxFailed(true, activity.getString(R.string.pt_e_canceled))
     }
 
     override fun onPinpadShow(data: ByteArray) {
@@ -403,17 +496,24 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
     /* Prepare parameters of NFC transaction */
     private fun prepareNfcTx(data: OutputQPBOCResult, kernel: KernelDataRecord) {
         kernel.setPiccDataRecord(data.kernelData, null)
-        chipIcData = data.get55Field() + "9F6E${String.format("%1$02X", kernel.getDataTlv("9F6E").length / 2)}${kernel.getDataTlv("9F6E")}"//Utils.translateTlv(BCDASCII.bytesToHexString(data.kernelData, data.kernelData.size))
+        chipIcData = data.get55Field()//Utils.translateTlv(BCDASCII.bytesToHexString(data.kernelData, data.kernelData.size))
+        if (kernel.getDataTlv("9F6E") != null) {
+            chipIcData += "9F6E${String.format("%1$02X", kernel.getDataTlv("9F6E").length / 2
+            )}${kernel.getDataTlv("9F6E")}"
+        }
+        if (kernel.getDataTlv("5F34") != null) {
+            chipIcData += "5F34${String.format("%1$02X", kernel.getDataTlv("5F34").length / 2
+            )}${kernel.getDataTlv("5F34")}"
+        }
         chipCardNumber = data.pan
         chipMaskedPan = data.maskedPan
         chipTrack = data.track
-        chipExpDate = data.expiredDate
         var tagOwner = kernel.getDataTlv("5F20") ?: ""
         Log.i(this.javaClass.simpleName, "9F6E: ${data.set55Field("9F6E")} - ${kernel.getDataTlv("9F6E")}")
         if (tagOwner.isNotEmpty()) {
             chipCardOwner = Utils.hexToAscii(tagOwner)
         }
-        chipAid = kernel.getDataTlv("4F") ?: ""
+        chipAid = kernel.getDataTlv("4F") ?: kernel.getDataTlv("84") ?: ""
         chipArqc = kernel.getDataTlv("9F26") ?: ""
         chipTvr = kernel.getDataTlv("95") ?: ""
         chipTsi = kernel.getDataTlv("9B") ?: ""
@@ -424,14 +524,15 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
         cipherData(chipTrack, object : Interfaces.CipherDataListener {
             override fun onCipherData(success: Boolean, value: String) {
                 if (success) {
-                    processTx(
-                            ENTRY_MODE_CONTACTLESS, "", value, chipIcData, chipMaskedPan, chipExpDate,
+                    processTx(TX_AUTH,
+                            ENTRY_MODE_CONTACTLESS, "", value, chipIcData, chipMaskedPan,
                             chipCardOwner, needSignature, chipAid, chipArqc, chipTvr, chipTsi,
                             chipApn, chipAppLbl
                     )
                 } else {
                     DialogStatusHelper.closeDialog()
-                    txListener.onTxFailed(value)
+                    ledsOff()
+                    txListener.onTxFailed(true, value)
                 }
             }
         })
@@ -465,27 +566,44 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
         })
     }
 
-    private fun processTx(
-            entryMode: String, track1: String, track2: String, emvTags: String, maskedPan: String,
-            expirationDate: String, nombreTarjetahabiente: String, needSign: Boolean, aid: String = "",
-            arqc: String = "", tvr: String = "", tsi: String = "", apn: String = "", al: String = "") {
-        activity.runOnUiThread {
-            DialogStatusHelper.showDialog(activity, activity.getString(R.string.pt_t_doing_payworks_tx))
+    private fun ledsOff() {
+        try {
+            //ServiceManager.getInstence().led.enableLedIndex(BwLedType.LED_BLUE, false)
+            ServiceManager.getInstence().led.enableLedIndex(BwLedType.LED_GREEN, false)
+            //ServiceManager.getInstence().led.enableLedIndex(BwLedType.LED_RED, false)
+            //ServiceManager.getInstence().led.enableLedIndex(BwLedType.LED_YELLOW, false)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun processTx(
+            typeTx: String, entryMode: String, track1: String, track2: String, emvTags: String, maskedPan: String,
+            nombreTarjetahabiente: String, needSign: Boolean, aid: String = "",
+            arqc: String = "", tvr: String = "", tsi: String = "", apn: String = "", al: String = "",
+            reference: String = "", reversalChip: Boolean = false, noControl: String = "") {
+        /* Start transaction */
+        if (typeTx == TX_AUTH) {
+            activity.runOnUiThread {
+                DialogStatusHelper.showDialog(activity, activity.getString(R.string.pt_t_doing_payworks_tx))
+            }
         }
         val map = HashMap<String, String>()
-        map[CMD_TRANS] = "AUTH"
+        map[CMD_TRANS] = typeTx
         map[MERCHANT_ID] = Preferences(activity).loadData(R.string.pt_sp_banorte_merchant_id, "")
                 ?: ""
         map[USER] = Preferences(activity).loadData(R.string.pt_sp_banorte_user, "") ?: ""
         map[PASSWORD] = Preferences(activity).loadData(R.string.pt_sp_banorte_black_box, "") ?: ""
-        val idTownship = Preferences(activity).loadData(R.string.pt_sp_quetz_prefix, "") ?: ""
+        val idTownship = Preferences(activity).loadData(R.string.pt_sp_quetz_prefix, "")
         val terminalCode = Preferences(activity).loadData(R.string.pt_sp_quetz_id_terminal, "")
         val controlCounter = Preferences(activity).loadDataInt(R.string.pt_sp_banorte_counter_control) + 1
-        map[CONTROL_NUMBER] =/*
-                CONTROL_NUMBER_TOWNSHIP +*/ idTownship + CONTROL_NUMBER_TERMINAL + terminalCode + CONTROL_NUMBER_ID + controlCounter.toString()
+        Preferences(activity).saveDataInt(R.string.pt_sp_banorte_counter_control, controlCounter)
+        map[CONTROL_NUMBER] = if (typeTx == TX_REVERSAL && reference.isBlank()) noControl else
+        /*CONTROL_NUMBER_TOWNSHIP + */ idTownship + CONTROL_NUMBER_TERMINAL + terminalCode + CONTROL_NUMBER_ID + controlCounter.toString()
         map[TERMINAL_ID] = Preferences(activity).loadData(R.string.pt_sp_banorte_serial_number, "")
                 ?: ""
-        map[AMOUNT] = amount
+        if (typeTx == TX_AUTH)
+            map[AMOUNT] = amount
         map[PAGO_MOVIL] = "0"  // No es PagoMovil
         map[ENTRY_MODE] = entryMode
         map[MODE] = modeTx
@@ -496,142 +614,176 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
         map[TRACK1] = track1
         map[TRACK2] = track2
         map[EMV_TAGS] = emvTags
-        if (entryMode == ENTRY_MODE_CONTACTLESS && amount.toFloat() > 400F) {
-            DialogStatusHelper.closeDialog()
-            txListener.onTxFailed(activity.getString(R.string.pt_e_declined_contactless))
-        } else {
-            API_Banorte.getBanorteService().processTx(map).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.code() == HttpsURLConnection.HTTP_OK) {
-                        val headerJson = Utils.mapHeaders(response.headers())
-                        val result = Gson().fromJson(headerJson, Result_ProcessTx::class.java)
-                        val paymentsVoucher = PaymentsVoucher(activity, txListener)
-                        val c = Calendar.getInstance().time
-                        val date = SimpleDateFormat("dd-MM-yyyy").format(c)
-                        val hour = SimpleDateFormat("HH:mm:ss").format(c)
-                        Preferences(activity).saveDataInt(R.string.pt_sp_banorte_counter_control, controlCounter)
-                        when (result.resultadoPayW) {
-                            PWR_APROBADA -> {
-                                val txInfo = TransactionInfo(aid, apn, al, arqc, result.codigoAut, entryMode, maskedPan,
-                                        date, hour, result.idAfiliacion, expirationDate, result.marcaTarjeta, result.tipoTarjeta,
-                                        result.bancoEmisor, result.reference, amount, tvr, tsi, result.noControl,
-                                        nombreTarjetahabiente, TRANSACTION_TYPE, FLAG_TRANS_APPROVE, needSign)
-                                val voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), expirationDate,
-                                        result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut, result.reference,
-                                        amount, nombreTarjetahabiente, date, hour, aid, tvr,
-                                        tsi, apn, al, FLAG_TRANS_APPROVE, needSign, result.idAfiliacion,
-                                        map[CUSTOMER_REF2]!!, entryMode)
-                                if (entryMode == ENTRY_MODE_CHIP) {
-                                    val onlineData = InputPBOCOnlineData()
-                                    onlineData.responseCode = "00"
-                                    onlineData.authCode = ""
-                                    onlineData.icData = ""
-                                    try {
-                                        ServiceManager.getInstence().pboc.inputOnlineProcessResult(onlineData.intent)
-                                    } catch (e: Exception) {
-                                        e.printStackTrace()
-                                    }
-                                }
-                                txListener.onTxApproved(txInfo)
-                                /* Save last transaction into Shared Preferences */
-                                Preferences(activity).saveData(R.string.pt_sp_last_transaction, Gson().toJson(voucher))
-                                /* Print Voucher */
-                                paymentsVoucher.printVoucher(activity, voucher, false)
-                            }
-                            PWR_DECLINADA -> {
-                                DialogStatusHelper.closeDialog()
-                                txListener.onTxFailed(activity.getString(R.string.pt_e_declined))
-                                val voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
-                                        expirationDate, result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut,
-                                        result.reference, amount, nombreTarjetahabiente, date, hour, "", "",
-                                        "", "", "", FLAG_TRANS_DECLINE, needSign,
-                                        result.idAfiliacion, map[CUSTOMER_REF2]!!, entryMode)
-                                if (entryMode == ENTRY_MODE_BAND) {
-                                    notifyTxFailToChip()
-                                }
-                                paymentsVoucher.printVoucher(activity, voucher, false)
-                            }
-                            PWR_RECHAZADA -> {
-                                DialogStatusHelper.closeDialog()
-                                txListener.onTxFailed(activity.getString(R.string.pt_e_rejected))
-                                val voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
-                                        expirationDate, result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut, result.reference,
-                                        amount, nombreTarjetahabiente, date, hour, "",
-                                        "", "", "", "", FLAG_TRANS_REJECTED, needSign,
-                                        result.idAfiliacion, map[CUSTOMER_REF2]!!, entryMode)
-                                if (entryMode == ENTRY_MODE_CHIP) {
-                                    notifyTxFailToChip()
-                                }
-                                paymentsVoucher.printVoucher(activity, voucher, false)
-                            }
-                            PWR_SIN_RESPUESTA -> {
-                                val voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
-                                        expirationDate, result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor,
-                                        result.codigoAut, result.reference, amount, nombreTarjetahabiente,
-                                        date, hour, "", "", "", "",
-                                        "", FLAG_TRANS_TIMEOUT, needSign, result.idAfiliacion,
-                                        map[CUSTOMER_REF2]!!, entryMode)
-                                DialogStatusHelper.closeDialog()
-                                txListener.onTxFailed(activity.getString(R.string.pt_e_no_response))
-                                if (entryMode == ENTRY_MODE_CHIP) {
-                                    notifyTxFailToChip()
-                                }
-                                paymentsVoucher.printVoucher(activity, voucher, false)
-                            }
-                        }
-                    } else if (response.code() == HttpsURLConnection.HTTP_CLIENT_TIMEOUT) {
-                        DialogStatusHelper.closeDialog()
-                        txListener.onTxFailed(activity.getString(R.string.pt_e_no_response))
-                        val paymentsVoucher = PaymentsVoucher(activity, txListener)
-                        val c = Calendar.getInstance().time
-                        val date = SimpleDateFormat("dd-MM-yyyy").format(c)
-                        val hour = SimpleDateFormat("HH:mm:ss").format(c)
-                        val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
-                                expirationDate, "", "", "", "",
-                                "", amount, nombreTarjetahabiente, date, hour,
-                                aid, tvr, tsi, apn, al, FLAG_TRANS_TIMEOUT, needSign,
-                                map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!, entryMode)
-                        paymentsVoucher.printVoucher(activity, voucher, false)
-                        if (entryMode == ENTRY_MODE_CHIP) {
-                            notifyTxFailToChip()
-                        }
-                    } else {
-                        DialogStatusHelper.closeDialog()
-                        txListener.onTxFailed(activity.getString(R.string.pt_e_no_response))
-                        if (entryMode == ENTRY_MODE_CHIP) {
-                            notifyTxFailToChip()
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    DialogStatusHelper.closeDialog()
-                    txListener.onTxFailed(t.message ?: activity.getString(R.string.pt_e_unknown))
-                    val paymentsVoucher = PaymentsVoucher(activity, txListener)
+        if (typeTx == TX_REVERSAL) {
+            if (reference.isNotBlank())
+                map[REFERENCE] = reference
+            if (reversalChip) {
+                map[CAUSE] = "17"
+            }
+        }
+        if (typeTx == TX_AUTH) {
+            /* Save Reveral Data Into Preferences */
+            val reversal = ReversalData(0, typeTx, entryMode, track1, track2, emvTags, maskedPan, nombreTarjetahabiente,
+                    needSign, aid, arqc, tvr, tsi, apn, al, reference, map[CONTROL_NUMBER]!!, reversalChip, false)
+            ReversalManager.saveTransaction(reversal)
+        }
+        API_Banorte.getBanorteService().processTx(map).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.code() == HttpsURLConnection.HTTP_OK) {
+                    val headerJson = Utils.mapHeaders(response.headers())
+                    val result = Gson().fromJson(headerJson, Result_ProcessTx::class.java)
                     val c = Calendar.getInstance().time
                     val date = SimpleDateFormat("dd-MM-yyyy").format(c)
                     val hour = SimpleDateFormat("HH:mm:ss").format(c)
-                    val voucher = Voucher(map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
-                            expirationDate, "", "", "", "", "", amount,
-                            nombreTarjetahabiente, date, hour, aid, tvr, tsi,
-                            apn, al, FLAG_TRANS_OFFLINE, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!,
-                            entryMode)
-                    paymentsVoucher.printVoucher(activity, voucher, false)
-                    if (entryMode == ENTRY_MODE_CHIP) {
-                        notifyTxFailToChip()
+                    when (result.resultadoPayW) {
+                        PWR_APROBADA -> {
+                            txInfo = TransactionInfo(
+                                    aid, apn, al, arqc, result.codigoAut, entryMode, maskedPan,
+                                    date, hour, result.idAfiliacion, "", result.marcaTarjeta, result.tipoTarjeta,
+                                    result.bancoEmisor, result.reference, amount, tvr, tsi, result.noControl,
+                                    nombreTarjetahabiente, TRANSACTION_TYPE, FLAG_TRANS_APPROVE, needSign
+                            )
+                            ledsOff()
+                            if (entryMode == ENTRY_MODE_CHIP && typeTx == TX_AUTH) {
+                                voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
+                                        "", result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut, result.reference,
+                                        amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi,
+                                        apn, al, arqc, FLAG_TRANS_APPROVE, needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!, entryMode)
+                                val onlineData = InputPBOCOnlineData()
+                                onlineData.responseCode = "00"
+                                val mapEmv = Utils.mapTlv(result.datosEmv)
+                                val authCode = if (mapEmv["91"] != null) mapEmv["91"]?.content!! else ""
+                                var icData = ""
+                                if (mapEmv["71"] != null) {
+                                    icData += "71${mapEmv["71"]?.lenght}${mapEmv["71"]?.content}"
+                                }
+                                if (mapEmv["72"] != null) {
+                                    icData += "72${mapEmv["72"]?.lenght}${mapEmv["72"]?.content}"
+                                }
+                                onlineData.authCode = authCode
+                                onlineData.icData = icData
+                                try {
+                                    ServiceManager.getInstence().pboc.inputOnlineProcessResult(onlineData.intent)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                            } else if (typeTx == TX_AUTH) {
+                                voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
+                                        "", result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut, result.reference,
+                                        amount, nombreTarjetahabiente, date, hour, aid, tvr, tsi,
+                                        apn, al, arqc, FLAG_TRANS_APPROVE, needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!, entryMode)
+                                ReversalManager.finishTransaction(result.noControl)
+                                Preferences(activity).saveData(R.string.pt_sp_last_transaction, Gson().toJson(voucher))
+                                txListener.onTxApproved(txInfo)
+                                paymentsVoucher.printVoucher(activity, voucher, false)
+                            } else {
+                                ReversalManager.finishTransaction(noControl)
+                            }
+                        }
+                        PWR_DECLINADA -> {
+                            if (typeTx == TX_AUTH) {
+                                voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
+                                        result.texto, result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor, result.codigoAut,
+                                        result.reference, amount, nombreTarjetahabiente, date, hour, "", "",
+                                        "", "", "", "", FLAG_TRANS_DECLINE, needSign, result.idAfiliacion,
+                                        map[CUSTOMER_REF2]!!, entryMode)
+                                DialogStatusHelper.closeDialog()
+                                ReversalManager.finishTransaction(result.noControl)
+                                Executors.newSingleThreadExecutor().execute { txListener.onTxFailed(true, activity.getString(R.string.pt_e_declined)) }
+                                ledsOff()
+                                paymentsVoucher.printVoucher(activity, voucher, false)
+                            }
+                        }
+                        PWR_RECHAZADA -> {
+                            if (typeTx == TX_AUTH) {
+                                voucher = Voucher(result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length), result.texto, result.marcaTarjeta, result.tipoTarjeta,
+                                        result.bancoEmisor, result.codigoAut, result.reference, amount, nombreTarjetahabiente, date, hour, "", "",
+                                        "", "", "", "", FLAG_TRANS_REJECTED, needSign, result.idAfiliacion, map[CUSTOMER_REF2]!!,
+                                        entryMode)
+                                DialogStatusHelper.closeDialog()
+                                ReversalManager.finishTransaction(result.noControl)
+                                Executors.newSingleThreadExecutor().execute { txListener.onTxFailed(true, activity.getString(R.string.pt_e_rejected)) }
+                                ledsOff()
+                                paymentsVoucher.printVoucher(activity, voucher, false)
+                            } else {
+                                ReversalManager.finishTransaction(result.noControl)
+                            }
+                        }
+                        PWR_SIN_RESPUESTA -> {
+                            if (typeTx == TX_AUTH) {
+                                voucher = Voucher(
+                                        result.noControl, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
+                                        result.texto, result.marcaTarjeta, result.tipoTarjeta, result.bancoEmisor,
+                                        result.codigoAut, result.reference, amount, nombreTarjetahabiente,
+                                        date, hour, "", "", "", "", "",
+                                        "", FLAG_TRANS_TIMEOUT, needSign, result.idAfiliacion,
+                                        map[CUSTOMER_REF2]!!, entryMode
+                                )
+                                DialogStatusHelper.closeDialog()
+                                ReversalManager.finishTransaction(result.noControl)
+                                Executors.newSingleThreadExecutor().execute { txListener.onTxFailed(true, activity.getString(R.string.pt_e_no_response)) }
+                                ledsOff()
+                                paymentsVoucher.printVoucher(activity, voucher, false)
+                            }
+                        }
+                    }
+                } else if (response.code() == HttpsURLConnection.HTTP_CLIENT_TIMEOUT) {
+                    val c = Calendar.getInstance().time
+                    val date = SimpleDateFormat("dd-MM-yyyy").format(c)
+                    val hour = SimpleDateFormat("HH:mm:ss").format(c)
+                    if (typeTx == TX_AUTH) {
+                        voucher = Voucher(
+                                map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
+                                "Timeout", "", "", "", "",
+                                "", amount, nombreTarjetahabiente, date, hour,
+                                aid, tvr, tsi, apn, al, arqc, FLAG_TRANS_TIMEOUT, needSign,
+                                map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!, entryMode
+                        )
+                        DialogStatusHelper.closeDialog()
+                        Executors.newSingleThreadExecutor().execute { txListener.onTxFailed(true, activity.getString(R.string.pt_e_no_response)) }
+                        ledsOff()
+                        paymentsVoucher.printVoucher(activity, voucher, false)
+                    }
+                } else {
+                    if (typeTx == TX_AUTH) {
+                        DialogStatusHelper.closeDialog()
+                        txListener.onTxFailed(true, activity.getString(R.string.pt_e_no_response))
+                        ledsOff()
                     }
                 }
-            })
-        }
-    }
+            }
 
-    private fun notifyTxFailToChip() {
-        val onlineData = InputPBOCOnlineData()
-        onlineData.responseCode = "05"
-        try {
-            ServiceManager.getInstence().pboc.inputOnlineProcessResult(onlineData.intent)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                DialogStatusHelper.closeDialog()
+                val c = Calendar.getInstance().time
+                val date = SimpleDateFormat("dd-MM-yyyy").format(c)
+                val hour = SimpleDateFormat("HH:mm:ss").format(c)
+                voucher = Voucher(
+                        map[CONTROL_NUMBER]!!, maskedPan.substring(maskedPan.length - 4, maskedPan.length),
+                        "Error en conexión", "", "", "", "", "", amount,
+                        nombreTarjetahabiente, date, hour, aid, tvr, tsi,
+                        apn, al, arqc, FLAG_TRANS_OFFLINE, needSign, map[MERCHANT_ID]!!, map[CUSTOMER_REF2]!!,
+                        entryMode
+                )
+                if (typeTx == TX_AUTH) {
+                    val reverseList = ReversalManager.getTransactionsToReverse()
+                    reverseList.forEach {
+                        processTx(TX_REVERSAL,
+                                it.entryMode, it.track1, it.track2, it.emvTags, it.maskedPan, it.nombreTarjetahabiente,
+                                it.needSign, it.aid, it.arqc, it.tvr, it.tsi, it.apn, it.al, it.reference, false, it.noControl
+                        )
+                    }
+                    txListener.onTxFailed(true, t.message
+                            ?: activity.getString(R.string.pt_e_unknown))
+                    ledsOff()
+                    paymentsVoucher.printVoucher(activity, voucher, false)
+                } else {
+                    processTx(TX_REVERSAL,
+                            entryMode, track1, track2, emvTags, maskedPan, nombreTarjetahabiente,
+                            needSign, aid, arqc, tvr, tsi, apn, al, reference, false, noControl
+                    )
+                }
+            }
+        })
     }
 }

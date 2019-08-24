@@ -47,6 +47,7 @@ class InfractionListFr : Fragment(), View.OnClickListener {
         val lastName = Application.prefs?.loadData(R.string.sp_person_f_last_name, "")
         val mLastName = Application.prefs?.loadData(R.string.sp_person_m_last_name, "")
         binding.include.txtNameDashboard.text = "$name $lastName $mLastName"
+        binding.include.txtNameDashboard.isSelected = true
         Picasso.get().load(Application.prefs?.loadData(R.string.sp_person_photo_url, "")).error(R.drawable.ic_add_photo).into(binding.include.imgUserPhoto)
         return binding.root
     }
@@ -77,8 +78,11 @@ class InfractionListFr : Fragment(), View.OnClickListener {
             binding.btnPrintVoucher.id -> {
                 PaymentsTransfer.printLastVoucher(activity, object : IPaymentsTransfer.TransactionListener {
                     override fun onTxApproved(txInfo: TransactionInfo) {}
-                    override fun onTxFailed(message: String) {
+                    override fun onTxFailed(retry: Boolean, message: String) {
                         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
+                    }
+
+                    override fun onCtlsDoubleTap() {
                     }
 
                     override fun onTxVoucherFailer(message: String) {}

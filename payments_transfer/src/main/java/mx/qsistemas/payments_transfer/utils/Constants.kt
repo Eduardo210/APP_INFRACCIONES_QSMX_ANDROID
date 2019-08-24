@@ -1,5 +1,8 @@
 package mx.qsistemas.payments_transfer.utils
 
+/* AES Transformation Options */
+const val AES_CBC_PKCS5 = "AES/CBC/PKCS5PADDING"
+
 /* Selector components */
 internal const val SELECTOR_KEY = "F40379AB9E0EC533F40379AB9E0EC533"
 internal const val SELECTOR_NO_SERIE = "38383838383838382020202020202020"
@@ -23,6 +26,10 @@ const val ENTRY_MODE_BAND = "MAGSTRIPE"
 const val ENTRY_MODE_CHIP = "CHIP"
 const val ENTRY_MODE_FALLBACK = "FALLBACK"
 const val ENTRY_MODE_CONTACTLESS = "CONTACTLESSCHIP"
+
+/* Transactions Type */
+const val TX_AUTH = "AUTH"
+const val TX_REVERSAL = "REVERSAL"
 
 /* Mode of Processing the Transaction */
 const val MODE_TX_PROD = "PRD"
@@ -85,3 +92,5 @@ internal const val BANORTE_URL = "BANORTE_URL"
 internal const val TRACK1 = "TRACK1"
 internal const val TRACK2 = "TRACK2"
 internal const val EMV_TAGS = "EMV_TAGS"
+internal const val REFERENCE = "REFERENCE"
+internal const val CAUSE = "CAUSE"

@@ -293,8 +293,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
-        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
+        SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
+        SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 listener.onTicketPrinted()

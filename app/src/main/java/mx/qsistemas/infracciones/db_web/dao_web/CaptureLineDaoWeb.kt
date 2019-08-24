@@ -11,6 +11,9 @@ interface CaptureLineDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(captureLine: InfringementCapturelines)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertList(list: MutableList<InfringementCapturelines>)
+
     @Query("SELECT * FROM infringement_capturelines WHERE infringements_id =:idInfraction")
     fun selectCaptureLine(idInfraction: Long): MutableList<InfringementCapturelines>
 }

@@ -1,8 +1,10 @@
 package mx.qsistemas.infracciones.net
 
 import mx.qsistemas.infracciones.BuildConfig
+import mx.qsistemas.infracciones.net.request_web.InfractionRequest
 import mx.qsistemas.infracciones.net.request_web.LogInRequest
-import mx.qsistemas.infracciones.net.request_web.RequestInfraction
+import mx.qsistemas.infracciones.net.request_web.PaymentRequest
+import mx.qsistemas.infracciones.net.result_web.InfractionResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -40,7 +42,10 @@ open class NetworkApi {
         fun login(@Body body: LogInRequest): Call<LogInResult>
 
         @POST("api/infringement/add/")
-        fun sendInfractionToServer(@Body body: RequestInfraction): Call<String>
+        fun sendInfractionToServer(@Body body: InfractionRequest): Call<InfractionResult>
+
+        @POST("api/infringement/add-paymen-order/")
+        fun savePaymentToServer(@Body body: PaymentRequest): Call<String>
 
         @GET("api/infringement/search/")
         fun searchInfraction(@Query("name") name: String): Call<String>

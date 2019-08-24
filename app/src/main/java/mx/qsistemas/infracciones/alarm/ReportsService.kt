@@ -11,6 +11,7 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.managers.SendInfractionManagerWeb
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.request_web.*
+import mx.qsistemas.infracciones.net.result_web.InfractionResult
 import mx.qsistemas.infracciones.utils.CHANNEL_ID_REPORT
 import mx.qsistemas.infracciones.utils.NOTIF_SEND_REPORTS
 import mx.qsistemas.infracciones.utils.Validator
@@ -70,10 +71,10 @@ class ReportsService : JobService() {
                     // Get the capture lines
                     val requestCaptureLines = mutableListOf<CaptureLinesItem>()
                     SendInfractionManagerWeb.getCaptureLines(it.id).forEach { line ->
-                        requestCaptureLines.add(CaptureLinesItem(line.amount, line.key, line.order))
+                        requestCaptureLines.add(CaptureLinesItem("%.2f".format(line.amount).toFloat(), line.key, line.order))
                     }
                     //Create the infraction subheader
-                    val infractionRequest = RequestInfraction(it.date, addresInfraction.colony_id, vehicleInfraction.colour_id, addresInfraction.city_id,
+                    val infractionRequest = InfractionRequest(it.date, addresInfraction.colony_id, vehicleInfraction.colour_id, addresInfraction.city_id,
                             if (vehicleInfraction.year == "-") null else vehicleInfraction.year.toInt(), vehicleInfraction.identifier_document_id,
                             addresInfraction.latitude.toString(), it.town_hall_id, requestAddressDriver, requestPictures, vehicleInfraction.isNewColor,
                             vehicleInfraction.class_type_id, vehicleInfraction.num_document, addresInfraction.street, vehicleInfraction.sub_brand_id,
@@ -82,56 +83,42 @@ class ReportsService : JobService() {
                             it.is_absent, false, addresInfraction.cp_id, personLicense.license_number, vehicleInfraction.issued_in_id,
                             requestPerson, requestCaptureLines, it.insured_document_id, it.folio, it.time, requestMotivations, "ACTIVO")
                     //Send the infractions list
-                    NetworkApi().getNetworkService().sendInfractionToServer(infractionRequest).enqueue(object : Callback<String> {
-                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                    NetworkApi().getNetworkService().sendInfractionToServer(infractionRequest).enqueue(object : Callback<InfractionResult> {
+                        override fun onResponse(call: Call<InfractionResult>, response: Response<InfractionResult>) {
                             if (response.code() == HttpsURLConnection.HTTP_OK) {
-                                /*val result = Gson().fromJson(response.body(), SendInfractionResponse::class.java)
-                                if (result.flag) {
-                                    *//*Log.e(this.javaClass.simpleName, "All items were saved!!!")
-                                    reportsToSend.forEach {
-                                        SendInfractionManagerWeb.updateInfractionToSend(it.folio)
-                                        if (it.is_paid == 1) {
-                                            SendInfractionManagerWeb.updatePaymentToSend(it.id.toLong())
-                                        }
-                                    }
-                                    sendPayments()*//*
+                                val result = response.body()
+                                if (result?.status == "success") {
+                                    SendInfractionManagerWeb.updateInfractionSend(result?.infringement.token, result?.infringement.folio)
+                                    reportsSend++
+                                    sendPayments()
                                     // When done, update the notification one more time to remove the progress bar
                                     if (reportsSend == index + 1) {
-                                        builderInfraction.setContentText(getString(R.string.s_infraction_send))
+                                        builderInfraction.setContentText(getString(R.string.s_infraction_send) + reportsSend)
                                                 .setProgress(0, 0, false)
                                     } else {
-                                        builderInfraction.setContentText(getString(R.string.s_infraction_send))
+                                        builderInfraction.setContentText(getString(R.string.s_infraction_send) + reportsSend)
                                                 .setProgress(reportsToSend.size, reportsSend, true)
                                     }
                                     notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                                 } else {
-                                    Log.e(this.javaClass.simpleName, "Items that weren't saved: ${result.folios}")
-                                    reportsToSend.forEach {
-                                        if (it.folio !in result.folios) {
-                                            SendInfractionManagerWeb.updateInfractionToSend(it.folio)
-                                            if (it.is_paid == 1) {
-                                                SendInfractionManagerWeb.updatePaymentToSend(it.id.toLong())
-                                            }
-                                        }
-                                    }
                                     // When done, update the notification one more time to remove the progress bar
-                                    builderInfraction.setContentText(getString(R.string.s_infraction_send))
+                                    builderInfraction.setContentText(getString(R.string.s_infraction_send) + reportsSend)
                                             .setProgress(reportsToSend.size, reportsSend, false)
                                     notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
-                                }*/
+                                }
                             } else {
                                 // When done, update the notification one more time to remove the progress bar
-                                builderInfraction.setContentText(getString(R.string.e_send_infractions_incomplete))
-                                        .setProgress(reportsToSend.size, reportsSend, false)
+                                builderInfraction.setContentText(getString(R.string.e_send_infractions_incomplete) + (reportsToSend.size - reportsSend))
+                                        .setProgress(0, 0, false)
                                 notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                             }
                         }
 
-                        override fun onFailure(call: Call<String>, t: Throwable) {
+                        override fun onFailure(call: Call<InfractionResult>, t: Throwable) {
                             Log.e(this.javaClass.simpleName, "Send Infractions Failed: ${t.message}")
                             // When done, update the notification one more time to remove the progress bar
                             builderInfraction.setContentText(getString(R.string.e_send_infractions))
-                                    .setProgress(reportsToSend.size, reportsSend, false)
+                                    .setProgress(0, 0, false)
                             notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                         }
                     })

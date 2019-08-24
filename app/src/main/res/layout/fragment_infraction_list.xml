@@ -9,13 +9,6 @@
         android:background="@color/colorGray2"
         tools:context=".modules.main.fragments.fr_incidence_history.IncidenceFr">
 
-        <include
-            android:id="@+id/include"
-            layout="@layout/toolbar_infraction"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/TextView1"
             android:layout_width="match_parent"
@@ -34,37 +27,53 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cdv_new_infraction"
             android:layout_width="match_parent"
-            android:layout_margin="16dp"
             android:layout_height="wrap_content"
-            app:cardElevation="2dp"
+            android:layout_margin="12dp"
             app:cardCornerRadius="15dp"
-            app:layout_constraintTop_toBottomOf="@id/TextView1"
+            app:cardElevation="2dp"
             app:layout_constraintStart_toStartOf="parent"
-            >
+            app:layout_constraintTop_toBottomOf="@id/TextView1">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint_parent"
                 android:layout_width="match_parent"
-                android:layout_height="110dp">
+                android:layout_height="100dp">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guide_line_vertical_icons"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent=".60" />
+                <Button
+                    android:id="@+id/btn_add_infraction"
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/small_btn_gradient_orange"
+                    android:text="Infracción"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons"
+                    app:layout_constraintTop_toBottomOf="@id/img_ticket" />
+
+                <ImageView
+                    android:id="@+id/img_ticket"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_ticket"
+                    app:layout_constraintBottom_toTopOf="@id/btn_add_infraction"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txt_title_new_infraction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     android:text="Nueva Infracción"
                     android:textColor="@color/colorBlack"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
 
                 <TextView
                     android:id="@+id/txt_subtitle_new_infraction"
@@ -78,68 +87,69 @@
                     app:layout_constraintStart_toStartOf="@id/txt_title_new_infraction"
                     app:layout_constraintTop_toBottomOf="@id/txt_title_new_infraction" />
 
-
-                <ImageView
-                    android:id="@+id/img_ticket"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_ticket"
-                    app:layout_constraintBottom_toTopOf="@id/btn_add_infraction"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/btn_add_infraction"
-                    android:layout_width="110dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/small_btn_gradient_orange"
-                    android:text="Infracción"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons"
-                    app:layout_constraintTop_toBottomOf="@id/img_ticket" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide_line_vertical_icons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".60" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cdv_search_infraction"
             android:layout_width="match_parent"
-            android:layout_margin="16dp"
             android:layout_height="wrap_content"
-            app:cardElevation="2dp"
+            android:layout_margin="12dp"
             app:cardCornerRadius="15dp"
-            app:layout_constraintTop_toBottomOf="@id/cdv_new_infraction"
+            app:cardElevation="2dp"
             app:layout_constraintStart_toStartOf="parent"
-            >
+            app:layout_constraintTop_toBottomOf="@id/cdv_new_infraction">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint_parent_search"
                 android:layout_width="match_parent"
-                android:layout_height="110dp">
+                android:layout_height="100dp">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guide_line_vertical_icons_new"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent=".60" />
+                <Button
+                    android:id="@+id/btn_search_infraction"
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/small_btn_gradient_orange"
+                    android:text="Buscar"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new"
+                    app:layout_constraintTop_toBottomOf="@id/img_search" />
+
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_search"
+                    android:tint="@color/app_gray_text_color"
+                    app:layout_constraintBottom_toTopOf="@id/btn_search_infraction"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txt_title_search_infraction"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     android:text="Buscar infracción"
                     android:textColor="@color/colorBlack"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
 
                 <TextView
                     android:id="@+id/txt_subtitle_search_infraction"
@@ -153,30 +163,12 @@
                     app:layout_constraintStart_toStartOf="@id/txt_title_search_infraction"
                     app:layout_constraintTop_toBottomOf="@id/txt_title_search_infraction" />
 
-
-                <ImageView
-                    android:id="@+id/img_search"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_search"
-                    android:tint="@color/app_gray_text_color"
-                    app:layout_constraintBottom_toTopOf="@id/btn_search_infraction"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/btn_search_infraction"
-                    android:layout_width="110dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/small_btn_gradient_orange"
-                    android:text="Buscar"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new"
-                    app:layout_constraintTop_toBottomOf="@id/img_search" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide_line_vertical_icons_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".60" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -186,37 +178,54 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cdv_print_voucher"
             android:layout_width="match_parent"
-            android:layout_margin="16dp"
             android:layout_height="wrap_content"
-            app:cardElevation="2dp"
+            android:layout_margin="12dp"
             app:cardCornerRadius="15dp"
-            app:layout_constraintTop_toBottomOf="@id/cdv_search_infraction"
+            app:cardElevation="2dp"
             app:layout_constraintStart_toStartOf="parent"
-            >
+            app:layout_constraintTop_toBottomOf="@id/cdv_search_infraction">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint_parent_search2"
                 android:layout_width="match_parent"
-                android:layout_height="110dp">
+                android:layout_height="100dp">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guide_line_vertical_icons_new2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent=".60" />
+                <Button
+                    android:id="@+id/btn_print_voucher"
+                    android:layout_width="110dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/small_btn_gradient_orange"
+                    android:text="Imprimir"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new2"
+                    app:layout_constraintTop_toBottomOf="@id/img_card" />
+
+                <ImageView
+                    android:id="@+id/img_card"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_card"
+                    android:tint="@color/app_gray_text_color"
+                    app:layout_constraintBottom_toTopOf="@id/btn_print_voucher"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new2"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txt_title_reprint_voucher"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="15dp"
                     android:text="Imprimir voucher"
                     android:textColor="@color/colorBlack"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
 
                 <TextView
                     android:id="@+id/txt_subtitle_reprint_voucher"
@@ -230,61 +239,50 @@
                     app:layout_constraintStart_toStartOf="@id/txt_title_reprint_voucher"
                     app:layout_constraintTop_toBottomOf="@id/txt_title_reprint_voucher" />
 
-
-                <ImageView
-                    android:id="@+id/img_card"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_card"
-                    android:tint="@color/app_gray_text_color"
-                    app:layout_constraintBottom_toTopOf="@id/btn_print_voucher"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new2"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/btn_print_voucher"
-                    android:layout_width="110dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/small_btn_gradient_orange"
-                    android:text="Imprimir"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="12sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new2"
-                    app:layout_constraintTop_toBottomOf="@id/img_card" />
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guide_line_vertical_icons_new2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".60" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
-
-       <!-- <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_infractions"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layoutAnimation="@anim/recycler_view_animation"
-            android:orientation="vertical"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar_infraction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TextView1" />-->
+            app:layout_constraintTop_toTopOf="parent" />
 
-       <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_add_infraction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/colorOrange"
-            android:src="@drawable/ic_add"
-            android:tint="@color/colorWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />-->
+
+        <!-- <androidx.recyclerview.widget.RecyclerView
+             android:id="@+id/rcv_infractions"
+             android:layout_width="0dp"
+             android:layout_height="0dp"
+             android:layoutAnimation="@anim/recycler_view_animation"
+             android:orientation="vertical"
+             android:paddingLeft="8dp"
+             android:paddingRight="8dp"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/TextView1" />-->
+
+        <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+             android:id="@+id/btn_add_infraction"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginEnd="8dp"
+             android:layout_marginBottom="8dp"
+             android:backgroundTint="@color/colorOrange"
+             android:src="@drawable/ic_add"
+             android:tint="@color/colorWhite"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

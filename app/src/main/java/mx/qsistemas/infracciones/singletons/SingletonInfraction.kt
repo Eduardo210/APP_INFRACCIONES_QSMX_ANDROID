@@ -56,6 +56,7 @@ object SingletonInfraction {
     var licenseIssuedInOffender: GenericCatalog = GenericCatalog()
 
     /* Calculated Variables */
+    var tokenInfraction: String = ""
     var idNewInfraction: Long = 0L
     var idNewPersonInfraction: Long = 0L
     var idOfficer: Long = 0L
@@ -118,6 +119,7 @@ object SingletonInfraction {
         licenseIssuedInOffender = GenericCatalog()
 
         /* Calculated Variables Reset */
+        tokenInfraction = ""
         idNewInfraction = 0L
         idNewPersonInfraction = 0L
         idOfficer = 0L

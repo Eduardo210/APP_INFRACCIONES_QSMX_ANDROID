@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentInfractionListBinding
+import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.main.MainActivity
 import mx.qsistemas.infracciones.net.FirebaseEvents
@@ -43,6 +44,7 @@ class InfractionListFr : Fragment(), View.OnClickListener {
         binding.btnSearchInfraction.setOnClickListener(this)
         binding.btnPrintVoucher.setOnClickListener(this)
         binding.include.imgSearchInfraction.setOnClickListener(this)
+        binding.include.imgUserPhoto.setOnClickListener(this)
         val name = Application.prefs?.loadData(R.string.sp_person_name, "")
         val lastName = Application.prefs?.loadData(R.string.sp_person_f_last_name, "")
         val mLastName = Application.prefs?.loadData(R.string.sp_person_m_last_name, "")
@@ -90,6 +92,21 @@ class InfractionListFr : Fragment(), View.OnClickListener {
                         FirebaseEvents.registerReprintVoucher()
                     }
                 })
+            }
+            binding.include.imgUserPhoto.id -> {
+                val builder = AlertDialogHelper.getGenericBuilder(getString(R.string.w_dialog_close_session), getString(R.string.w_want_to_close_session), activity)
+                builder.setPositiveButton("Sí") { _, _ ->
+                    Application.prefs?.saveData(R.string.sp_access_token, "")
+                    Application.prefs?.saveDataInt(R.string.sp_id_officer, 0)
+                    Application.prefs?.saveData(R.string.sp_person_name, "")
+                    Application.prefs?.saveData(R.string.sp_person_f_last_name, "")
+                    Application.prefs?.saveData(R.string.sp_person_m_last_name, "")
+                    Application.prefs?.saveData(R.string.sp_person_photo_url, "")
+                    Application.prefs?.saveDataBool(R.string.sp_has_session, false)
+                    activity.router.value.presentLogIn()
+                }
+                builder.setNegativeButton("No") { _, _ -> }
+                builder.show()
             }
         }
     }

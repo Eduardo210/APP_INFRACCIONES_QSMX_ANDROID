@@ -11,8 +11,8 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.managers.SendInfractionManagerWeb
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.request_web.*
+import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.InfractionResult
-import mx.qsistemas.infracciones.net.result_web.PaymentResult
 import mx.qsistemas.infracciones.utils.CHANNEL_ID_REPORT
 import mx.qsistemas.infracciones.utils.NOTIF_SEND_REPORTS
 import mx.qsistemas.infracciones.utils.Validator
@@ -67,7 +67,7 @@ class ReportsService : JobService() {
                     val requestAddressDriver = AddressDriver(personAddress.colony_id, personAddress.internal_num, personAddress.city_id, personAddress.street, personAddress.exterior_num, personAddress.state_id, personAddress.cp_id)
                     // Get person information
                     val personInfo = SendInfractionManagerWeb.getPersonInformation(it.id)
-                    val requestPerson = Driver(personInfo.name, personInfo.rfc, personInfo.paternal, personInfo.maternal)
+                    val requestPerson = DriverRequest("", personInfo.name, personInfo.rfc, personInfo.paternal, personInfo.maternal)
                     //Get vehicle information of infraction
                     val vehicleInfraction = SendInfractionManagerWeb.getVehicleInformation(it.id)
                     // Get the capture lines
@@ -85,7 +85,7 @@ class ReportsService : JobService() {
                             it.is_absent, false, addresInfraction.cp_id, personLicense.license_number, vehicleInfraction.issued_in_id,
                             requestPerson, requestCaptureLines, it.insured_document_id, it.folio, it.time, requestMotivations, "ACTIVO")
                     //Send the infractions list
-                    NetworkApi().getNetworkService().sendInfractionToServer(infractionRequest).enqueue(object : Callback<InfractionResult> {
+                    NetworkApi().getNetworkService().sendInfractionToServer(Application.prefs?.loadData(R.string.sp_access_token, "")!!,infractionRequest).enqueue(object : Callback<InfractionResult> {
                         override fun onResponse(call: Call<InfractionResult>, response: Response<InfractionResult>) {
                             if (response.code() == HttpsURLConnection.HTTP_OK) {
                                 val result = response.body()
@@ -137,8 +137,9 @@ class ReportsService : JobService() {
             val request = PaymentRequest("%.2f".format(it.discount).toFloat(), it.folio_payment, it.observations, it.payment_date, it.payment_method,
                     "%.2f".format(it.rounding).toFloat(), "%.2f".format(it.amount).toFloat(), "%.2f".format(it.surcharges).toFloat(),
                     it.infringement_id_server, "%.2f".format(it.total).toFloat(), it.authorize_no.toString())
-            NetworkApi().getNetworkService().savePaymentToServer(it.id.toLong(), request).enqueue(object : Callback<PaymentResult> {
-                override fun onResponse(call: Call<PaymentResult>, response: Response<PaymentResult>) {
+            NetworkApi().getNetworkService().savePaymentToServer(Application.prefs?.loadData(R.string.sp_access_token, "")!!,
+                    it.id.toLong(), request).enqueue(object : Callback<GenericResult> {
+                override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
                         if (response.body()?.status == "success") {
                             SendInfractionManagerWeb.updatePaymentSend(call.request().headers()["idPayment"]!!.toLong())
@@ -146,7 +147,7 @@ class ReportsService : JobService() {
                     }
                 }
 
-                override fun onFailure(call: Call<PaymentResult>, t: Throwable) {
+                override fun onFailure(call: Call<GenericResult>, t: Throwable) {
                 }
             })
         }

@@ -2,7 +2,6 @@ package mx.qsistemas.infracciones.modules.create.fr_offender
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.util.Log
 import android.widget.ArrayAdapter
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
@@ -11,18 +10,25 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.entities.*
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
 import mx.qsistemas.infracciones.net.FirebaseEvents
+import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.net.catalogs.UpdatePaymentRequest
+import mx.qsistemas.infracciones.net.request_web.DriverRequest
+import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.*
+import mx.qsistemas.infracciones.utils.Utils.Companion.getFutureWorkingDay
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import mx.qsistemas.payments_transfer.dtos.Voucher
-import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -338,7 +344,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         SingletonInfraction.stateOffender.documentReference?.id ?: "",
                         SingletonInfraction.stateOffender.value)
                 val idNewPersonAddress = SaveInfractionManagerWeb.saveAddressPerson(personAddress)
-                /* Step 4.1 Save Driver License */
+                /* Step 4.1 Save DriverRequest License */
                 val driverLicense = DriverDriverLicense(
                         0,
                         SingletonInfraction.noLicenseOffender,
@@ -349,8 +355,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             }
             /* Step 5. Generate Capture Lines */
             captureLineList = mutableListOf()
-            SingletonInfraction.townshipInfraction.discount.entries.forEachIndexed { index, mutableEntry ->
-                val expDate = getFutureWorkingDay(mutableEntry.value[mutableEntry.value.size - 1])  // Get last day of validity
+            SingletonInfraction.townshipInfraction.discount.toSortedMap(reverseOrder()).entries.forEachIndexed { index, mutableEntry ->
+                val expDate = getFutureWorkingDay(mutableEntry.value[mutableEntry.value.size - 1], holidayList)  // Get last day of validity
                 val discount = totalImport * mutableEntry.key.replace("%", "").toFloat() / 100
                 val total = totalImport - discount
                 val codeCaptureLine = Utils.generateCaptureLine(newFolio.replace("-", ""), expDate, "%.2f".format(total), "2")
@@ -404,38 +410,23 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun updateData() {
-        val rootObj = JSONObject()
-        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
+        val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.nameOffender, SingletonInfraction.rfcOffenfer, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName)
+        NetworkApi().getNetworkService().updateDriver(Application.prefs?.loadData(R.string.sp_access_token, "")!!, request).enqueue(object : Callback<GenericResult> {
+            override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    if (response.body()?.status == "success") {
+                        listener.onDataUpdated()
+                    } else {
+                        listener.onError(response.body()?.error ?: "")
+                    }
 
+                }
+            }
 
-        rootObj.put("IdInfraccion", SingletonInfraction.idNewInfraction)
-        rootObj.put("username", "InfraMobile")
-        rootObj.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-        rootObj.put("name", SingletonInfraction.nameOffender)
-        rootObj.put("lastName", SingletonInfraction.lastFatherName)
-        rootObj.put("mothersLastName", SingletonInfraction.lastMotherName)
-        rootObj.put("idRegUser", idRegUser)
-
-        Log.d("JSON-UPDATE_PERSON", rootObj.toString())
-
-        /* NetworkApi().getNetworkService().updatePerson(rootObj.toString()).enqueue(object : Callback<String> {
-             override fun onResponse(call: Call<String>, response: Response<String>) {
-                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                     val data = Gson().fromJson(response.body(), ServiceResponsePerson::class.java)
-                     Log.d("UPDATE-PERSON", "${data.ids[0]}")
-                     if (data.flag) {
-                         listener.onDataUpdated(data.ids[0])
-                     } else {
-                         listener.onError(data.message)
-                     }
-
-                 }
-             }
-
-             override fun onFailure(call: Call<String>, t: Throwable) {
-                 listener.onError(t.message ?: "")
-             }
-         })*/
+            override fun onFailure(call: Call<GenericResult>, t: Throwable) {
+                listener.onError(t.message ?: "")
+            }
+        })
     }
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
@@ -564,30 +555,5 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs?.loadData(R.string.sp_prefix, "")}%")
         val incremental = lastFolio.split("-")[1].toInt() + 1
         return "${lastFolio.split("-")[0]}-$incremental"
-    }
-
-    private fun getFutureWorkingDay(days: Int): String {
-        val datestring: String
-        val calendar = Calendar.getInstance()
-        var totaldias = 0
-        while (totaldias != days) {
-            if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
-                val calculateDay = dateFormat.format(calendar.time)
-                var isNoHabil = false
-                holidayList.forEach {
-                    if (it == calculateDay) {
-                        isNoHabil = true
-                    }
-                }
-                if (!isNoHabil) {
-                    totaldias++
-                }
-            }
-            if (totaldias != days) {
-                calendar.add(Calendar.DATE, 1)
-            }
-        }
-        datestring = dateFormat.format(calendar.time)
-        return datestring
     }
 }

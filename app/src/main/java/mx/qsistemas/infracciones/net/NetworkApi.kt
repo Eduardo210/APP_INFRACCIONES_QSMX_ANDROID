@@ -1,12 +1,13 @@
 package mx.qsistemas.infracciones.net
 
 import mx.qsistemas.infracciones.BuildConfig
+import mx.qsistemas.infracciones.net.request_web.DriverRequest
 import mx.qsistemas.infracciones.net.request_web.InfractionRequest
 import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.request_web.PaymentRequest
+import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.InfractionResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
-import mx.qsistemas.infracciones.net.result_web.PaymentResult
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -40,12 +41,15 @@ open class NetworkApi {
         fun login(@Body body: LogInRequest): Call<LogInResult>
 
         @POST("api/infringement/add/")
-        fun sendInfractionToServer(@Body body: InfractionRequest): Call<InfractionResult>
+        fun sendInfractionToServer(@Header("Authorization") tokenSession: String, @Body body: InfractionRequest): Call<InfractionResult>
 
         @POST("api/infringement/add-payment-order/")
-        fun savePaymentToServer(@Header(value = "idPayment") idPayment: Long, @Body body: PaymentRequest): Call<PaymentResult>
+        fun savePaymentToServer(@Header("Authorization") tokenSession: String, @Header(value = "idPayment") idPayment: Long, @Body body: PaymentRequest): Call<GenericResult>
 
         @GET("api/infringement/search/")
-        fun searchInfraction(@Query("name") name: String): Call<String>
+        fun searchInfraction(@Header("Authorization") tokenSession: String, @Query("name") name: String): Call<String>
+
+        @POST("api/infringement/update-driver/")
+        fun updateDriver(@Header("Authorization") tokenSession: String, @Body body: DriverRequest): Call<GenericResult>
     }
 }

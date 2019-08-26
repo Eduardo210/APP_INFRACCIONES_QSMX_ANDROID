@@ -271,7 +271,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     }
 
     override fun onAcceptPayment() {
-        PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else*/ MODE_TX_PROD, this)
+        PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
     }
 
     override fun onDeclinePayment() {
@@ -423,7 +423,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     message.toUpperCase(), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Sí") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else*/ MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("No") { _, _ ->
                 activity.runOnUiThread {
@@ -445,7 +445,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun onCtlsDoubleTap() {
         activity.runOnUiThread {
             activity.showLoader(getString(R.string.l_waiting_confirm))
-            Handler().postDelayed({ PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else*/ MODE_TX_PROD, this) }, 3500)
+            Handler().postDelayed({ PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this) }, 3500)
         }
     }
 

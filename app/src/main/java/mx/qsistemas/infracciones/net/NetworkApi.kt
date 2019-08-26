@@ -6,15 +6,13 @@ import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.request_web.PaymentRequest
 import mx.qsistemas.infracciones.net.result_web.InfractionResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
+import mx.qsistemas.infracciones.net.result_web.PaymentResult
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 open class NetworkApi {
@@ -44,8 +42,8 @@ open class NetworkApi {
         @POST("api/infringement/add/")
         fun sendInfractionToServer(@Body body: InfractionRequest): Call<InfractionResult>
 
-        @POST("api/infringement/add-paymen-order/")
-        fun savePaymentToServer(@Body body: PaymentRequest): Call<String>
+        @POST("api/infringement/add-payment-order/")
+        fun savePaymentToServer(@Header(value = "idPayment") idPayment: Long, @Body body: PaymentRequest): Call<PaymentResult>
 
         @GET("api/infringement/search/")
         fun searchInfraction(@Query("name") name: String): Call<String>

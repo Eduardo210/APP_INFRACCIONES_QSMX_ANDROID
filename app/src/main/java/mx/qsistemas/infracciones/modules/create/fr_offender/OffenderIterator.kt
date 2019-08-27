@@ -411,7 +411,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
     override fun updateData() {
         val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.nameOffender, SingletonInfraction.rfcOffenfer, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName)
-        NetworkApi().getNetworkService().updateDriver("Bearer: ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
+        NetworkApi().getNetworkService().updateDriver("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     if (response.body()?.status == "success") {
@@ -419,7 +419,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     } else {
                         listener.onError(response.body()?.error ?: "")
                     }
-
                 }
             }
 

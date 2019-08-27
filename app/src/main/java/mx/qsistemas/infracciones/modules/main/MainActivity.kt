@@ -14,6 +14,7 @@ import mx.qsistemas.payments_transfer.PaymentsTransfer
 class MainActivity : ActivityHelper(), MainContracts.Presenter {
 
     val router = lazy { MainRouter(this) }
+    private val iterator = lazy { MainIterator(this) }
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +33,8 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
         PaymentsTransfer.runReversal(this)
         /* Always reconfigure */
         PaymentsTransfer.reconfigure()
+        /* Always validate session */
+        iterator.value.validateSession()
     }
 
     override fun enableHighAccuracyGps() {
@@ -39,6 +42,7 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
         Handler().postDelayed({ router.value.presentLocationSettings() }, 3000)
     }
 
-    override fun onBackPressed() {
+    override fun onSessionClosed() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

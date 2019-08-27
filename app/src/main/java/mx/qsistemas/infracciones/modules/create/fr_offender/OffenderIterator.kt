@@ -270,6 +270,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /* Validate if is the first time to insert the infraction */
         if (SingletonInfraction.idNewInfraction == 0L) {
             /* Step 1. Save Vehicle Information */
+
+
+
             val vehicleInfraction = VehicleVehicles(0,
                     SingletonInfraction.yearVehicle,
                     SingletonInfraction.colorVehicle.documentReference?.id
@@ -278,8 +281,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.isNewColor,
                     SingletonInfraction.typeVehicle.documentReference?.id ?: "",
                     SingletonInfraction.typeVehicle.value,
-                    SingletonInfraction.subBrandVehicle.reference?.id ?: "",
-                    SingletonInfraction.subBrandVehicle.value,
+                    SingletonInfraction.brandVehicle.documentReference?.id ?: "",
+                    SingletonInfraction.brandVehicle.value,
                     SingletonInfraction.subBrandVehicle.childReference?.id
                             ?: SingletonInfraction.subBrandVehicle.value,
                     SingletonInfraction.subBrandVehicle.value,
@@ -481,7 +484,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         this.txInfo = info
         /* Step 1. Save Pay Order Into Database */
         val payorder = InfringementPayorder(0, SingletonInfraction.subTotalInfraction.toFloat(), 0F, SingletonInfraction.discountInfraction.toFloat(), 0F, SingletonInfraction.totalInfraction.toFloat(),
-                actualDay, "", "", "CARD", info.authorization.toLong(), SingletonInfraction.idNewInfraction, info.reference, false)
+                actualDay, "", "", "CARD", info.authorization.toLong(), SingletonInfraction.idNewInfraction, info.reference, false,"")
         SaveInfractionManagerWeb.savePayOrder(payorder)
         /* Step 2. Save Authorization Code into Singleton */
         SingletonInfraction.paymentAuthCode = info.authorization

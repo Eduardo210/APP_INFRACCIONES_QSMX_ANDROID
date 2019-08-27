@@ -4,11 +4,10 @@ import androidx.room.ColumnInfo
 
 data class InfractionItem(@ColumnInfo(name = "id") val id_infraction: Long,
                           @ColumnInfo(name = "folio") val folio: String,
+                          @ColumnInfo(name = "date") val date: String,
                           @ColumnInfo(name = "num_document") val num_document: String,
                           @ColumnInfo(name = "reason") val reason: String,
                           @ColumnInfo(name = "sync") val sync: Boolean,
-                          @ColumnInfo(name = "identifier_document_id") val id_doc_ident: String,
-                          @ColumnInfo(name = "sub_brand_id") val sub_brand_id: String,
-                          @ColumnInfo(name = "brand_reference") val brand_reference: String,
-                          @ColumnInfo(name = "colour_id") val colour_id: String,
-                          @ColumnInfo(name = "date") val date: String)
+                          @ColumnInfo(name = "sub_brand") val sub_brand: String,
+                          @ColumnInfo(name = "brand") val brand: String,
+                          @ColumnInfo(name = "colour") val colour: String)

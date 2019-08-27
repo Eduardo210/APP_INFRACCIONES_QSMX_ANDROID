@@ -39,7 +39,6 @@ object SearchManagerWeb {
                                 0.0)
             }
         }.execute().get()
-
     }
 
     fun getAddressDriver(idInfraction: Long): DriverAddressDriver = runBlocking {

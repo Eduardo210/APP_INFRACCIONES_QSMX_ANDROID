@@ -4,19 +4,19 @@ package mx.qsistemas.infracciones.modules.search
 import android.app.Activity
 import android.view.View
 import android.widget.ArrayAdapter
-import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
+import mx.qsistemas.infracciones.db_web.entities.InfractionItem
 import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
+import mx.qsistemas.infracciones.net.result_web.SearchResult.DataItem
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
 class SearchContracts {
     interface Presenter {
         fun onError(msg: String)
-        fun onResultSearch(listInfractions: MutableList<InfractionList.Results>)
-        fun onResultSearchOffLine(listInfractions: MutableList<InfractionItemList>)
+        fun onResultSearch(listInfractions: MutableList<DataItem>)
+        fun onResultSearchOffLine(listInfractions: MutableList<InfractionItem>)
         fun onResultInfractionById(infraction: InfractionSearch, origin: Int)
         suspend fun onResultInfractionByIdOffline(infraction: InfringementData,origin: Int)
         fun onResultSavePayment(msg: String, flag: Boolean)

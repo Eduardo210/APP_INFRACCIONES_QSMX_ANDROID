@@ -6,6 +6,7 @@ import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.request_web.PaymentRequest
 import mx.qsistemas.infracciones.net.result_web.InfractionResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
+import mx.qsistemas.infracciones.net.result_web.SearchResult.SearchResult
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -48,6 +49,6 @@ open class NetworkApi {
         fun savePaymentToServer(@Body body: PaymentRequest): Call<String>
 
         @GET("api/infringement/search/")
-        fun searchInfraction(@Query("name") name: String): Call<String>
+        fun searchInfraction(@Query("name") name: String): Call<SearchResult>
     }
 }

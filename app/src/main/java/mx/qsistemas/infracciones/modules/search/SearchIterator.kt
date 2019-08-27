@@ -8,17 +8,24 @@ import com.google.firebase.firestore.Query
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
+import mx.qsistemas.infracciones.db_web.entities.InfractionItem
 import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
 import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.SearchManagerWeb
+import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.InfractionList
+import mx.qsistemas.infracciones.net.result_web.SearchResult.DataItem
+import mx.qsistemas.infracciones.net.result_web.SearchResult.SearchResult
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.FS_COL_IDENTIF_DOC
 import mx.qsistemas.infracciones.utils.Ticket
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -30,8 +37,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     internal lateinit var identifierDocList: MutableList<GenericCatalog>
     private lateinit var nonWorkingDays: MutableList<NonWorkingDay>
 
-    private var itemInfraOnline: MutableList<InfractionList.Results> = ArrayList()
-    private var itemInfraOffLine: MutableList<mx.qsistemas.infracciones.db_web.entities.InfractionItem> = ArrayList()
+    private lateinit var itemInfraOnline: MutableList<DataItem>
+    private var itemInfraOffLine: MutableList<InfractionItem> = ArrayList()
     private var itemInfraOffLineList: MutableList<InfractionItemList> = ArrayList()
 
     //Para la impresión de la boleta
@@ -68,40 +75,32 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     }*/
 
     override fun doSearchByFilter(filter: String) {
-       /* val rootObject = JSONObject()
-        rootObject.put("username", "InfraMobile")
-        rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-        if (id.isEmpty()) {
-            rootObject.put("Folio", filter)
-            rootObject.put("IdDocumentoIdentificador", 0)
-            rootObject.put("NumeroDocumentoIdentificador", "")
-        } else {
-            rootObject.put("Folio", "")
-            rootObject.put("IdDocumentoIdentificador", )
-            rootObject.put("NumeroDocumentoIdentificador", filter)
-        }
-        Log.d("JSON-SEARCH", rootObject.toString())
-         NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
-             override fun onResponse(call: Call<String>, response: Response<String>) {
-                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                     val data = Gson().fromJson(response.body(), InfractionList::class.java)
-                     itemInfraOnline = data.results
-                     when {
-                         data.flag -> listener.onResultSearch(itemInfraOnline)
-                         data.message.contains("No se encontraron") -> listener.onResultSearch(data.results)
-                         else -> listener.onError(data.message)
-                     }
-                     Log.d("SEARCH ---->>>>>", data.toString())
 
-                 }
-             }
+        NetworkApi().getNetworkService().searchInfraction(filter).enqueue(object : Callback<SearchResult> {
+            override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    val result = response.body()
+                    if (result != null) {
+                        itemInfraOnline = result.data as MutableList<DataItem>
+                        Log.d("SEARCH_ONLINE", "${result.data}")
+                        if (result.count?.compareTo(0) != 0) {
+                            listener.onResultSearch(result.data)
+                        }else{
+                            listener.onError("No se encontraron resultados")
+                        }
 
-             override fun onFailure(call: Call<String>, t: Throwable) {
-                 Log.d("SEARCH ---->>>>>", t.message.toString())
-                 listener.onError(t.message ?: "")
-             }
+                        Log.d("SEARCH ---->>>>>", result.toString())
+                    }
 
-         })*/
+                }
+            }
+
+            override fun onFailure(call: Call<SearchResult>, t: Throwable) {
+                Log.d("SEARCH ---->>>>>", t.message.toString())
+                listener.onError(t.message ?: "")
+            }
+
+        })
     }
 
     override fun doSearchByIdInfraction(id: String, origin: Int) {
@@ -189,8 +188,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
 
     override suspend fun doSearchByFilterOffLine(filter: String) {
         val query: SimpleSQLiteQuery
-        if(filter.isEmpty()){
-            query =SimpleSQLiteQuery("SELECT " +
+        if (filter.isEmpty()) {
+            query = SimpleSQLiteQuery("SELECT " +
                     "infra.id, " +
                     "infra.folio, " +
                     "infra.date, " +
@@ -198,15 +197,16 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                     "(SELECT reason FROM infringement_relInfraction_infringements) reason, " +
                     "infra.sync, " +
                     "vehicle.sub_brand, " +
-                    "vehicle.colour " +
+                    "vehicle.colour, " +
+                    "vehicle.brand " +
                     "FROM Infringement_infringements infra " +
                     "INNER JOIN Vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
                     "LEFT JOIN driver_divers driver ON infra.driver_id = driver.id " +
                     "INNER JOIN person_townhall oficial ON infra.town_hall_id = oficial.idPersona " +
                     "ORDER BY infra.id DESC LIMIT 1")
 
-        }else{
-            query =SimpleSQLiteQuery("SELECT " +
+        } else {
+            query = SimpleSQLiteQuery("SELECT " +
                     "infra.id, " +
                     "infra.folio, " +
                     "infra.date, " +
@@ -214,26 +214,27 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                     "(SELECT reason FROM infringement_relInfraction_infringements) reason, " +
                     "infra.sync, " +
                     "vehicle.sub_brand, " +
-                    "vehicle.colour " +
+                    "vehicle.colour, " +
+                    "vehicle.brand " +
                     "FROM Infringement_infringements infra " +
                     "INNER JOIN Vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
                     "LEFT JOIN driver_divers driver ON infra.driver_id = driver.id " +
                     "INNER JOIN person_townhall oficial ON infra.town_hall_id = oficial.idPersona " +
-                    "WHERE (infra.folio LIKE \\'%$filter\\%') " +
-                    "OR (driver.paternal LIKE \\'%$filter\\%' " +
-                    "   OR driver.maternal LIKE \\'%$filter\\%' " +
-                    "   OR driver.name LIKE \\'%$filter\\%') " +
-                    "OR (oficial.paternal LIKE \\'%$filter\\%' " +
-                    "   OR oficial.maternal LIKE \\'%$filter\\%' " +
-                    "   OR oficial.name LIKE \\'%$filter\\%' ) " +
-                    "OR (vehicle.num_document LIKE \\'%$filter\\%') LIMIT 10")
+                    "WHERE (infra.folio LIKE '%$filter%') " +
+                    "OR (driver.paternal LIKE '%$filter%' " +
+                    "   OR driver.maternal LIKE '%$filter%' " +
+                    "   OR driver.name LIKE '%$filter%') " +
+                    "OR (oficial.paternal LIKE '%$filter%' " +
+                    "   OR oficial.maternal LIKE'%$filter%' " +
+                    "   OR oficial.name LIKE '%$filter%' ) " +
+                    "OR (vehicle.num_document LIKE '%$filter%') LIMIT 10")
 
         }
 
         itemInfraOffLine = SearchManagerWeb.getItemInfraction(query)
-        if(itemInfraOffLine.size>0){
-            listener.onResultSearchOffLine(itemInfraOffLineList)
-        }else{
+        if (itemInfraOffLine.size > 0) {
+            listener.onResultSearchOffLine(itemInfraOffLine)
+        } else {
             listener.onError("No se encontraron datos con el filtro ingresado.")
         }
 

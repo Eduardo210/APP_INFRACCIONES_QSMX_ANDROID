@@ -8,12 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_resume_infra.view.*
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
+import mx.qsistemas.infracciones.db_web.entities.InfractionItem
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 
 var PRINT_LOCAL = 101
 var PAYMENT_LOCAL = 201
-class HistoricalAdapter(private val infraction: MutableList<InfractionItemList>
+class HistoricalAdapter(private val infraction: MutableList<InfractionItem>
                         , listener: SearchContracts.OnInfractionClick) : RecyclerView.Adapter<HistoricalAdapter.ViewHolderInfra>() {
 
 
@@ -36,7 +36,7 @@ class HistoricalAdapter(private val infraction: MutableList<InfractionItemList>
 
 
     class ViewHolderInfra(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(data: InfractionItemList, listener: SearchContracts.OnInfractionClick, position: Int) {
+        fun bindView(data: InfractionItem, listener: SearchContracts.OnInfractionClick, position: Int) {
             with(data) {
                 itemView.txt_vehicle_header?.text = "$brand $sub_brand $colour"
                 itemView.txt_folio?.text = folio

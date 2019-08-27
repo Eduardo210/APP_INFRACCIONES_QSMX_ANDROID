@@ -1,5 +1,6 @@
 package mx.qsistemas.infracciones.modules.search.fr_search
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -16,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.custom_cardview.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -23,7 +25,7 @@ import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
-import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
+import mx.qsistemas.infracciones.db_web.entities.InfractionItem
 import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
@@ -34,8 +36,8 @@ import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.modules.search.SearchIterator
 import mx.qsistemas.infracciones.modules.search.adapters.*
-import mx.qsistemas.infracciones.net.catalogs.InfractionList
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
+import mx.qsistemas.infracciones.net.result_web.SearchResult.DataItem
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.*
@@ -87,8 +89,8 @@ class SearchFr : Fragment()
 
     private var idPerson: Long = 0
 
-    private var itemInfraOnline: MutableList<InfractionList.Results> = ArrayList()
-    private var itemInfraOffLine: MutableList<InfractionItemList> = ArrayList()
+    private lateinit var itemInfraOnline: MutableList<DataItem>
+    private var itemInfraOffLine: MutableList<InfractionItem> = ArrayList()
 
 
     private lateinit var activity: SearchActivity
@@ -119,23 +121,28 @@ class SearchFr : Fragment()
         super.onActivityCreated(savedInstanceState)
 
         binding.btnShowInfra.setOnClickListener {
-            if (isValidFilter()) {
-                activity.showLoader("Buscando infracciones")
-                if (!true/*Validator.isNetworkEnable(activity)*/) {
 
-                    iterator.value.doSearchByFilter(binding.edtFilterAny.text.toString())
-
-                } else {
-                    lifecycleScope.launch {
-                        iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
-                    }
-                }
+            activity.showLoader("Buscando infracciones ...")
+            if (Validator.isNetworkEnable(activity) && binding.edtFilterAny.text.toString().isNotEmpty()) {
+                iterator.value.doSearchByFilter(binding.edtFilterAny.text.toString())
             } else {
-
+                lifecycleScope.launch {
+                    iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
+                }
             }
         }
         binding.imgCleanSearch.setOnClickListener {
             clearData()
+        }
+        binding.imvDialogInfo.setOnClickListener {
+            val builder = AlertDialog.Builder(activity)
+            val view = activity.layoutInflater.inflate(R.layout.custom_cardview, null)
+            builder.setCancelable(false)
+            builder.setCustomTitle(view)
+            val mAlertDialog = builder.show()
+            view.btn_accepted.setOnClickListener {
+                mAlertDialog.dismiss()
+            }
         }
     }
 
@@ -144,8 +151,7 @@ class SearchFr : Fragment()
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
         initAdapters()
         return binding.root
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_search, container, false)
+
     }
 
     private fun initAdapters() {
@@ -156,19 +162,19 @@ class SearchFr : Fragment()
     override fun onPrintClick(view: View, position: Int, origin: Int) {
 
         activity.showLoader("Espere ...")
-        val idInfrac: Long
+        val idInfrac: String
         when (origin) {
             PRINT_LOCAL -> {
-                idInfrac = itemInfraOffLine[position].id_infraction
-                Log.d("ID_INFRACCION_LIST", "$idInfrac")
+                idInfrac = itemInfraOffLine[position].id_infraction.toString()
+                Log.d("ID_INFRACCION_LIST", idInfrac)
                 lifecycleScope.launch {
-                    iterator.value.doSearchByIdInfractionOffLine(idInfrac.toString(), PRINT)
+                    iterator.value.doSearchByIdInfractionOffLine(idInfrac, PRINT)
                 }
             }
             PRINT_ONLINE -> {
-                idInfrac = itemInfraOnline[position].id_infraction
-                Log.d("ID_INFRACCION_LIST", "$idInfrac")
-                iterator.value.doSearchByIdInfraction(idInfrac.toString(), PRINT)
+                idInfrac = itemInfraOnline[position].token.toString()
+                Log.d("ID_INFRACCION_LIST", idInfrac)
+                iterator.value.doSearchByIdInfraction(idInfrac, PRINT)
             }
         }
     }
@@ -328,7 +334,7 @@ class SearchFr : Fragment()
 
     }
 
-    fun printInfractionTest(infraction: InfractionSearch) {
+    fun printInfractionOnline(infraction: InfractionSearch) {
         INFRACTOR_IS_ABSENT = infraction.is_absent
         SingletonTicket.cleanData()
 
@@ -468,7 +474,6 @@ class SearchFr : Fragment()
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }
 
-
     }
 
     override fun onPaymentClick(view: View, position: Int, origin: Int) {
@@ -480,7 +485,7 @@ class SearchFr : Fragment()
                 localPayment()
             }
             PAYMENT_ONLINE -> {
-                idInfrac = itemInfraOnline[position].id_infraction
+                idInfrac = itemInfraOnline[position].token as Long
                 iterator.value.doSearchByIdInfraction(idInfrac.toString(), PAYMENT)
             }
         }
@@ -551,7 +556,7 @@ class SearchFr : Fragment()
         when (origin) {
             PRINT -> {
                 activity.showLoader(getString(R.string.l_preparing_printer))
-                printInfractionTest(infraction)//PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
+                printInfractionOnline(infraction)//PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
             }
             PAYMENT ->
                 if (infraction.is_absent == 0) {
@@ -572,7 +577,7 @@ class SearchFr : Fragment()
         }
     }
 
-    override fun onResultSearch(listInfractions: MutableList<InfractionList.Results>) {
+    override fun onResultSearch(listInfractions: MutableList<DataItem>) {
         activity.hideLoader()
         itemInfraOnline = listInfractions
 
@@ -585,7 +590,7 @@ class SearchFr : Fragment()
 
             binding.txtFilterSearch.text = binding.edtFilterAny.text.toString()
         } else {
-            activity.showLoader("Buscando infracciones")
+            activity.showLoader("Buscando infracciones ...")
             lifecycleScope.launch {
                 iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
             }
@@ -598,6 +603,11 @@ class SearchFr : Fragment()
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
         activity.hideLoader()
+
+        if (binding.rclResults.adapter != null) {
+            binding.constraintResults.visibility = View.GONE
+            binding.rclResults.adapter = null
+        }
     }
 
 
@@ -660,7 +670,7 @@ class SearchFr : Fragment()
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
     }
 
-    override fun onResultSearchOffLine(listInfractions: MutableList<InfractionItemList>) {
+    override fun onResultSearchOffLine(listInfractions: MutableList<InfractionItem>) {
         activity.hideLoader()
         itemInfraOffLine = listInfractions
         val totalResults = listInfractions.size

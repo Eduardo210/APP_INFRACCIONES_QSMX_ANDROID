@@ -1,9 +1,11 @@
 package mx.qsistemas.infracciones.net
 
 import mx.qsistemas.infracciones.BuildConfig
+import mx.qsistemas.infracciones.net.request_web.DriverRequest
 import mx.qsistemas.infracciones.net.request_web.InfractionRequest
 import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.request_web.PaymentRequest
+import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.InfractionResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
 import mx.qsistemas.infracciones.net.result_web.SearchResult.SearchResult
@@ -12,10 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 open class NetworkApi {
@@ -43,12 +42,15 @@ open class NetworkApi {
         fun login(@Body body: LogInRequest): Call<LogInResult>
 
         @POST("api/infringement/add/")
-        fun sendInfractionToServer(@Body body: InfractionRequest): Call<InfractionResult>
+        fun sendInfractionToServer(@Header("Authorization") tokenSession: String, @Body body: InfractionRequest): Call<InfractionResult>
 
-        @POST("api/infringement/add-paymen-order/")
-        fun savePaymentToServer(@Body body: PaymentRequest): Call<String>
+        @POST("api/infringement/add-payment-order/")
+        fun savePaymentToServer(@Header("Authorization") tokenSession: String, @Header(value = "idPayment") idPayment: Long, @Body body: PaymentRequest): Call<GenericResult>
 
         @GET("api/infringement/search/")
-        fun searchInfraction(@Query("name") name: String): Call<SearchResult>
+        fun searchInfraction(@Header("Authorization") tokenSession: String, @Query("name") name: String): Call<SearchResult>
+
+        @POST("api/infringement/update-driver/")
+        fun updateDriver(@Header("Authorization") tokenSession: String, @Body body: DriverRequest): Call<GenericResult>
     }
 }

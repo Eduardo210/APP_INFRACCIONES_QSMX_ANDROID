@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -15,6 +16,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
@@ -25,12 +27,17 @@ import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.modules.search.adapters.ID_INFRACTION
+import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.infracciones.utils.FS_COL_CITIES
+import mx.qsistemas.infracciones.utils.Utils
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_AUTH_ALWAYS
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
+import org.apache.commons.lang.time.DateUtils
+import java.text.SimpleDateFormat
 import java.util.*
 
 private const val ARG_IS_CREATION = "is_creation"
@@ -271,7 +278,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     }
 
     override fun onAcceptPayment() {
-        PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else*/ MODE_TX_PROD, this)
+        PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
     }
 
     override fun onDeclinePayment() {
@@ -293,10 +300,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         }
     }
 
-    override fun onDataUpdated(idPerson: Long) {
-        SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_person_update), Snackbar.LENGTH_SHORT)
-        //ID_PERSON_PAYMENT = idPerson.toString()
-        SingletonInfraction.idNewPersonInfraction = idPerson
+    override fun onDataUpdated() {
         doPaymentProcess()
     }
 
@@ -322,7 +326,8 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                             SingletonInfraction.stateOffender.documentReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_state_offender))
-         1                   }
+                                1
+                            }
                             SingletonInfraction.townshipOffender.childReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_township_offender))
@@ -423,7 +428,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     message.toUpperCase(), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Sí") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else*/ MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("No") { _, _ ->
                 activity.runOnUiThread {
@@ -445,7 +450,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun onCtlsDoubleTap() {
         activity.runOnUiThread {
             activity.showLoader(getString(R.string.l_waiting_confirm))
-            Handler().postDelayed({ PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, /*if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else*/ MODE_TX_PROD, this) }, 3500)
+            Handler().postDelayed({ PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this) }, 3500)
         }
     }
 
@@ -485,6 +490,34 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     }
 
     private fun doPaymentProcess() {
+        activity.showLoader(getString(R.string.l_preparing_amout))
+        Application.firestore?.collection(FS_COL_CITIES)?.document(Application.prefs?.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
+            if (townshipSnapshot == null) {
+                Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
+                onError(Application.getContext().getString(R.string.e_firestore_not_available))
+                activity.hideLoader()
+            } else {
+                val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
+                var hasSurcharges = false
+                township.discount.toSortedMap(reverseOrder()).entries.forEachIndexed { index, mutableEntry ->
+                    val expDate = SimpleDateFormat("yyyy-MM-dd").parse(Utils.getFutureWorkingDay(mutableEntry.value[mutableEntry.value.size - 1], iterator.value.holidayList))
+                    val actualDate = Date()
+                    if (actualDate.before(expDate) || DateUtils.isSameDay(actualDate, expDate)) {
+                        hasSurcharges = false
+                    } else {
+                        hasSurcharges = true
+                    }
+                    // Get last day of validity
+                    /*val discount = totalImport * mutableEntry.key.replace("%", "").toFloat() / 100
+                    val total = totalImport - discount
+                    val codeCaptureLine = Utils.generateCaptureLine(newFolio.replace("-", ""), expDate, "%.2f".format(total), "2")
+                    captureLineList.add(InfringementCapturelines(0, codeCaptureLine, SimpleDateFormat("dd/MM/yyyy").format(dateFormat.parse(expDate)),
+                            "%.2f".format(total).toFloat(), "Bancaria", index + 1, SingletonInfraction.idNewInfraction.toString(), mutableEntry.key))*/
+                }
+            }
+        }
+
+
         var compare_date: Int
         var haveToPay: Boolean = true
         val expDate50: Date? = SingletonInfraction.captureLineii

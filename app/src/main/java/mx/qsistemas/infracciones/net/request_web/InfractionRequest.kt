@@ -89,7 +89,7 @@ data class InfractionRequest(
         val issuedIn: String? = null,
 
         @field:SerializedName("driver")
-        val driver: Driver? = null,
+        val driver: DriverRequest? = null,
 
         @field:SerializedName("capture_lines")
         val captureLines: List<CaptureLinesItem?>? = null,

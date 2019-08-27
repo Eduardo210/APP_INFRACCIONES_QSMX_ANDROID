@@ -8,9 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
-import android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE
-import android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import androidx.core.content.ContextCompat
@@ -93,28 +90,6 @@ class Utils {
             return Uri.fromFile(file)
         }
 
-        fun getOutputMediaFile(type: Int): File? {
-            // Check that the SDCard is mounted
-            val mediaStorageDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Infracciones")
-            // Create the firebaseStorage directory(MyCameraVideo) if it does not exist
-            if (!mediaStorageDir.exists()) {
-                if (!mediaStorageDir.mkdirs()) {
-                    return null
-                }
-            }
-            // Create a media file name
-            // For unique file name appending current timeStamp with file name
-            val date = java.util.Date()
-            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(date.time)
-            val mediaFile: File
-            mediaFile = when (type) {
-                MEDIA_TYPE_VIDEO -> File(mediaStorageDir.path + File.separator + "VID_" + timeStamp + ".mp4")
-                MEDIA_TYPE_IMAGE -> File(mediaStorageDir.path + File.separator + "IMG_" + timeStamp + ".jpg")
-                else -> return null
-            }
-            return mediaFile
-        }
-
         /**
          * Get Bitmap from Vector Image
          */
@@ -183,6 +158,32 @@ class Utils {
                 captureLine = "0$captureLine"
             }
             return captureLine
+        }
+
+        fun getFutureWorkingDay(days: Int, holidayList: MutableList<String>): String {
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val datestring: String
+            val calendar = Calendar.getInstance()
+            var totaldias = 0
+            while (totaldias != days) {
+                if (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) {
+                    val calculateDay = dateFormat.format(calendar.time)
+                    var isNoHabil = false
+                    holidayList.forEach {
+                        if (it == calculateDay) {
+                            isNoHabil = true
+                        }
+                    }
+                    if (!isNoHabil) {
+                        totaldias++
+                    }
+                }
+                if (totaldias != days) {
+                    calendar.add(Calendar.DATE, 1)
+                }
+            }
+            datestring = dateFormat.format(calendar.time)
+            return datestring
         }
 
         private fun getIdCondensed(folio: String): String {

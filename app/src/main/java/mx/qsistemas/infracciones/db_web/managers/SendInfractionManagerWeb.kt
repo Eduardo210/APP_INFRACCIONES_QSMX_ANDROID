@@ -30,20 +30,8 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, InfringementAddressInfringement>() {
             override fun doInBackground(vararg p0: Void?): InfringementAddressInfringement {
                 return Application.m_database_web?.addressInfringementDaoWeb()?.selectInfractionAddres(idInfraction)
-                        ?: InfringementAddressInfringement(0,
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                0,
-                                0.0,
+                        ?: InfringementAddressInfringement(0, "", "", "", "", "",
+                                "", "", "", "", "", "", 0, 0.0,
                                 0.0)
             }
         }.execute().get()
@@ -71,7 +59,7 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, DriverAddressDriver>() {
             override fun doInBackground(vararg p0: Void?): DriverAddressDriver {
                 return Application.m_database_web?.addressPersonDaoWeb()?.selectPersonAddress(idDriver)
-                        ?: DriverAddressDriver(0, "", "", "", "", "","", "", "", "", "","","")
+                        ?: DriverAddressDriver(0, "", "", "", "", "", "", "", "", "", "", "", "")
             }
         }.execute().get()
     }
@@ -89,25 +77,9 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, VehicleVehicles>() {
             override fun doInBackground(vararg p0: Void?): VehicleVehicles {
                 return Application.m_database_web?.vehicleInfractionDaoWeb()?.selectVehicle(idInfraction)
-                        ?: VehicleVehicles(0,
-                                "",
-                                "",
-                                "",
-                                false,
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                false,
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "")
+                        ?: VehicleVehicles(0, "", "", "", false, "", "",
+                                "", "", "", "", false, "",
+                                "", "", "", "", "", "")
             }
         }.execute().get()
     }
@@ -121,9 +93,24 @@ object SendInfractionManagerWeb {
         }.execute().get()
     }
 
+    fun getPayments(): MutableList<InfringementPayorderToSend> {
+        return object : AsyncTask<Void, Void, MutableList<InfringementPayorderToSend>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<InfringementPayorderToSend> {
+                return Application.m_database_web?.payorderDaoWeb()?.selectToSend()
+                        ?: mutableListOf()
+            }
+        }.execute().get()
+    }
+
     fun updateInfractionSend(tokenServer: String, folio: String) {
         Executors.newSingleThreadExecutor().execute {
             Application.m_database_web?.infractionDaoWeb()?.updateSendByFolio(tokenServer, folio)
+        }
+    }
+
+    fun updatePaymentSend(idPayment: Long) {
+        Executors.newSingleThreadExecutor().execute {
+            Application.m_database_web?.payorderDaoWeb()?.update(idPayment)
         }
     }
 }

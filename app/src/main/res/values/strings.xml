@@ -154,6 +154,7 @@
     <string name="l_download_catalogs">Descargando catálogos</string>
     <string name="l_preparing_printer">Preparando impresión</string>
     <string name="l_waiting_confirm">Esperando validación del\ndispositivo móvil</string>
+    <string name="l_preparing_amout">Calculando monto a pagar</string>
 
     <!-- Errors -->
     <string name="e_empty_fields">Favor de validar campos</string>

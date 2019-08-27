@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_resume_infra.view.*
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.modules.search.SearchContracts
-import mx.qsistemas.infracciones.net.result_web.SearchResult.DataItem
+import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 
 var ID_INFRACTION: String = ""
 var PRINT_ONLINE = 102

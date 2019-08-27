@@ -30,15 +30,13 @@ import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
-import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
-import mx.qsistemas.infracciones.modules.create.OPTION_UPDATE_INFRACTION
 import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.modules.search.SearchIterator
 import mx.qsistemas.infracciones.modules.search.adapters.*
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
-import mx.qsistemas.infracciones.net.result_web.SearchResult.DataItem
-import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
+import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.*
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
@@ -122,10 +120,12 @@ class SearchFr : Fragment()
 
         binding.btnShowInfra.setOnClickListener {
 
-            activity.showLoader("Buscando infracciones ...")
+            //activity.showLoader("Buscando infracciones ...")
             if (Validator.isNetworkEnable(activity) && binding.edtFilterAny.text.toString().isNotEmpty()) {
+                activity.showLoader("Buscando infracciones ...")
                 iterator.value.doSearchByFilter(binding.edtFilterAny.text.toString())
             } else {
+                activity.showLoader("Buscando infracciones ...")
                 lifecycleScope.launch {
                     iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
                 }
@@ -324,82 +324,73 @@ class SearchFr : Fragment()
                 activity.hideLoader()
 
             }
-
             override fun onTicketError() {
                 onError("Ha ocurrido un error en la impresión")
             }
-
         })
-
-
     }
 
-    fun printInfractionOnline(infraction: InfractionSearch) {
-        INFRACTOR_IS_ABSENT = infraction.is_absent
+    private fun printInfractionOnline(infraction: DetailResult) {
+        INFRACTOR_IS_ABSENT = if (infraction.isAbsent!!) 1 else 0
         SingletonTicket.cleanData()
 
-        SingletonTicket.dateTicket = infraction.date
-        SingletonTicket.folioTicket = infraction.folio
+        SingletonTicket.dateTicket = ""//TODO:Falta
+        SingletonTicket.folioTicket = "" //TODO: Falta el folio
 
-        SingletonTicket.completeNameOffender = "${infraction.name} ${infraction.last_name} ${infraction.mother_last_name}"
-        SingletonTicket.rfcOffender = infraction.rfc
+        SingletonTicket.completeNameOffender = "${infraction.driver?.name} ${infraction.driver?.paternal} ${infraction.driver?.maternal}"
+        SingletonTicket.rfcOffender = infraction.driver?.rfc.toString()
 
-        if (infraction.infractor_street.isNotBlank()) {
-            SingletonTicket.streetOffender = infraction.infractor_street
+        if (infraction.driver?.address?.street?.isNotBlank()!!) {
+            SingletonTicket.streetOffender = infraction.driver.address.street
         }
 
-        if (infraction.infractor_external_number.isNotBlank()) {
-            SingletonTicket.noExtOffender = infraction.infractor_external_number
+        if (infraction.driver.address.exteriorNum?.isNotBlank()!!) {
+            SingletonTicket.noExtOffender = infraction.driver.address.exteriorNum
         }
 
-        if (infraction.infractor_internal_number.isNotBlank()) {
-            SingletonTicket.noIntOffender = infraction.infractor_internal_number
+        if (infraction.driver.address.internalNum?.isNotBlank()!!) {
+            SingletonTicket.noIntOffender = infraction.driver.address.internalNum
         }
 
-        if (infraction.infractor_colony.isNotBlank()) {
-            SingletonTicket.colonyOffender = infraction.infractor_colony
+        if (infraction.driver.address.colony?.isNotBlank()!!) {
+            SingletonTicket.colonyOffender = infraction.driver.address.colony
         }
 
-        if (infraction.infractor_state.isNotBlank()) {
-            SingletonTicket.stateOffender = infraction.infractor_state
+        if (infraction.driver.address.state?.isNotBlank()!!) {
+            SingletonTicket.stateOffender = infraction.driver.address.state
         }
 
-        SingletonTicket.nameAgent = infraction.official
-        SingletonTicket.noLicenseOffender = infraction.license_number
-        SingletonTicket.typeLicenseOffender = infraction.card_type_type
-        SingletonTicket.stateLicenseOffender = infraction.issued_in
-        SingletonTicket.brandVehicle = infraction.brand
-        SingletonTicket.subBrandVehicle = infraction.sub_brand
-        SingletonTicket.typeVehicle = infraction.vehicle_type
-        SingletonTicket.colorVehicle = infraction.vehicle_color
-        SingletonTicket.modelVehicle = infraction.vehicle_model
-        SingletonTicket.identifierVehicle = infraction.ident_document
-        SingletonTicket.noIdentifierVehicle = infraction.num_doc_ident
-        SingletonTicket.expeditionAuthVehicle = infraction.authority_issue
-        SingletonTicket.stateExpVehicle = infraction.doc_ident_issued //TODO: corregir
+        SingletonTicket.nameAgent = infraction.townHall.toString()
+        SingletonTicket.noLicenseOffender = infraction.driverLicense?.licenseNumber.toString()
+        SingletonTicket.typeLicenseOffender = infraction.driverLicense?.licenseType.toString()
+        SingletonTicket.stateLicenseOffender = infraction.driverLicense?.state.toString()
+        SingletonTicket.brandVehicle = infraction.vehicle?.brand.toString()
+        SingletonTicket.subBrandVehicle = infraction.vehicle?.model.toString()
+        SingletonTicket.typeVehicle = infraction.vehicle?.classType.toString()
+        SingletonTicket.colorVehicle = infraction.vehicle?.color.toString()
+        SingletonTicket.modelVehicle = infraction.vehicle?.year.toString()
+        SingletonTicket.identifierVehicle = infraction.vehicle?.identifierDocument.toString()
+        SingletonTicket.noIdentifierVehicle = infraction.vehicle?.numDocument.toString()
+        SingletonTicket.expeditionAuthVehicle = "" //TODO: El servicio no lo envía.
+        SingletonTicket.stateExpVehicle = infraction.vehicle?.issuedIn.toString() //TODO: corregir
 
-        infraction.infraction_fraction.forEach { fracc ->
-            var article = fracc.motivation?.let {
-                SingletonTicket.ArticleFraction(
-                        fracc.art,
-                        fracc.fracc,
-                        fracc.minimum_wages.toString(),
-                        it)
-            }
-
-            article?.let { SingletonTicket.fractionsList.add(it) }
+        infraction.fractions?.forEach { fracc ->
+            SingletonTicket.fractionsList.add(SingletonTicket.ArticleFraction(
+                    fracc?.article.toString(),
+                    fracc?.numFraction.toString(),
+                    fracc?.uma.toString(),
+                    fracc?.reason.toString()))
         }
 
+        SingletonTicket.streetInfraction = infraction.addressInfringement?.street.toString()
+        SingletonTicket.betweenStreetInfraction = infraction.addressInfringement?.streetA.toString()
+        SingletonTicket.andStreetInfraction = infraction.addressInfringement?.streetB.toString()
+        SingletonTicket.colonyInfraction = infraction.addressInfringement?.colony.toString()
+        SingletonTicket.retainedDocumentInfraction = infraction.insuredDocument.toString()
 
-        SingletonTicket.streetInfraction = infraction.address_street
-        SingletonTicket.betweenStreetInfraction = infraction.address_between_street
-        SingletonTicket.andStreetInfraction = infraction.address_and_street
-        SingletonTicket.colonyInfraction = infraction.address_colony
-        SingletonTicket.retainedDocumentInfraction = infraction.retained_document
-
-        if (infraction.id_disposition != 0) {
+        /*if (infraction.id_disposition != 0) {
             SingletonTicket.isRemitedInfraction = true
-            SingletonTicket.remitedDispositionInfraction = infraction.disposition
+            SingletonTicket.remitedDispositionInfraction = ""//TODO: remitido a corralón
         }
 
         SingletonTicket.captureLines.add(
@@ -415,7 +406,7 @@ class SearchFr : Fragment()
                         infraction.date_capture_line_iii,
                         infraction.amount_capture_line_iii.toString()
                 )
-        )
+        )*/
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 activity.hideLoader()
@@ -551,15 +542,15 @@ class SearchFr : Fragment()
         return (binding.edtFilterAny.text != null)
     }
 
-    override fun onResultInfractionById(infraction: InfractionSearch, origin: Int) {
+    override fun onResultInfractionById(infraction: DetailResult, origin: Int) {
         activity.hideLoader()
         when (origin) {
             PRINT -> {
                 activity.showLoader(getString(R.string.l_preparing_printer))
                 printInfractionOnline(infraction)//PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
             }
-            PAYMENT ->
-                if (infraction.is_absent == 0) {
+            //PAYMENT ->
+                /*if (infraction.isAbsent!!) {
                     doPaymentProcess(infraction)
                     idPerson = infraction.id_person
                 } else {
@@ -573,7 +564,7 @@ class SearchFr : Fragment()
                     val intent = Intent(activity, CreateInfractionActivity::class.java)
                     intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
                     startActivityForResult(intent, OK_PAYMENT)
-                }
+                }*/
         }
     }
 
@@ -602,6 +593,7 @@ class SearchFr : Fragment()
 
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
+        //if(activity.showLoader())
         activity.hideLoader()
 
         if (binding.rclResults.adapter != null) {
@@ -679,9 +671,7 @@ class SearchFr : Fragment()
             constraint_results.visibility = View.VISIBLE
             binding.rclResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
             binding.rclResults.adapter = HistoricalAdapter(listInfractions, this)
-
             binding.txtTotalSearch.text = totalResults.toString()
-
             binding.txtFilterSearch.text = "Infracciones locales"
         } else {
             SnackbarHelper.showErrorSnackBar(activity, "No se encontraron infracciones.", Snackbar.LENGTH_SHORT)

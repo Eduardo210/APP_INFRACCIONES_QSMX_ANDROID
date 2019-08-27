@@ -8,8 +8,8 @@ import mx.qsistemas.infracciones.db_web.entities.InfractionItem
 import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
-import mx.qsistemas.infracciones.net.result_web.SearchResult.DataItem
+import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
+import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
 class SearchContracts {
@@ -17,7 +17,7 @@ class SearchContracts {
         fun onError(msg: String)
         fun onResultSearch(listInfractions: MutableList<DataItem>)
         fun onResultSearchOffLine(listInfractions: MutableList<InfractionItem>)
-        fun onResultInfractionById(infraction: InfractionSearch, origin: Int)
+        fun onResultInfractionById(infraction: DetailResult, origin: Int)
         suspend fun onResultInfractionByIdOffline(infraction: InfringementData,origin: Int)
         fun onResultSavePayment(msg: String, flag: Boolean)
         fun onTicketPrinted()

@@ -14,8 +14,9 @@ import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.SearchManagerWeb
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.result_web.SearchResult.DataItem
-import mx.qsistemas.infracciones.net.result_web.SearchResult.SearchResult
+import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
+import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
+import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.FS_COL_IDENTIF_DOC
@@ -76,7 +77,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
 
     override fun doSearchByFilter(filter: String) {
 
-        NetworkApi().getNetworkService().searchInfraction(filter).enqueue(object : Callback<SearchResult> {
+        NetworkApi().getNetworkService().searchInfraction((Application.prefs?.loadData(R.string.sp_access_token, "")!!), filter).enqueue(object : Callback<SearchResult> {
             override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val result = response.body()
@@ -85,13 +86,16 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                         Log.d("SEARCH_ONLINE", "${result.data}")
                         if (result.count?.compareTo(0) != 0) {
                             listener.onResultSearch(result.data)
-                        }else{
+                        } else {
                             listener.onError("No se encontraron resultados")
                         }
-
-                        Log.d("SEARCH ---->>>>>", result.toString())
                     }
 
+                }else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED){
+                    Log.e("SEARCH_ONLINE", response.message())
+                    listener.onError(response.message().toString())
+                }else{
+                    listener.onError(response.message().toString())
                 }
             }
 
@@ -104,25 +108,34 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     }
 
     override fun doSearchByIdInfraction(id: String, origin: Int) {
-        /* val rootObject = JSONObject()
-         rootObject.put("IdInfraccion", id)
-         rootObject.put("username", "InfraMobile")
-         rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-         Log.d("JSON-SEARCH", rootObject.toString())
-         NetworkApi().getNetworkService().doSearchByIdInfraction(rootObject.toString()).enqueue(object : Callback<String> {
-             override fun onResponse(call: Call<String>, response: Response<String>) {
-                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                     val data = Gson().fromJson(response.body(), InfractionSearch::class.java)
-                     listener.onResultInfractionById(data, origin)
-                     Log.d("SEARCH_BY_ID", data.toString())
-                 }
-             }
+        val rootObject = JSONObject()
+        rootObject.put("token", id)
 
-             override fun onFailure(call: Call<String>, t: Throwable) {
-                 Log.e("SEARCH_BY_ID", t.message.toString())
-                 listener.onError(t.message ?: "")
-             }
-         })*/
+        Log.d("JSON-SEARCH", rootObject.toString())
+        NetworkApi().getNetworkService().detailInfraction((
+                Application.prefs?.loadData(R.string.sp_access_token, "")!!),
+                rootObject.toString()).enqueue(object : Callback<DetailResult> {
+            override fun onResponse(call: Call<DetailResult>, response: Response<DetailResult>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    val data = response.body()//Gson().fromJson(response.body(), DetailResult::class.java)
+                    if (data !=null){
+                        listener.onResultInfractionById(data, origin)
+                        Log.d("SEARCH_BY_TOKEN", data.toString())
+                    }else{
+                        listener.onError("Ocurrió un error al obtener los datos del servidor.")
+                    }
+
+                }else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED){
+                    Log.e("SEARCH_ONLINE", response.message())
+                    listener.onError(response.message())
+                }
+            }
+
+            override fun onFailure(call: Call<DetailResult>, t: Throwable) {
+                Log.e("SEARCH_BY_ID", t.message.toString())
+                listener.onError(t.message ?: "")
+            }
+        })
     }
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {

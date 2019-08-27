@@ -10,6 +10,7 @@ class InfringementRelfractionInfringements(@PrimaryKey(autoGenerate = true) val 
                                            @ColumnInfo(name= "UMA") val uma:Int,
                                           /* @ColumnInfo(name = "penalty_points") val penalty_points: Int,*/
                                            @ColumnInfo(name = "articles_reference") val articles_reference: String,
+                                           @ColumnInfo(name = "article") val article: String,
                                            @ColumnInfo(name = "fraction_id") val fraction_id: String,
                                            @ColumnInfo(name = "fraction") val fraction: String,
                                            @ColumnInfo(name = "infringements_id") val infringements_id: Long,

@@ -8,6 +8,8 @@ import mx.qsistemas.infracciones.net.request_web.PaymentRequest
 import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.InfractionResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
+import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
+import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -47,9 +49,12 @@ open class NetworkApi {
         fun savePaymentToServer(@Header("Authorization") tokenSession: String, @Header(value = "idPayment") idPayment: Long, @Body body: PaymentRequest): Call<GenericResult>
 
         @GET("api/infringement/search/")
-        fun searchInfraction(@Header("Authorization") tokenSession: String, @Query("name") name: String): Call<String>
+        fun searchInfraction(@Header("Authorization") tokenSession: String, @Query("name") name: String): Call<SearchResult>
 
         @POST("api/infringement/update-driver/")
         fun updateDriver(@Header("Authorization") tokenSession: String, @Body body: DriverRequest): Call<GenericResult>
+
+        @POST("api/infringement/detail/")
+        fun detailInfraction(@Header("Authorization") tokenSession: String, @Query("token") token: String): Call<DetailResult>
     }
 }

@@ -10,11 +10,12 @@ import kotlinx.android.synthetic.main.item_resume_infra.view.*
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.modules.search.SearchContracts
-import mx.qsistemas.infracciones.net.catalogs.InfractionList
+import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
+
 var ID_INFRACTION: String = ""
 var PRINT_ONLINE = 102
 var PAYMENT_ONLINE = 202
-class SearchAdapter(private val infractions: MutableList<InfractionList.Results>,
+class SearchAdapter(private val infractions: MutableList<DataItem>,
                     listener: SearchContracts.OnInfractionClick) : RecyclerView.Adapter<SearchAdapter.ViewHolderInfra>() {
 
     private var lastPosition = -1
@@ -47,19 +48,25 @@ class SearchAdapter(private val infractions: MutableList<InfractionList.Results>
     }
 
     class ViewHolderInfra(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindView(data: InfractionList.Results, listener: SearchContracts.OnInfractionClick, position: Int) {
+        fun bindView(data: DataItem, listener: SearchContracts.OnInfractionClick, position: Int) {
             with(data) {
-                itemView.txt_vehicle_header?.text = title_vehicle
+                itemView.txt_vehicle_header?.text = "${data.vehicle?.brand} ${data.vehicle?.subBrand} ${data.vehicle?.colour}"
                 itemView.txt_folio?.text = folio
                 itemView.txt_status_infra.text = itemView.context.getString(R.string.status_send)
                 itemView.txt_status_infra.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorGreen))
                 itemView.txt_status_infra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.green_circle), null, null, null)
-                itemView.txt_resume_art_frac.text = motivation
-                itemView.txt_date_infra.text = date_infra
+                if(data.fractions !=null && data.fractions.isNotEmpty()){
+                    itemView.txt_resume_art_frac.text = data.fractions[0]?.reason ?: ""
+                }else{
+                    itemView.txt_resume_art_frac.text = "Sin artículos"
+                }
+                itemView.txt_date_infra.text = "${data.date}:${data.time}"
                 itemView.btn_print.setOnClickListener { view -> listener.onPrintClick(view, position, PRINT_ONLINE) }
                 itemView.btn_payment.setOnClickListener{view -> listener.onPaymentClick(view, position, PAYMENT_ONLINE)}
-                ID_INFRACTION = id_infraction.toString()
-                if (it_is_paid == 1) {
+                if (data.token != null){
+                    ID_INFRACTION = data.token as String
+                }
+                if (!true) { // --> data.is_paid!!
                     itemView.btn_payment.visibility = View.GONE
                     itemView.txt_status_payment.text = itemView.context.getString(R.string.paid)
                     itemView.txt_status_payment.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorRed))

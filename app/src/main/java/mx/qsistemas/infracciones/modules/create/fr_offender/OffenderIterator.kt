@@ -276,6 +276,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /* Validate if is the first time to insert the infraction */
         if (SingletonInfraction.idNewInfraction == 0L) {
             /* Step 1. Save Vehicle Information */
+
+
+
             val vehicleInfraction = VehicleVehicles(0,
                     SingletonInfraction.yearVehicle,
                     SingletonInfraction.colorVehicle.documentReference?.id
@@ -284,8 +287,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.isNewColor,
                     SingletonInfraction.typeVehicle.documentReference?.id ?: "",
                     SingletonInfraction.typeVehicle.value,
-                    SingletonInfraction.subBrandVehicle.reference?.id ?: "",
-                    SingletonInfraction.subBrandVehicle.value,
+                    SingletonInfraction.brandVehicle.documentReference?.id ?: "",
+                    SingletonInfraction.brandVehicle.value,
                     SingletonInfraction.subBrandVehicle.childReference?.id
                             ?: SingletonInfraction.subBrandVehicle.value,
                     SingletonInfraction.subBrandVehicle.value,
@@ -389,6 +392,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         0,
                         it.fraction.uma,
                         it.fraction.childReference?.id!!,
+                        it.article.number,
                         it.fraction.reference?.id ?: "",
                         it.fraction.number,
                         SingletonInfraction.idNewInfraction,
@@ -400,6 +404,18 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             val evidence2 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence1)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
+
+            /* Step 9. */
+            val oficial = PersonTownhall(
+                    Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong(),
+                    Application.prefs?.loadData(R.string.sp_person_name, "") ?: "",
+                    Application.prefs?.loadData(R.string.sp_person_f_last_name, "") ?: "",
+                    Application.prefs?.loadData(R.string.sp_person_m_last_name, "") ?: "",
+                    SingletonInfraction.idNewInfraction
+            )
+            //Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
+            SaveInfractionManagerWeb.saveOficial(oficial)
+
             /* Step 10. Register Event Infraction */
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
@@ -458,7 +474,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         this.txInfo = info
         /* Step 1. Save Pay Order Into Database */
         val payorder = InfringementPayorder(0, SingletonInfraction.subTotalInfraction.toFloat(), 0F, SingletonInfraction.discountInfraction.toFloat(), 0F, SingletonInfraction.totalInfraction.toFloat(),
-                actualDay, "", "", "CARD", info.authorization.toLong(), SingletonInfraction.idNewInfraction, info.reference, false)
+                actualDay, "", "", "CARD", info.authorization.toLong(), SingletonInfraction.idNewInfraction, info.reference, false,"")
         SaveInfractionManagerWeb.savePayOrder(payorder)
         /* Step 2. Save Authorization Code into Singleton */
         SingletonInfraction.paymentAuthCode = info.authorization

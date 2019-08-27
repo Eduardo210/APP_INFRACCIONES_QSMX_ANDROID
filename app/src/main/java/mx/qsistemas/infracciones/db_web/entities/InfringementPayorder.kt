@@ -19,7 +19,8 @@ data class InfringementPayorder(@PrimaryKey(autoGenerate = true) @NotNull val id
                                 @ColumnInfo(name = "authorize_no") val authorize_no: Long,
                                 @ColumnInfo(name = "infringement_id") val infringement_id: Long,
                                 @ColumnInfo(name = "reference") val reference: String,
-                                @ColumnInfo(name = "sync") val sync: Boolean)
+                                @ColumnInfo(name = "sync") val sync: Boolean,
+                                @ColumnInfo(name = "token_server") val token_server: String)
 
 data class InfringementPayorderToSend(val id: Int,
                                       val amount: Float,

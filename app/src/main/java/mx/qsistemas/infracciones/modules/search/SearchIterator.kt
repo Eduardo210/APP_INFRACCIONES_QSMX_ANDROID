@@ -5,23 +5,28 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
+import mx.qsistemas.infracciones.db_web.entities.InfractionItem
 import mx.qsistemas.infracciones.db_web.entities.InfractionItemList
 import mx.qsistemas.infracciones.db_web.entities.InfringementData
-import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.db_web.managers.SearchManagerWeb
+import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.InfractionList
+import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
+import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
+import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
-import mx.qsistemas.infracciones.utils.*
+import mx.qsistemas.infracciones.utils.FS_COL_IDENTIF_DOC
+import mx.qsistemas.infracciones.utils.Ticket
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -33,8 +38,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     internal lateinit var identifierDocList: MutableList<GenericCatalog>
     private lateinit var nonWorkingDays: MutableList<NonWorkingDay>
 
-    private var itemInfraOnline: MutableList<InfractionList.Results> = ArrayList()
-    private var itemInfraOffLine: MutableList<mx.qsistemas.infracciones.db_web.entities.InfractionItem> = ArrayList()
+    private lateinit var itemInfraOnline: MutableList<DataItem>
+    private var itemInfraOffLine: MutableList<InfractionItem> = ArrayList()
     private var itemInfraOffLineList: MutableList<InfractionItemList> = ArrayList()
 
     //Para la impresión de la boleta
@@ -71,62 +76,66 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     }*/
 
     override fun doSearchByFilter(filter: String) {
-       /* val rootObject = JSONObject()
-        rootObject.put("username", "InfraMobile")
-        rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-        if (id.isEmpty()) {
-            rootObject.put("Folio", filter)
-            rootObject.put("IdDocumentoIdentificador", 0)
-            rootObject.put("NumeroDocumentoIdentificador", "")
-        } else {
-            rootObject.put("Folio", "")
-            rootObject.put("IdDocumentoIdentificador", )
-            rootObject.put("NumeroDocumentoIdentificador", filter)
-        }
-        Log.d("JSON-SEARCH", rootObject.toString())
-         NetworkApi().getNetworkService().doSearchByFilter(rootObject.toString()).enqueue(object : Callback<String> {
-             override fun onResponse(call: Call<String>, response: Response<String>) {
-                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                     val data = Gson().fromJson(response.body(), InfractionList::class.java)
-                     itemInfraOnline = data.results
-                     when {
-                         data.flag -> listener.onResultSearch(itemInfraOnline)
-                         data.message.contains("No se encontraron") -> listener.onResultSearch(data.results)
-                         else -> listener.onError(data.message)
-                     }
-                     Log.d("SEARCH ---->>>>>", data.toString())
 
-                 }
-             }
+        NetworkApi().getNetworkService().searchInfraction("Bearer ${(Application.prefs?.loadData(R.string.sp_access_token, "")!!)}", filter).enqueue(object : Callback<SearchResult> {
+            override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    val result = response.body()
+                    if (result != null) {
+                        itemInfraOnline = result.data as MutableList<DataItem>
+                        Log.d("SEARCH_ONLINE", "${result.data}")
+                        if (result.count?.compareTo(0) != 0) {
+                            listener.onResultSearch(result.data)
+                        } else {
+                            listener.onError("No se encontraron resultados")
+                        }
+                    }
 
-             override fun onFailure(call: Call<String>, t: Throwable) {
-                 Log.d("SEARCH ---->>>>>", t.message.toString())
-                 listener.onError(t.message ?: "")
-             }
+                }else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED){
+                    Log.e("SEARCH_ONLINE", response.message())
+                    listener.onError(response.message().toString())
+                }else{
+                    listener.onError(response.message().toString())
+                }
+            }
 
-         })*/
+            override fun onFailure(call: Call<SearchResult>, t: Throwable) {
+                Log.d("SEARCH ---->>>>>", t.message.toString())
+                listener.onError(t.message ?: "")
+            }
+
+        })
     }
 
     override fun doSearchByIdInfraction(id: String, origin: Int) {
-        /* val rootObject = JSONObject()
-         rootObject.put("IdInfraccion", id)
-         rootObject.put("username", "InfraMobile")
-         rootObject.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-         Log.d("JSON-SEARCH", rootObject.toString())
-         NetworkApi().getNetworkService().doSearchByIdInfraction(rootObject.toString()).enqueue(object : Callback<String> {
-             override fun onResponse(call: Call<String>, response: Response<String>) {
-                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                     val data = Gson().fromJson(response.body(), InfractionSearch::class.java)
-                     listener.onResultInfractionById(data, origin)
-                     Log.d("SEARCH_BY_ID", data.toString())
-                 }
-             }
+        val rootObject = JSONObject()
+        rootObject.put("token", id)
 
-             override fun onFailure(call: Call<String>, t: Throwable) {
-                 Log.e("SEARCH_BY_ID", t.message.toString())
-                 listener.onError(t.message ?: "")
-             }
-         })*/
+        Log.d("JSON-SEARCH", rootObject.toString())
+        NetworkApi().getNetworkService().detailInfraction((
+                "Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")}"),
+                rootObject.toString()).enqueue(object : Callback<DetailResult> {
+            override fun onResponse(call: Call<DetailResult>, response: Response<DetailResult>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    val data = response.body()//Gson().fromJson(response.body(), DetailResult::class.java)
+                    if (data !=null){
+                        listener.onResultInfractionById(data, origin)
+                        Log.d("SEARCH_BY_TOKEN", data.toString())
+                    }else{
+                        listener.onError("Ocurrió un error al obtener los datos del servidor.")
+                    }
+
+                }else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED){
+                    Log.e("SEARCH_ONLINE", response.message())
+                    listener.onError(response.message())
+                }
+            }
+
+            override fun onFailure(call: Call<DetailResult>, t: Throwable) {
+                Log.e("SEARCH_BY_ID", t.message.toString())
+                listener.onError(t.message ?: "")
+            }
+        })
     }
 
     override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
@@ -190,98 +199,58 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
          })*/
     }
 
-    override suspend fun doSearchByFilterOffLine(id: String, filter: String) {
-        var insuredDocument = ""
-        var brand = ""
-        var model = ""
-        var colour = ""
+    override suspend fun doSearchByFilterOffLine(filter: String) {
+        val query: SimpleSQLiteQuery
+        if (filter.isEmpty()) {
+            query = SimpleSQLiteQuery("SELECT " +
+                    "infra.id, " +
+                    "infra.folio, " +
+                    "infra.date, " +
+                    "vehicle.num_document, " +
+                    "(SELECT reason FROM infringement_relInfraction_infringements) reason, " +
+                    "infra.sync, " +
+                    "vehicle.sub_brand, " +
+                    "vehicle.colour, " +
+                    "vehicle.brand " +
+                    "FROM Infringement_infringements infra " +
+                    "INNER JOIN Vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
+                    "LEFT JOIN driver_divers driver ON infra.driver_id = driver.id " +
+                    "INNER JOIN person_townhall oficial ON infra.town_hall_id = oficial.idPersona " +
+                    "ORDER BY infra.id DESC LIMIT 1")
 
-        if (itemInfraOffLineList.size > 0)
-            itemInfraOffLineList.clear()
+        } else {
+            query = SimpleSQLiteQuery("SELECT " +
+                    "infra.id, " +
+                    "infra.folio, " +
+                    "infra.date, " +
+                    "vehicle.num_document, " +
+                    "(SELECT reason FROM infringement_relInfraction_infringements) reason, " +
+                    "infra.sync, " +
+                    "vehicle.sub_brand, " +
+                    "vehicle.colour, " +
+                    "vehicle.brand " +
+                    "FROM Infringement_infringements infra " +
+                    "INNER JOIN Vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
+                    "LEFT JOIN driver_divers driver ON infra.driver_id = driver.id " +
+                    "INNER JOIN person_townhall oficial ON infra.town_hall_id = oficial.idPersona " +
+                    "WHERE (infra.folio LIKE '%$filter%') " +
+                    "OR (driver.paternal LIKE '%$filter%' " +
+                    "   OR driver.maternal LIKE '%$filter%' " +
+                    "   OR driver.name LIKE '%$filter%') " +
+                    "OR (oficial.paternal LIKE '%$filter%' " +
+                    "   OR oficial.maternal LIKE'%$filter%' " +
+                    "   OR oficial.name LIKE '%$filter%' ) " +
+                    "OR (vehicle.num_document LIKE '%$filter%') LIMIT 10")
 
-        /*Empiezo con la nueva búsqueda*/
-        val query = when (id) {
-            "" -> {
-                if (filter.isBlank()) { //Traer el último registro
-                    SimpleSQLiteQuery("SELECT infra.id, " +
-                            "infra.folio, " +
-                            "infra.date, " +
-                            "vehicle.num_document, " +
-                            "(SELECT reason " +
-                            "   FROM infringement_relInfraction_infringements " +
-                            "   WHERE infringements_id = infra.id LIMIT 1) reason, " +
-                            "infra.sync, " +
-                            "vehicle.identifier_document_id, " +
-                            "vehicle.sub_brand_id, " +
-                            "vehicle.colour_id, " +
-                            "vehicle.brand_reference " +
-                            "FROM infringement_infringements infra " +
-                            "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
-                            "ORDER BY infra.id DESC LIMIT 1")
-                } else {//Búsqueda por folio
-                    SimpleSQLiteQuery("SELECT infra.id, " +
-                            "infra.folio, " +
-                            "infra.date, " +
-                            "vehicle.num_document, " +
-                            "(SELECT reason FROM infringement_relInfraction_infringements WHERE infringements_id = infra.id LIMIT 1) reason, " +
-                            "infra.sync, " +
-                            "vehicle.identifier_document_id, " +
-                            "vehicle.sub_brand_id, " +
-                            "vehicle.colour_id, " +
-                            "vehicle.brand_reference " +
-                            "FROM infringement_infringements infra " +
-                            "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
-                            "WHERE infra.folio = \'${filter.toUpperCase()}\' " +
-                            "ORDER BY infra.id DESC LIMIT 1")
-                }
-            }
-            else -> {
-                SimpleSQLiteQuery("SELECT infra.id, " +
-                        "infra.folio, " +
-                        "infra.date, " +
-                        "vehicle.num_document, " +
-                        "(SELECT reason " +
-                        "   FROM infringement_relInfraction_infringements " +
-                        "   WHERE infringements_id = infra.id LIMIT 1) reason, " +
-                        "infra.sync, " +
-                        "vehicle.identifier_document_id, " +
-                        "vehicle.sub_brand_id, " +
-                        "vehicle.colour_id, " +
-                        "vehicle.brand_reference " +
-                        "FROM infringement_infringements infra " +
-                        "INNER JOIN vehicle_vehicles vehicle ON infra.vehicle_id = vehicle.id " +
-                        "WHERE vehicle.identifier_document_id = \'$id\'" +
-
-                        "AND vehicle.num_document = \'${filter.replace(" ", "")}\' " +
-                        " ORDER BY infra.id DESC LIMIT 1")
-            }
         }
+
         itemInfraOffLine = SearchManagerWeb.getItemInfraction(query)
-        //1.-Iterar la lista y hacer consulta a firebase para obtener elementos de catálogos.
-        //1.1.- Generar la nueva lista.
-        itemInfraOffLine.forEach { infra ->
-            val job = GlobalScope.launch(Dispatchers.Main) {
-                insuredDocument = CatalogsFirebaseManager.getValue(infra.id_doc_ident, FS_COL_INSURED_DOC,"value")
-                brand = CatalogsFirebaseManager.getValue(infra.brand_reference, FS_COL_BRANDS,"value")
-                model = CatalogsFirebaseManager.getValue(infra.sub_brand_id, FS_COL_MODELS,"value")
-                colour = CatalogsFirebaseManager.getValue(infra.colour_id, FS_COL_COLORS,"value")
-            }
-            job.join()
-
-            itemInfraOffLineList.add(InfractionItemList(
-                    infra.id_infraction,
-                    infra.folio,
-                    infra.num_document,
-                    infra.reason,
-                    infra.sync,
-                    insuredDocument,
-                    brand,
-                    model,
-                    colour,
-                    infra.date
-            ))
+        if (itemInfraOffLine.size > 0) {
+            listener.onResultSearchOffLine(itemInfraOffLine)
+        } else {
+            listener.onError("No se encontraron datos con el filtro ingresado.")
         }
-        listener.onResultSearchOffLine(itemInfraOffLineList)
+
     }
 
     override fun printTicket(activity: Activity) {

@@ -120,7 +120,6 @@ class SearchFr : Fragment()
 
         binding.btnShowInfra.setOnClickListener {
 
-            //activity.showLoader("Buscando infracciones ...")
             if (Validator.isNetworkEnable(activity) && binding.edtFilterAny.text.toString().isNotEmpty()) {
                 activity.showLoader("Buscando infracciones ...")
                 iterator.value.doSearchByFilter(binding.edtFilterAny.text.toString())
@@ -569,7 +568,8 @@ class SearchFr : Fragment()
     }
 
     override fun onResultSearch(listInfractions: MutableList<DataItem>) {
-        activity.hideLoader()
+        //activity.hideLoader()
+
         itemInfraOnline = listInfractions
 
         val totalResults = listInfractions.size
@@ -594,7 +594,7 @@ class SearchFr : Fragment()
     override fun onError(msg: String) {
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
         //if(activity.showLoader())
-        activity.hideLoader()
+        //activity.hideLoader()
 
         if (binding.rclResults.adapter != null) {
             binding.constraintResults.visibility = View.GONE

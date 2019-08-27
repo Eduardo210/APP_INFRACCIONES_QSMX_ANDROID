@@ -77,7 +77,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
 
     override fun doSearchByFilter(filter: String) {
 
-        NetworkApi().getNetworkService().searchInfraction((Application.prefs?.loadData(R.string.sp_access_token, "")!!), filter).enqueue(object : Callback<SearchResult> {
+        NetworkApi().getNetworkService().searchInfraction("Bearer ${(Application.prefs?.loadData(R.string.sp_access_token, "")!!)}", filter).enqueue(object : Callback<SearchResult> {
             override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val result = response.body()
@@ -113,7 +113,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
 
         Log.d("JSON-SEARCH", rootObject.toString())
         NetworkApi().getNetworkService().detailInfraction((
-                Application.prefs?.loadData(R.string.sp_access_token, "")!!),
+                "Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")}"),
                 rootObject.toString()).enqueue(object : Callback<DetailResult> {
             override fun onResponse(call: Call<DetailResult>, response: Response<DetailResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {

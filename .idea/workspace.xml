@@ -69,24 +69,11 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+    <list default="true" id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="* Update: Token Session In Each WS&#10;* New: Update Driver Information WS">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderContracts.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_infraction_history/InfractionListFr.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_infraction_history/InfractionListFr.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/Driver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/DriverRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/InfractionRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/InfractionRequest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/PaymentResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/GenericResult.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/KotinUnitTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/KotinUnitTest.kt" afterDir="false" />
     </list>
     <list id="d4afbee0-550c-400a-8373-a44a946b77b9" name="Ignore" comment="Ignore" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -200,93 +187,56 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="374">
-                  <caret line="510" column="86" selection-start-line="510" selection-start-column="86" selection-end-line="510" selection-end-column="86" />
-                  <folding>
-                    <element signature="e#22828#22867#1" expanded="true" />
-                    <element signature="e#23162#23199#1" expanded="true" />
-                    <element signature="e#23296#23319#1" expanded="true" />
-                    <element signature="e#23472#23542#1" expanded="true" />
-                    <element signature="e#23568#23638#1" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="425">
-                  <caret line="34" selection-start-line="34" selection-end-line="34" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="475">
-                  <caret line="68" column="40" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="476">
-                  <caret line="42" column="38" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="370">
-                  <caret line="135" selection-start-line="135" selection-end-line="135" />
-                  <folding>
-                    <element signature="e#5761#5785#1" expanded="true" />
-                    <element signature="e#9568#9592#1" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="490">
-                  <caret line="359" column="46" selection-start-line="359" selection-start-column="46" selection-end-line="359" selection-end-column="46" />
-                  <folding>
-                    <element signature="e#22521#22545#1" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="188">
-                  <caret line="180" column="8" selection-start-line="180" selection-start-column="8" selection-end-line="180" selection-end-column="8" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="527">
+              <caret line="519" selection-start-line="519" selection-end-line="519" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="379">
+              <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="884">
+              <caret line="52" column="18" lean-forward="true" selection-start-line="52" selection-start-column="18" selection-end-line="52" selection-end-column="18" />
+              <folding>
+                <element signature="e#39#813#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="338">
+              <caret line="413" column="126" selection-start-line="413" selection-start-column="126" selection-end-line="413" selection-end-column="126" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -405,13 +355,13 @@
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderContracts.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/KotinUnitTest.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" />
       </list>
     </option>
   </component>
@@ -429,44 +379,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView">
-        <subPane>
-          <expand>
-            <path>
-              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="net" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
-              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
@@ -496,7 +409,39 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="AndroidView">
+        <subPane>
+          <expand>
+            <path>
+              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+            </path>
+            <path>
+              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+            </path>
+            <path>
+              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="infracciones" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="net" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="APP_INFRACCIONES_QSMX_ANDROID" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -888,13 +833,6 @@
       <option name="presentableId" value="Default" />
       <updated>1534195955826</updated>
     </task>
-    <task id="LOCAL-00003" summary="* Version 2.0.0">
-      <created>1559933662702</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1559933662702</updated>
-    </task>
     <task id="LOCAL-00004" summary="* [Bug Fixed] Layout activity manager">
       <created>1559939006178</created>
       <option name="number" value="00004" />
@@ -1231,7 +1169,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566833017991</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="* Update: Token Session In Each WS&#10;* New: Update Driver Information WS">
+      <created>1566859547562</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1566859547563</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -1279,7 +1224,7 @@
     <frame x="1358" y="-677" width="2576" height="1416" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.650913" visible="true" weight="0.13195549" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.650913" visible="true" weight="0.1518283" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Build Variants" order="2" sideWeight="0.349087" side_tool="true" weight="0.10333864" />
       <window_info id="Capture Tool" order="3" />
@@ -1289,14 +1234,14 @@
       <window_info id="Image Layers" order="7" />
       <window_info id="Resources Explorer" order="8" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.17539683" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.17539683" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.5674603" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.31984127" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32936507" />
       <window_info anchor="bottom" id="Android Profiler" order="7" sideWeight="0.49761525" weight="0.32936507" />
-      <window_info anchor="bottom" x="0" y="23" width="1366" height="705" id="Logcat" order="8" sideWeight="0.49570355" type="WINDOWED" weight="0.45555556" />
+      <window_info anchor="bottom" x="1" y="31" width="1366" height="705" id="Logcat" order="8" sideWeight="0.49570355" type="WINDOWED" weight="0.45555556" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.15277778" />
       <window_info anchor="bottom" id="Build" order="10" sideWeight="0.74926543" weight="0.28333333" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49785176" weight="0.32619047" />
@@ -1404,7 +1349,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="* Send Infractions Process&#10;* Send Infractions Alarm / Job&#10;* Send Infraction Request" />
     <MESSAGE value="* Update Send Infraction Process" />
     <MESSAGE value="* Update Send Images Process" />
     <MESSAGE value="* Update Notification Channels" />
@@ -1429,7 +1373,8 @@
     <MESSAGE value="* New: Dynamic Capture Lines Generation&#10;* New: Dynamic Amount Generation" />
     <MESSAGE value="* Update: Ticket Footer Format&#10;* Update: Ticket Motivation Size" />
     <MESSAGE value="* New: Send Payment To Server" />
-    <option name="LAST_COMMIT_MESSAGE" value="* New: Send Payment To Server" />
+    <MESSAGE value="* Update: Token Session In Each WS&#10;* New: Update Driver Information WS" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Update: Token Session In Each WS&#10;* New: Update Driver Information WS" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1939,31 +1884,10 @@ val actualDay = SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(Date()()</express
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="68" column="40" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="474">
           <caret line="156" column="35" selection-start-line="156" selection-start-column="18" selection-end-line="156" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="180" column="8" selection-start-line="180" selection-start-column="8" selection-end-line="180" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="42" column="38" selection-start-line="42" selection-start-column="38" selection-end-line="42" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -1981,31 +1905,6 @@ val actualDay = SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(Date()()</express
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="510" column="86" selection-start-line="510" selection-start-column="86" selection-end-line="510" selection-end-column="86" />
-          <folding>
-            <element signature="e#22828#22867#1" expanded="true" />
-            <element signature="e#23162#23199#1" expanded="true" />
-            <element signature="e#23296#23319#1" expanded="true" />
-            <element signature="e#23472#23542#1" expanded="true" />
-            <element signature="e#23568#23638#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="135" selection-start-line="135" selection-end-line="135" />
-          <folding>
-            <element signature="e#5761#5785#1" expanded="true" />
-            <element signature="e#9568#9592#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/test/java/mx/qsistemas/infracciones/KotinUnitTest.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
@@ -2013,20 +1912,59 @@ val actualDay = SimpleDateFormat(&quot;yyyy-MM-dd&quot;).parse(Date()()</express
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="359" column="46" selection-start-line="359" selection-start-column="46" selection-end-line="359" selection-end-column="46" />
-          <folding>
-            <element signature="e#22521#22545#1" expanded="true" />
-          </folding>
+        <state relative-caret-position="188">
+          <caret line="180" column="8" selection-start-line="180" selection-start-column="8" selection-end-line="180" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        <state relative-caret-position="306">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="93" column="27" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="519" selection-start-line="519" selection-end-line="519" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="634">
+          <caret line="139" column="137" selection-start-line="139" selection-start-column="137" selection-end-line="139" selection-end-column="137" />
+          <folding>
+            <element signature="e#5772#5796#1" expanded="true" />
+            <element signature="e#9592#9616#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="884">
+          <caret line="52" column="18" lean-forward="true" selection-start-line="52" selection-start-column="18" selection-end-line="52" selection-end-column="18" />
+          <folding>
+            <element signature="e#39#813#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="413" column="126" selection-start-line="413" selection-start-column="126" selection-end-line="413" selection-end-column="126" />
         </state>
       </provider>
     </entry>

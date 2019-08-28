@@ -30,6 +30,8 @@ import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
+import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
+import mx.qsistemas.infracciones.modules.create.OPTION_UPDATE_INFRACTION
 import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.modules.search.SearchIterator
@@ -37,6 +39,7 @@ import mx.qsistemas.infracciones.modules.search.adapters.*
 import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
+import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.*
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
@@ -63,6 +66,7 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 val OK_PAYMENT = 100
+var TOKEN_INFRACTION: String = ""
 
 class SearchFr : Fragment()
         , SearchContracts.Presenter
@@ -161,19 +165,18 @@ class SearchFr : Fragment()
     override fun onPrintClick(view: View, position: Int, origin: Int) {
 
         activity.showLoader("Espere ...")
-        val idInfrac: String
         when (origin) {
             PRINT_LOCAL -> {
-                idInfrac = itemInfraOffLine[position].id_infraction.toString()
-                Log.d("ID_INFRACCION_LIST", idInfrac)
+                TOKEN_INFRACTION = itemInfraOffLine[position].id_infraction.toString()
+                Log.d("ID_INFRACCION_LIST", TOKEN_INFRACTION)
                 lifecycleScope.launch {
-                    iterator.value.doSearchByIdInfractionOffLine(idInfrac, PRINT)
+                    iterator.value.doSearchByIdInfractionOffLine(TOKEN_INFRACTION, PRINT)
                 }
             }
             PRINT_ONLINE -> {
-                idInfrac = itemInfraOnline[position].token.toString()
-                Log.d("ID_INFRACCION_LIST", idInfrac)
-                iterator.value.doSearchByIdInfraction(idInfrac, PRINT)
+                TOKEN_INFRACTION = itemInfraOnline[position].token.toString()
+                Log.d("ID_INFRACCION_LIST", TOKEN_INFRACTION)
+                iterator.value.doSearchByIdInfraction(TOKEN_INFRACTION, PRINT)
             }
         }
     }
@@ -339,41 +342,75 @@ class SearchFr : Fragment()
         SingletonTicket.completeNameOffender = "${infraction.driver?.name} ${infraction.driver?.paternal} ${infraction.driver?.maternal}"
         SingletonTicket.rfcOffender = infraction.driver?.rfc.toString()
 
-        if (infraction.driver?.address?.street?.isNotBlank()!!) {
-            SingletonTicket.streetOffender = infraction.driver.address.street
+        if(infraction.isAbsent){ //TODO: Corregir con negacion
+            if (infraction.driver?.address?.street?.isNotBlank()!!) {
+                SingletonTicket.streetOffender = infraction.driver.address.street
+            }
+
+            if (infraction.driver.address.exteriorNum?.isNotBlank()!!) {
+                SingletonTicket.noExtOffender = infraction.driver.address.exteriorNum
+            }
+
+            if (infraction.driver.address.internalNum?.isNotBlank()!!) {
+                SingletonTicket.noIntOffender = infraction.driver.address.internalNum
+            }
+
+            if (infraction.driver.address.colony?.isNotBlank()!!) {
+                SingletonTicket.colonyOffender = infraction.driver.address.colony
+            }
+
+            if (infraction.driver.address.state?.isNotBlank()!!) {
+                SingletonTicket.stateOffender = infraction.driver.address.state
+            }
         }
 
-        if (infraction.driver.address.exteriorNum?.isNotBlank()!!) {
-            SingletonTicket.noExtOffender = infraction.driver.address.exteriorNum
+
+        if(infraction.townHall !=null){
+            SingletonTicket.nameAgent = infraction.townHall
+        }
+        if(infraction.driverLicense?.licenseNumber !=null){
+            SingletonTicket.noLicenseOffender = infraction.driverLicense.licenseNumber
+        }
+        if(infraction.driverLicense?.licenseType != null){
+            SingletonTicket.typeLicenseOffender = infraction.driverLicense.licenseType
+        }
+        if(infraction.driverLicense?.state != null){
+            SingletonTicket.stateLicenseOffender = infraction.driverLicense.state
         }
 
-        if (infraction.driver.address.internalNum?.isNotBlank()!!) {
-            SingletonTicket.noIntOffender = infraction.driver.address.internalNum
+        if(infraction.vehicle?.brand !=null){
+            SingletonTicket.brandVehicle = infraction.vehicle.brand
+        }
+        if(infraction.vehicle?.model != null){
+            SingletonTicket.subBrandVehicle = infraction.vehicle.model
+        }
+        if(infraction.vehicle?.classType !=null){
+            SingletonTicket.typeVehicle =infraction.vehicle.classType
+        }
+        if(infraction.vehicle?.color != null){
+            SingletonTicket.colorVehicle = infraction.vehicle.color
         }
 
-        if (infraction.driver.address.colony?.isNotBlank()!!) {
-            SingletonTicket.colonyOffender = infraction.driver.address.colony
+        if(infraction.vehicle?.year != null){
+            SingletonTicket.modelVehicle = infraction.vehicle.year
         }
 
-        if (infraction.driver.address.state?.isNotBlank()!!) {
-            SingletonTicket.stateOffender = infraction.driver.address.state
+        if (infraction.vehicle?.identifierDocument != null){
+            SingletonTicket.identifierVehicle = infraction.vehicle.identifierDocument
         }
 
-        SingletonTicket.nameAgent = infraction.townHall.toString()
-        SingletonTicket.noLicenseOffender = infraction.driverLicense?.licenseNumber.toString()
-        SingletonTicket.typeLicenseOffender = infraction.driverLicense?.licenseType.toString()
-        SingletonTicket.stateLicenseOffender = infraction.driverLicense?.state.toString()
-        SingletonTicket.brandVehicle = infraction.vehicle?.brand.toString()
-        SingletonTicket.subBrandVehicle = infraction.vehicle?.model.toString()
-        SingletonTicket.typeVehicle = infraction.vehicle?.classType.toString()
-        SingletonTicket.colorVehicle = infraction.vehicle?.color.toString()
-        SingletonTicket.modelVehicle = infraction.vehicle?.year.toString()
-        SingletonTicket.identifierVehicle = infraction.vehicle?.identifierDocument.toString()
-        SingletonTicket.noIdentifierVehicle = infraction.vehicle?.numDocument.toString()
+        if(infraction.vehicle?.numDocument !=null){
+            SingletonTicket.noIdentifierVehicle = infraction.vehicle.numDocument
+        }
+
         SingletonTicket.expeditionAuthVehicle = "" //TODO: El servicio no lo envía.
-        SingletonTicket.stateExpVehicle = infraction.vehicle?.issuedIn.toString() //TODO: corregir
 
-        infraction.fractions?.forEach { fracc ->
+        if(infraction.vehicle?.issuedIn != null){
+            SingletonTicket.stateExpVehicle = infraction.vehicle.issuedIn.toString()
+        }
+
+
+       /* infraction.fractions?.forEach { fracc ->
             SingletonTicket.fractionsList.add(SingletonTicket.ArticleFraction(
                     fracc?.article.toString(),
                     fracc?.numFraction.toString(),
@@ -385,11 +422,19 @@ class SearchFr : Fragment()
         SingletonTicket.betweenStreetInfraction = infraction.addressInfringement?.streetA.toString()
         SingletonTicket.andStreetInfraction = infraction.addressInfringement?.streetB.toString()
         SingletonTicket.colonyInfraction = infraction.addressInfringement?.colony.toString()
-        SingletonTicket.retainedDocumentInfraction = infraction.insuredDocument.toString()
+        SingletonTicket.retainedDocumentInfraction = infraction.insuredDocument.toString()*/
+
+
 
         /*if (infraction.id_disposition != 0) {
             SingletonTicket.isRemitedInfraction = true
             SingletonTicket.remitedDispositionInfraction = ""//TODO: remitido a corralón
+        }*/
+
+        /*if(infraction.captureLines != null){
+            infraction.captureLines.forEach { captureLine ->
+                SingletonTicket.captureLines.add(captureLine.key, captureLine.)
+            }
         }
 
         SingletonTicket.captureLines.add(
@@ -468,15 +513,15 @@ class SearchFr : Fragment()
 
     override fun onPaymentClick(view: View, position: Int, origin: Int) {
         activity.showLoader("Espere ...")
-        val idInfrac: Long
+      
         when (origin) {
             PAYMENT_LOCAL -> {
-                idInfrac = itemInfraOffLine[position].id_infraction
+                TOKEN_INFRACTION = itemInfraOffLine[position].id_infraction.toString()
                 localPayment()
             }
             PAYMENT_ONLINE -> {
-                idInfrac = itemInfraOnline[position].token as Long
-                iterator.value.doSearchByIdInfraction(idInfrac.toString(), PAYMENT)
+                TOKEN_INFRACTION = itemInfraOnline[position].token.toString() 
+                iterator.value.doSearchByIdInfraction(TOKEN_INFRACTION.toString(), PAYMENT)
             }
         }
     }
@@ -548,28 +593,27 @@ class SearchFr : Fragment()
                 activity.showLoader(getString(R.string.l_preparing_printer))
                 printInfractionOnline(infraction)//PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
             }
-            //PAYMENT ->
-                /*if (infraction.isAbsent!!) {
-                    doPaymentProcess(infraction)
-                    idPerson = infraction.id_person
+            PAYMENT ->
+                if (infraction.isAbsent!!) {
+                    //doPaymentProcess(infraction)
+                    //idPerson = infraction.id_person
                 } else {
                     //mandar a pantalla de actualizacion
-                    SingletonInfraction.idNewInfraction = ID_INFRACTION.toLong()
-                    SingletonInfraction.captureLineii = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_ii) }// infraction.capture_line_ii
+                    SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
+                    /*SingletonInfraction.captureLineii = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction. date_capture_line_ii) }// infraction.capture_line_ii
                     SingletonInfraction.captureLineiii = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_iii) }// infraction.capture_line_ii
                     SingletonInfraction.amountCaptureLineii = infraction.amount_capture_line_ii
-                    SingletonInfraction.amountCaptureLineiii = infraction.amount_capture_line_iii
+                    SingletonInfraction.amountCaptureLineiii = infraction.amount_capture_line_iii*/
 
                     val intent = Intent(activity, CreateInfractionActivity::class.java)
                     intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
                     startActivityForResult(intent, OK_PAYMENT)
-                }*/
+                }
         }
     }
 
     override fun onResultSearch(listInfractions: MutableList<DataItem>) {
-        //activity.hideLoader()
-
+        activity.hideLoader()
         itemInfraOnline = listInfractions
 
         val totalResults = listInfractions.size
@@ -628,7 +672,7 @@ class SearchFr : Fragment()
 
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-        iterator.value.savePaymentToService(ID_INFRACTION, txInfo, totalAmount, discountPayment, totalPayment, idPerson)
+        iterator.value.savePaymentToService(TOKEN_INFRACTION, txInfo, totalAmount, discountPayment, totalPayment, idPerson)
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
     }
 

@@ -11,8 +11,6 @@ import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
-
-var ID_INFRACTION: String = ""
 var PRINT_ONLINE = 102
 var PAYMENT_ONLINE = 202
 class SearchAdapter(private val infractions: MutableList<DataItem>,
@@ -63,10 +61,7 @@ class SearchAdapter(private val infractions: MutableList<DataItem>,
                 itemView.txt_date_infra.text = "${data.date}:${data.time}"
                 itemView.btn_print.setOnClickListener { view -> listener.onPrintClick(view, position, PRINT_ONLINE) }
                 itemView.btn_payment.setOnClickListener{view -> listener.onPaymentClick(view, position, PAYMENT_ONLINE)}
-                if (data.token != null){
-                    ID_INFRACTION = data.token as String
-                }
-                if (!true) { // --> data.is_paid!!
+                if (!true) { // TODO: --> data.is_paid!!
                     itemView.btn_payment.visibility = View.GONE
                     itemView.txt_status_payment.text = itemView.context.getString(R.string.paid)
                     itemView.txt_status_payment.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorRed))

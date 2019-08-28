@@ -108,13 +108,13 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     }
 
     override fun doSearchByIdInfraction(id: String, origin: Int) {
-        val rootObject = JSONObject()
-        rootObject.put("token", id)
+        val dataToken: HashMap<String,String> = hashMapOf()
+        dataToken["token"] = id
 
-        Log.d("JSON-SEARCH", rootObject.toString())
+        Log.d("JSON-SEARCH", dataToken.toString())
         NetworkApi().getNetworkService().detailInfraction((
                 "Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")}"),
-                rootObject.toString()).enqueue(object : Callback<DetailResult> {
+                dataToken).enqueue(object : Callback<DetailResult> {
             override fun onResponse(call: Call<DetailResult>, response: Response<DetailResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = response.body()//Gson().fromJson(response.body(), DetailResult::class.java)

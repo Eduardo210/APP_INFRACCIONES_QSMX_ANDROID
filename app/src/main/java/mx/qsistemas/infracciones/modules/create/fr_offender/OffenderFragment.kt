@@ -26,9 +26,10 @@ import mx.qsistemas.infracciones.dialogs.DetailPaymentDialog
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
-import mx.qsistemas.infracciones.modules.search.adapters.ID_INFRACTION
+import mx.qsistemas.infracciones.modules.search.fr_search.TOKEN_INFRACTION
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.infracciones.singletons.SingletonInfraction.tokenInfraction
 import mx.qsistemas.infracciones.utils.FS_COL_CITIES
 import mx.qsistemas.infracciones.utils.Utils
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
@@ -252,7 +253,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         if (isCreation) {
                             iterator.value.saveData(true)
                         } else {
-                            SingletonInfraction.idNewInfraction = ID_INFRACTION.toLong()
+                            SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
                             iterator.value.updateData()
                         }
                     }

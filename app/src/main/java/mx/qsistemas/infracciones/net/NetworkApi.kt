@@ -55,6 +55,6 @@ open class NetworkApi {
         fun updateDriver(@Header("Authorization") tokenSession: String, @Body body: DriverRequest): Call<GenericResult>
 
         @POST("api/infringement/detail/")
-        fun detailInfraction(@Header("Authorization") tokenSession: String, @Query("token") token: String): Call<DetailResult>
+        fun detailInfraction(@Header("Authorization") tokenSession: String, @Body token: HashMap<String,String>): Call<DetailResult>
     }
 }

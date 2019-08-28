@@ -56,7 +56,7 @@ class HistoricalAdapter(private val infraction: MutableList<InfractionItem>
                 itemView.btn_print.setOnClickListener { view -> listener.onPrintClick(view, position, PRINT_LOCAL) }
                 itemView.btn_payment.setOnClickListener { view -> listener.onPaymentClick(view, position, PAYMENT_LOCAL) }
                 itemView.txt_status_payment.visibility = View.GONE
-                ID_INFRACTION = id_infraction.toString()
+                //ID_INFRACTION = id_infraction.toString()
 
             }
         }

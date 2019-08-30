@@ -454,24 +454,18 @@ class SearchFr : Fragment()
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 activity.hideLoader()
-
             }
 
             override fun onTicketError() {
                 onError("Ha ocurrido un error em la impresión")
             }
-
         })
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == OK_PAYMENT) {
             clearData()
         }
-
-
     }
 
 
@@ -508,7 +502,6 @@ class SearchFr : Fragment()
         } else {
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }
-
     }
 
     override fun onPaymentClick(view: View, position: Int, origin: Int) {
@@ -733,7 +726,6 @@ class SearchFr : Fragment()
                 printLocalInfraction(infraction)
             }
         }
-
     }
 
     private fun doPaymentLocalProcess() {

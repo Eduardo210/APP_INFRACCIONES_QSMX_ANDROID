@@ -28,7 +28,6 @@ open class NetworkApi {
         }
         val clientBuilder = customClient.build()
         val builder = Retrofit.Builder().baseUrl("http://189.240.246.23:8000/")
-                //.addConverterFactory(SimpleXmlConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(clientBuilder).build()
         return builder.create(ApiService::class.java)

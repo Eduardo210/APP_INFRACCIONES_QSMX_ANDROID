@@ -541,7 +541,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
         captureLineList.forEach {
-            SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "SIN DESCUENTO" else "CON ${it.discount} DE DESCUENTO", it.date, "%.2f".format(it.amount)))
+            SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "Sin descuento" else "Con ${it.discount} de descuento", it.date, "%.2f".format(it.amount)))
         }
 
         SingletonTicket.footers = SingletonInfraction.townshipInfraction.footer.values.toMutableList()

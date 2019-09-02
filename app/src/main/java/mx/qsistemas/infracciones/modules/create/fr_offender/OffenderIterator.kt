@@ -14,8 +14,8 @@ import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 import mx.qsistemas.infracciones.net.catalogs.Townships
-import mx.qsistemas.infracciones.net.catalogs.UpdatePaymentRequest
 import mx.qsistemas.infracciones.net.request_web.DriverRequest
+import mx.qsistemas.infracciones.net.request_web.PaymentRequest
 import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
@@ -441,37 +441,35 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         })
     }
 
-    override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
-        this.txInfo = txInfo
-        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
-        val paymentCardData = UpdatePaymentRequest.UpdatePaymentCardData(txInfo.aid, txInfo.apn, txInfo.arqc, txInfo.authorization,
-                txInfo.entryType, txInfo.maskedPan, txInfo.txDate, "", txInfo.txTime, "", idRegUser.toString(),
-                txInfo.affiliation, txInfo.expirationDate, "Aprobado", txInfo.brandCard, txInfo.typeCard,
-                txInfo.bank, txInfo.reference, totalPayment, txInfo.tvr, txInfo.tsi, txInfo.noControl,
-                txInfo.cardOwner, "", txInfo.typeTx)
-        val paymentData = UpdatePaymentRequest.UpdatePaymentData(2, amount, discount, totalPayment,
-                txInfo.authorization, "", idPerson)
-        val request = UpdatePaymentRequest(idInfraction, "", "InfraMobile", "CF2E3EF25C90EB567243ADFACD4AA868", paymentCardData,
-                paymentData)
-        /*NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), Gson().toJson(request)).enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+    override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, surcharges: String, totalPayment: String) {
+        val request = PaymentRequest("%.2f".format(discount).toFloat(), folioInfraction, "", actualDay, "CARD",
+                0F, "%.2f".format(amount).toFloat(), "%.2f".format(surcharges).toFloat(),
+                tokenInfraction, "%.2f".format(totalPayment).toFloat(), txInfo.authorization)
+        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
+                0, request).enqueue(object : Callback<GenericResult> {
+            override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                    val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
-                    listener.onResultSavePayment(data.message, data.flag)
+                    if (response.body()?.status == "success") {
+                        listener.onResultSavePayment("", true)
+                    } else {
+                        listener.onResultSavePayment(response.body()?.error
+                                ?: Application.getContext().getString(R.string.e_other_problem_internet), false)
+                    }
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                listener.onError(t.message ?: "")
+            override fun onFailure(call: Call<GenericResult>, t: Throwable) {
+                listener.onResultSavePayment(t.message
+                        ?: Application.getContext().getString(R.string.e_other_problem_internet), false)
             }
-        })*/
+        })
     }
 
     override fun savePayment(info: TransactionInfo) {
         this.txInfo = info
         /* Step 1. Save Pay Order Into Database */
         val payorder = InfringementPayorder(0, SingletonInfraction.subTotalInfraction.toFloat(), 0F, SingletonInfraction.discountInfraction.toFloat(), 0F, SingletonInfraction.totalInfraction.toFloat(),
-                actualDay, "", "", "CARD", info.authorization.toLong(), SingletonInfraction.idNewInfraction, info.reference, false,"")
+                actualDay, "", "", "CARD", info.authorization.toLong(), SingletonInfraction.idNewInfraction, info.reference, false, "")
         SaveInfractionManagerWeb.savePayOrder(payorder)
         /* Step 2. Save Authorization Code into Singleton */
         SingletonInfraction.paymentAuthCode = info.authorization

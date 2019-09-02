@@ -253,7 +253,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         if (isCreation) {
                             iterator.value.saveData(true)
                         } else {
-                            SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
+                            tokenInfraction = TOKEN_INFRACTION
                             iterator.value.updateData()
                         }
                     }
@@ -456,7 +456,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             iterator.value.savePayment(txInfo)
             SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
         } else {
-            iterator.value.savePaymentToService(SingletonInfraction.idNewInfraction.toString(), txInfo, totalAmount, discountPayment, SingletonInfraction.totalInfraction, SingletonInfraction.idNewPersonInfraction)
+            iterator.value.savePaymentToService(tokenInfraction, SingletonInfraction.folioInfraction, txInfo, totalAmount, discountPayment, "", SingletonInfraction.totalInfraction)
         }
     }
 

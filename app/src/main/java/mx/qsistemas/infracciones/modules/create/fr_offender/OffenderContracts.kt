@@ -49,6 +49,7 @@ class OffenderContracts {
         fun updateData()
         fun printTicket(activity: Activity)
         fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener)
-        fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long)
+        fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, amount: String,
+                                 discount: String, surcharges: String, totalPayment: String)
     }
 }

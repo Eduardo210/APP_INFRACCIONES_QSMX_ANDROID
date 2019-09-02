@@ -32,5 +32,21 @@ data class DetailResult(
 	val isInsured: Boolean? = null,
 
 	@field:SerializedName("vehicle")
-	val vehicle: Vehicle? = null
+	val vehicle: Vehicle? = null,
+
+	@field:SerializedName("folio")
+	val folio: String? = null,
+
+	@field:SerializedName("date")
+	val date: String? = null,
+
+	@field:SerializedName("is_impound")
+	val is_impound: Boolean? = null,
+
+	@field:SerializedName("third_impound")
+	val third_impound: String? = null
+
+
+
+
 )

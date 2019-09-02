@@ -73,7 +73,7 @@ class ReportsService : JobService() {
                     // Get the capture lines
                     val requestCaptureLines = mutableListOf<CaptureLinesItem>()
                     SendInfractionManagerWeb.getCaptureLines(it.id).forEach { line ->
-                        requestCaptureLines.add(CaptureLinesItem("%.2f".format(line.amount).toFloat(), line.key, line.order))
+                        requestCaptureLines.add(CaptureLinesItem("%.2f".format(line.amount).toFloat(), line.key, line.order, line.discount))
                     }
                     //Create the infraction subheader
                     val infractionRequest = InfractionRequest(it.date, addresInfraction.colony_id, vehicleInfraction.colour_id, addresInfraction.city_id,
@@ -85,7 +85,7 @@ class ReportsService : JobService() {
                             it.is_absent, false, addresInfraction.cp_id, personLicense.license_number, vehicleInfraction.issued_in_id,
                             requestPerson, requestCaptureLines, it.insured_document_id, it.folio, it.time, requestMotivations, "ACTIVO")
                     //Send the infractions list
-                    NetworkApi().getNetworkService().sendInfractionToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",infractionRequest).enqueue(object : Callback<InfractionResult> {
+                    NetworkApi().getNetworkService().sendInfractionToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", infractionRequest).enqueue(object : Callback<InfractionResult> {
                         override fun onResponse(call: Call<InfractionResult>, response: Response<InfractionResult>) {
                             if (response.code() == HttpsURLConnection.HTTP_OK) {
                                 val result = response.body()

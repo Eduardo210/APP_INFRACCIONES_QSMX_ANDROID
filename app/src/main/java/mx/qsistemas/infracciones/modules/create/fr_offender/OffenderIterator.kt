@@ -276,9 +276,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /* Validate if is the first time to insert the infraction */
         if (SingletonInfraction.idNewInfraction == 0L) {
             /* Step 1. Save Vehicle Information */
-
-
-
             val vehicleInfraction = VehicleVehicles(0,
                     SingletonInfraction.yearVehicle,
                     SingletonInfraction.colorVehicle.documentReference?.id

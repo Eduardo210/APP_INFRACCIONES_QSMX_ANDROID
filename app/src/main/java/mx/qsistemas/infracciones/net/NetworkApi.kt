@@ -1,10 +1,7 @@
 package mx.qsistemas.infracciones.net
 
 import mx.qsistemas.infracciones.BuildConfig
-import mx.qsistemas.infracciones.net.request_web.DriverRequest
-import mx.qsistemas.infracciones.net.request_web.InfractionRequest
-import mx.qsistemas.infracciones.net.request_web.LogInRequest
-import mx.qsistemas.infracciones.net.request_web.PaymentRequest
+import mx.qsistemas.infracciones.net.request_web.*
 import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.InfractionResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
@@ -31,7 +28,6 @@ open class NetworkApi {
         }
         val clientBuilder = customClient.build()
         val builder = Retrofit.Builder().baseUrl("http://189.240.246.23:8000/")
-                //.addConverterFactory(SimpleXmlConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(clientBuilder).build()
         return builder.create(ApiService::class.java)
@@ -41,6 +37,9 @@ open class NetworkApi {
         //Para la migración de la app
         @POST("api/accounts/login/")
         fun login(@Body body: LogInRequest): Call<LogInResult>
+
+        @POST("api/accounts/token-verify/")
+        fun verifyToken(@Body body: ValidateTokenRequest): Call<GenericResult>
 
         @POST("api/infringement/add/")
         fun sendInfractionToServer(@Header("Authorization") tokenSession: String, @Body body: InfractionRequest): Call<InfractionResult>

@@ -50,7 +50,7 @@ class InfractionListFr : Fragment(), View.OnClickListener {
         val mLastName = Application.prefs?.loadData(R.string.sp_person_m_last_name, "")
         binding.include.txtNameDashboard.text = "$name $lastName $mLastName"
         binding.include.txtNameDashboard.isSelected = true
-        Picasso.get().load(Application.prefs?.loadData(R.string.sp_person_photo_url, "")).error(R.drawable.ic_add_photo).into(binding.include.imgUserPhoto)
+        Picasso.get().load(Application.prefs?.loadData(R.string.sp_person_photo_url, "")).error(R.drawable.ic_account).into(binding.include.imgUserPhoto)
         return binding.root
     }
 

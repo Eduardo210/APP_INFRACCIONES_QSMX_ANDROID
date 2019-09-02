@@ -239,6 +239,7 @@
     <string name="w_close_session">¿Desea cerrar sesión en el dispositivo?</string>
     <string name="w_date_time_zone_not_automatic">Favor de seleccionar fecha y zona horaria automática</string>
     <string name="w_min_photos_take">Favor de tomar por lo menos 1 foto</string>
+    <string name="w_please_close_session">Su sesión ha expirado, favor de validar sus credenciales.</string>
     <string name="search_folio_title">Folio:</string>
     <string name="status_send">Enviado</string>
     <string name="status_pending">Pendiente</string>

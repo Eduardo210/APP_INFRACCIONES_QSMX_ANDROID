@@ -276,9 +276,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         /* Validate if is the first time to insert the infraction */
         if (SingletonInfraction.idNewInfraction == 0L) {
             /* Step 1. Save Vehicle Information */
-
-
-
             val vehicleInfraction = VehicleVehicles(0,
                     SingletonInfraction.yearVehicle,
                     SingletonInfraction.colorVehicle.documentReference?.id
@@ -427,7 +424,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
     override fun updateData() {
         val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.nameOffender, SingletonInfraction.rfcOffenfer, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName)
-        NetworkApi().getNetworkService().updateDriver("Bearer: ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
+        NetworkApi().getNetworkService().updateDriver("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     if (response.body()?.status == "success") {
@@ -435,7 +432,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     } else {
                         listener.onError(response.body()?.error ?: "")
                     }
-
                 }
             }
 
@@ -542,7 +538,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
         captureLineList.forEach {
-            SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "SIN DESCUENTO" else "CON ${it.discount} DE DESCUENTO", it.date, "%.2f".format(it.amount)))
+            SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "Sin descuento" else "Con ${it.discount} de descuento", it.date, "%.2f".format(it.amount)))
         }
 
         SingletonTicket.footers = SingletonInfraction.townshipInfraction.footer.values.toMutableList()

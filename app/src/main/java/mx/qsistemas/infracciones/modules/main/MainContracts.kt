@@ -7,10 +7,11 @@ class MainContracts {
     interface Presenter {
         fun enableHighAccuracyGps()
         fun onError(msg: String)
+        fun onSessionClosed()
     }
 
     interface Iterator {
-        fun closeSession()
+        fun validateSession()
     }
 
     interface Router {

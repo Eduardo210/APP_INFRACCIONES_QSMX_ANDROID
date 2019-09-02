@@ -302,7 +302,60 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     }
 
     override fun onDataUpdated() {
-        doPaymentProcess()
+        activity.showLoader(getString(R.string.l_preparing_amout))
+        Application.firestore?.collection(FS_COL_CITIES)?.document(Application.prefs?.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
+            if (townshipSnapshot == null) {
+                Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
+                onError(Application.getContext().getString(R.string.e_firestore_not_available))
+                activity.hideLoader()
+            } else {
+                val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
+                var hasSurcharges = false
+                township.discount.toSortedMap(reverseOrder()).entries.forEachIndexed { index, mutableEntry ->
+                    val expDate = SimpleDateFormat("yyyy-MM-dd").parse(Utils.getFutureWorkingDay(mutableEntry.value[mutableEntry.value.size - 1], iterator.value.holidayList))
+                    val actualDate = Date()
+                    if (actualDate.before(expDate) || DateUtils.isSameDay(actualDate, expDate)) {
+                        hasSurcharges = false
+                    } else {
+                        hasSurcharges = true
+                    }
+                    // Get last day of validity
+                    /*val discount = totalImport * mutableEntry.key.replace("%", "").toFloat() / 100
+                    val total = totalImport - discount
+                    val codeCaptureLine = Utils.generateCaptureLine(newFolio.replace("-", ""), expDate, "%.2f".format(total), "2")
+                    captureLineList.add(InfringementCapturelines(0, codeCaptureLine, SimpleDateFormat("dd/MM/yyyy").format(dateFormat.parse(expDate)),
+                            "%.2f".format(total).toFloat(), "Bancaria", index + 1, SingletonInfraction.idNewInfraction.toString(), mutableEntry.key))*/
+                }
+            }
+        }
+        var compare_date: Int
+        var haveToPay: Boolean = true
+        val expDate50: Date? = SingletonInfraction.captureLineii
+        val expDateFull: Date? = SingletonInfraction.captureLineiii
+
+        compare_date = CURRENT_DATE.compareTo(expDate50)//expDate50.compareTo(CURRENT_DATE)
+        totalAmount = SingletonInfraction.amountCaptureLineiii.toString()
+        if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
+            //Tiene el descuento del 50%
+            amountToPay = "%.2f".format(SingletonInfraction.amountCaptureLineii)
+            discountPayment = (SingletonInfraction.amountCaptureLineiii - SingletonInfraction.amountCaptureLineii).toString()
+        } else {
+            //No tiene descuento
+            discountPayment = "0"
+            compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
+            if (compare_date <= 0) {
+                amountToPay = "%.2f".format(SingletonInfraction.amountCaptureLineiii)
+            } else {
+                haveToPay = false
+            }
+        }
+        SingletonInfraction.totalInfraction = amountToPay.replace(",", ".")
+        //TODO: llenar los datos coorrespondietnes para los datos del pago en server
+        if (haveToPay) {
+            PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+        } else {
+            SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
+        }
     }
 
     override fun validFields(): Boolean {
@@ -487,65 +540,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             SingletonInfraction.cleanSingleton()
             Alarms()
             activity.finish()
-        }
-    }
-
-    private fun doPaymentProcess() {
-        activity.showLoader(getString(R.string.l_preparing_amout))
-        Application.firestore?.collection(FS_COL_CITIES)?.document(Application.prefs?.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
-            if (townshipSnapshot == null) {
-                Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
-                onError(Application.getContext().getString(R.string.e_firestore_not_available))
-                activity.hideLoader()
-            } else {
-                val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
-                var hasSurcharges = false
-                township.discount.toSortedMap(reverseOrder()).entries.forEachIndexed { index, mutableEntry ->
-                    val expDate = SimpleDateFormat("yyyy-MM-dd").parse(Utils.getFutureWorkingDay(mutableEntry.value[mutableEntry.value.size - 1], iterator.value.holidayList))
-                    val actualDate = Date()
-                    if (actualDate.before(expDate) || DateUtils.isSameDay(actualDate, expDate)) {
-                        hasSurcharges = false
-                    } else {
-                        hasSurcharges = true
-                    }
-                    // Get last day of validity
-                    /*val discount = totalImport * mutableEntry.key.replace("%", "").toFloat() / 100
-                    val total = totalImport - discount
-                    val codeCaptureLine = Utils.generateCaptureLine(newFolio.replace("-", ""), expDate, "%.2f".format(total), "2")
-                    captureLineList.add(InfringementCapturelines(0, codeCaptureLine, SimpleDateFormat("dd/MM/yyyy").format(dateFormat.parse(expDate)),
-                            "%.2f".format(total).toFloat(), "Bancaria", index + 1, SingletonInfraction.idNewInfraction.toString(), mutableEntry.key))*/
-                }
-            }
-        }
-
-
-        var compare_date: Int
-        var haveToPay: Boolean = true
-        val expDate50: Date? = SingletonInfraction.captureLineii
-        val expDateFull: Date? = SingletonInfraction.captureLineiii
-
-        compare_date = CURRENT_DATE.compareTo(expDate50)//expDate50.compareTo(CURRENT_DATE)
-        totalAmount = SingletonInfraction.amountCaptureLineiii.toString()
-        if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
-            //Tiene el descuento del 50%
-            amountToPay = "%.2f".format(SingletonInfraction.amountCaptureLineii)
-            discountPayment = (SingletonInfraction.amountCaptureLineiii - SingletonInfraction.amountCaptureLineii).toString()
-        } else {
-            //No tiene descuento
-            discountPayment = "0"
-            compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
-            if (compare_date <= 0) {
-                amountToPay = "%.2f".format(SingletonInfraction.amountCaptureLineiii)
-            } else {
-                haveToPay = false
-            }
-        }
-        SingletonInfraction.totalInfraction = amountToPay.replace(",", ".")
-        //TODO: llenar los datos coorrespondietnes para los datos del pago en server
-        if (haveToPay) {
-            PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
-        } else {
-            SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
         }
     }
 

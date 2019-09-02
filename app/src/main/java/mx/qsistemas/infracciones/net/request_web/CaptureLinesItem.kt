@@ -11,5 +11,8 @@ data class CaptureLinesItem(
 	val key: String? = null,
 
 	@field:SerializedName("order")
-	val order: Int? = null
+	val order: Int? = null,
+
+	@field:SerializedName("discount_label")
+	val discountLabel: String? = null
 )

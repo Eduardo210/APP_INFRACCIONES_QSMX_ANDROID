@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivityMainBinding
+import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
@@ -14,6 +15,7 @@ import mx.qsistemas.payments_transfer.PaymentsTransfer
 class MainActivity : ActivityHelper(), MainContracts.Presenter {
 
     val router = lazy { MainRouter(this) }
+    private val iterator = lazy { MainIterator(this) }
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +34,8 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
         PaymentsTransfer.runReversal(this)
         /* Always reconfigure */
         PaymentsTransfer.reconfigure()
+        /* Always validate session */
+        iterator.value.validateSession()
     }
 
     override fun enableHighAccuracyGps() {
@@ -39,6 +43,12 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
         Handler().postDelayed({ router.value.presentLocationSettings() }, 3000)
     }
 
-    override fun onBackPressed() {
+    override fun onSessionClosed() {
+        val builder = AlertDialogHelper.getGenericBuilder(getString(R.string.w_dialog_close_session),
+                getString(R.string.w_please_close_session), this)
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            router.value.presentLogIn()
+        }
+        builder.show()
     }
 }

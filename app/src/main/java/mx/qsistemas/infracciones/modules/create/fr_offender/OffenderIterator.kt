@@ -391,9 +391,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 val trafficViolation = InfringementRelfractionInfringements(
                         0,
                         it.fraction.uma,
-                        it.fraction.childReference?.id!!,
+                        it.fraction.reference?.id ?: "",//it.fraction.childReference?.id!!,
                         it.article.number,
-                        it.fraction.reference?.id ?: "",
+                        it.fraction.childReference?.id!!,
                         it.fraction.number,
                         SingletonInfraction.idNewInfraction,
                         it.motivation, SingletonInfraction.townshipInfraction.uma_rate * it.fraction.uma)

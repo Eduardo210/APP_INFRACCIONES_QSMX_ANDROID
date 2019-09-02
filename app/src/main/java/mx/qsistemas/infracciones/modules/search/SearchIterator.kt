@@ -81,7 +81,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val result = response.body()
-                    if (result != null) {
+                    if (result?.data != null) {
                         itemInfraOnline = result.data as MutableList<DataItem>
                         Log.d("SEARCH_ONLINE", "${result.data}")
                         if (result.count?.compareTo(0) != 0) {
@@ -89,12 +89,15 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                         } else {
                             listener.onError("No se encontraron resultados")
                         }
+                    }else{
+                        listener.onError(response.message())
                     }
 
                 }else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED){
                     Log.e("SEARCH_ONLINE", response.message())
                     listener.onError(response.message().toString())
                 }else{
+                    Log.e("SEARCH_ONLINE", response.message())
                     listener.onError(response.message().toString())
                 }
             }

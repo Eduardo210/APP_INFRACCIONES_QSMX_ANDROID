@@ -410,14 +410,14 @@ class SearchFr : Fragment()
         }
 
 
-       /* infraction.fractions?.forEach { fracc ->
+        infraction.fractions?.forEach { fracc ->
             SingletonTicket.fractionsList.add(SingletonTicket.ArticleFraction(
                     fracc?.article.toString(),
                     fracc?.numFraction.toString(),
                     fracc?.uma.toString(),
                     fracc?.reason.toString()))
         }
-
+           /*
         SingletonTicket.streetInfraction = infraction.addressInfringement?.street.toString()
         SingletonTicket.betweenStreetInfraction = infraction.addressInfringement?.streetA.toString()
         SingletonTicket.andStreetInfraction = infraction.addressInfringement?.streetB.toString()
@@ -437,20 +437,16 @@ class SearchFr : Fragment()
             }
         }
 
-        SingletonTicket.captureLines.add(
-                SingletonTicket.CaptureLine(
-                        infraction.capture_line_ii,
-                        "CON 50% DE DESCUENTO",
-                        infraction.date_capture_line_ii,
-                        infraction.amount_capture_line_ii.toString()))
-        SingletonTicket.captureLines.add(
-                SingletonTicket.CaptureLine(
-                        infraction.capture_line_iii,
-                        "SIN DESCUENTO",
-                        infraction.date_capture_line_iii,
-                        infraction.amount_capture_line_iii.toString()
-                )
-        )*/
+        */
+        infraction.captureLines?.forEach {captureLine ->
+            SingletonTicket.captureLines.add(
+                    SingletonTicket.CaptureLine(
+                            captureLine?.key!!,
+                            "Mensaje Descuento",
+                            captureLine.amount!!)
+                    )
+        }
+
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 activity.hideLoader()
@@ -636,10 +632,8 @@ class SearchFr : Fragment()
     }
 
     override fun onError(msg: String) {
+        activity.hideLoader()
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
-        //if(activity.showLoader())
-        //activity.hideLoader()
-
         if (binding.rclResults.adapter != null) {
             binding.constraintResults.visibility = View.GONE
             binding.rclResults.adapter = null

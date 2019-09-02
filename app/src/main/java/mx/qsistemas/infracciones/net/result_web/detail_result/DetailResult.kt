@@ -14,7 +14,7 @@ data class DetailResult(
 	val captureLines: List<CaptureLinesItem?>? = null,
 
 	@field:SerializedName("insured_document")
-	val insuredDocument: Int? = null,
+	val insuredDocument: String? = null,
 
 	@field:SerializedName("is_absent")
 	val isAbsent: Boolean? = null,

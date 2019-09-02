@@ -73,7 +73,7 @@ class ReportsService : JobService() {
                     // Get the capture lines
                     val requestCaptureLines = mutableListOf<CaptureLinesItem>()
                     SendInfractionManagerWeb.getCaptureLines(it.id).forEach { line ->
-                        requestCaptureLines.add(CaptureLinesItem("%.2f".format(line.amount).toFloat(), line.key, line.order, line.discount))
+                        requestCaptureLines.add(CaptureLinesItem("%.2f".format(line.amount).toFloat(), line.key, line.order, line.discount, line.date))
                     }
                     //Create the infraction subheader
                     val infractionRequest = InfractionRequest(it.date, addresInfraction.colony_id, vehicleInfraction.colour_id, addresInfraction.city_id,

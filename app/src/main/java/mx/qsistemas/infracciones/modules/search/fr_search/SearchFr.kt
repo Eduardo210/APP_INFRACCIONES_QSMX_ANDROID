@@ -336,8 +336,8 @@ class SearchFr : Fragment()
         INFRACTOR_IS_ABSENT = if (infraction.isAbsent!!) 1 else 0
         SingletonTicket.cleanData()
 
-        SingletonTicket.dateTicket = ""//TODO:Falta
-        SingletonTicket.folioTicket = "" //TODO: Falta el folio
+        SingletonTicket.dateTicket = infraction.folio.toString()//TODO:Falta
+        SingletonTicket.folioTicket = infraction.date.toString() //TODO: Falta el folio
 
         SingletonTicket.completeNameOffender = "${infraction.driver?.name} ${infraction.driver?.paternal} ${infraction.driver?.maternal}"
         SingletonTicket.rfcOffender = infraction.driver?.rfc.toString()
@@ -410,7 +410,7 @@ class SearchFr : Fragment()
         }
 
 
-       /* infraction.fractions?.forEach { fracc ->
+        infraction.fractions?.forEach { fracc ->
             SingletonTicket.fractionsList.add(SingletonTicket.ArticleFraction(
                     fracc?.article.toString(),
                     fracc?.numFraction.toString(),
@@ -422,35 +422,19 @@ class SearchFr : Fragment()
         SingletonTicket.betweenStreetInfraction = infraction.addressInfringement?.streetA.toString()
         SingletonTicket.andStreetInfraction = infraction.addressInfringement?.streetB.toString()
         SingletonTicket.colonyInfraction = infraction.addressInfringement?.colony.toString()
-        SingletonTicket.retainedDocumentInfraction = infraction.insuredDocument.toString()*/
+        SingletonTicket.retainedDocumentInfraction = infraction.insuredDocument.toString()
 
-
-
-        /*if (infraction.id_disposition != 0) {
+        if (infraction.is_impound!!) {
             SingletonTicket.isRemitedInfraction = true
-            SingletonTicket.remitedDispositionInfraction = ""//TODO: remitido a corralón
-        }*/
-
-        /*if(infraction.captureLines != null){
-            infraction.captureLines.forEach { captureLine ->
-                SingletonTicket.captureLines.add(captureLine.key, captureLine.)
-            }
+            SingletonTicket.remitedDispositionInfraction = infraction.third_impound!!
         }
 
-        SingletonTicket.captureLines.add(
-                SingletonTicket.CaptureLine(
-                        infraction.capture_line_ii,
-                        "CON 50% DE DESCUENTO",
-                        infraction.date_capture_line_ii,
-                        infraction.amount_capture_line_ii.toString()))
-        SingletonTicket.captureLines.add(
-                SingletonTicket.CaptureLine(
-                        infraction.capture_line_iii,
-                        "SIN DESCUENTO",
-                        infraction.date_capture_line_iii,
-                        infraction.amount_capture_line_iii.toString()
-                )
-        )*/
+        infraction.captureLines?.forEach {
+            SingletonTicket.captureLines.add(
+                    SingletonTicket.CaptureLine(it?.key!!, if (it.discount_label == "0%") "Sin descuento" else "Con ${it.discount_label} de descuento", it.date!!, "%.2f".format(it.amount))
+                    )
+        }
+
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 activity.hideLoader()
@@ -629,10 +613,8 @@ class SearchFr : Fragment()
     }
 
     override fun onError(msg: String) {
+        activity.hideLoader()
         SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
-        //if(activity.showLoader())
-        //activity.hideLoader()
-
         if (binding.rclResults.adapter != null) {
             binding.constraintResults.visibility = View.GONE
             binding.rclResults.adapter = null

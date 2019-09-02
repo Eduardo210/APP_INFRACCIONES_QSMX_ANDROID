@@ -2,11 +2,10 @@ package mx.qsistemas.infracciones.modules.search.fr_historical
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 import mx.qsistemas.infracciones.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -41,9 +40,6 @@ class HistoricalFr : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_historical, container, false)
     }
-
-
-
 
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivityMainBinding
+import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
@@ -43,6 +44,11 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
     }
 
     override fun onSessionClosed() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val builder = AlertDialogHelper.getGenericBuilder(getString(R.string.w_dialog_close_session),
+                getString(R.string.w_please_close_session), this)
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            router.value.presentLogIn()
+        }
+        builder.show()
     }
 }

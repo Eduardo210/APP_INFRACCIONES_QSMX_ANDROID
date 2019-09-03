@@ -1,6 +1,7 @@
 package mx.qsistemas.infracciones.net.result_web.detail_result
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class CaptureLinesItem(
 
@@ -17,5 +18,12 @@ data class CaptureLinesItem(
         val date: String? = null,
 
         @field:SerializedName("discount_label")
+        val discount_label: String? = null
+)
+data class NewCaptureLines(
+        val amount: String? = null,
+        val key: String? = null,
+        val order: Int? = null,
+        val date: Date? = null,
         val discount_label: String? = null
 )

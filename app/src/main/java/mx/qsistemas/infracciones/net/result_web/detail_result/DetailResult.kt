@@ -44,7 +44,11 @@ data class DetailResult(
 	val is_impound: Boolean? = null,
 
 	@field:SerializedName("third_impound")
-	val third_impound: String? = null
+	val third_impound: String? = null,
+
+	@field:SerializedName("subtotal")
+	val subtotal: Double? = null
+
 
 
 

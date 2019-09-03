@@ -14,6 +14,8 @@ import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.SearchManagerWeb
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
+import mx.qsistemas.infracciones.net.request_web.PaymentRequest
+import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
@@ -21,8 +23,6 @@ import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.FS_COL_IDENTIF_DOC
 import mx.qsistemas.infracciones.utils.Ticket
-import mx.qsistemas.payments_transfer.dtos.TransactionInfo
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -89,14 +89,14 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                         } else {
                             listener.onError("No se encontraron resultados")
                         }
-                    }else{
+                    } else {
                         listener.onError(response.message())
                     }
 
-                }else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED){
+                } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     Log.e("SEARCH_ONLINE", response.message())
                     listener.onError(response.message().toString())
-                }else{
+                } else {
                     Log.e("SEARCH_ONLINE", response.message())
                     listener.onError(response.message().toString())
                 }
@@ -111,7 +111,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     }
 
     override fun doSearchByIdInfraction(id: String, origin: Int) {
-        val dataToken: HashMap<String,String> = hashMapOf()
+        val dataToken: HashMap<String, String> = hashMapOf()
         dataToken["token"] = id
 
         Log.d("JSON-SEARCH", dataToken.toString())
@@ -121,15 +121,17 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             override fun onResponse(call: Call<DetailResult>, response: Response<DetailResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = response.body()//Gson().fromJson(response.body(), DetailResult::class.java)
-                    if (data !=null){
+                    if (data != null) {
                         listener.onResultInfractionById(data, origin)
                         Log.d("SEARCH_BY_TOKEN", data.toString())
-                    }else{
+                    } else {
                         listener.onError("Ocurrió un error al obtener los datos del servidor.")
                     }
 
-                }else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED){
+                } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     Log.e("SEARCH_ONLINE", response.message())
+                    listener.onError(response.message())
+                } else {
                     listener.onError(response.message())
                 }
             }
@@ -141,65 +143,27 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         })
     }
 
-    override fun savePaymentToService(idInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, totalPayment: String, idPerson: Long) {
-        val rootObj = JSONObject()
-        val jPayment = JSONObject()
-        val jPaymentCard = JSONObject()
-        val idRegUser = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
-        //val totalPayment =totalToPay
+    override fun savePaymentToService(paymentRequest: PaymentRequest) {
+        val token = ""
+        NetworkApi().getNetworkService().savePaymentToServer(token, 0L, paymentRequest).enqueue(object : Callback<GenericResult> {
+            override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
+                val generic: GenericResult?
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    generic = response.body()
+                    if (generic?.status == "sucess") {
+                        listener.onResultSavePayment("El pago se guardó satisfactoriamente")
+                    } else {
+                        listener.onResultSavePayment("Error al guardar el pago.")
+                    }
+                } else {
+                    listener.onError("Error al guardar el pago.")
+                }
+            }
 
-        rootObj.put("IdInfraccion", idInfraction)
-        rootObj.put("username", "InfraMobile")
-        rootObj.put("password", "CF2E3EF25C90EB567243ADFACD4AA868")
-
-        jPaymentCard.put("aid", txInfo.aid)
-        jPaymentCard.put("app_label", txInfo.apn)
-        jPaymentCard.put("arqc", txInfo.arqc)
-        jPaymentCard.put("auth_nb", txInfo.authorization)
-        jPaymentCard.put("entry_type", txInfo.entryType)
-        jPaymentCard.put("masked_pan", txInfo.maskedPan)
-        jPaymentCard.put("trx_date", txInfo.txDate)
-        jPaymentCard.put("trx_nb", "")
-        jPaymentCard.put("trx_time", txInfo.txTime)
-        jPaymentCard.put("serial_payda", "")
-        jPaymentCard.put("id_registro_usuario", idRegUser.toString())
-        jPaymentCard.put("afiliacion", txInfo.affiliation)
-        jPaymentCard.put("vigencia_tarjeta", txInfo.expirationDate)
-        jPaymentCard.put("mensaje", "Aprobado")
-        jPaymentCard.put("tipo_tarjeta", txInfo.brandCard)
-        jPaymentCard.put("tipo", txInfo.typeCard)
-        jPaymentCard.put("banco_emisor", txInfo.bank)
-        jPaymentCard.put("referencia", txInfo.reference)
-        jPaymentCard.put("importe", totalPayment)
-        jPaymentCard.put("tvr", txInfo.tvr)
-        jPaymentCard.put("tsi", txInfo.tsi)
-        jPaymentCard.put("numero_control", txInfo.noControl)
-        jPaymentCard.put("tarjetahabiente", txInfo.cardOwner)
-        jPaymentCard.put("emv_data", "")
-        jPaymentCard.put("tipo_transaccion", txInfo.typeTx)
-        rootObj.put("paymentCard", jPaymentCard)
-
-        jPayment.put("id_forma_pago", 1)
-        jPayment.put("subtotal", amount)
-        jPayment.put("descuento", discount)
-        jPayment.put("total", totalPayment)
-        jPayment.put("folio", txInfo.authorization)
-        jPayment.put("observacion", "")
-        jPayment.put("id_registro_usuario", idPerson)
-        rootObj.put("payment", jPayment)
-        Log.d("JSON-SAVE-PAYMENT", rootObj.toString())
-        /* NetworkApi().getNetworkService().savePayment(idInfraction.toLong(), rootObj.toString()).enqueue(object : Callback<String> {
-             override fun onResponse(call: Call<String>, response: Response<String>) {
-                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                     val data = Gson().fromJson(response.body(), ServiceResponse::class.java)
-                     listener.onResultSavePayment(data.message, data.flag)
-                 }
-             }
-
-             override fun onFailure(call: Call<String>, t: Throwable) {
-                 listener.onError(t.message ?: "")
-             }
-         })*/
+            override fun onFailure(call: Call<GenericResult>, t: Throwable) {
+                listener.onError(t.message ?: "")
+            }
+        })
     }
 
     override suspend fun doSearchByFilterOffLine(filter: String) {

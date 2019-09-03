@@ -35,8 +35,8 @@ import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.modules.search.SearchIterator
 import mx.qsistemas.infracciones.modules.search.adapters.*
-import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
+import mx.qsistemas.infracciones.net.result_web.detail_result.NewCaptureLines
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
@@ -77,10 +77,13 @@ class SearchFr : Fragment()
     private val CURRENT_DATE = Date()
     private var isPaid: Boolean = false
 
-    private var amountToPay = "0"
-    private var discountPayment = "0"
-    private var totalPayment = "0"
-    private var totalAmount = "0"
+    private var amountToPay: Float = 0F
+    private var discountInfraction: Float = 0F
+    private var subtotalInfraction: Float = 0F
+    private var surchargesInfraction: Float = 0F
+    private var totalInfraction = 0F
+    private var totalAmount = 0F
+    private var folioInfraction = ""
 
     private var idPerson: Long = 0
 
@@ -443,40 +446,81 @@ class SearchFr : Fragment()
         }
     }
 
+    //fun selector(cLines: NewCaptureLines): Date? = cLines.date
 
-    fun doPaymentProcess(infraction: InfractionSearch) {
-        var compare_date: Int
-        var haveToPay: Boolean = true
-        val expDate50: Date = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_ii) }
-        val expDateFull: Date = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_iii) }
+    fun doPaymentProcess(infraction: DetailResult) {
+        var compareDate: Int
+        val newCaptureLines: MutableList<NewCaptureLines> = mutableListOf()
+        var captureSelected: NewCaptureLines = NewCaptureLines()
 
-        compare_date = CURRENT_DATE.compareTo(expDate50)//expDate50.compareTo(CURRENT_DATE)
-        totalAmount = infraction.amount_capture_line_iii.toString()
-        if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
-            //Tiene el descuento del 50%
-            amountToPay = "%.2f".format(infraction.amount_capture_line_ii).replace(",", ".")
-            discountPayment = (infraction.amount_capture_line_iii.toDouble() - infraction.amount_capture_line_ii.toDouble()).toString()
-        } else {
-            //No tiene descuento
-            discountPayment = "0"
-            compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
-            if (compare_date <= 0) {
-                amountToPay = "%.2f".format(infraction.amount_capture_line_iii).replace(",", ".")
-            } else {
-                haveToPay = false
+
+        infraction.captureLines?.forEach {
+
+            val originalFormat = SimpleDateFormat("yyyy-MM-dd")
+            val newDate = originalFormat.parse(it?.date)
+            newCaptureLines.add(NewCaptureLines(it?.amount, it?.key, it?.order, newDate, it?.discount_label))
+        }
+        newCaptureLines.forEach {
+            Log.v("CAPTURE_LINES", "No order: $it.date")
+        }
+        newCaptureLines.sortBy { captureLinesItem -> captureLinesItem.date }
+
+        newCaptureLines.forEach {
+            Log.v("CAPTURE_LINES", "Order: $it.date")
+        }
+        newCaptureLines.forEach { cDate ->
+            compareDate = CURRENT_DATE.compareTo(cDate.date)
+            //  0 comes when two date are same,
+            //  1 comes when date1 is higher then date2
+            // -1 comes when date1 is lower then date2
+            if (compareDate <= 0) { //Si hoy es menor o igual a la fecha límite
+                captureSelected = cDate
+                return@forEach
             }
         }
-        totalPayment = amountToPay
-        /* if (discountPayment.toDouble()>0){
+        if (captureSelected.amount.isNullOrEmpty()) {
+            //Hacer operación para calcular los recargos
+        }
+
+        discountInfraction = ((captureSelected.amount?.toDouble()?.minus(infraction.subtotal!!))!!.toFloat())
+        folioInfraction = infraction.folio.toString()
+        subtotalInfraction = infraction.subtotal?.toFloat()!!
+        surchargesInfraction = 0F //En lo que los calculo
+        totalInfraction = (subtotalInfraction - discountInfraction) + surchargesInfraction
+
+
+        /* var compare_date: Int
+         var haveToPay: Boolean = true
+         val expDate50: Date = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_ii) }
+         val expDateFull: Date = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_iii) }
+
+         compare_date = CURRENT_DATE.compareTo(expDate50)//expDate50.compareTo(CURRENT_DATE)
+         totalAmount = infraction.amount_capture_line_iii.toString()
+         if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
+             //Tiene el descuento del 50%
+             amountToPay = "%.2f".format(infraction.amount_capture_line_ii).replace(",", ".")
+             discountPayment = (infraction.amount_capture_line_iii.toDouble() - infraction.amount_capture_line_ii.toDouble()).toString()
+         } else {
+             //No tiene descuento
+             discountPayment = "0"
+             compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
+             if (compare_date <= 0) {
+                 amountToPay = "%.2f".format(infraction.amount_capture_line_iii).replace(",", ".")
+             } else {
+                 haveToPay = false
+             }
+         }
+         totalPayment = amountToPay
+         *//* if (discountPayment.toDouble()>0){
              totalPayment = "%.2f".format(amountToPay.toDouble() - discountPayment.toDouble())
-         }*/
+         }*//*
 
 
         if (haveToPay) {
             PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
         } else {
             SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
-        }
+        }*/
     }
 
     override fun onPaymentClick(view: View, position: Int, origin: Int) {
@@ -489,7 +533,7 @@ class SearchFr : Fragment()
             }
             PAYMENT_ONLINE -> {
                 TOKEN_INFRACTION = itemInfraOnline[position].token.toString()
-                iterator.value.doSearchByIdInfraction(TOKEN_INFRACTION.toString(), PAYMENT)
+                iterator.value.doSearchByIdInfraction(TOKEN_INFRACTION, PAYMENT)
             }
         }
     }
@@ -512,30 +556,6 @@ class SearchFr : Fragment()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        /* idDocIdent = iterator.value.identifierDocList[p2].documentReference?.id ?: ""
-         Log.d("DOC_IDENT", idDocIdent)
-         if (p2 > 0) {
-             binding.etFilterAny.visibility = View.VISIBLE
-             if (!binding.edtFilterFolio.text.equals("")) {
-                 binding.edtFilterFolio.setText("")
-             }
-
-         } else {
-             binding.etFilterAny.visibility = View.GONE
-         }
-
-
-         *//*idDocIdent = returnCorrectNumber(p2)
-        if (p2 > 0) {
-            binding.etFilterAny.visibility = View.VISIBLE
-            if (!binding.edtFilterFolio.text.equals("")) {
-                binding.edtFilterFolio.setText("")
-            }
-
-        } else {
-            binding.etFilterAny.visibility = View.GONE
-        }*/
-
     }
 
     override fun onResultInfractionById(infraction: DetailResult, origin: Int) {
@@ -546,8 +566,8 @@ class SearchFr : Fragment()
                 printInfractionOnline(infraction)//PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
             }
             PAYMENT ->
-                if (infraction.isAbsent!!) {
-                    //doPaymentProcess(infraction)
+                if (!infraction.isAbsent!!) {
+                    doPaymentProcess(infraction)
                     //idPerson = infraction.id_person
                 } else {
                     //mandar a pantalla de actualizacion
@@ -604,20 +624,29 @@ class SearchFr : Fragment()
 
     }
 
-    override fun onResultSavePayment(msg: String, flag: Boolean) {
+    override fun onResultSavePayment(msg: String) {
         activity.hideLoader()
-        if (flag) {
-            SnackbarHelper.showSuccessSnackBar(activity, "El pago se guardó satisfactoriamente.", Snackbar.LENGTH_SHORT)
-        } else {
-            SnackbarHelper.showErrorSnackBar(activity, "Error al guardar datos de pago en servidor.", Snackbar.LENGTH_SHORT)
-        }
+        SnackbarHelper.showSuccessSnackBar(activity, "El pago se guardó satisfactoriamente.", Snackbar.LENGTH_SHORT)
 
 
     }
 
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-        iterator.value.savePaymentToService(TOKEN_INFRACTION, txInfo, totalAmount, discountPayment, totalPayment, idPerson)
+       /* val paymentRequest: PaymentRequest = PaymentRequest(
+                discountPayment,
+                "folio_infraction",
+                "",
+                CURRENT_DATE.toString(),
+                "CARD",
+                0F,
+                "subtotal",
+                "recargos",
+                TOKEN_INFRACTION,
+                totalAmount,
+                txInfo.authorization
+        )
+        iterator.value.savePaymentToService(paymentRequest)*/
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
     }
 
@@ -629,7 +658,7 @@ class SearchFr : Fragment()
                     getString(R.string.w_dialog_title_payment_failed), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Aceptar") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, totalInfraction.toString(), if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("Cancelar") { _, _ ->
                 // Imprimir boleta

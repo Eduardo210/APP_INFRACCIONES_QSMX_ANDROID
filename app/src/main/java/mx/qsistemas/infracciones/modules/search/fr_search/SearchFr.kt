@@ -572,11 +572,9 @@ class SearchFr : Fragment()
                 } else {
                     //mandar a pantalla de actualizacion
                     SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
-                    /*SingletonInfraction.captureLineii = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction. date_capture_line_ii) }// infraction.capture_line_ii
-                    SingletonInfraction.captureLineiii = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_iii) }// infraction.capture_line_ii
-                    SingletonInfraction.amountCaptureLineii = infraction.amount_capture_line_ii
-                    SingletonInfraction.amountCaptureLineiii = infraction.amount_capture_line_iii*/
-
+                    SingletonInfraction.subTotalInfraction = "%.2f".format(infraction.subtotal
+                            ?: 0.0)
+                    SingletonInfraction.captureLines = infraction.captureLines ?: mutableListOf()
                     val intent = Intent(activity, CreateInfractionActivity::class.java)
                     intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
                     startActivityForResult(intent, OK_PAYMENT)
@@ -601,10 +599,7 @@ class SearchFr : Fragment()
             lifecycleScope.launch {
                 iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
             }
-
         }
-
-
     }
 
     override fun onError(msg: String) {
@@ -633,20 +628,20 @@ class SearchFr : Fragment()
 
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-       /* val paymentRequest: PaymentRequest = PaymentRequest(
-                discountPayment,
-                "folio_infraction",
-                "",
-                CURRENT_DATE.toString(),
-                "CARD",
-                0F,
-                "subtotal",
-                "recargos",
-                TOKEN_INFRACTION,
-                totalAmount,
-                txInfo.authorization
-        )
-        iterator.value.savePaymentToService(paymentRequest)*/
+        /* val paymentRequest: PaymentRequest = PaymentRequest(
+                 discountPayment,
+                 "folio_infraction",
+                 "",
+                 CURRENT_DATE.toString(),
+                 "CARD",
+                 0F,
+                 "subtotal",
+                 "recargos",
+                 TOKEN_INFRACTION,
+                 totalAmount,
+                 txInfo.authorization
+         )
+         iterator.value.savePaymentToService(paymentRequest)*/
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
     }
 

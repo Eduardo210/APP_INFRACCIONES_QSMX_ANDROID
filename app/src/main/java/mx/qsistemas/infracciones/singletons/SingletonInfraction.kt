@@ -1,7 +1,7 @@
 package mx.qsistemas.infracciones.singletons
 
 import mx.qsistemas.infracciones.net.catalogs.*
-import java.util.*
+import mx.qsistemas.infracciones.net.result_web.detail_result.CaptureLinesItem
 
 object SingletonInfraction {
 
@@ -63,11 +63,8 @@ object SingletonInfraction {
     var subTotalInfraction: String = ""
     var discountInfraction: String = ""
     var totalInfraction: String = ""
-    var captureLineii: Date? = null
-    var captureLineiii: Date? = null
-    var amountCaptureLineii: Float = 0F
-    var amountCaptureLineiii: Float = 0F
     var paymentAuthCode: String = ""
+    var captureLines: List<CaptureLinesItem?> = mutableListOf()
 
     fun cleanSingleton() {
         /* Vehicle Information Reset */
@@ -126,11 +123,8 @@ object SingletonInfraction {
         subTotalInfraction = ""
         discountInfraction = ""
         totalInfraction = ""
-        captureLineii = null
-        captureLineiii = null
-        amountCaptureLineii = 0F
-        amountCaptureLineiii = 0F
         paymentAuthCode = ""
+        captureLines = mutableListOf()
     }
 
     class DtoMotivation(var article: Articles, var fraction: Fractions, var motivation: String)

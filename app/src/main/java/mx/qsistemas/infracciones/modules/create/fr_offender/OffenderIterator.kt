@@ -401,7 +401,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             val evidence2 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence1)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
-
             /* Step 9. */
             val oficial = PersonTownhall(
                     Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong(),
@@ -412,7 +411,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             )
             //Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
             SaveInfractionManagerWeb.saveOficial(oficial)
-
             /* Step 10. Register Event Infraction */
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */

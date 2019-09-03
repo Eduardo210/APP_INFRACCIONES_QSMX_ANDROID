@@ -3,7 +3,6 @@ package mx.qsistemas.infracciones.modules.search.fr_search
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -49,12 +48,6 @@ import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_AUTH_ALWAYS
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
 import java.text.SimpleDateFormat
 import java.util.*
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 
 /**
  * A simple [Fragment] subclass.
@@ -114,8 +107,6 @@ class SearchFr : Fragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -221,7 +212,6 @@ class SearchFr : Fragment()
             doc_ident = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.identifier_document_id.toString(), FS_COL_IDENTIF_DOC, "value")
             authority = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.document_type.toString(), FS_COL_TYPE_DOC, "value")
             issued_in = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.issued_in_id.toString(), FS_COL_STATES, "value")
-
         }
         job.join()
 
@@ -326,6 +316,7 @@ class SearchFr : Fragment()
                 activity.hideLoader()
 
             }
+
             override fun onTicketError() {
                 onError("Ha ocurrido un error en la impresión")
             }
@@ -342,7 +333,7 @@ class SearchFr : Fragment()
         SingletonTicket.completeNameOffender = "${infraction.driver?.name} ${infraction.driver?.paternal} ${infraction.driver?.maternal}"
         SingletonTicket.rfcOffender = infraction.driver?.rfc.toString()
 
-        if(infraction.isAbsent){ //TODO: Corregir con negacion
+        if (infraction.isAbsent) { //TODO: Corregir con negacion
             if (infraction.driver?.address?.street?.isNotBlank()!!) {
                 SingletonTicket.streetOffender = infraction.driver.address.street
             }
@@ -365,47 +356,47 @@ class SearchFr : Fragment()
         }
 
 
-        if(infraction.townHall !=null){
+        if (infraction.townHall != null) {
             SingletonTicket.nameAgent = infraction.townHall
         }
-        if(infraction.driverLicense?.licenseNumber !=null){
+        if (infraction.driverLicense?.licenseNumber != null) {
             SingletonTicket.noLicenseOffender = infraction.driverLicense.licenseNumber
         }
-        if(infraction.driverLicense?.licenseType != null){
+        if (infraction.driverLicense?.licenseType != null) {
             SingletonTicket.typeLicenseOffender = infraction.driverLicense.licenseType
         }
-        if(infraction.driverLicense?.state != null){
+        if (infraction.driverLicense?.state != null) {
             SingletonTicket.stateLicenseOffender = infraction.driverLicense.state
         }
 
-        if(infraction.vehicle?.brand !=null){
+        if (infraction.vehicle?.brand != null) {
             SingletonTicket.brandVehicle = infraction.vehicle.brand
         }
-        if(infraction.vehicle?.model != null){
+        if (infraction.vehicle?.model != null) {
             SingletonTicket.subBrandVehicle = infraction.vehicle.model
         }
-        if(infraction.vehicle?.classType !=null){
-            SingletonTicket.typeVehicle =infraction.vehicle.classType
+        if (infraction.vehicle?.classType != null) {
+            SingletonTicket.typeVehicle = infraction.vehicle.classType
         }
-        if(infraction.vehicle?.color != null){
+        if (infraction.vehicle?.color != null) {
             SingletonTicket.colorVehicle = infraction.vehicle.color
         }
 
-        if(infraction.vehicle?.year != null){
+        if (infraction.vehicle?.year != null) {
             SingletonTicket.modelVehicle = infraction.vehicle.year
         }
 
-        if (infraction.vehicle?.identifierDocument != null){
+        if (infraction.vehicle?.identifierDocument != null) {
             SingletonTicket.identifierVehicle = infraction.vehicle.identifierDocument
         }
 
-        if(infraction.vehicle?.numDocument !=null){
+        if (infraction.vehicle?.numDocument != null) {
             SingletonTicket.noIdentifierVehicle = infraction.vehicle.numDocument
         }
 
         SingletonTicket.expeditionAuthVehicle = "" //TODO: El servicio no lo envía.
 
-        if(infraction.vehicle?.issuedIn != null){
+        if (infraction.vehicle?.issuedIn != null) {
             SingletonTicket.stateExpVehicle = infraction.vehicle.issuedIn.toString()
         }
 
@@ -432,7 +423,7 @@ class SearchFr : Fragment()
         infraction.captureLines?.forEach {
             SingletonTicket.captureLines.add(
                     SingletonTicket.CaptureLine(it?.key!!, if (it.discount_label == "0%") "Sin descuento" else "Con ${it.discount_label} de descuento", it.date!!, "%.2f".format(it.amount))
-                    )
+            )
         }
 
         Ticket.printTicket(activity, object : Ticket.TicketListener {
@@ -490,14 +481,14 @@ class SearchFr : Fragment()
 
     override fun onPaymentClick(view: View, position: Int, origin: Int) {
         activity.showLoader("Espere ...")
-      
+
         when (origin) {
             PAYMENT_LOCAL -> {
                 TOKEN_INFRACTION = itemInfraOffLine[position].id_infraction.toString()
                 localPayment()
             }
             PAYMENT_ONLINE -> {
-                TOKEN_INFRACTION = itemInfraOnline[position].token.toString() 
+                TOKEN_INFRACTION = itemInfraOnline[position].token.toString()
                 iterator.value.doSearchByIdInfraction(TOKEN_INFRACTION.toString(), PAYMENT)
             }
         }
@@ -545,22 +536,6 @@ class SearchFr : Fragment()
             binding.etFilterAny.visibility = View.GONE
         }*/
 
-    }
-
-    fun returnCorrectNumber(position: Int): Int {
-        return when (position) {
-            0 -> 0
-            1 -> 4
-            2 -> 2
-            3 -> 1
-            4 -> 5
-            5 -> 3
-            else -> 0
-        }
-    }
-
-    private fun isValidFilter(): Boolean {
-        return (binding.edtFilterAny.text != null)
     }
 
     override fun onResultInfractionById(infraction: DetailResult, origin: Int) {
@@ -621,11 +596,6 @@ class SearchFr : Fragment()
         }
     }
 
-
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
 
     private fun clearData() {
         binding.edtFilterAny.setText("")
@@ -724,11 +694,9 @@ class SearchFr : Fragment()
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
                 SearchFr().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
                     }
                 }
     }

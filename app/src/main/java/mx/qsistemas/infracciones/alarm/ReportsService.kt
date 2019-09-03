@@ -20,6 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.HttpURLConnection
+import java.text.SimpleDateFormat
 import javax.net.ssl.HttpsURLConnection
 
 
@@ -72,8 +73,9 @@ class ReportsService : JobService() {
                     val vehicleInfraction = SendInfractionManagerWeb.getVehicleInformation(it.id)
                     // Get the capture lines
                     val requestCaptureLines = mutableListOf<CaptureLinesItem>()
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
                     SendInfractionManagerWeb.getCaptureLines(it.id).forEach { line ->
-                        requestCaptureLines.add(CaptureLinesItem("%.2f".format(line.amount).toFloat(), line.key, line.order, line.discount, line.date))
+                        requestCaptureLines.add(CaptureLinesItem("%.2f".format(line.amount).toFloat(), line.key, line.order, line.discount, dateFormat.format(SimpleDateFormat("dd/MM/yyyy").parse(line.date))))
                     }
                     //Create the infraction subheader
                     val infractionRequest = InfractionRequest(it.date, addresInfraction.colony_id, vehicleInfraction.colour_id, addresInfraction.city_id,

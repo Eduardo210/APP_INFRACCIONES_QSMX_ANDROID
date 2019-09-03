@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "infringement_infringements")
 data class InfringementInfringements(@PrimaryKey(autoGenerate = true) val id: Long,
                                      @ColumnInfo(name = "folio") val folio: String,
-        /*@ColumnInfo(name = "is_impound") val is_impound: Boolean,*/
+                                     @ColumnInfo(name = "is_impound") val is_impound: Boolean,
         /*@ColumnInfo(name = "type_Service") val type_service: String,*/
                                      @ColumnInfo(name = "uma_rate") val uma_rate: Int,
                                      @ColumnInfo(name = "is_paid") val is_paid: Boolean,

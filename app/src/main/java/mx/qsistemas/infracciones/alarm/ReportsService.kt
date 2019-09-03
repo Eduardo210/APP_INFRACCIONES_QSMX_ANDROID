@@ -84,8 +84,8 @@ class ReportsService : JobService() {
                             vehicleInfraction.class_type_id, vehicleInfraction.num_document, addresInfraction.street, vehicleInfraction.sub_brand_id,
                             personLicense.state_license_id, vehicleInfraction.isNewSubBrand, vehicleInfraction.brand_reference, addresInfraction.longitude.toString(),
                             addresInfraction.street_a, "", personLicense.license_type_id, addresInfraction.street_b,
-                            it.is_absent, false, addresInfraction.cp_id, personLicense.license_number, vehicleInfraction.issued_in_id,
-                            requestPerson, requestCaptureLines, it.insured_document_id, it.folio, it.time, requestMotivations, "ACTIVO")
+                            it.is_absent, it.is_impound, addresInfraction.cp_id, personLicense.license_number, vehicleInfraction.issued_in_id,
+                            requestPerson, requestCaptureLines, it.insured_document_id, it.folio, it.time, requestMotivations, "ACTIVO", it.third_impound_id)
                     //Send the infractions list
                     NetworkApi().getNetworkService().sendInfractionToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", infractionRequest).enqueue(object : Callback<InfractionResult> {
                         override fun onResponse(call: Call<InfractionResult>, response: Response<InfractionResult>) {

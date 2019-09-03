@@ -3,7 +3,6 @@ package mx.qsistemas.infracciones.modules.search.fr_search
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -53,12 +52,6 @@ import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 
 /**
  * A simple [Fragment] subclass.
@@ -121,8 +114,6 @@ class SearchFr : Fragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -228,7 +219,6 @@ class SearchFr : Fragment()
             doc_ident = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.identifier_document_id.toString(), FS_COL_IDENTIF_DOC, "value")
             authority = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.document_type.toString(), FS_COL_TYPE_DOC, "value")
             issued_in = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.issued_in_id.toString(), FS_COL_STATES, "value")
-
         }
         job.join()
 
@@ -570,11 +560,9 @@ class SearchFr : Fragment()
                 } else {
                     //mandar a pantalla de actualizacion
                     SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
-                    /*SingletonInfraction.captureLineii = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction. date_capture_line_ii) }// infraction.capture_line_ii
-                    SingletonInfraction.captureLineiii = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_iii) }// infraction.capture_line_ii
-                    SingletonInfraction.amountCaptureLineii = infraction.amount_capture_line_ii
-                    SingletonInfraction.amountCaptureLineiii = infraction.amount_capture_line_iii*/
-
+                    SingletonInfraction.subTotalInfraction = "%.2f".format(infraction.subtotal
+                            ?: 0.0)
+                    SingletonInfraction.captureLines = infraction.captureLines ?: mutableListOf()
                     val intent = Intent(activity, CreateInfractionActivity::class.java)
                     intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
                     startActivityForResult(intent, OK_PAYMENT)
@@ -599,10 +587,7 @@ class SearchFr : Fragment()
             lifecycleScope.launch {
                 iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
             }
-
         }
-
-
     }
 
     override fun onError(msg: String) {
@@ -614,11 +599,6 @@ class SearchFr : Fragment()
         }
     }
 
-
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
 
     private fun clearData() {
         binding.edtFilterAny.setText("")
@@ -726,11 +706,9 @@ class SearchFr : Fragment()
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
                 SearchFr().apply {
                     arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
                     }
                 }
     }

@@ -401,7 +401,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             val evidence2 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence1)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
-
             /* Step 9. */
             val oficial = PersonTownhall(
                     Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong(),
@@ -412,7 +411,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             )
             //Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
             SaveInfractionManagerWeb.saveOficial(oficial)
-
             /* Step 10. Register Event Infraction */
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
@@ -441,9 +439,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         })
     }
 
-    override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, amount: String, discount: String, surcharges: String, totalPayment: String) {
+    override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
         val request = PaymentRequest("%.2f".format(discount).toFloat(), folioInfraction, "", actualDay, "CARD",
-                0F, "%.2f".format(amount).toFloat(), "%.2f".format(surcharges).toFloat(),
+                0F, "%.2f".format(subtotal).toFloat(), "%.2f".format(surcharges).toFloat(),
                 tokenInfraction, "%.2f".format(totalPayment).toFloat(), txInfo.authorization)
         NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
                 0, request).enqueue(object : Callback<GenericResult> {

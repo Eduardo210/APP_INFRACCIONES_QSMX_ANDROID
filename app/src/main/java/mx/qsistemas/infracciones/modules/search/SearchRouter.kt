@@ -12,7 +12,7 @@ class SearchRouter(val activity: ActivityHelper): SearchContracts.Router{
     }
 
     override fun presentSearchFragment(direction: Direction) {
-        activity.loadFragment(SearchFr.newInstance("",""), R.id.frame_search, direction, false )
+        activity.loadFragment(SearchFr.newInstance(), R.id.frame_search, direction, false )
     }
 
 }

@@ -30,7 +30,7 @@ class SearchContracts {
         suspend fun doSearchByFilterOffLine(filter: String)
         fun doSearchByIdInfraction(id: String, origin: Int)
         suspend fun doSearchByIdInfractionOffLine(id: String, origin: Int)
-        fun savePaymentToService(paymentRequest: PaymentRequest)
+        fun savePaymentToService(paymentRequest: PaymentRequest, token: String)
         fun printTicket(activity: Activity)
         fun getIdentifierDocAdapter()
         fun getPositionIdentifiedDoc(obj: GenericCatalog): Int

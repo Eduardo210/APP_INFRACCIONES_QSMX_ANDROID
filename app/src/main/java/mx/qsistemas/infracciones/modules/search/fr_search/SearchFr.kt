@@ -429,7 +429,7 @@ class SearchFr : Fragment()
 
         infraction.captureLines?.forEach {
             SingletonTicket.captureLines.add(
-                    SingletonTicket.CaptureLine(it?.key!!, if (it.discount_label == "0%") "Sin descuento" else "Con ${it.discount_label} de descuento", it.date!!, "%.2f".format(it.amount))
+                    SingletonTicket.CaptureLine(it?.key!!, if (it.discount_label == "0%") "Sin descuento" else "Con ${it.discount_label} de descuento", it.date!!, it.amount!!)
             )
         }
 
@@ -470,16 +470,20 @@ class SearchFr : Fragment()
         newCaptureLines.forEach {
             Log.v("CAPTURE_LINES", "Order: $it.date")
         }
-        newCaptureLines.forEach { cDate ->
-            compareDate = CURRENT_DATE.compareTo(cDate.date)
-            //  0 comes when two date are same,
-            //  1 comes when date1 is higher then date2
-            // -1 comes when date1 is lower then date2
-            if (compareDate <= 0) { //Si hoy es menor o igual a la fecha límite
-                captureSelected = cDate
-                return@forEach
+        run loop@{
+            newCaptureLines.forEach { cDate ->
+                compareDate = CURRENT_DATE.compareTo(cDate.date)
+                //  0 comes when two date are same,
+                //  1 comes when date1 is higher then date2
+                // -1 comes when date1 is lower then date2
+                if (compareDate <= 0) { //Si hoy es menor o igual a la fecha límite
+                    captureSelected = cDate
+                    return@loop
+                }
             }
         }
+        Log.d("DISCOUNT-amount", captureSelected.amount)
+        Log.d("DISCOUNT-subtotal", infraction.subtotal?.toString())
         if (captureSelected.amount.isNullOrEmpty()) {
             //Hacer operación para calcular los recargos
             Application.firestore?.collection(FS_COL_CITIES)?.document(Application.prefs?.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
@@ -491,7 +495,7 @@ class SearchFr : Fragment()
                     val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
                     val diff = Date().time - captureSelected.date?.time!!
                     val days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
-                    discountInfraction = ((captureSelected.amount?.toDouble()?.minus(infraction.subtotal!!))!!.toFloat())
+                    discountInfraction = (infraction.subtotal!! - captureSelected.amount?.toDouble()!!).toFloat()
                     folioInfraction = infraction.folio.toString()
                     subtotalInfraction = infraction.subtotal?.toFloat()!!
                     surchargesInfraction = days * township.surcharges_rate
@@ -500,7 +504,7 @@ class SearchFr : Fragment()
                 }
             }
         } else {
-            discountInfraction = ((captureSelected.amount?.toDouble()?.minus(infraction.subtotal!!))!!.toFloat())
+            discountInfraction = (infraction.subtotal!! - captureSelected.amount?.toDouble()!!).toFloat()
             folioInfraction = infraction.folio.toString()
             subtotalInfraction = infraction.subtotal?.toFloat()!!
             surchargesInfraction = 0F
@@ -616,11 +620,13 @@ class SearchFr : Fragment()
 
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-        val paymentRequest: PaymentRequest = PaymentRequest(
+        var dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        Log.d("DISCOUNT-before", "$discountInfraction")
+        val paymentRequest = PaymentRequest(
                 discountInfraction,
                 folioInfraction,
                 "",
-                CURRENT_DATE.toString(),
+                dateFormat.format(CURRENT_DATE),
                 "CARD",
                 0F,
                 subtotalInfraction,
@@ -629,7 +635,7 @@ class SearchFr : Fragment()
                 totalAmount,
                 txInfo.authorization
         )
-        iterator.value.savePaymentToService(paymentRequest)
+        iterator.value.savePaymentToService(paymentRequest, TOKEN_INFRACTION)
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
     }
 

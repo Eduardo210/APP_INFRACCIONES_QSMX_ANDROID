@@ -82,15 +82,17 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val result = response.body()
                     if (result?.data != null) {
+
                         itemInfraOnline = result.data as MutableList<DataItem>
                         Log.d("SEARCH_ONLINE", "${result.data}")
                         if (result.count?.compareTo(0) != 0) {
                             listener.onResultSearch(result.data)
                         } else {
-                            listener.onError("No se encontraron resultados")
+                            listener.onResultSearch(result.data)
                         }
-                    } else {
-                        listener.onError(response.message())
+                    } else {//No se encontraron datos
+                        listener.onResultSearch(mutableListOf())
+                        Log.d("SEARCH_ONLINE", "${result?.data}")
                     }
 
                 } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {

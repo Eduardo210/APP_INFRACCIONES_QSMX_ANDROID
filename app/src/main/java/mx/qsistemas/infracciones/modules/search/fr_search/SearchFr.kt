@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
@@ -36,6 +37,8 @@ import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.modules.search.SearchIterator
 import mx.qsistemas.infracciones.modules.search.adapters.*
+import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.request_web.PaymentRequest
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
 import mx.qsistemas.infracciones.net.result_web.detail_result.NewCaptureLines
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
@@ -49,6 +52,7 @@ import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_AUTH_ALWAYS
 import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -456,13 +460,11 @@ class SearchFr : Fragment()
         }
     }
 
-    //fun selector(cLines: NewCaptureLines): Date? = cLines.date
 
     fun doPaymentProcess(infraction: DetailResult) {
         var compareDate: Int
         val newCaptureLines: MutableList<NewCaptureLines> = mutableListOf()
         var captureSelected: NewCaptureLines = NewCaptureLines()
-
 
         infraction.captureLines?.forEach {
 
@@ -490,48 +492,34 @@ class SearchFr : Fragment()
         }
         if (captureSelected.amount.isNullOrEmpty()) {
             //Hacer operación para calcular los recargos
+            Application.firestore?.collection(FS_COL_CITIES)?.document(Application.prefs?.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
+                if (townshipSnapshot == null) {
+                    Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
+                    onError(Application.getContext().getString(R.string.e_firestore_not_available))
+                    activity.hideLoader()
+                } else {
+                    val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
+                    val diff = Date().time - captureSelected.date?.time!!
+                    val days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
+                    discountInfraction = ((captureSelected.amount?.toDouble()?.minus(infraction.subtotal!!))!!.toFloat())
+                    folioInfraction = infraction.folio.toString()
+                    subtotalInfraction = infraction.subtotal?.toFloat()!!
+                    surchargesInfraction = days * township.surcharges_rate
+                    totalInfraction = subtotalInfraction + surchargesInfraction
+                    PaymentsTransfer.runTransaction(activity, "%.2f".format(totalInfraction), if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+                }
+            }
+        } else {
+            discountInfraction = ((captureSelected.amount?.toDouble()?.minus(infraction.subtotal!!))!!.toFloat())
+            folioInfraction = infraction.folio.toString()
+            subtotalInfraction = infraction.subtotal?.toFloat()!!
+            surchargesInfraction = 0F
+            totalInfraction = subtotalInfraction
+            PaymentsTransfer.runTransaction(activity, totalInfraction.toString(), if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
         }
 
-        discountInfraction = ((captureSelected.amount?.toDouble()?.minus(infraction.subtotal!!))!!.toFloat())
-        folioInfraction = infraction.folio.toString()
-        subtotalInfraction = infraction.subtotal?.toFloat()!!
-        surchargesInfraction = 0F //En lo que los calculo
-        totalInfraction = (subtotalInfraction - discountInfraction) + surchargesInfraction
-
-
-        /* var compare_date: Int
-         var haveToPay: Boolean = true
-         val expDate50: Date = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_ii) }
-         val expDateFull: Date = SimpleDateFormat("dd/MM/yyyy").run { this.parse(infraction.date_capture_line_iii) }
-
-         compare_date = CURRENT_DATE.compareTo(expDate50)//expDate50.compareTo(CURRENT_DATE)
-         totalAmount = infraction.amount_capture_line_iii.toString()
-         if (compare_date <= 0) { //Si hoy es menor o igual a la fecha limite
-             //Tiene el descuento del 50%
-             amountToPay = "%.2f".format(infraction.amount_capture_line_ii).replace(",", ".")
-             discountPayment = (infraction.amount_capture_line_iii.toDouble() - infraction.amount_capture_line_ii.toDouble()).toString()
-         } else {
-             //No tiene descuento
-             discountPayment = "0"
-             compare_date = CURRENT_DATE.compareTo(expDateFull)//expDateFull.compareTo(CURRENT_DATE)
-             if (compare_date <= 0) {
-                 amountToPay = "%.2f".format(infraction.amount_capture_line_iii).replace(",", ".")
-             } else {
-                 haveToPay = false
-             }
-         }
-         totalPayment = amountToPay
-         *//* if (discountPayment.toDouble()>0){
-             totalPayment = "%.2f".format(amountToPay.toDouble() - discountPayment.toDouble())
-         }*//*
-
-
-        if (haveToPay) {
-            PaymentsTransfer.runTransaction(activity, totalPayment, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
-        } else {
-            SnackbarHelper.showErrorSnackBar(activity, "La infracción cuenta con recargos. Pagar en ventanilla", Snackbar.LENGTH_LONG)
-        }*/
     }
+
 
     override fun onPaymentClick(view: View, position: Int, origin: Int) {
         activity.showLoader("Espere ...")
@@ -607,7 +595,7 @@ class SearchFr : Fragment()
 
             binding.txtFilterSearch.text = binding.edtFilterAny.text.toString()
         } else {
-            activity.showLoader("Buscando infracciones ...")
+            activity.showLoader("Buscando infracciones locales...")
             lifecycleScope.launch {
                 iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
             }
@@ -648,20 +636,20 @@ class SearchFr : Fragment()
 
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-       /* val paymentRequest: PaymentRequest = PaymentRequest(
-                discountPayment,
-                "folio_infraction",
+        val paymentRequest: PaymentRequest = PaymentRequest(
+                discountInfraction,
+                folioInfraction,
                 "",
                 CURRENT_DATE.toString(),
                 "CARD",
                 0F,
-                "subtotal",
-                "recargos",
+                subtotalInfraction,
+                surchargesInfraction,
                 TOKEN_INFRACTION,
                 totalAmount,
                 txInfo.authorization
         )
-        iterator.value.savePaymentToService(paymentRequest)*/
+        iterator.value.savePaymentToService(paymentRequest)
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
     }
 

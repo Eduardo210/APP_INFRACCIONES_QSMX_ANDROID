@@ -306,6 +306,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             val infraction = InfringementInfringements(
                     0,
                     newFolio,
+                    SingletonInfraction.isRemited,
                     totalUmas.toInt(),
                     false,
                     "active",

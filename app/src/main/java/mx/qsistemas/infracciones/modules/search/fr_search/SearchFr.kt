@@ -36,6 +36,8 @@ import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.modules.search.SearchContracts
 import mx.qsistemas.infracciones.modules.search.SearchIterator
 import mx.qsistemas.infracciones.modules.search.adapters.*
+import mx.qsistemas.infracciones.net.catalogs.Articles
+import mx.qsistemas.infracciones.net.catalogs.Fractions
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.net.request_web.PaymentRequest
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
@@ -564,6 +566,9 @@ class SearchFr : Fragment()
                 } else {
                     //mandar a pantalla de actualizacion
                     SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
+                    infraction.fractions?.forEach {
+                        SingletonInfraction.motivationList.add(SingletonInfraction.DtoMotivation(Articles(), Fractions(uma = it?.uma!!.toInt()), ""))
+                    }
                     SingletonInfraction.folioInfraction = infraction.folio ?: ""
                     SingletonInfraction.subTotalInfraction = "%.2f".format(infraction.subtotal
                             ?: 0.0)

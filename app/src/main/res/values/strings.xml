@@ -66,7 +66,8 @@
     <string name="t_name_offender">Nombre del Infractor:</string>
     <string name="t_total_umas">Total de UMAs:</string>
     <string name="t_subtotal_price">Subtotal:</string>
-    <string name="t_total_discount">Descuento (pago mismo día):</string>
+    <string name="t_total_discount">Descuento:</string>
+    <string name="t_total_surcharges">Sobrecargos:</string>
     <string name="t_total_price">Total a pagar:</string>
 
     <!-- Dashboard Infraction String -->

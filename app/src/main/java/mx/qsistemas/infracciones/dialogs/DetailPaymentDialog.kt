@@ -14,6 +14,7 @@ import mx.qsistemas.infracciones.singletons.SingletonInfraction
 class DetailPaymentDialog : DialogFragment() {
 
     var listener: DetailPaymentCallback? = null
+    var showDeclineOption: Boolean = true
     private lateinit var binding: DialogDetailPaymentBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -29,9 +30,13 @@ class DetailPaymentDialog : DialogFragment() {
             listener?.onAcceptPayment()
             dismiss()
         }
-        binding.btnCancel.setOnClickListener {
-            listener?.onDeclinePayment()
-            dismiss()
+        if (showDeclineOption) {
+            binding.btnCancel.setOnClickListener {
+                listener?.onDeclinePayment()
+                dismiss()
+            }
+        } else {
+            binding.btnCancel.visibility = View.GONE
         }
         binding.txtNameOffender.text = SingletonInfraction.nameOffender + " " + SingletonInfraction.lastFatherName + " " + SingletonInfraction.lastMotherName
         var totalUmas = 0
@@ -40,7 +45,8 @@ class DetailPaymentDialog : DialogFragment() {
         }
         binding.txtTotalUmas.text = totalUmas.toString()
         binding.txtSubtotalPrice.text = SingletonInfraction.subTotalInfraction
-        binding.txtTotalDiscount.text = SingletonInfraction.discountInfraction
+        binding.txtTotalDiscount.text = if (SingletonInfraction.discountInfraction.isNotBlank()) SingletonInfraction.discountInfraction else "S/N"
+        binding.txtTotalSurcharges.text = if (SingletonInfraction.surchargesInfraction.isNotBlank()) SingletonInfraction.surchargesInfraction else "S/N"
         binding.txtTotalPrice.text = SingletonInfraction.totalInfraction
         return binding.root
     }

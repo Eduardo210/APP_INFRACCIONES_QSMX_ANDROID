@@ -63,6 +63,7 @@ object SingletonInfraction {
     var subTotalInfraction: String = ""
     var discountInfraction: String = ""
     var totalInfraction: String = ""
+    var surchargesInfraction: String = ""
     var paymentAuthCode: String = ""
     var captureLines: List<CaptureLinesItem?> = mutableListOf()
 
@@ -123,6 +124,7 @@ object SingletonInfraction {
         subTotalInfraction = ""
         discountInfraction = ""
         totalInfraction = ""
+        surchargesInfraction = ""
         paymentAuthCode = ""
         captureLines = mutableListOf()
     }

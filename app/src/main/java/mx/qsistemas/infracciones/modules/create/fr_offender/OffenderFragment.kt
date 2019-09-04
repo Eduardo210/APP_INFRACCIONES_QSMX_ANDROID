@@ -301,6 +301,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onDataUpdated() {
         activity.showLoader(getString(R.string.l_preparing_amout))
+        val dialog = DetailPaymentDialog()
+        dialog.listener = this
+        dialog.showDeclineOption = false
+        dialog.isCancelable = false
         var compareDate: Int
         var captureSelected = NewCaptureLines()
         val newCaptureLines = mutableListOf<NewCaptureLines>()
@@ -324,6 +328,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             }
         }
         if (captureSelected.amount.isNullOrEmpty()) {
+            captureSelected = newCaptureLines[newCaptureLines.lastIndex]
             //Hacer operación para calcular los recargos
             Application.firestore?.collection(FS_COL_CITIES)?.document(Application.prefs?.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
                 if (townshipSnapshot == null) {
@@ -336,20 +341,12 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     val days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
                     SingletonInfraction.surchargesInfraction = "%.2f".format(days * township.surcharges_rate)
                     SingletonInfraction.totalInfraction = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() + SingletonInfraction.surchargesInfraction.toFloat()).replace(",", ".")
-                    val dialog = DetailPaymentDialog()
-                    dialog.listener = this
-                    dialog.showDeclineOption = false
-                    dialog.isCancelable = false
                     dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
                 }
             }
         } else {
             SingletonInfraction.discountInfraction = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() - captureSelected.amount!!.toFloat())
             SingletonInfraction.totalInfraction = "%.2f".format(captureSelected.amount!!.toFloat())
-            val dialog = DetailPaymentDialog()
-            dialog.listener = this
-            dialog.showDeclineOption = false
-            dialog.isCancelable = false
             dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
         }
     }

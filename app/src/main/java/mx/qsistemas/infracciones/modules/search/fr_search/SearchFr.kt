@@ -78,7 +78,8 @@ class SearchFr : Fragment()
 
     private val PRINT: Int = 100
     private val PAYMENT: Int = 200
-    private val CURRENT_DATE = Date()
+    private val format = SimpleDateFormat("yyyy-MM-dd")
+    private val CURRENT_DATE = format.parse(format.format(Date()))
     private var isPaid: Boolean = false
 
     private var amountToPay: Float = 0F
@@ -127,9 +128,8 @@ class SearchFr : Fragment()
                 iterator.value.doSearchByFilter(binding.edtFilterAny.text.toString())
             } else {
                 activity.showLoader("Buscando infracciones ...")
-                lifecycleScope.launch {
-                    iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
-                }
+                iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
+
             }
         }
         binding.imgCleanSearch.setOnClickListener {
@@ -181,13 +181,6 @@ class SearchFr : Fragment()
 
     private suspend fun printLocalInfraction(infraction: InfringementData) {
         SingletonTicket.cleanData()
-        var brand = ""
-        var model = ""
-        var type = ""
-        var colour = ""
-        var doc_ident = ""
-        var authority = ""
-        var issued_in = ""
         var article = ""
         var fraction = ""
 
@@ -210,18 +203,33 @@ class SearchFr : Fragment()
         if (!infraction.driverAddressDriver?.internal_num.isNullOrEmpty()) {
             SingletonTicket.noIntOffender = infraction.driverAddressDriver?.internal_num ?: ""
         }
-        /*Obtener catálogos desde firebase*/
-        val job = GlobalScope.launch(Dispatchers.Main) {
-            brand = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.brand_reference.toString(), FS_COL_BRANDS, "value")
-            model = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.sub_brand_id.toString(), FS_COL_MODELS, "value")
-            type = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.class_type_id.toString(), FS_COL_CLASS_TYPE, "value")
-            colour = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.colour_id.toString(), FS_COL_COLORS, "value")
-            doc_ident = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.identifier_document_id.toString(), FS_COL_IDENTIF_DOC, "value")
-            authority = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.document_type.toString(), FS_COL_TYPE_DOC, "value")
-            issued_in = CatalogsFirebaseManager.getValue(infraction.vehicleVehicles?.issued_in_id.toString(), FS_COL_STATES, "value")
+        if (!infraction.vehicleVehicles?.brand?.isEmpty()!!) {
+            SingletonTicket.brandVehicle = infraction.vehicleVehicles!!.brand
         }
-        job.join()
+        if (!infraction.vehicleVehicles?.sub_brand.isNullOrEmpty()) {
+            SingletonTicket.subBrandVehicle = infraction.vehicleVehicles?.sub_brand ?: ""
+        }
+        if (!infraction.vehicleVehicles?.class_type.isNullOrEmpty()) {
+            SingletonTicket.typeVehicle = infraction.vehicleVehicles?.class_type ?: ""
+        }
+        if (!infraction.vehicleVehicles?.colour.isNullOrEmpty()) {
+            SingletonTicket.colorVehicle = infraction.vehicleVehicles?.colour ?: ""
+        }
 
+        if (!infraction.vehicleVehicles?.identifier_document.isNullOrEmpty()) {
+            SingletonTicket.identifierVehicle = infraction.vehicleVehicles?.identifier_document
+                    ?: ""
+        }
+
+        SingletonTicket.noIdentifierVehicle = infraction.vehicleVehicles?.num_document ?: ""
+
+        if (!infraction.vehicleVehicles?.document_type.isNullOrEmpty()) {
+            SingletonTicket.expeditionAuthVehicle = infraction.vehicleVehicles?.document_type ?: ""
+        }
+
+        if (!infraction.vehicleVehicles?.issued_in.isNullOrEmpty()) {
+            SingletonTicket.stateExpVehicle = infraction.vehicleVehicles?.issued_in ?: ""
+        }
 
         /*if (!infraction.COL_PERSON.isNullOrEmpty()) {
             SingletonTicket.colonyOffender = infraction.COL_PERSON.toString()
@@ -239,36 +247,11 @@ class SearchFr : Fragment()
             SingletonTicket.stateLicenseOffender = infraction.EXPEDIDA_EN_LICENCIA.toString()
         }
         SingletonTicket.nameAgent = infraction.OFICIAL.toString()*/
-        if (brand.isNotEmpty()) {
-            SingletonTicket.brandVehicle = brand
-        }
-        if (model.isNotEmpty()) {
-            SingletonTicket.subBrandVehicle = model
-        }
 
-        if (type.isNotEmpty()) {
-            SingletonTicket.typeVehicle = type
-        }
-
-        if (colour.isNotEmpty()) {
-            SingletonTicket.colorVehicle = colour
-        }
 
         SingletonTicket.modelVehicle = infraction.vehicleVehicles?.year ?: ""
 
-        if (doc_ident.isNotEmpty()) {
-            SingletonTicket.identifierVehicle = doc_ident
-        }
 
-        SingletonTicket.noIdentifierVehicle = infraction.vehicleVehicles?.num_document ?: ""
-
-        if (authority.isNotEmpty()) {
-            SingletonTicket.expeditionAuthVehicle = authority
-        }
-
-        if (issued_in.isNotEmpty()) {
-            SingletonTicket.stateExpVehicle = issued_in
-        }
 
         infraction.fractions?.forEach { fracc ->
 
@@ -295,29 +278,20 @@ class SearchFr : Fragment()
         if (!infraction.infringementAddress?.street_b.isNullOrEmpty()) {
             SingletonTicket.andStreetInfraction = infraction.infringementAddress?.street_b ?: ""
         }
-/*
-        SingletonTicket.colonyInfraction = infraction.COL_INFRA.toString()
-        SingletonTicket.retainedDocumentInfraction = infraction.DOCUMENTO_RETENIDO.toString()
 
-        if (infraction.ID_DISPOSICION != 0) {
+        SingletonTicket.colonyInfraction = infraction.infringementAddress?.colony ?: ""
+        SingletonTicket.retainedDocumentInfraction = infraction.infringement?.insured_document ?: ""
+
+        if (infraction.infringement?.is_impound!!) {
             SingletonTicket.isRemitedInfraction = true
-            SingletonTicket.remitedDispositionInfraction = infraction.DISPOSICION.toString()
+            SingletonTicket.remitedDispositionInfraction = infraction.infringement?.third_impound
+                    ?: ""
         }
-*/
-        SingletonTicket.captureLines.add(
-                SingletonTicket.CaptureLine(
-                        infraction.captureLines?.get(0)?.key ?: "",
-                        "CON 50% DE DESCUENTO",
-                        infraction.captureLines?.get(0)?.date ?: "",
-                        infraction.captureLines?.get(0)?.amount.toString()))
-        SingletonTicket.captureLines.add(
-                SingletonTicket.CaptureLine(
-                        infraction.captureLines?.get(1)?.key ?: "",
-                        "SIN DESCUENTO",
-                        infraction.captureLines?.get(1)?.date ?: "",
-                        infraction.captureLines?.get(1)?.amount.toString()
-                )
-        )
+
+        infraction.captureLines?.forEach {
+            SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "Sin descuento" else "Con ${it.discount} de descuento", it.date, "%.2f".format(it.amount)))
+        }
+
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 activity.hideLoader()

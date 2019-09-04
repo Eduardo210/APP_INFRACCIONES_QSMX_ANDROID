@@ -122,7 +122,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     }
 
     override fun savePaymentToService(paymentRequest: PaymentRequest, token: String) {
-        Log.d("AUTH", "Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")}")
+
         NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
                 0L,
                 paymentRequest).enqueue(object : Callback<GenericResult> {
@@ -146,7 +146,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         })
     }
 
-    override suspend fun doSearchByFilterOffLine(filter: String) {
+    override fun doSearchByFilterOffLine(filter: String) {
         val query: SimpleSQLiteQuery
         if (filter.isEmpty()) {
             query = SimpleSQLiteQuery("SELECT " +

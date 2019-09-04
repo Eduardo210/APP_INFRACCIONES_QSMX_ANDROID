@@ -572,6 +572,7 @@ class SearchFr : Fragment()
                 } else {
                     //mandar a pantalla de actualizacion
                     SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
+                    SingletonInfraction.folioInfraction = infraction.folio ?: ""
                     SingletonInfraction.subTotalInfraction = "%.2f".format(infraction.subtotal
                             ?: 0.0)
                     SingletonInfraction.captureLines = infraction.captureLines ?: mutableListOf()
@@ -592,7 +593,6 @@ class SearchFr : Fragment()
             binding.rclResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
             binding.rclResults.adapter = SearchAdapter(listInfractions, this)
             binding.txtTotalSearch.text = totalResults.toString()
-
             binding.txtFilterSearch.text = binding.edtFilterAny.text.toString()
         } else {
             activity.showLoader("Buscando infracciones ...")

@@ -252,6 +252,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         if (isCreation) {
                             iterator.value.saveData(true)
                         } else {
+                            activity.showLoader(getString(R.string.l_upload_person))
                             tokenInfraction = TOKEN_INFRACTION
                             iterator.value.updateData()
                         }
@@ -312,14 +313,16 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             newCaptureLines.add(NewCaptureLines(it?.amount, it?.key, it?.order, newDate, it?.discount_label))
         }
         newCaptureLines.sortBy { captureLinesItem -> captureLinesItem.date }
-        newCaptureLines.forEach { cDate ->
-            compareDate = CURRENT_DATE.compareTo(cDate.date)
-            //  0 comes when two date are same,
-            //  1 comes when date1 is higher then date2
-            // -1 comes when date1 is lower then date2
-            if (compareDate <= 0) { //Si hoy es menor o igual a la fecha límite
-                captureSelected = cDate
-                return@forEach
+        run loop@{
+            newCaptureLines.forEach { cDate ->
+                compareDate = CURRENT_DATE.compareTo(cDate.date)
+                //  0 comes when two date are same,
+                //  1 comes when date1 is higher then date2
+                // -1 comes when date1 is lower then date2
+                if (compareDate <= 0) { //Si hoy es menor o igual a la fecha límite
+                    captureSelected = cDate
+                    return@loop
+                }
             }
         }
         if (captureSelected.amount.isNullOrEmpty()) {
@@ -340,7 +343,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             }
         } else {
             discountPayment = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() - captureSelected.amount!!.toFloat())
-            SingletonInfraction.totalInfraction = "%.2f".format(captureSelected.amount)
+            SingletonInfraction.totalInfraction = "%.2f".format(captureSelected.amount!!.toFloat())
             PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
         }
     }

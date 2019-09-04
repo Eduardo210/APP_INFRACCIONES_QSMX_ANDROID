@@ -441,9 +441,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
-        val request = PaymentRequest("%.2f".format(discount).toFloat(), folioInfraction, "", actualDay, "CARD",
-                0F, "%.2f".format(subtotal).toFloat(), "%.2f".format(surcharges).toFloat(),
-                tokenInfraction, "%.2f".format(totalPayment).toFloat(), txInfo.authorization)
+        val request = PaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
+                0F, subtotal.toFloat(), surcharges.toFloat(), tokenInfraction, totalPayment.toFloat(), txInfo.authorization)
         NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
                 0, request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {

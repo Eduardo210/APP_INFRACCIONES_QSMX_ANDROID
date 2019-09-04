@@ -50,7 +50,7 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, DriverDriverLicense>() {
             override fun doInBackground(vararg p0: Void?): DriverDriverLicense {
                 return Application.m_database_web?.driverLicenseDaoWeb()?.selectDriverLicense(idInfraction)
-                        ?: DriverDriverLicense(0, "", 0, "", "")
+                        ?: DriverDriverLicense(0, "", 0, "", "","", "")
             }
         }.execute().get()
     }

@@ -152,7 +152,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             query = SimpleSQLiteQuery("SELECT " +
                     "infra.id, " +
                     "infra.folio, " +
-                    "infra.date, " +
+                    "(infra.date ||\' \' || infra.time) as date ," +
                     "vehicle.num_document, " +
                     "(SELECT reason FROM infringement_relInfraction_infringements) reason, " +
                     "infra.sync, " +
@@ -169,7 +169,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             query = SimpleSQLiteQuery("SELECT " +
                     "infra.id, " +
                     "infra.folio, " +
-                    "infra.date, " +
+                    "(infra.date ||\' \' || infra.time) as date ," +
                     "vehicle.num_document, " +
                     "(SELECT reason FROM infringement_relInfraction_infringements) reason, " +
                     "infra.sync, " +
@@ -278,6 +278,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         infringement.vehicleVehicles = SearchManagerWeb.getVehicle(id.toLong())
         infringement.driverLicense = SearchManagerWeb.getDriverLicense(id.toLong())
         infringement.fractions = SearchManagerWeb.getFractionsInfringements(id.toLong())
+        infringement.personTownhall = SearchManagerWeb.getTownHallPerson(id.toLong())
 
         listener.onResultInfractionByIdOffline(infringement, origin)
     }

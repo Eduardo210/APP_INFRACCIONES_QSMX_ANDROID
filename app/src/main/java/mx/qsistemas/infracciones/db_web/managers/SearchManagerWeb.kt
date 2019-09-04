@@ -67,7 +67,7 @@ object SearchManagerWeb {
         object : AsyncTask<Void, Void, DriverDriverLicense>() {
             override fun doInBackground(vararg p0: Void?): DriverDriverLicense? {
                 return Application.m_database_web?.driverLicenseDaoWeb()?.selectDriverLicense(idInfraction)
-                        ?: DriverDriverLicense(0, "", 0, "", "")
+                        ?: DriverDriverLicense(0, "", 0, "", "","", "")
             }
         }.execute().get()
     }
@@ -109,6 +109,13 @@ object SearchManagerWeb {
         object : AsyncTask<Void, Void, VehicleVehicles>() {
             override fun doInBackground(vararg p0: Void?): VehicleVehicles {
                 return Application.m_database_web?.vehicleInfractionDaoWeb()?.selectVehicle(idInfraction)!!
+            }
+        }.execute().get()
+    }
+    fun getTownHallPerson(idInfraction: Long): PersonTownhall = runBlocking {
+        object : AsyncTask<Void, Void, PersonTownhall>() {
+            override fun doInBackground(vararg p0: Void?): PersonTownhall {
+                return Application.m_database_web?.personTownHallDaoWeb()?.selectTownPerson(idInfraction)!!
             }
         }.execute().get()
     }

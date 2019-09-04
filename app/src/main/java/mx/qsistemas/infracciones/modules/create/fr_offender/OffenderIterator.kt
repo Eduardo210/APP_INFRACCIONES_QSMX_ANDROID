@@ -351,7 +351,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         SingletonInfraction.noLicenseOffender,
                         idNewPersonAddress,
                         SingletonInfraction.typeLicenseOffender.documentReference?.id ?: "",
-                        SingletonInfraction.licenseIssuedInOffender.documentReference?.id ?: "")
+                        SingletonInfraction.licenseIssuedInOffender.documentReference?.id ?: "",
+                        SingletonInfraction.licenseIssuedInOffender.value,
+                        SingletonInfraction.typeLicenseOffender.value)
                 SaveInfractionManagerWeb.saveDriverLicense(driverLicense)
             }
             /* Step 5. Generate Capture Lines */

@@ -375,7 +375,6 @@ class PbocListener(val amount: String, val activity: Activity, val txListener: I
                 Preferences(activity).saveData(R.string.pt_sp_last_transaction, Gson().toJson(voucher))
                 txListener.onTxApproved(txInfo)
                 paymentsVoucher.printVoucher(activity, voucher, false)
-                Looper.loop()
             }
         } else if (result == PBOCTransactionResult.TERMINATED) {
             Log.e(this.javaClass.simpleName, "Transaction terminated - Start Reverse")

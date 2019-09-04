@@ -56,11 +56,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         OnClickListener, IPaymentsTransfer.TransactionListener, DetailPaymentCallback {
     private var isCreation: Boolean = true
 
-    private val CURRENT_DATE = Date()
+    private val format = SimpleDateFormat("yyyy-MM-dd")
+    private val CURRENT_DATE = format.parse(format.format(Date()))
     private var isPaid: Boolean = false
-
-    private var discountPayment = "0"
-    private var surcharges = "0"
 
     private var isTicketCopy: Boolean = false
     private val iterator = lazy { OffenderIterator(this) }
@@ -336,15 +334,23 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                     val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
                     val diff = Date().time - captureSelected.date?.time!!
                     val days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
-                    surcharges = "%.2f".format(days * township.surcharges_rate)
-                    SingletonInfraction.totalInfraction = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() + surcharges.toFloat()).replace(",", ".")
-                    PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+                    SingletonInfraction.surchargesInfraction = "%.2f".format(days * township.surcharges_rate)
+                    SingletonInfraction.totalInfraction = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() + SingletonInfraction.surchargesInfraction.toFloat()).replace(",", ".")
+                    val dialog = DetailPaymentDialog()
+                    dialog.listener = this
+                    dialog.showDeclineOption = false
+                    dialog.isCancelable = false
+                    dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
                 }
             }
         } else {
-            discountPayment = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() - captureSelected.amount!!.toFloat())
+            SingletonInfraction.discountInfraction = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() - captureSelected.amount!!.toFloat())
             SingletonInfraction.totalInfraction = "%.2f".format(captureSelected.amount!!.toFloat())
-            PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+            val dialog = DetailPaymentDialog()
+            dialog.listener = this
+            dialog.showDeclineOption = false
+            dialog.isCancelable = false
+            dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
         }
     }
 
@@ -446,7 +452,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             iterator.value.savePayment(txInfo)
             SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
         } else {
-            iterator.value.savePaymentToService(tokenInfraction, SingletonInfraction.folioInfraction, txInfo, SingletonInfraction.subTotalInfraction, discountPayment, surcharges, SingletonInfraction.totalInfraction)
+            val discount = if (SingletonInfraction.discountInfraction.isNotBlank()) SingletonInfraction.discountInfraction else "0.0"
+            val surcharges = if (SingletonInfraction.surchargesInfraction.isNotBlank()) SingletonInfraction.surchargesInfraction else "0.0"
+            iterator.value.savePaymentToService(tokenInfraction, SingletonInfraction.folioInfraction, txInfo, SingletonInfraction.subTotalInfraction, discount,
+                    surcharges, SingletonInfraction.totalInfraction)
         }
     }
 

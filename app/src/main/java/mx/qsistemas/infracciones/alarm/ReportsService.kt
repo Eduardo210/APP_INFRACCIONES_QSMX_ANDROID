@@ -127,8 +127,9 @@ class ReportsService : JobService() {
                         }
                     })
                 }
+            } else {
+                sendPayments()
             }
-            sendPayments()
         }
         return true
     }

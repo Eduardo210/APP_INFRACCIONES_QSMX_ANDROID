@@ -9,5 +9,6 @@ class InfringementData {
     var infringementAddress: InfringementAddressInfringement?=null
     var fractions:MutableList<InfringementRelfractionInfringements>?=null
     var vehicleVehicles: VehicleVehicles?=null
+    var personTownhall: PersonTownhall?=null
 
 }

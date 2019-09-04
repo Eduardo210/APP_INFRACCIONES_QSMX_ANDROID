@@ -61,7 +61,7 @@ class SearchAdapter(private val infractions: MutableList<DataItem>,
                 itemView.txt_date_infra.text = "${data.date}:${data.time}"
                 itemView.btn_print.setOnClickListener { view -> listener.onPrintClick(view, position, PRINT_ONLINE) }
                 itemView.btn_payment.setOnClickListener{view -> listener.onPaymentClick(view, position, PAYMENT_ONLINE)}
-                if (!true) { // TODO: --> data.is_paid!!
+                if (data.is_paid!!) { // TODO: --> data.is_paid!!
                     itemView.btn_payment.visibility = View.GONE
                     itemView.txt_status_payment.text = itemView.context.getString(R.string.paid)
                     itemView.txt_status_payment.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorRed))

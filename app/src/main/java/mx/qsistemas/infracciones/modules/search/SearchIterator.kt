@@ -51,30 +51,6 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     private var captureLine2 = ""
 
 
-    /*override fun getDocIdentAdapter(): ArrayAdapter<NewIdentDocument> {
-        //identifierDocList = CatalogsAdapterManager.getIdentifierDocList()
-        val newFilterDocList: MutableList<NewIdentDocument> = ArrayList()
-
-        identifierDocList.forEach { document ->
-            val newDoc = NewIdentDocument()
-
-            if (document.id == 0) {
-                newDoc.id = document.id
-                newDoc.value = "Seleccionar ..."
-
-            } else {
-
-                newDoc.id = document.id
-                newDoc.value = document.document
-            }
-            newFilterDocList.add(newDoc)
-
-        }
-        val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, newFilterDocList)
-        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-        return adapter
-    }*/
-
     override fun doSearchByFilter(filter: String) {
 
         NetworkApi().getNetworkService().searchInfraction("Bearer ${(Application.prefs?.loadData(R.string.sp_access_token, "")!!)}", filter).enqueue(object : Callback<SearchResult> {
@@ -82,15 +58,17 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val result = response.body()
                     if (result?.data != null) {
+
                         itemInfraOnline = result.data as MutableList<DataItem>
                         Log.d("SEARCH_ONLINE", "${result.data}")
                         if (result.count?.compareTo(0) != 0) {
                             listener.onResultSearch(result.data)
                         } else {
-                            listener.onError("No se encontraron resultados")
+                            listener.onResultSearch(result.data)
                         }
-                    } else {
-                        listener.onError(response.message())
+                    } else {//No se encontraron datos
+                        listener.onResultSearch(mutableListOf())
+                        Log.d("SEARCH_ONLINE", "${result?.data}")
                     }
 
                 } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -143,9 +121,11 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         })
     }
 
-    override fun savePaymentToService(paymentRequest: PaymentRequest) {
-        val token = ""
-        NetworkApi().getNetworkService().savePaymentToServer(token, 0L, paymentRequest).enqueue(object : Callback<GenericResult> {
+    override fun savePaymentToService(paymentRequest: PaymentRequest, token: String) {
+        Log.d("AUTH", "Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")}")
+        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
+                0L,
+                paymentRequest).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 val generic: GenericResult?
                 if (response.code() == HttpURLConnection.HTTP_OK) {
@@ -155,8 +135,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                     } else {
                         listener.onResultSavePayment("Error al guardar el pago.")
                     }
-                } else {
-                    listener.onError("Error al guardar el pago.")
+                } else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    listener.onError(response.message())
                 }
             }
 
@@ -325,35 +305,6 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             listener.onIdentifierDocReady(adapter)
         }
     }
-    /*override fun getIdentifierDocAdapter() {
-        Application.firestore?.collection(FS_COL_IDENTIF_DOC)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            //identifierDocList = mutableListOf()
-            //identifierDocList.add(GenericCatalog("Seleccionar...", true))
-            val list = mutableListOf<NewIdentDocument>()
-            list.add(NewIdentDocument("0", "Seleccionar..."))
-            //list.add("Seleccionar...")
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (document in snapshot.documents) {
-                    val data = document.toObject(GenericCatalog::class.java)!!
-                    val newDoc = NewIdentDocument()
-                    newDoc.reference = data.documentReference?.id ?:""
-                    newDoc.value = data.value
-                    list.add(newDoc)
-                    *//*data.documentReference = document.reference
-                    list.add(data.value)*//*
-                    //identifierDocList.add(data)
-                }
-            }
-            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-            listener.onIdentifierDocReady(adapter)
-        }
-    }*/
 
     override fun getPositionIdentifiedDoc(obj: GenericCatalog): Int {
         for (i in 0 until identifierDocList.size) {

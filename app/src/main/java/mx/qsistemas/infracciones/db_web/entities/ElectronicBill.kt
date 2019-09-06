@@ -1,4 +1,4 @@
-package mx.qsistemas.infracciones.db.entities
+package mx.qsistemas.infracciones.db_web.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -11,4 +11,5 @@ data class ElectronicBill(@PrimaryKey(autoGenerate = true) val id:Long,
                           @ColumnInfo(name="maternal") val maternal: String,
                           @ColumnInfo(name="business_name") val business_name: String,
                           @ColumnInfo(name="rfc") val rfc: String,
+                          @ColumnInfo(name="infringements_id") val infringements_id: Long,
                           @ColumnInfo(name="email") val email: String)

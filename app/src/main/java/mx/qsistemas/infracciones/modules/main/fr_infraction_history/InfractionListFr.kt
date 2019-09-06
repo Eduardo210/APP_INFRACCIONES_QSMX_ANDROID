@@ -87,7 +87,7 @@ class InfractionListFr : Fragment(), View.OnClickListener {
                     override fun onCtlsDoubleTap() {
                     }
 
-                    override fun onTxVoucherFailer(message: String) {}
+                    override fun onTxVoucherFailed(message: String) {}
                     override fun onTxVoucherPrinted() {
                         FirebaseEvents.registerReprintVoucher()
                     }

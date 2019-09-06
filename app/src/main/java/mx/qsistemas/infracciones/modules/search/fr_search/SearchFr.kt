@@ -691,7 +691,7 @@ class SearchFr : Fragment()
         // TODO("not implemented") To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onTxVoucherFailer(message: String) {
+    override fun onTxVoucherFailed(message: String) {
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
     }
 

@@ -86,11 +86,11 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
         } catch (e: JSONException) {
             e.printStackTrace()
             DialogStatusHelper.closeDialog()
-            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_other_error))
+            txListener.onTxVoucherFailed(context.getString(R.string.pt_e_print_other_error))
         } catch (e: Exception) {
             e.printStackTrace()
             DialogStatusHelper.closeDialog()
-            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_other_error))
+            txListener.onTxVoucherFailed(context.getString(R.string.pt_e_print_other_error))
         }
     }
 
@@ -145,15 +145,15 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
     override fun onError(errorCode: Int, p1: String?) {
         if (errorCode == PrinterBinder.PRINTER_ERROR_NO_PAPER) {
             DialogStatusHelper.closeDialog()
-            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_run_out_paper))
+            txListener.onTxVoucherFailed(context.getString(R.string.pt_e_print_run_out_paper))
         }
         if (errorCode == PrinterBinder.PRINTER_ERROR_OVER_HEAT) {
             DialogStatusHelper.closeDialog()
-            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_overheat))
+            txListener.onTxVoucherFailed(context.getString(R.string.pt_e_print_overheat))
         }
         if (errorCode == PrinterBinder.PRINTER_ERROR_OTHER) {
             DialogStatusHelper.closeDialog()
-            txListener.onTxVoucherFailer(context.getString(R.string.pt_e_print_other_error))
+            txListener.onTxVoucherFailed(context.getString(R.string.pt_e_print_other_error))
         }
     }
 

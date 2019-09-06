@@ -16,6 +16,7 @@
 
     <!-- Light Colors -->
     <color name="colorLightBlack">#454859</color>
+    <color name="colorLightGray">#CACACA</color>
     <color name="colorLightBlue">#E8F0FA</color>
 
     <!-- Transparent Colors -->

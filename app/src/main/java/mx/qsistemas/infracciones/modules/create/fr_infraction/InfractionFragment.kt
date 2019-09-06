@@ -284,7 +284,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                 if (validFields()) {
                     iterator.value.saveTownship()
                     activity.stepUp()
-                    activity.router.value.presentOffenderFragment(isCreation, Direction.NONE)
+                    activity.router.value.presentOffenderFragment(Direction.NONE)
                 }
             }
         }

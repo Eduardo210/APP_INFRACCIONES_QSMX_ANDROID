@@ -25,10 +25,7 @@ class OffenderContracts {
         fun isLicenseAnswered(): Boolean
         fun onDataSaved()
         fun onTicketPrinted()
-        /*fun onDataDuplicate()
-        fun onDataUpdated()
-         fun onTicketPrinted()
-        fun onResultSavePayment(msg: String, flag: Boolean)*/
+
     }
 
     interface Iterator {
@@ -47,10 +44,7 @@ class OffenderContracts {
         fun getPositionStateLicense(obj: GenericCatalog): Int
         fun saveData(notify: Boolean)
         fun savePayment(info: TransactionInfo)
-        //fun updateData()
         fun printTicket(activity: Activity)
         fun reprintVoucher(activity: Activity, listener: IPaymentsTransfer.TransactionListener)
-        /*fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, amount: String,
-                                 discount: String, surcharges: String, totalPayment: String)*/
     }
 }

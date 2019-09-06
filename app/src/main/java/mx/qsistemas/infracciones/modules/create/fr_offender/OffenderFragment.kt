@@ -213,7 +213,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         builder.setPositiveButton("Aceptar") { _, _ ->
                             //iterator.value.saveTownship()
                             activity.stepUp()
-                            activity.router.value.presentPayerFragment(true ,Direction.NONE)
+                            activity.router.value.presentPayerFragment(true, Direction.NONE)
                         }
                         builder.setNegativeButton("Cancelar") { dialog, _ ->
                             val builder2 = AlertDialogHelper.getGenericBuilder(
@@ -235,19 +235,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         builder2.show()
                     }
 
-                    /*val builder = AlertDialogHelper.getGenericBuilder(
-                            getString(R.string.w_dialog_title), getString(R.string.w_verify_printer), activity
-                    )
-                    builder.setPositiveButton("Aceptar") { _, _ ->
-                        //if (isCreation) {
-                            iterator.value.saveData(true)
-                        /*} else {
-                            activity.showLoader(getString(R.string.l_upload_person))
-                            tokenInfraction = TOKEN_INFRACTION
-                            iterator.value.updateData()
-                        }*/
-                    }
-                    builder.show()*/
                 }
             }
         }
@@ -255,93 +242,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onDataSaved() {
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_data_saved), Snackbar.LENGTH_SHORT)
-        /*if (!SingletonInfraction.isPersonAbstent) {
-            Handler().postDelayed({
-                val dialog = DetailPaymentDialog()
-                dialog.listener = this
-                dialog.isCancelable = false
-                dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
-            }, 2000)
-        } else {*/
-            activity.showLoader(getString(R.string.l_preparing_printer))
-            iterator.value.printTicket(activity)
-        //}
-    }
-
-    /*override fun onAcceptPayment() {
-        PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
-    }
-
-    override fun onDeclinePayment() {
         activity.showLoader(getString(R.string.l_preparing_printer))
         iterator.value.printTicket(activity)
-    }*/
+    }
 
-    /*override fun onDataDuplicate() {
-        if (!SingletonInfraction.isPersonAbstent) {
-            Handler().postDelayed({
-                val dialog = DetailPaymentDialog()
-                dialog.listener = this
-                dialog.isCancelable = false
-                dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
-            }, 2000)
-        } else {
-            activity.showLoader(getString(R.string.l_preparing_printer))
-            iterator.value.printTicket(activity)
-        }
-    }*/
-
-    /*override fun onDataUpdated() {
-        activity.showLoader(getString(R.string.l_preparing_amout))
-        val dialog = DetailPaymentDialog()
-        dialog.listener = this
-        dialog.showDeclineOption = false
-        dialog.isCancelable = false
-        var compareDate: Int
-        var captureSelected = NewCaptureLines()
-        val newCaptureLines = mutableListOf<NewCaptureLines>()
-        *//* Step 1. Create new list of capture lines with dates *//*
-        SingletonInfraction.captureLines.forEach {
-            val originalFormat = SimpleDateFormat("yyyy-MM-dd")
-            val newDate = originalFormat.parse(it?.date)
-            newCaptureLines.add(NewCaptureLines(it?.amount, it?.key, it?.order, newDate, it?.discount_label))
-        }
-        newCaptureLines.sortBy { captureLinesItem -> captureLinesItem.date }
-        run loop@{
-            newCaptureLines.forEach { cDate ->
-                compareDate = CURRENT_DATE.compareTo(cDate.date)
-                //  0 comes when two date are same,
-                //  1 comes when date1 is higher then date2
-                // -1 comes when date1 is lower then date2
-                if (compareDate <= 0) { //Si hoy es menor o igual a la fecha límite
-                    captureSelected = cDate
-                    return@loop
-                }
-            }
-        }
-        if (captureSelected.amount.isNullOrEmpty()) {
-            captureSelected = newCaptureLines[newCaptureLines.lastIndex]
-            //Hacer operación para calcular los recargos
-            Application.firestore?.collection(FS_COL_CITIES)?.document(Application.prefs?.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
-                if (townshipSnapshot == null) {
-                    Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
-                    onError(Application.getContext().getString(R.string.e_firestore_not_available))
-                    activity.hideLoader()
-                } else {
-                    val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
-                    val diff = Date().time - captureSelected.date?.time!!
-                    val days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
-                    SingletonInfraction.surchargesInfraction = "%.2f".format(days * township.surcharges_rate)
-                    SingletonInfraction.totalInfraction = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() + SingletonInfraction.surchargesInfraction.toFloat()).replace(",", ".")
-                    dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
-                }
-            }
-        } else {
-            SingletonInfraction.discountInfraction = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() - captureSelected.amount!!.toFloat())
-            SingletonInfraction.totalInfraction = "%.2f".format(captureSelected.amount!!.toFloat())
-            dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
-        }
-    }*/
 
     override fun validFields(): Boolean {
         var isValid = true
@@ -435,84 +339,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         return isAnswered
     }
 
-   /* override fun onTxApproved(txInfo: TransactionInfo) {
-        isPaid = true
-        //if (isCreation) {
-        iterator.value.savePayment(txInfo)
-        SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
-        *//*} else {
-            val discount = if (SingletonInfraction.discountInfraction.isNotBlank()) SingletonInfraction.discountInfraction else "0.0"
-            val surcharges = if (SingletonInfraction.surchargesInfraction.isNotBlank()) SingletonInfraction.surchargesInfraction else "0.0"
-            iterator.value.savePaymentToService(tokenInfraction, SingletonInfraction.folioInfraction, txInfo, SingletonInfraction.subTotalInfraction, discount,
-                    surcharges, SingletonInfraction.totalInfraction)
-        }*//*
-    }*/
-
-    /*override fun onTxVoucherPrinted() {
-        if (isPaid) {
-            //if (isCreation) {
-            activity.showLoader(getString(R.string.l_preparing_printer))
-            iterator.value.printTicket(activity)
-            *//*} else {
-                SingletonInfraction.cleanSingleton()
-                Alarms()
-                activity.finish()
-            }*//*
-        }
-    }*/
-
-    /*override fun onTxFailed(retry: Boolean, message: String) {
-        isPaid = false
-        if (retry) {
-            if (Looper.myLooper() == null)
-                Looper.prepare()
-            val builder = AlertDialogHelper.getErrorBuilder(
-                    message.toUpperCase(), getString(R.string.w_reintent_transaction), activity
-            )
-            builder.setPositiveButton("Sí") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
-            }
-            builder.setNegativeButton("No") { _, _ ->
-                activity.runOnUiThread {
-                    activity.showLoader(getString(R.string.l_preparing_printer))
-                    iterator.value.printTicket(activity)
-                }
-            }
-            builder.show()
-            if (Looper.myLooper() != null)
-                Looper.loop()
-        } else {
-            //if (isCreation) {
-            activity.showLoader(getString(R.string.l_preparing_printer))
-            iterator.value.printTicket(activity)
-            //}
-        }
-    }*/
-
-    /*override fun onCtlsDoubleTap() {
-        activity.runOnUiThread {
-            activity.showLoader(getString(R.string.l_waiting_confirm))
-            Handler().postDelayed({ PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this) }, 3500)
-        }
-    }*/
-
-    /*override fun onTxVoucherFailer(message: String) {
-        SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
-        val builder = AlertDialogHelper.getGenericBuilder(
-                getString(R.string.w_dialog_title_print_ticket), getString(R.string.w_options_reprint), activity
-        )
-        builder.setPositiveButton("Boleta") { _, _ ->
-            activity.showLoader(getString(R.string.l_preparing_printer))
-            iterator.value.printTicket(activity)
-        }
-        if (isPaid) {
-            builder.setNegativeButton("Voucher Banc.") { _, _ ->
-                iterator.value.reprintVoucher(activity, this)
-            }
-        }
-        builder.show()
-    }
-*/
     override fun onTicketPrinted() {
         if (!isTicketCopy) {
             val builder = AlertDialogHelper.getGenericBuilder(
@@ -530,15 +356,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             activity.finish()
         }
     }
-
-    /*override fun onResultSavePayment(msg: String, flag: Boolean) {
-        activity.hideLoader()
-        if (flag) {
-            SnackbarHelper.showSuccessSnackBar(activity, "El pago se guardó satisfactoriamente.", Snackbar.LENGTH_SHORT)
-        } else {
-            SnackbarHelper.showErrorSnackBar(activity, "Error al guardar datos de pago en servidor.", Snackbar.LENGTH_SHORT)
-        }
-    }*/
 
     companion object {
         /**

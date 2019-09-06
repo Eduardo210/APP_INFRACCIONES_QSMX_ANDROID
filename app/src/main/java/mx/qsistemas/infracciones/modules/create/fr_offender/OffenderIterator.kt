@@ -410,52 +410,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
             if (notify) listener.onDataSaved()
-        } /*else {
-            listener.onDataDuplicate()
-        }*/
+        }
     }
-
-    /*override fun updateData() {
-        val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.nameOffender, SingletonInfraction.rfcOffenfer, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName)
-        NetworkApi().getNetworkService().updateDriver("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
-            override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    if (response.body()?.status == "success") {
-                        listener.onDataUpdated()
-                    } else {
-                        listener.onError(response.body()?.error ?: "")
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GenericResult>, t: Throwable) {
-                listener.onError(t.message ?: "")
-            }
-        })
-    }*/
-
-    /*override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
-        val request = PaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
-                0F, subtotal.toFloat(), surcharges.toFloat(), tokenInfraction, totalPayment.toFloat(), txInfo.authorization)
-        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
-                0, request).enqueue(object : Callback<GenericResult> {
-            override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    if (response.body()?.status == "success") {
-                        listener.onResultSavePayment("", true)
-                    } else {
-                        listener.onResultSavePayment(response.body()?.error
-                                ?: Application.getContext().getString(R.string.e_other_problem_internet), false)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<GenericResult>, t: Throwable) {
-                listener.onResultSavePayment(t.message
-                        ?: Application.getContext().getString(R.string.e_other_problem_internet), false)
-            }
-        })
-    }*/
 
     override fun savePayment(info: TransactionInfo) {
         this.txInfo = info

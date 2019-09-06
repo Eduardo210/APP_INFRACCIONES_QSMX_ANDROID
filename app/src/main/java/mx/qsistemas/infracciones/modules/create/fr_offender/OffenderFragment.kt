@@ -22,8 +22,6 @@ import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -35,11 +33,7 @@ import java.util.*
  *
  */
 class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener,
-        OnClickListener/*, IPaymentsTransfer.TransactionListener, DetailPaymentCallback*/ {
-
-    private val format = SimpleDateFormat("yyyy-MM-dd")
-    private val CURRENT_DATE = format.parse(format.format(Date()))
-    private var isPaid: Boolean = false
+        OnClickListener{
 
     private var isTicketCopy: Boolean = false
     private val iterator = lazy { OffenderIterator(this) }

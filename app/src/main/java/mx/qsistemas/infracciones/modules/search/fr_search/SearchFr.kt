@@ -21,16 +21,11 @@ import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import mx.qsistemas.infracciones.Application
-import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
 import mx.qsistemas.infracciones.db_web.entities.InfractionItem
 import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
-import mx.qsistemas.infracciones.dialogs.DetailPaymentCallback
-import mx.qsistemas.infracciones.dialogs.DetailPaymentDialog
-import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.modules.create.OPTION_UPDATE_INFRACTION
@@ -40,22 +35,13 @@ import mx.qsistemas.infracciones.modules.search.SearchIterator
 import mx.qsistemas.infracciones.modules.search.adapters.*
 import mx.qsistemas.infracciones.net.catalogs.Articles
 import mx.qsistemas.infracciones.net.catalogs.Fractions
-import mx.qsistemas.infracciones.net.catalogs.Townships
-import mx.qsistemas.infracciones.net.request_web.PaymentRequest
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
-import mx.qsistemas.infracciones.net.result_web.detail_result.NewCaptureLines
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.*
-import mx.qsistemas.payments_transfer.IPaymentsTransfer
-import mx.qsistemas.payments_transfer.PaymentsTransfer
-import mx.qsistemas.payments_transfer.dtos.TransactionInfo
-import mx.qsistemas.payments_transfer.utils.MODE_TX_PROBE_AUTH_ALWAYS
-import mx.qsistemas.payments_transfer.utils.MODE_TX_PROD
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 /**
  * A simple [Fragment] subclass.
@@ -73,8 +59,8 @@ class SearchFr : Fragment()
         , SearchContracts.Presenter
         , AdapterView.OnItemSelectedListener
         , SearchContracts.OnInfractionClick
-        , IPaymentsTransfer.PrintListener
-        , IPaymentsTransfer.TransactionListener, DetailPaymentCallback {
+       /* , IPaymentsTransfer.PrintListener
+        , IPaymentsTransfer.TransactionListener, DetailPaymentCallback*/ {
 
     private lateinit var binding: FragmentSearchBinding
     private val iterator = lazy { SearchIterator(this) }
@@ -424,7 +410,7 @@ class SearchFr : Fragment()
         }
     }
 
-    fun doPaymentProcess(infraction: DetailResult) {
+    /*fun doPaymentProcess(infraction: DetailResult) {
         var compareDate: Int
         val newCaptureLines: MutableList<NewCaptureLines> = mutableListOf()
         var captureSelected: NewCaptureLines = NewCaptureLines()
@@ -534,7 +520,7 @@ class SearchFr : Fragment()
             dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
         }
 
-    }
+    }*/
 
 
     override fun onPaymentClick(view: View, position: Int, origin: Int) {
@@ -560,14 +546,14 @@ class SearchFr : Fragment()
 
     }
 
-    override fun onError(var1: Int, var2: String) {
+    /*override fun onError(var1: Int, var2: String) {
         Log.e("PRINT", var2)
         SnackbarHelper.showErrorSnackBar(activity, var2, Snackbar.LENGTH_LONG)
     }
 
     override fun onFinish() {
         Log.d("PRINT", "SUCCESS")
-    }
+    }*/
 
     override fun onItemSelected(parent: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
     }
@@ -579,25 +565,27 @@ class SearchFr : Fragment()
                 activity.showLoader(getString(R.string.l_preparing_printer))
                 printInfractionOnline(infraction)//PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
             }
-            PAYMENT ->
-                if (!infraction.isAbsent!!) {
+            PAYMENT ->{
+                SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
+                infraction.fractions?.forEach {
+                    SingletonInfraction.motivationList.add(SingletonInfraction.DtoMotivation(Articles(), Fractions(uma = it?.uma!!.toInt()), ""))
+                }
+                SingletonInfraction.folioInfraction = infraction.folio ?: ""
+                SingletonInfraction.subTotalInfraction = "%.2f".format(infraction.subtotal
+                        ?: 0.0)
+                SingletonInfraction.captureLines = infraction.captureLines ?: mutableListOf()
+                val intent = Intent(activity, CreateInfractionActivity::class.java)
+                intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
+                startActivityForResult(intent, OK_PAYMENT)
+            }
+          /*      if (!infraction.isAbsent!!) {
                     //doPaymentProcess(infraction)
                     SnackbarHelper.showErrorSnackBar(activity,"Opción no disponible", Snackbar.LENGTH_SHORT)
                     //idPerson = infraction.id_person
-                } else {
+                } else {*/
                     //mandar a pantalla de actualizacion del pago
-                    SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
-                    infraction.fractions?.forEach {
-                        SingletonInfraction.motivationList.add(SingletonInfraction.DtoMotivation(Articles(), Fractions(uma = it?.uma!!.toInt()), ""))
-                    }
-                    SingletonInfraction.folioInfraction = infraction.folio ?: ""
-                    SingletonInfraction.subTotalInfraction = "%.2f".format(infraction.subtotal
-                            ?: 0.0)
-                    SingletonInfraction.captureLines = infraction.captureLines ?: mutableListOf()
-                    val intent = Intent(activity, CreateInfractionActivity::class.java)
-                    intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
-                    startActivityForResult(intent, OK_PAYMENT)
-                }
+
+               // }
         }
     }
 
@@ -637,7 +625,7 @@ class SearchFr : Fragment()
 
     }
 
-    override fun onResultSavePayment(msg: String) {
+    /*override fun onResultSavePayment(msg: String) {
         activity.hideLoader()
         SnackbarHelper.showSuccessSnackBar(activity, "El pago se guardó satisfactoriamente.", Snackbar.LENGTH_SHORT)
 
@@ -685,16 +673,16 @@ class SearchFr : Fragment()
     override fun onTxFailed(retry: Boolean, message: String) {
         isPaid = false
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
-    }
+    }*/
 
-    override fun onCtlsDoubleTap() {
+    /*override fun onCtlsDoubleTap() {
         // TODO("not implemented") To change body of created functions use File | Settings | File Templates.
-    }
+    }*/
 
-    override fun onTxVoucherFailed(message: String) {
+   /* override fun onTxVoucherFailed(message: String) {
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
     }
-
+*/
     override fun onResultSearchOffLine(listInfractions: MutableList<InfractionItem>) {
         activity.hideLoader()
         itemInfraOffLine = listInfractions
@@ -735,13 +723,13 @@ class SearchFr : Fragment()
 
     }
 
-    override fun onDeclinePayment() {
+    /*override fun onDeclinePayment() {
         SnackbarHelper.showErrorSnackBar(activity, "Pago cancelado", Snackbar.LENGTH_SHORT)
     }
 
     override fun onAcceptPayment() {
         PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
-    }
+    }*/
 
     companion object {
 

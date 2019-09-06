@@ -239,11 +239,69 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         }
     }
 
+    private fun thereIsAnOffender(): Boolean {
+        if (SingletonInfraction.nameOffender != "Quien") {
+            if (SingletonInfraction.lastFatherName != "Resulte") {
+                if (SingletonInfraction.lastMotherName != "Responsable") {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.btnSave.id -> {
                 if (validFields()) {
-                    val builder = AlertDialogHelper.getGenericBuilder(
+                    Log.d("OFFENDER", thereIsAnOffender().toString())
+                    if (thereIsAnOffender()) {
+                        val builder = AlertDialogHelper.getGenericBuilder(
+                                getString(R.string.w_dialog_title), getString(R.string.w_want_to_pay), activity
+                        )
+                        builder.setPositiveButton("Aceptar") { _, _ ->
+                            //TODO: Enviar a pantalla de datos del infractor
+                            /*if (isCreation) {
+                                iterator.value.saveData(true)
+                            } else {
+                                activity.showLoader(getString(R.string.l_upload_person))
+                                tokenInfraction = TOKEN_INFRACTION
+                                iterator.value.updateData()
+                            }*/
+                        }
+                        builder.setNegativeButton("Cancelar") { dialog, _ ->
+                            val builder2 = AlertDialogHelper.getGenericBuilder(
+                                    getString(R.string.w_dialog_title), getString(R.string.w_verify_printer), activity
+                            )
+                            builder2.setPositiveButton("Aceptar") { _, _ ->
+                                if (isCreation) {
+                                    iterator.value.saveData(true)
+                                } else {
+                                    activity.showLoader(getString(R.string.l_upload_person))
+                                    tokenInfraction = TOKEN_INFRACTION
+                                    iterator.value.updateData()
+                                }
+                            }
+                            builder2.show()
+                        }
+                        builder.show()
+                    } else {
+                        val builder2 = AlertDialogHelper.getGenericBuilder(
+                                getString(R.string.w_dialog_title), getString(R.string.w_verify_printer), activity
+                        )
+                        builder2.setPositiveButton("Aceptar") { _, _ ->
+                            if (isCreation) {
+                                iterator.value.saveData(true)
+                            } else {
+                                activity.showLoader(getString(R.string.l_upload_person))
+                                tokenInfraction = TOKEN_INFRACTION
+                                iterator.value.updateData()
+                            }
+                        }
+                        builder2.show()
+                    }
+
+                    /*val builder = AlertDialogHelper.getGenericBuilder(
                             getString(R.string.w_dialog_title), getString(R.string.w_verify_printer), activity
                     )
                     builder.setPositiveButton("Aceptar") { _, _ ->
@@ -255,7 +313,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                             iterator.value.updateData()
                         }
                     }
-                    builder.show()
+                    builder.show()*/
                 }
             }
         }

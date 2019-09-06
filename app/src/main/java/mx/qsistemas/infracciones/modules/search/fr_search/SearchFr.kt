@@ -424,7 +424,6 @@ class SearchFr : Fragment()
         }
     }
 
-
     fun doPaymentProcess(infraction: DetailResult) {
         var compareDate: Int
         val newCaptureLines: MutableList<NewCaptureLines> = mutableListOf()
@@ -582,10 +581,11 @@ class SearchFr : Fragment()
             }
             PAYMENT ->
                 if (!infraction.isAbsent!!) {
-                    doPaymentProcess(infraction)
+                    //doPaymentProcess(infraction)
+                    SnackbarHelper.showErrorSnackBar(activity,"Opción no disponible", Snackbar.LENGTH_SHORT)
                     //idPerson = infraction.id_person
                 } else {
-                    //mandar a pantalla de actualizacion
+                    //mandar a pantalla de actualizacion del pago
                     SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
                     infraction.fractions?.forEach {
                         SingletonInfraction.motivationList.add(SingletonInfraction.DtoMotivation(Articles(), Fractions(uma = it?.uma!!.toInt()), ""))

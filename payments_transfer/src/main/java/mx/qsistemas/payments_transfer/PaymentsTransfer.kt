@@ -286,7 +286,7 @@ object PaymentsTransfer : Interfaces.Contracts {
                 override fun onTxFailed(retry: Boolean, message: String) {
                 }
 
-                override fun onTxVoucherFailer(message: String) {
+                override fun onTxVoucherFailed(message: String) {
                 }
 
                 override fun onCtlsDoubleTap() {

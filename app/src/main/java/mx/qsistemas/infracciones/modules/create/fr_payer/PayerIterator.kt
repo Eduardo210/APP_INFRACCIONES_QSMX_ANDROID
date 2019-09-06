@@ -288,6 +288,10 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         if (SingletonInfraction.licenseIssuedInOffender.documentReference != null) {
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
         }
+        SingletonTicket.completeNamePayer = SingletonInfraction.payerName + " " + SingletonInfraction.payerLastName + " " + SingletonInfraction.payerMotherLastName
+        SingletonTicket.payerTaxDenomination = SingletonInfraction.payerTaxDenomination
+        SingletonTicket.payerRfc = SingletonInfraction.payerRfc
+        SingletonTicket.payerEmail = SingletonInfraction.payerEmail
         SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.value
         if (SingletonInfraction.subBrandVehicle.reference != null) {
             SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle.value

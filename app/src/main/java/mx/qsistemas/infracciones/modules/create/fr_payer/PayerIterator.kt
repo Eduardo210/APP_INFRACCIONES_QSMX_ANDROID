@@ -205,7 +205,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
             val evidence2 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence1)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
-            /* Step 9. */
+            /* Step 9. Save Officer Information */
             val oficial = PersonTownhall(
                     Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong(),
                     Application.prefs?.loadData(R.string.sp_person_name, "") ?: "",
@@ -213,9 +213,12 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     Application.prefs?.loadData(R.string.sp_person_m_last_name, "") ?: "",
                     SingletonInfraction.idNewInfraction
             )
-            //Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
             SaveInfractionManagerWeb.saveOficial(oficial)
-            /* Step 10. Register Event Infraction */
+            /* Step 10. Save Payer Information */
+            val payer = ElectronicBill(0, SingletonInfraction.payerName, SingletonInfraction.payerLastName, SingletonInfraction.payerMotherLastName,
+                    SingletonInfraction.payerTaxDenomination, SingletonInfraction.payerRfc, SingletonInfraction.idNewInfraction, SingletonInfraction.payerEmail)
+            SaveInfractionManagerWeb.savePayerInformation(payer)
+            /* Step 11. Register Event Infraction */
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
             listener.onDataSaved()

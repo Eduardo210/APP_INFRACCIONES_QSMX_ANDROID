@@ -15,6 +15,7 @@ private const val DB_VERSION_WEB = 1
             DriverAddressDriver::class,
             DriverDriverLicense::class,
             DriverDrivers::class,
+            ElectronicBill::class,
             InfringementAddressInfringement::class,
             InfringementCapturelines::class,
             InfringementInfringements::class,
@@ -32,6 +33,7 @@ abstract class AppDatabaseWeb : RoomDatabase() {
     /*Para la migración a web*/
     abstract fun infractionDaoWeb(): InfractionDaoWeb
 
+    abstract fun electronicBillDaoWeb(): ElectronicBillDaoWeb
     abstract fun personDaoWeb(): PersonDaoWeb
     abstract fun vehicleInfractionDaoWeb(): VehicleInfractionDaoWeb
     abstract fun addressPersonDaoWeb(): AddressPersonDaoWeb

@@ -1,25 +1,21 @@
-package mx.qsistemas.infracciones.modules.create.fr_offender
+package mx.qsistemas.infracciones.modules.create.fr_payer
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.widget.ArrayAdapter
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.Query
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.entities.*
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
 import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.net.NetworkApi
-import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
-import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.request_web.DriverRequest
 import mx.qsistemas.infracciones.net.request_web.PaymentRequest
 import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
-import mx.qsistemas.infracciones.utils.*
-import mx.qsistemas.infracciones.utils.Utils.Companion.getFutureWorkingDay
+import mx.qsistemas.infracciones.utils.FS_COL_HOLIDAYS
+import mx.qsistemas.infracciones.utils.PTX_MERCHANT_ID
+import mx.qsistemas.infracciones.utils.Ticket
+import mx.qsistemas.infracciones.utils.Utils
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
@@ -31,17 +27,10 @@ import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 
-@SuppressLint("SimpleDateFormat")
-class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderContracts.Iterator {
+class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Iterator {
 
-    internal lateinit var statesList: MutableList<GenericCatalog>
-    internal lateinit var townshipList: MutableList<Townships>
-    internal lateinit var zipCodesList: MutableList<GenericSubCatalog>
-    internal lateinit var holidayList: MutableList<String>
-    internal lateinit var stateIssuedLicenseList: MutableList<GenericCatalog>
-    internal lateinit var coloniesList: MutableList<GenericSubCatalog>
-    internal lateinit var licenseTypeList: MutableList<GenericCatalog>
     private lateinit var txInfo: TransactionInfo
+    private lateinit var holidayList: MutableList<String>
 
     /* Variable From Saved Infraction */
     private val actualDay = SimpleDateFormat("yyyy-MM-dd").format(Date())
@@ -50,151 +39,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     private var totalImport = 0F
     private var newFolio = ""
     private var captureLineList = mutableListOf<InfringementCapturelines>()
-
-    override fun getStatesList() {
-        Application.firestore?.collection(FS_COL_STATES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            statesList = mutableListOf()
-            statesList.add(GenericCatalog("Seleccionar...", true))
-            val list = mutableListOf<String>()
-            list.add("Seleccionar...")
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (document in snapshot.documents) {
-                    val data = document.toObject(GenericCatalog::class.java)!!
-                    data.documentReference = document.reference
-                    list.add(data.value)
-                    statesList.add(data)
-                }
-            }
-            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-            listener.onStatesReady(adapter)
-        }
-    }
-
-    override fun getTownshipsList(reference: DocumentReference?) {
-        Application.firestore?.collection(FS_COL_CITIES)?.whereEqualTo("reference", reference)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { querySnapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            townshipList = mutableListOf()
-            townshipList.add(Townships("PRX", 0, "Seleccionar...", reference, true))
-            val list = mutableListOf<String>()
-            list.add("Seleccionar...")
-            if (querySnapshot != null && !querySnapshot.isEmpty) {
-                for (document in querySnapshot.documents) {
-                    val data = document.toObject(Townships::class.java)!!
-                    data.childReference = document.reference
-                    list.add(data.value)
-                    townshipList.add(data)
-                }
-            }
-            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-            listener.onTownshipsReady(adapter)
-        }
-    }
-
-    override fun getZipCodesList(reference: DocumentReference?) {
-        Application.firestore?.collection(FS_COL_ZIP_CODES)?.whereEqualTo("reference", reference)?.whereEqualTo("is_active", true)?.addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            zipCodesList = mutableListOf()
-            zipCodesList.add(GenericSubCatalog("Seleccionar...", reference, true))
-            val list = mutableListOf<String>()
-            list.add("Seleccionar...")
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (document in snapshot.documents) {
-                    val data = document.toObject(GenericSubCatalog::class.java)!!
-                    data.childReference = document.reference
-                    data.value = document.id
-                    list.add(data.value)
-                    zipCodesList.add(data)
-                }
-            }
-            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-            listener.onZipCodesReady(adapter)
-        }
-    }
-
-    override fun getColoniesList(reference: DocumentReference?) {
-        Application.firestore?.collection(FS_COL_COLONIES)?.whereEqualTo("reference", reference)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            coloniesList = mutableListOf()
-            coloniesList.add(GenericSubCatalog("Selecciona...", reference, true))
-            val list = mutableListOf<String>()
-            list.add("Selecciona...")
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (document in snapshot.documents) {
-                    val data = document.toObject(GenericSubCatalog::class.java)!!
-                    data.childReference = document.reference
-                    list.add(data.value)
-                    coloniesList.add(data)
-                }
-            }
-            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-            listener.onColoniesReady(adapter)
-        }
-    }
-
-    override fun getTypeLicenseAdapter() {
-        Application.firestore?.collection(FS_COL_TYPE_LIC)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            licenseTypeList = mutableListOf()
-            licenseTypeList.add(GenericCatalog("Selecciona...", true))
-            val list = mutableListOf<String>()
-            list.add("Selecciona...")
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (document in snapshot.documents) {
-                    val data = document.toObject(GenericCatalog::class.java)!!
-                    data.documentReference = document.reference
-                    list.add(data.value)
-                    licenseTypeList.add(data)
-                }
-            }
-            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-            listener.onTypeLicenseReady(adapter)
-        }
-    }
-
-    override fun getStatesIssuedList() {
-        Application.firestore?.collection(FS_COL_STATES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            stateIssuedLicenseList = mutableListOf()
-            stateIssuedLicenseList.add(GenericCatalog("Seleccionar...", true))
-            val list = mutableListOf<String>()
-            list.add("Seleccionar...")
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (document in snapshot.documents) {
-                    val data = document.toObject(GenericCatalog::class.java)!!
-                    data.documentReference = document.reference
-                    list.add(data.value)
-                    stateIssuedLicenseList.add(data)
-                }
-            }
-            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-            listener.onStatesIssuedReady(adapter)
-        }
-    }
 
     override fun getHolidays() {
         Application.firestore?.collection(FS_COL_HOLIDAYS)?.addSnapshotListener { snapshot, exception ->
@@ -211,49 +55,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         }
     }
 
-    override fun getPositionState(obj: GenericCatalog): Int {
-        for (i in 0 until statesList.size)
-            if (statesList[i].documentReference == obj.documentReference)
-                return i
-        return 0
-    }
-
-    override fun getPositionTownship(obj: Townships): Int {
-        for (i in 0 until townshipList.size)
-            if (townshipList[i].childReference == obj.childReference)
-                return i
-        return 0
-    }
-
-    override fun getPositionZipCode(obj: GenericSubCatalog): Int {
-        for (i in 0 until zipCodesList.size)
-            if (zipCodesList[i].childReference == obj.childReference)
-                return i
-        return 0
-    }
-
-    override fun getPositionStateLicense(obj: GenericCatalog): Int {
-        for (i in 0 until stateIssuedLicenseList.size)
-            if (stateIssuedLicenseList[i].documentReference == obj.documentReference)
-                return i
-        return 0
-    }
-
-    override fun getPositionColony(obj: GenericSubCatalog): Int {
-        for (i in 0 until coloniesList.size)
-            if (coloniesList[i].childReference == obj.childReference)
-                return i
-        return 0
-    }
-
-    override fun getPositionTypeLicense(obj: GenericCatalog): Int {
-        for (i in 0 until licenseTypeList.size)
-            if (licenseTypeList[i].documentReference == obj.documentReference)
-                return i
-        return 0
-    }
-
-    override fun saveData(notify: Boolean) {
+    override fun saveData() {
         var totalUmas = 0F
         SingletonInfraction.idOfficer = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
         /* Get configuration */
@@ -358,7 +160,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             /* Step 5. Generate Capture Lines */
             captureLineList = mutableListOf()
             SingletonInfraction.townshipInfraction.discount.toSortedMap(reverseOrder()).entries.forEachIndexed { index, mutableEntry ->
-                val expDate = getFutureWorkingDay(mutableEntry.value[mutableEntry.value.size - 1], holidayList)  // Get last day of validity
+                val expDate = Utils.getFutureWorkingDay(mutableEntry.value[mutableEntry.value.size - 1], holidayList)  // Get last day of validity
                 val discount = totalImport * mutableEntry.key.replace("%", "").toFloat() / 100
                 val total = totalImport - discount
                 val codeCaptureLine = Utils.generateCaptureLine(newFolio.replace("-", ""), expDate, "%.2f".format(total), "2")
@@ -416,31 +218,27 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             /* Step 10. Register Event Infraction */
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
-            if (notify) listener.onDataSaved()
+            listener.onDataSaved()
         } else {
             listener.onDataDuplicate()
         }
     }
 
-    override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
-        val request = PaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
-                0F, subtotal.toFloat(), surcharges.toFloat(), tokenInfraction, totalPayment.toFloat(), txInfo.authorization)
-        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
-                0, request).enqueue(object : Callback<GenericResult> {
+    override fun updatePayerData() {
+        val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.payerName, SingletonInfraction.payerRfc, SingletonInfraction.payerLastName, SingletonInfraction.payerMotherLastName)
+        NetworkApi().getNetworkService().updateDriver("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     if (response.body()?.status == "success") {
-                        listener.onResultSavePayment("", true)
+                        listener.onDataUpdated()
                     } else {
-                        listener.onResultSavePayment(response.body()?.error
-                                ?: Application.getContext().getString(R.string.e_other_problem_internet), false)
+                        listener.onError(response.body()?.error ?: "")
                     }
                 }
             }
 
             override fun onFailure(call: Call<GenericResult>, t: Throwable) {
-                listener.onResultSavePayment(t.message
-                        ?: Application.getContext().getString(R.string.e_other_problem_internet), false)
+                listener.onError(t.message ?: "")
             }
         })
     }
@@ -539,7 +337,28 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         PaymentsTransfer.reprintVoucher(activity, listener, voucher)
     }
 
-    private fun Boolean.toInt() = if (this) 1 else 0
+    override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
+        val request = PaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
+                0F, subtotal.toFloat(), surcharges.toFloat(), tokenInfraction, totalPayment.toFloat(), txInfo.authorization)
+        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
+                0, request).enqueue(object : Callback<GenericResult> {
+            override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    if (response.body()?.status == "success") {
+                        listener.onPaymentSaved()
+                    } else {
+                        listener.onError(response.body()?.error
+                                ?: Application.getContext().getString(R.string.e_other_problem_internet))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GenericResult>, t: Throwable) {
+                listener.onError(t.message
+                        ?: Application.getContext().getString(R.string.e_other_problem_internet))
+            }
+        })
+    }
 
     private fun generateNewFolio(): String {
         val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs?.loadData(R.string.sp_prefix, "")}%")

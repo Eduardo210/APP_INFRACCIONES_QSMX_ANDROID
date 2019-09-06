@@ -12,7 +12,7 @@ class IPaymentsTransfer {
         fun onTxVoucherPrinted()
         fun onTxFailed(retry: Boolean, message: String)
         fun onCtlsDoubleTap()
-        fun onTxVoucherFailer(message: String)
+        fun onTxVoucherFailed(message: String)
     }
 
     interface PrintListener {

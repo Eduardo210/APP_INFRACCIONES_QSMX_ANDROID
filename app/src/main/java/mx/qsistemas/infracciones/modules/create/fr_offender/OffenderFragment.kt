@@ -26,11 +26,9 @@ import mx.qsistemas.infracciones.dialogs.DetailPaymentDialog
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
-import mx.qsistemas.infracciones.modules.search.fr_search.TOKEN_INFRACTION
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.net.result_web.detail_result.NewCaptureLines
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
-import mx.qsistemas.infracciones.singletons.SingletonInfraction.tokenInfraction
 import mx.qsistemas.infracciones.utils.FS_COL_CITIES
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
@@ -471,7 +469,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         }
     }
 
-    override fun onTxVoucherFailer(message: String) {
+    override fun onTxVoucherFailed(message: String) {
         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
         val builder = AlertDialogHelper.getGenericBuilder(
                 getString(R.string.w_dialog_title_print_ticket), getString(R.string.w_options_reprint), activity

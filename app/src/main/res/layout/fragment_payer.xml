@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorGray2"
+        tools:context=".modules.incidence.fragments.fr_new_incidence.NewIncidenceFr">
+
+        <Button
+            android:id="@+id/btn_delete_data"
+            style="@style/SmallButton_Custom2"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/t_delete_payer_data"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView1"
+            style="@style/TextView_TitleItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/t_payer_title"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="13dp"
+            app:cardElevation="3dp"
+            app:cardPreventCornerOverlap="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp">
+
+                <Button
+                    android:id="@+id/btn_save"
+                    style="@style/SmallButton_Custom"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/t_pay"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_payer_email" />
+
+                <EditText
+                    android:id="@+id/edt_payer_name"
+                    style="@style/EditText_InputItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/h_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions|textPersonName|textCapWords"
+                    android:lines="1"
+                    android:maxLength="36"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/font_size_small"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                <EditText
+                    android:id="@+id/edt_payer_fln"
+                    style="@style/EditText_InputItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:ems="10"
+                    android:hint="@string/h_f_lastname"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions|textPersonName|textCapWords"
+                    android:lines="1"
+                    android:maxLength="36"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/font_size_small"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+                <EditText
+                    android:id="@+id/edt_payer_mln"
+                    style="@style/EditText_InputItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/h_m_lastname"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions|textPersonName|textCapWords"
+                    android:lines="1"
+                    android:maxLength="36"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/font_size_small"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+                <EditText
+                    android:id="@+id/edt_tax_denomination"
+                    style="@style/EditText_InputItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/h_tax_denomination"
+                    android:imeOptions="actionNext"
+                    android:inputType="textNoSuggestions|textPersonName|textCapWords"
+                    android:lines="1"
+                    android:maxLength="36"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/font_size_small"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+                <EditText
+                    android:id="@+id/edt_payer_rfc"
+                    style="@style/EditText_InputItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/h_rfc"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapCharacters"
+                    android:lines="1"
+                    android:maxLength="13"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/font_size_small"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+                <EditText
+                    android:id="@+id/edt_payer_email"
+                    style="@style/EditText_InputItem"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/h_email"
+                    android:imeOptions="actionDone"
+                    android:inputType="textEmailAddress"
+                    android:lines="1"
+                    android:maxLength="50"
+                    android:textColor="@color/colorLightBlack"
+                    android:textSize="@dimen/font_size_small"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                <RadioGroup
+                    android:id="@+id/rdg_generate_bill"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                    <RadioButton
+                        android:id="@+id/rdb_generate_yes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/qfont"
+                        android:text="Sí" />
+
+                    <RadioButton
+                        android:id="@+id/rdb_generate_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:fontFamily="@font/qfont"
+                        android:text="No" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/t_payer_name"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/TextView_TitleItem_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/t_payer_subtitle"
+                    android:textAlignment="textStart"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/t_payer_last_name"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_payer_name" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/t_payer_s_last_name"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/guideline8"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_payer_name" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    style="@style/TextView_TitleItem_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/t_payer_bill"
+                    android:textAlignment="textStart"
+                    android:textSize="16sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_payer_fln" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/t_payer_generate_bill"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/t_payer_tax_denomination"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rdg_generate_bill" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/t_payer_rfc"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_tax_denomination" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    style="@style/TextView_TitleItem2_Bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/t_payer_email"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edt_payer_rfc" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -47,6 +47,8 @@
     <string name="h_no_license">No. Licencia</string>
     <string name="h_license_exp">Año Exp.</string>
     <string name="h_motivation">Ingresa la motivación</string>
+    <string name="h_tax_denomination">Denominación</string>
+    <string name="h_email">Correo electrónico</string>
 
     <!-- Log In Strings -->
     <string name="t_company_log_in">Sistema de\ninfracciones</string>
@@ -138,6 +140,19 @@
     <string name="t_offender_license_no">Número</string>
     <string name="t_offender_license_type">Tipo</string>
     <string name="t_offender_license_issued_in">Expedida en</string>
+
+    <!-- Payer Fragment Strings -->
+    <string name="t_payer_title">¿Quién paga?</string>
+    <string name="t_payer_subtitle">Datos de quien paga</string>
+    <string name="t_delete_payer_data">Borrar datos</string>
+    <string name="t_payer_name">Nombre(s)*</string>
+    <string name="t_payer_last_name">Apellido Paterno*</string>
+    <string name="t_payer_s_last_name">Apellido Materno*</string>
+    <string name="t_payer_bill">Factura</string>
+    <string name="t_payer_generate_bill">Emitir factura</string>
+    <string name="t_payer_tax_denomination">Denominación fiscal*</string>
+    <string name="t_payer_rfc">RFC*</string>
+    <string name="t_payer_email">Correo electrónico</string>
 
     <!-- Buttons Strings -->
     <string name="t_accept">Aceptar</string>

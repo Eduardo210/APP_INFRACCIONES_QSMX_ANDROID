@@ -6,5 +6,6 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="small_button_width">150dp</dimen>
+    <dimen name="xsmall_button_width">100dp</dimen>
     <dimen name="incidence_adapter_height">250dp</dimen>
 </resources>

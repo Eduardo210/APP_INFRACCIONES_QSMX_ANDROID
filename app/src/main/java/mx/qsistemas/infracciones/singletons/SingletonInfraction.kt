@@ -55,6 +55,15 @@ object SingletonInfraction {
     var typeLicenseOffender: GenericCatalog = GenericCatalog()
     var licenseIssuedInOffender: GenericCatalog = GenericCatalog()
 
+    /* Payer Information */
+    var isGenerateBill: Boolean = false
+    var payerName: String = ""
+    var payerLastName: String = ""
+    var payerMotherLastName: String = ""
+    var payerTaxDenomination: String = ""
+    var payerRfc: String = ""
+    var payerEmail: String = ""
+
     /* Calculated Variables */
     var tokenInfraction: String = ""
     var idNewInfraction: Long = 0L
@@ -115,6 +124,15 @@ object SingletonInfraction {
         noLicenseOffender = ""
         typeLicenseOffender = GenericCatalog()
         licenseIssuedInOffender = GenericCatalog()
+
+        /* Payer Information Reset */
+        isGenerateBill = false
+        payerName = ""
+        payerLastName = ""
+        payerMotherLastName = ""
+        payerTaxDenomination = ""
+        payerRfc = ""
+        payerEmail = ""
 
         /* Calculated Variables Reset */
         tokenInfraction = ""

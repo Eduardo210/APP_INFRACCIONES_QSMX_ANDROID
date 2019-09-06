@@ -14,6 +14,7 @@ import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.fr_infraction.InfractionFragment
 import mx.qsistemas.infracciones.modules.create.fr_offender.OffenderFragment
+import mx.qsistemas.infracciones.modules.create.fr_payer.PayerFragment
 import mx.qsistemas.infracciones.modules.create.fr_vehicle.VehicleFragment
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
@@ -40,11 +41,11 @@ class CreateInfractionActivity : ActivityHelper(), CreateInfractionContracts.Pre
                     router.value.presentVehicleFragment(Direction.NONE)
                 }
                 OPTION_UPDATE_INFRACTION -> {
-                    stepUp()
-                    stepUp()
-                    router.value.presentOffenderFragment(isNewInfraction, Direction.NONE)
+                    for (i in 1..3)
+                        stepUp()
+                    router.value.presentPayerFragment(isNewInfraction, Direction.NONE)
                     binding.txtTitleInfractionToolbar.text = "Actualizar"
-                    binding.txtSubtitleInfractionToolbar.text = "Actualización de infracción"
+                    binding.txtSubtitleInfractionToolbar.text = "Actualización de datos"
                 }
             }
         }
@@ -81,7 +82,7 @@ class CreateInfractionActivity : ActivityHelper(), CreateInfractionContracts.Pre
         val fragment = supportFragmentManager.findFragmentById(binding.containerInfraction.id)
         when (fragment) {
             is VehicleFragment -> {
-                var builder = AlertDialogHelper.getGenericBuilder(
+                val builder = AlertDialogHelper.getGenericBuilder(
                         getString(R.string.w_dialog_title), getString(R.string.w_exit_without_save), this
                 )
                 builder.setPositiveButton("Aceptar") { _, _ ->
@@ -96,11 +97,16 @@ class CreateInfractionActivity : ActivityHelper(), CreateInfractionContracts.Pre
                 router.value.presentVehicleFragment(Direction.NONE)
             }
             is OffenderFragment -> {
+                stepDown()
+                router.value.presentInfractionFragment(Direction.NONE)
+
+            }
+            is PayerFragment -> {
                 if (isNewInfraction) {
                     stepDown()
-                    router.value.presentInfractionFragment(Direction.NONE)
+                    router.value.presentOffenderFragment(Direction.NONE)
                 } else {
-                    var builder = AlertDialogHelper.getGenericBuilder(
+                    val builder = AlertDialogHelper.getGenericBuilder(
                             getString(R.string.w_dialog_title), getString(R.string.w_exit_without_save), this
                     )
                     builder.setPositiveButton("Aceptar") { _, _ ->

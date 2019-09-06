@@ -41,8 +41,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-private const val ARG_IS_CREATION = "is_creation"
-
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
@@ -54,7 +52,6 @@ private const val ARG_IS_CREATION = "is_creation"
  */
 class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener,
         OnClickListener, IPaymentsTransfer.TransactionListener, DetailPaymentCallback {
-    private var isCreation: Boolean = true
 
     private val format = SimpleDateFormat("yyyy-MM-dd")
     private val CURRENT_DATE = format.parse(format.format(Date()))
@@ -73,7 +70,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            isCreation = it.getBoolean(ARG_IS_CREATION)
         }
     }
 
@@ -81,35 +77,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_offender, container, false)
         initAdapters()
         fillFields()
-        if (!isCreation) {
-            binding.textView.visibility = GONE
-            binding.rdgReferralDeposit.visibility = GONE
-            binding.lytOffender.root.visibility = VISIBLE
-            binding.lytOffender.edtOffenderRfc.visibility = GONE
-            binding.lytOffender.spnState.visibility = GONE
-            binding.lytOffender.spnTownship.visibility = GONE
-            binding.lytOffender.spnZipCode.visibility = GONE
-            binding.lytOffender.spnColony.visibility = GONE
-            binding.lytOffender.edtStreet.visibility = GONE
-            binding.lytOffender.edtOffenderNoExt.visibility = GONE
-            binding.lytOffender.edtOffenderNoInt.visibility = GONE
-            binding.lytOffender.edtOffenderLicenseNo.visibility = GONE
-            binding.lytOffender.spnLicenseType.visibility = GONE
-            binding.lytOffender.textView7.visibility = GONE
-            binding.lytOffender.textView8.visibility = GONE
-            binding.lytOffender.textView9.visibility = GONE
-            binding.lytOffender.textView10.visibility = GONE
-            binding.lytOffender.textView12.visibility = GONE
-            binding.lytOffender.textView13.visibility = GONE
-            binding.lytOffender.textView14.visibility = GONE
-            binding.lytOffender.textView15.visibility = GONE
-            binding.lytOffender.textView16.visibility = GONE
-            binding.lytOffender.textView17.visibility = GONE
-            binding.lytOffender.textView18.visibility = GONE
-            binding.lytOffender.textView19.visibility = GONE
-            binding.lytOffender.textView20.visibility = GONE
-            binding.lytOffender.spnLicenseIssuedIn.visibility = GONE
-        }
         return binding.root
     }
 
@@ -247,13 +214,13 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                             getString(R.string.w_dialog_title), getString(R.string.w_verify_printer), activity
                     )
                     builder.setPositiveButton("Aceptar") { _, _ ->
-                        if (isCreation) {
+                        //if (isCreation) {
                             iterator.value.saveData(true)
-                        } else {
+                        /*} else {
                             activity.showLoader(getString(R.string.l_upload_person))
                             tokenInfraction = TOKEN_INFRACTION
                             iterator.value.updateData()
-                        }
+                        }*/
                     }
                     builder.show()
                 }
@@ -445,27 +412,27 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onTxApproved(txInfo: TransactionInfo) {
         isPaid = true
-        if (isCreation) {
+        //if (isCreation) {
             iterator.value.savePayment(txInfo)
             SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
-        } else {
+        /*} else {
             val discount = if (SingletonInfraction.discountInfraction.isNotBlank()) SingletonInfraction.discountInfraction else "0.0"
             val surcharges = if (SingletonInfraction.surchargesInfraction.isNotBlank()) SingletonInfraction.surchargesInfraction else "0.0"
             iterator.value.savePaymentToService(tokenInfraction, SingletonInfraction.folioInfraction, txInfo, SingletonInfraction.subTotalInfraction, discount,
                     surcharges, SingletonInfraction.totalInfraction)
-        }
+        }*/
     }
 
     override fun onTxVoucherPrinted() {
         if (isPaid) {
-            if (isCreation) {
+            //if (isCreation) {
                 activity.showLoader(getString(R.string.l_preparing_printer))
                 iterator.value.printTicket(activity)
-            } else {
+            /*} else {
                 SingletonInfraction.cleanSingleton()
                 Alarms()
                 activity.finish()
-            }
+            }*/
         }
     }
 
@@ -490,10 +457,10 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             if (Looper.myLooper() != null)
                 Looper.loop()
         } else {
-            if (isCreation) {
+            //if (isCreation) {
                 activity.showLoader(getString(R.string.l_preparing_printer))
                 iterator.value.printTicket(activity)
-            }
+            //}
         }
     }
 
@@ -557,10 +524,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
          * @return A new instance of fragment OffenderFragment.
          */
         @JvmStatic
-        fun newInstance(isCreation: Boolean) =
+        fun newInstance() =
                 OffenderFragment().apply {
                     arguments = Bundle().apply {
-                        putBoolean(ARG_IS_CREATION, isCreation)
                     }
                 }
     }

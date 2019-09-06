@@ -10,13 +10,9 @@ import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.entities.*
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
 import mx.qsistemas.infracciones.net.FirebaseEvents
-import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 import mx.qsistemas.infracciones.net.catalogs.Townships
-import mx.qsistemas.infracciones.net.request_web.DriverRequest
-import mx.qsistemas.infracciones.net.request_web.PaymentRequest
-import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.*
@@ -25,10 +21,6 @@ import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 import mx.qsistemas.payments_transfer.dtos.Voucher
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -418,12 +410,12 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
             if (notify) listener.onDataSaved()
-        } else {
+        } /*else {
             listener.onDataDuplicate()
-        }
+        }*/
     }
 
-    override fun updateData() {
+    /*override fun updateData() {
         val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.nameOffender, SingletonInfraction.rfcOffenfer, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName)
         NetworkApi().getNetworkService().updateDriver("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
@@ -440,9 +432,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 listener.onError(t.message ?: "")
             }
         })
-    }
+    }*/
 
-    override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
+    /*override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
         val request = PaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
                 0F, subtotal.toFloat(), surcharges.toFloat(), tokenInfraction, totalPayment.toFloat(), txInfo.authorization)
         NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
@@ -463,7 +455,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         ?: Application.getContext().getString(R.string.e_other_problem_internet), false)
             }
         })
-    }
+    }*/
 
     override fun savePayment(info: TransactionInfo) {
         this.txInfo = info

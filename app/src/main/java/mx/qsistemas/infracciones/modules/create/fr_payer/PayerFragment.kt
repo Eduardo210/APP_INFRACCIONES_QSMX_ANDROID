@@ -74,6 +74,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_payer, container, false)
         initViews()
+        iterator.value.getHolidays()
         return binding.root
     }
 
@@ -179,6 +180,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
         Handler().postDelayed({
             val dialog = DetailPaymentDialog()
             dialog.listener = this
+            dialog.showDeclineOption = false
             dialog.isCancelable = false
             dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
         }, 2000)
@@ -188,6 +190,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
         Handler().postDelayed({
             val dialog = DetailPaymentDialog()
             dialog.listener = this
+            dialog.showDeclineOption = false
             dialog.isCancelable = false
             dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
         }, 2000)

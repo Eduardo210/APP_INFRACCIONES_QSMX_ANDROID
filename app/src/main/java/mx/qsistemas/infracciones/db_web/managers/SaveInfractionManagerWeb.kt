@@ -89,10 +89,16 @@ object SaveInfractionManagerWeb {
             Application.m_database_web?.payorderDaoWeb()?.insert(payorder)
         }
     }
+
     fun saveOficial(oficial: PersonTownhall) {
         GlobalScope.launch {
             Application.m_database_web?.personTownHallDaoWeb()?.insert(oficial)
         }
     }
 
+    fun savePayerInformation(payer: ElectronicBill) {
+        GlobalScope.launch {
+            Application.m_database_web?.electronicBillDaoWeb()?.insert(payer)
+        }
+    }
 }

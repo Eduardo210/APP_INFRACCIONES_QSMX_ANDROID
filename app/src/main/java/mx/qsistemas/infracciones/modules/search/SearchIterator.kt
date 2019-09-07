@@ -14,8 +14,6 @@ import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.SearchManagerWeb
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.request_web.PaymentRequest
-import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
@@ -121,7 +119,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         })
     }
 
-    override fun savePaymentToService(paymentRequest: PaymentRequest, token: String) {
+    /*override fun savePaymentToService(paymentRequest: PaymentRequest, token: String) {
 
         NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
                 0L,
@@ -144,7 +142,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                 listener.onError(t.message ?: "")
             }
         })
-    }
+    }*/
 
     override fun doSearchByFilterOffLine(filter: String) {
         val query: SimpleSQLiteQuery
@@ -279,6 +277,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         infringement.driverLicense = SearchManagerWeb.getDriverLicense(id.toLong())
         infringement.fractions = SearchManagerWeb.getFractionsInfringements(id.toLong())
         infringement.personTownhall = SearchManagerWeb.getTownHallPerson(id.toLong())
+        infringement.payOrder = SearchManagerWeb.getPayOrder(id.toLong())
+        infringement.electronicBill = SearchManagerWeb.getElectronicBill(id.toLong())
 
         listener.onResultInfractionByIdOffline(infringement, origin)
     }

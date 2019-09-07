@@ -12,6 +12,6 @@ interface ElectronicBillDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(bill: ElectronicBill)
 
-    @Query("SELECT DISTINCT * FROM electronic_bill WHERE infringements_id = :idInfraction")
-    fun select(idInfraction: Long): ElectronicBill
+    @Query("SELECT bill.* FROM infringement_infringements infra INNER JOIN electronic_bill bill ON infra.id = bill.infringements_id WHERE infra.id = :idInfringement")
+    fun selectElectronicBill(idInfringement: Long): ElectronicBill
 }

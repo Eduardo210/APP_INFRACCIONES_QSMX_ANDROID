@@ -10,5 +10,7 @@ class InfringementData {
     var fractions:MutableList<InfringementRelfractionInfringements>?=null
     var vehicleVehicles: VehicleVehicles?=null
     var personTownhall: PersonTownhall?=null
+    var payOrder: InfringementPayorder?=null
+    var electronicBill: ElectronicBill?=null
 
 }

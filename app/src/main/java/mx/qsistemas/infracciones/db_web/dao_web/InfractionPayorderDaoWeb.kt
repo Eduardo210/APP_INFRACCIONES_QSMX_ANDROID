@@ -17,4 +17,7 @@ interface InfractionPayorderDaoWeb {
 
     @Query("UPDATE infringement_payoder SET sync = 1 WHERE id = :idPayment")
     fun update(idPayment: Long)
+
+    @Query("SELECT payorder.* FROM infringement_infringements infra INNER JOIN infringement_payoder payorder ON infra.id = payorder.infringement_id WHERE infra.id = :idInfringement")
+    fun selectPayOrder(idInfringement: Long): InfringementPayorder
 }

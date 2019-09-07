@@ -214,10 +214,6 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     SingletonInfraction.idNewInfraction
             )
             SaveInfractionManagerWeb.saveOficial(oficial)
-            /* Step 10. Save Payer Information */
-            val payer = ElectronicBill(0, SingletonInfraction.payerName, SingletonInfraction.payerLastName, SingletonInfraction.payerMotherLastName,
-                    SingletonInfraction.payerTaxDenomination, SingletonInfraction.payerRfc, SingletonInfraction.idNewInfraction, SingletonInfraction.payerEmail)
-            SaveInfractionManagerWeb.savePayerInformation(payer)
             /* Step 11. Register Event Infraction */
             FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
@@ -229,7 +225,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
 
     override fun updatePayerData() {
         val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.payerName, SingletonInfraction.payerRfc, SingletonInfraction.payerLastName, SingletonInfraction.payerMotherLastName)
-        NetworkApi().getNetworkService().updateDriver("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
+        NetworkApi().getNetworkService().updatePayer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     if (response.body()?.status == "success") {
@@ -254,6 +250,10 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         SaveInfractionManagerWeb.savePayOrder(payorder)
         /* Step 2. Save Authorization Code into Singleton */
         SingletonInfraction.paymentAuthCode = info.authorization
+        /* Step 3. Save Payer Information */
+        val payer = ElectronicBill(0, SingletonInfraction.payerName, SingletonInfraction.payerLastName, SingletonInfraction.payerMotherLastName,
+                SingletonInfraction.payerTaxDenomination, SingletonInfraction.payerRfc, SingletonInfraction.idNewInfraction, SingletonInfraction.payerEmail)
+        SaveInfractionManagerWeb.savePayerInformation(payer)
     }
 
     override fun printTicket(activity: Activity) {

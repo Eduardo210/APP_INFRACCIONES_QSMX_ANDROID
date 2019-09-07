@@ -50,8 +50,8 @@ open class NetworkApi {
         @GET("api/infringement/search/")
         fun searchInfraction(@Header("Authorization") tokenSession: String, @Query("name") name: String): Call<SearchResult>
 
-        @POST("api/infringement/update-driver/")
-        fun updateDriver(@Header("Authorization") tokenSession: String, @Body body: DriverRequest): Call<GenericResult>
+        @POST("api/infringement/order-payer/")
+        fun updatePayer(@Header("Authorization") tokenSession: String, @Body body: DriverRequest): Call<GenericResult>
 
         @POST("api/infringement/detail/")
         fun detailInfraction(@Header("Authorization") tokenSession: String, @Body token: HashMap<String,String>): Call<DetailResult>

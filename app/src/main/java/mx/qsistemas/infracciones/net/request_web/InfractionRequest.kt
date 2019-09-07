@@ -91,6 +91,9 @@ data class InfractionRequest(
         @field:SerializedName("driver")
         val driver: DriverRequest? = null,
 
+        @field:SerializedName("payer")
+        val payer: DriverRequest? = null,
+
         @field:SerializedName("capture_lines")
         val captureLines: List<CaptureLinesItem?>? = null,
 

@@ -50,7 +50,7 @@ object SendInfractionManagerWeb {
         return object : AsyncTask<Void, Void, DriverDriverLicense>() {
             override fun doInBackground(vararg p0: Void?): DriverDriverLicense {
                 return Application.m_database_web?.driverLicenseDaoWeb()?.selectDriverLicense(idInfraction)
-                        ?: DriverDriverLicense(0, "", 0, "", "","", "")
+                        ?: DriverDriverLicense(0, "", 0, "", "", "", "")
             }
         }.execute().get()
     }
@@ -69,6 +69,15 @@ object SendInfractionManagerWeb {
             override fun doInBackground(vararg p0: Void?): DriverDrivers {
                 return Application.m_database_web?.personDaoWeb()?.selectPersonInfo(idInfraction)
                         ?: DriverDrivers(0, "", "", "", "")
+            }
+        }.execute().get()
+    }
+
+    fun getPayerInformation(idInfraction: Long): ElectronicBill {
+        return object : AsyncTask<Void, Void, ElectronicBill>() {
+            override fun doInBackground(vararg p0: Void?): ElectronicBill {
+                return Application.m_database_web?.electronicBillDaoWeb()?.select(idInfraction)
+                        ?: ElectronicBill(0, "", "", "", "", "", 0, "")
             }
         }.execute().get()
     }

@@ -69,6 +69,9 @@ class ReportsService : JobService() {
                     // Get person information
                     val personInfo = SendInfractionManagerWeb.getPersonInformation(it.id)
                     val requestPerson = DriverRequest("", personInfo.name, personInfo.rfc, personInfo.paternal, personInfo.maternal)
+                    // Get payer information
+                    val payerInfo = SendInfractionManagerWeb.getPayerInformation(it.id)
+                    val requestPayer = DriverRequest("", payerInfo.name, payerInfo.rfc, payerInfo.paternal, payerInfo.maternal)
                     //Get vehicle information of infraction
                     val vehicleInfraction = SendInfractionManagerWeb.getVehicleInformation(it.id)
                     // Get the capture lines
@@ -85,7 +88,7 @@ class ReportsService : JobService() {
                             personLicense.state_license_id, vehicleInfraction.isNewSubBrand, vehicleInfraction.brand_reference, addresInfraction.longitude.toString(),
                             addresInfraction.street_a, "", personLicense.license_type_id, addresInfraction.street_b,
                             it.is_absent, it.is_impound, addresInfraction.cp_id, personLicense.license_number, vehicleInfraction.issued_in_id,
-                            requestPerson, requestCaptureLines, it.insured_document_id, it.folio, it.time, requestMotivations, "ACTIVO", it.third_impound_id)
+                            requestPerson, requestPayer, requestCaptureLines, it.insured_document_id, it.folio, it.time, requestMotivations, "ACTIVO", it.third_impound_id)
                     //Send the infractions list
                     NetworkApi().getNetworkService().sendInfractionToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", infractionRequest).enqueue(object : Callback<InfractionResult> {
                         override fun onResponse(call: Call<InfractionResult>, response: Response<InfractionResult>) {

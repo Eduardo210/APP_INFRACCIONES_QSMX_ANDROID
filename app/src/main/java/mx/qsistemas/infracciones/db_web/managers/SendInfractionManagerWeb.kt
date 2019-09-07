@@ -76,7 +76,7 @@ object SendInfractionManagerWeb {
     fun getPayerInformation(idInfraction: Long): ElectronicBill {
         return object : AsyncTask<Void, Void, ElectronicBill>() {
             override fun doInBackground(vararg p0: Void?): ElectronicBill {
-                return Application.m_database_web?.electronicBillDaoWeb()?.select(idInfraction)
+                return Application.m_database_web?.electronicBillDaoWeb()?.selectElectronicBill(idInfraction)
                         ?: ElectronicBill(0, "", "", "", "", "", 0, "")
             }
         }.execute().get()

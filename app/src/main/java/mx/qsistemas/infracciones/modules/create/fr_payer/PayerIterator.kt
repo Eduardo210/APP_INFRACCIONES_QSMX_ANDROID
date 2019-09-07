@@ -137,14 +137,14 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                         SingletonInfraction.noExtOffender,
                         SingletonInfraction.noIntOffender,
                         SingletonInfraction.townshipOffender.childReference?.id ?: "",
-                        SingletonInfraction.townshipOffender.value,
+                        if (SingletonInfraction.townshipOffender.childReference != null) SingletonInfraction.townshipOffender.value else "",
                         SingletonInfraction.colonyOffender.childReference?.id ?: "",
-                        SingletonInfraction.colonyOffender.value,
+                        if (SingletonInfraction.colonyOffender.childReference != null) SingletonInfraction.colonyOffender.value else "",
                         SingletonInfraction.zipCodeOffender.childReference?.id ?: "",
-                        SingletonInfraction.zipCodeOffender.value,
+                        if (SingletonInfraction.zipCodeOffender.childReference != null) SingletonInfraction.zipCodeOffender.value else "",
                         SingletonInfraction.idNewPersonInfraction.toString(),
                         SingletonInfraction.stateOffender.documentReference?.id ?: "",
-                        SingletonInfraction.stateOffender.value)
+                        if (SingletonInfraction.stateOffender.documentReference != null) SingletonInfraction.stateOffender.value else "")
                 val idNewPersonAddress = SaveInfractionManagerWeb.saveAddressPerson(personAddress)
                 /* Step 4.1 Save DriverRequest License */
                 val driverLicense = DriverDriverLicense(
@@ -153,8 +153,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                         idNewPersonAddress,
                         SingletonInfraction.typeLicenseOffender.documentReference?.id ?: "",
                         SingletonInfraction.licenseIssuedInOffender.documentReference?.id ?: "",
-                        SingletonInfraction.licenseIssuedInOffender.value,
-                        SingletonInfraction.typeLicenseOffender.value)
+                        if (SingletonInfraction.licenseIssuedInOffender.documentReference != null) SingletonInfraction.licenseIssuedInOffender.value else "",
+                        if (SingletonInfraction.typeLicenseOffender.documentReference != null) SingletonInfraction.typeLicenseOffender.value else "")
                 SaveInfractionManagerWeb.saveDriverLicense(driverLicense)
             }
             /* Step 5. Generate Capture Lines */

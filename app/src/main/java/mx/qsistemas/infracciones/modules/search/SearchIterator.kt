@@ -277,6 +277,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         infringement.driverLicense = SearchManagerWeb.getDriverLicense(id.toLong())
         infringement.fractions = SearchManagerWeb.getFractionsInfringements(id.toLong())
         infringement.personTownhall = SearchManagerWeb.getTownHallPerson(id.toLong())
+        infringement.payOrder = SearchManagerWeb.getPayOrder(id.toLong())
+        infringement.electronicBill = SearchManagerWeb.getElectronicBill(id.toLong())
 
         listener.onResultInfractionByIdOffline(infringement, origin)
     }

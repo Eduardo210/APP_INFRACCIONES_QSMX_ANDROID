@@ -304,9 +304,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     "active",
                     SingletonInfraction.isPersonAbstent,
                     SingletonInfraction.retainedDocument.documentReference?.id ?: "",
-                    SingletonInfraction.retainedDocument.value,
+                    if(SingletonInfraction.retainedDocument.documentReference?.id != null) SingletonInfraction.retainedDocument.value else "",
                     SingletonInfraction.dispositionRemited.documentReference?.id ?: "",
-                    SingletonInfraction.dispositionRemited.value,
+                    if(SingletonInfraction.dispositionRemited.documentReference?.id !=null) SingletonInfraction.dispositionRemited.value else "",
                     SingletonInfraction.idOfficer,
                     idVehicle,
                     actualDay,
@@ -328,14 +328,14 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         SingletonInfraction.noExtOffender,
                         SingletonInfraction.noIntOffender,
                         SingletonInfraction.townshipOffender.childReference?.id ?: "",
-                        SingletonInfraction.townshipOffender.value,
+                        if(SingletonInfraction.townshipOffender.childReference?.id !=null) SingletonInfraction.townshipOffender.value else "",
                         SingletonInfraction.colonyOffender.childReference?.id ?: "",
-                        SingletonInfraction.colonyOffender.value,
+                        if(SingletonInfraction.colonyOffender.childReference?.id !=null) SingletonInfraction.colonyOffender.value else "",
                         SingletonInfraction.zipCodeOffender.childReference?.id ?: "",
-                        SingletonInfraction.zipCodeOffender.value,
+                        if(SingletonInfraction.zipCodeOffender.childReference?.id !=null) SingletonInfraction.zipCodeOffender.value else "",
                         SingletonInfraction.idNewPersonInfraction.toString(),
                         SingletonInfraction.stateOffender.documentReference?.id ?: "",
-                        SingletonInfraction.stateOffender.value)
+                        if(SingletonInfraction.stateOffender.documentReference?.id != null) SingletonInfraction.stateOffender.value else "")
                 val idNewPersonAddress = SaveInfractionManagerWeb.saveAddressPerson(personAddress)
                 /* Step 4.1 Save DriverRequest License */
                 val driverLicense = DriverDriverLicense(
@@ -344,8 +344,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         idNewPersonAddress,
                         SingletonInfraction.typeLicenseOffender.documentReference?.id ?: "",
                         SingletonInfraction.licenseIssuedInOffender.documentReference?.id ?: "",
-                        SingletonInfraction.licenseIssuedInOffender.value,
-                        SingletonInfraction.typeLicenseOffender.value)
+                        if(SingletonInfraction.licenseIssuedInOffender.documentReference?.id !=null) SingletonInfraction.licenseIssuedInOffender.value else "",
+                        if(SingletonInfraction.typeLicenseOffender.documentReference?.id !=null) SingletonInfraction.typeLicenseOffender.value else "")
                 SaveInfractionManagerWeb.saveDriverLicense(driverLicense)
             }
             /* Step 5. Generate Capture Lines */

@@ -183,6 +183,11 @@ class SearchFr : Fragment()
         if (!infraction.driver?.rfc.isNullOrEmpty()) {
             SingletonTicket.rfcOffender = infraction.driver?.rfc ?: ""
         }
+        if(infraction.payOrder !=null){
+            SingletonTicket.completeNamePayer = "${infraction.electronicBill?.name} ${infraction.electronicBill?.paternal} ${infraction.electronicBill?.maternal}"
+            SingletonTicket.paymentAuthCode = infraction.payOrder!!.authorize_no.toString()
+        }
+
         if (!infraction.driverAddressDriver?.street.isNullOrEmpty()) {
             SingletonTicket.streetOffender = infraction.driverAddressDriver?.street.toString()
         }

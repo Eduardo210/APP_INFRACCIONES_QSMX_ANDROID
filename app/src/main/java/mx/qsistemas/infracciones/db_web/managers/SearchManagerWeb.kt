@@ -119,17 +119,17 @@ object SearchManagerWeb {
             }
         }.execute().get()
     }
-    fun getPayOrder(idInfraction: Long): InfringementPayorder = runBlocking {
-        object : AsyncTask<Void, Void, InfringementPayorder>() {
-            override fun doInBackground(vararg p0: Void?): InfringementPayorder {
-                return Application.m_database_web?.payorderDaoWeb()?.selectPayOrder(idInfraction)!!
+    fun getPayOrder(idInfraction: Long): InfringementPayorder? = runBlocking {
+        object : AsyncTask<Void, Void, InfringementPayorder?>() {
+            override fun doInBackground(vararg p0: Void?): InfringementPayorder? {
+                return Application.m_database_web?.payorderDaoWeb()?.selectPayOrder(idInfraction)
             }
         }.execute().get()
     }
-    fun getElectronicBill(idInfraction: Long): ElectronicBill = runBlocking {
+    fun getElectronicBill(idInfraction: Long): ElectronicBill? = runBlocking {
         object : AsyncTask<Void, Void, ElectronicBill>() {
-            override fun doInBackground(vararg p0: Void?): ElectronicBill {
-                return Application.m_database_web?.electronicBillDaoWeb()?.selectElectronicBill(idInfraction)!!
+            override fun doInBackground(vararg p0: Void?): ElectronicBill? {
+                return Application.m_database_web?.electronicBillDaoWeb()?.selectElectronicBill(idInfraction)
             }
         }.execute().get()
     }

@@ -242,6 +242,7 @@ class SearchFr : Fragment()
             SingletonTicket.stateLicenseOffender = infraction.driverLicense?.state_license ?: ""
         }
         SingletonTicket.nameAgent = "${infraction.personTownhall?.name} ${infraction.personTownhall?.paternal} ${infraction.personTownhall?.maternal}"
+        SingletonTicket.idAgent = infraction.personTownhall?.idPersona.toString()
         SingletonTicket.modelVehicle = infraction.vehicleVehicles?.year ?: ""
 
         infraction.fractions?.forEach { fracc ->
@@ -306,25 +307,28 @@ class SearchFr : Fragment()
         SingletonTicket.rfcOffender = infraction.driver?.rfc.toString()
 
         if (infraction.isAbsent) {
-            if (infraction.driver?.address?.street?.isNotBlank()!!) {
-                SingletonTicket.streetOffender = infraction.driver.address.street
+            if(infraction.driver?.address !=null){
+                if (infraction.driver.address.street?.isNotBlank()!!) {
+                    SingletonTicket.streetOffender = infraction.driver.address.street
+                }
+
+                if (infraction.driver.address.exteriorNum?.isNotBlank()!!) {
+                    SingletonTicket.noExtOffender = infraction.driver.address.exteriorNum
+                }
+
+                if (infraction.driver.address.internalNum?.isNotBlank()!!) {
+                    SingletonTicket.noIntOffender = infraction.driver.address.internalNum
+                }
+
+                if (infraction.driver.address.colony?.isNotBlank()!!) {
+                    SingletonTicket.colonyOffender = infraction.driver.address.colony
+                }
+
+                if (infraction.driver.address.state?.isNotBlank()!!) {
+                    SingletonTicket.stateOffender = infraction.driver.address.state
+                }
             }
 
-            if (infraction.driver.address.exteriorNum?.isNotBlank()!!) {
-                SingletonTicket.noExtOffender = infraction.driver.address.exteriorNum
-            }
-
-            if (infraction.driver.address.internalNum?.isNotBlank()!!) {
-                SingletonTicket.noIntOffender = infraction.driver.address.internalNum
-            }
-
-            if (infraction.driver.address.colony?.isNotBlank()!!) {
-                SingletonTicket.colonyOffender = infraction.driver.address.colony
-            }
-
-            if (infraction.driver.address.state?.isNotBlank()!!) {
-                SingletonTicket.stateOffender = infraction.driver.address.state
-            }
         }
 
 

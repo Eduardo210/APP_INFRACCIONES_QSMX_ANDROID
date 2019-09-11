@@ -150,7 +150,7 @@
     <string name="t_payer_s_last_name">Apellido Materno*</string>
     <string name="t_payer_bill">Factura</string>
     <string name="t_payer_generate_bill">Emitir factura</string>
-    <string name="t_payer_tax_denomination">Denominación fiscal*</string>
+    <string name="t_payer_tax_denomination">Nombre o Razón Social </string>
     <string name="t_payer_rfc">RFC*</string>
     <string name="t_payer_email">Correo electrónico</string>
 

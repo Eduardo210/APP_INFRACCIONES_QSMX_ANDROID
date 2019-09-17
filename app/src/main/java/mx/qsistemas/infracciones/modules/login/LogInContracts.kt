@@ -11,6 +11,7 @@ class LogInContracts {
 
     interface Iterator {
         fun registerAlarm()
+        //fun syncCatalogs(): Job
         fun login(userName: String, psd: String)
     }
 

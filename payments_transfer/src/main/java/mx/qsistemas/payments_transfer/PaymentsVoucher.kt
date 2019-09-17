@@ -67,7 +67,7 @@ class PaymentsVoucher(val context: Context, val txListener: IPaymentsTransfer.Tr
                 }
                 ServiceManager.getInstence().printer.addPrintLine(getPrintLine("${voucherInfo.cardBeneficiary}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
             } else {
-                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("${voucherInfo.detailError.replace("+", " ").replace("%C3%B3","ó")}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
+                ServiceManager.getInstence().printer.addPrintLine(getPrintLine("${voucherInfo.detailError.replace("+", " ").replace("%C3%B3", "ó").replace("%C3%A1", "á")}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
             }
             ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Fecha: ${voucherInfo.date}", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))
             ServiceManager.getInstence().printer.addPrintLine(getPrintLine("Hora: ${voucherInfo.hour}\n\n", TextPrintLine.FONT_NORMAL, PrintLine.CENTER))

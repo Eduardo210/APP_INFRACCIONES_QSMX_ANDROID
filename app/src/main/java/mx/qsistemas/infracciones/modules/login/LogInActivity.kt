@@ -36,6 +36,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         binding = DataBindingUtil.setContentView(this, R.layout.activity_log_in)
         binding.btnLogIn.setOnClickListener(this)
         iterator.registerAlarm()
+        iterator.syncCatalogs()
         /* Validate internet connection */
         if (Validator.isNetworkEnable(Application.getContext())) {
             /* If user doesn't config the device, open Configuration Dialog */

@@ -54,6 +54,8 @@ const val FS_COL_HOLIDAYS = "holidays"
 
 /* FIREBASE FUNCTIONS */
 const val FF_CIPHER_DATA = "cipherData"
+const val FF_ZIP_CODES = "zipCodes"
+const val FF_COLONIES = "colonies"
 
 /* JOB CHANNELS */
 const val CHANNEL_ID_REPORT = "infractionChannelId"

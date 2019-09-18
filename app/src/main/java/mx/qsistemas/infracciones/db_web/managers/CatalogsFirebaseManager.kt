@@ -48,9 +48,14 @@ object CatalogsFirebaseManager {
         }
     }
 
-    fun saveColonies(colonyList: MutableList<Colony>) {
+    fun deleteColonies(){
         Executors.newSingleThreadExecutor().execute {
             Application.m_database_web?.colonyDao()?.deleteAll()
+        }
+    }
+
+    fun saveColonies(colonyList: MutableList<Colony>) {
+        Executors.newSingleThreadExecutor().execute {
             Application.m_database_web?.colonyDao()?.insert(colonyList)
         }
     }

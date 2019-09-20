@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Source
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.City
@@ -41,11 +44,13 @@ object CatalogsFirebaseManager {
         }
     }
 
-    fun saveZipCodes(zipCodeList: MutableList<ZipCodes>) {
-        Executors.newSingleThreadExecutor().execute {
+    suspend fun saveZipCodes(zipCodeList: MutableList<ZipCodes>): Boolean {
+        val insert=  CoroutineScope(Dispatchers.IO).launch{
             Application.m_database_web?.zipCodeDao()?.deleteAll()
             Application.m_database_web?.zipCodeDao()?.insert(zipCodeList)
         }
+        insert.join()
+        return true
     }
 
     fun deleteColonies(){
@@ -54,9 +59,11 @@ object CatalogsFirebaseManager {
         }
     }
 
-    fun saveColonies(colonyList: MutableList<Colony>) {
-        Executors.newSingleThreadExecutor().execute {
+    suspend fun saveColonies(colonyList: MutableList<Colony>):Boolean {
+        val insert = CoroutineScope(Dispatchers.IO).launch {
             Application.m_database_web?.colonyDao()?.insert(colonyList)
         }
+        insert.join()
+        return true
     }
 }

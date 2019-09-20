@@ -5,10 +5,10 @@ import com.google.firebase.functions.FirebaseFunctionsException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
-import mx.qsistemas.infracciones.db_web.entities.firebase_replica.Colony
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.ZipCodes
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.net.NetworkApi
@@ -16,7 +16,6 @@ import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.result_web.LogInResult
 import mx.qsistemas.infracciones.utils.BBOX_KEY
 import mx.qsistemas.infracciones.utils.FF_CIPHER_DATA
-import mx.qsistemas.infracciones.utils.FF_COLONIES
 import mx.qsistemas.infracciones.utils.FF_ZIP_CODES
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,65 +24,47 @@ import java.net.HttpURLConnection
 import java.util.*
 
 class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContracts.Iterator {
-
     override fun registerAlarm() {
         Alarms()
     }
 
-    override suspend fun syncCatalogs() {
-        /* Sync Catalogs Of Zip Codes */
+    suspend fun getZipCodes(): MutableList<ZipCodes> {
         val zipCodes = mutableListOf<ZipCodes>()
-        val zipCodeJob = GlobalScope.launch(Dispatchers.IO) {
-            Application.firebaseFunctions?.getHttpsCallable(FF_ZIP_CODES)?.call(null)?.addOnCompleteListener {
-                if (!it.isSuccessful) {
-                    val e = it.exception
-                    if (e is FirebaseFunctionsException)
-                        listener.onError(e.details.toString())
-                    else
-                        listener.onError(Application.getContext().getString(R.string.e_without_internet))
-                    return@addOnCompleteListener
-                }
-                if (it.exception == null && it.result != null) {
-                    // Log.e(this.javaClass.simpleName, "result ${it.result?.data}")
-                    val zipList = ((it.result?.data) as ArrayList<HashMap<*, *>>)
-                    zipList.forEach { code ->
-                        zipCodes.add(ZipCodes(0, code["key"].toString(), code["value"].toString(), code["reference"].toString(), code["is_active"].toString().toBoolean()))
-                    }
-                    CatalogsFirebaseManager.saveZipCodes(zipCodes)
-                }
-            }
-        }
-        zipCodeJob.join()
-        /* Sync Catalogs Of Colonies */
-        CatalogsFirebaseManager.deleteColonies()
-        zipCodes.forEach {
-            val coloniesJob = GlobalScope.launch(Dispatchers.IO) {
-                syncColonies(it.value)
-            }
-            coloniesJob.join()
-        }
-    }
-
-    private fun syncColonies(zipCode: String) {
-        /* Sync Catalogs Of Colonies */
-        val request = hashMapOf("zip_code" to zipCode)
-        Application.firebaseFunctions?.getHttpsCallable(FF_COLONIES)?.call(request)?.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                val e = task.exception
+        val firebase = Application.firebaseFunctions?.getHttpsCallable(FF_ZIP_CODES)?.call(null)?.addOnCompleteListener {
+            if (!it.isSuccessful) {
+                val e = it.exception
                 if (e is FirebaseFunctionsException)
                     listener.onError(e.details.toString())
                 else
                     listener.onError(Application.getContext().getString(R.string.e_without_internet))
                 return@addOnCompleteListener
             }
-            if (task.exception == null && task.result != null) {
+            if (it.exception == null && it.result != null) {
                 // Log.e(this.javaClass.simpleName, "result ${it.result?.data}")
-                val colonyList = ((task.result?.data) as ArrayList<HashMap<*, *>>)
-                val colonies = mutableListOf<Colony>()
-                colonyList.forEach { colony ->
-                    colonies.add(Colony(0, colony["key"].toString(), colony["value"].toString(), colony["reference"].toString(), colony["is_active"].toString().toBoolean()))
+                val zipList = ((it.result?.data) as ArrayList<HashMap<*, *>>)
+                zipList.forEach { code ->
+                    zipCodes.add(ZipCodes(0, code["key"].toString(), code["value"].toString(), code["reference"].toString(), code["is_active"].toString().toBoolean()))
+                    Log.d("FBASE-ZIP", code["value"].toString())
                 }
-                CatalogsFirebaseManager.saveColonies(colonies)
+            }
+        }
+        firebase?.await()
+        return zipCodes
+    }
+
+    suspend fun insertZipCodes(zipCodes: MutableList<ZipCodes>): Boolean {
+        return CatalogsFirebaseManager.saveZipCodes(zipCodes)
+    }
+
+    override suspend fun syncCatalogs() {
+        /* Sync Catalogs Of Zip Codes */
+        var zipCodes: MutableList<ZipCodes>
+        GlobalScope.launch(Dispatchers.IO) {
+            zipCodes = getZipCodes()
+            if (insertZipCodes(zipCodes)) {
+                Log.d("FBASE", "Codigos postales insertados de manera correcta. Size: ${zipCodes.size}")
+            } else {
+                Log.d("FBASE", "Error al insertar codigos postales")
             }
         }
     }

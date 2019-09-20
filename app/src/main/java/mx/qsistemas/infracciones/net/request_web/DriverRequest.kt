@@ -16,5 +16,11 @@ data class DriverRequest(
         val paternal: String? = null,
 
         @field:SerializedName("maternal")
-        val maternal: String? = null
+        val maternal: String? = null,
+
+        @field:SerializedName("business_name")
+        val business_name: String? =null,
+
+        @field:SerializedName("email")
+        val email:String? =null
 )

@@ -7,8 +7,10 @@ import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
@@ -36,7 +38,10 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         binding = DataBindingUtil.setContentView(this, R.layout.activity_log_in)
         binding.btnLogIn.setOnClickListener(this)
         iterator.registerAlarm()
-        iterator.syncCatalogs()
+
+        lifecycleScope.launch {
+            iterator.syncCatalogs()
+        }
         /* Validate internet connection */
         if (Validator.isNetworkEnable(Application.getContext())) {
             /* If user doesn't config the device, open Configuration Dialog */

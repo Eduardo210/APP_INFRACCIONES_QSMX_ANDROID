@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -46,7 +47,7 @@ import java.util.concurrent.TimeUnit
 private const val ARG_IS_CREATION = "is_creation"
 
 class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener, IPaymentsTransfer.TransactionListener,
-        DetailPaymentCallback {
+        DetailPaymentCallback, RadioGroup.OnCheckedChangeListener {
 
     private val format = SimpleDateFormat("yyyy-MM-dd")
     private val CURRENT_DATE = format.parse(format.format(Date()))
@@ -94,6 +95,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
         binding.edtTaxDenomination.setText(SingletonInfraction.payerTaxDenomination)
         binding.edtPayerRfc.setText(SingletonInfraction.payerRfc)
         binding.edtPayerEmail.setText(SingletonInfraction.payerEmail)
+        binding.rdgGenerateBill.setOnCheckedChangeListener(this)
     }
 
     override fun onClick(p0: View?) {
@@ -123,6 +125,28 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
                     builder.show()
                 }
             }
+        }
+    }
+
+    override fun onCheckedChanged(p0: RadioGroup?, checkedId: Int) {
+        when (checkedId) {
+            R.id.rdb_generate_yes -> {
+                dataBilling(true)
+                SingletonInfraction.isGenerateBill = true
+            }
+
+            R.id.rdb_generate_no -> {
+                dataBilling(false)
+                SingletonInfraction.isGenerateBill = false
+            }
+        }
+    }
+
+    private fun dataBilling(show: Boolean) {
+        if (show) {
+            binding.constrainedBill.visibility = View.VISIBLE
+        } else {
+            binding.constrainedBill.visibility = View.GONE
         }
     }
 

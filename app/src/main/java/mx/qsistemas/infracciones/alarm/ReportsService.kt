@@ -71,7 +71,7 @@ class ReportsService : JobService() {
                     val requestPerson = DriverRequest("", personInfo.name, personInfo.rfc, personInfo.paternal, personInfo.maternal)
                     // Get payer information
                     val payerInfo = SendInfractionManagerWeb.getPayerInformation(it.id)
-                    val requestPayer = DriverRequest("", payerInfo.name, payerInfo.rfc, payerInfo.paternal, payerInfo.maternal)
+                    val requestPayer = DriverRequest("", payerInfo.name, payerInfo.rfc, payerInfo.paternal, payerInfo.maternal, payerInfo.business_name, payerInfo.email)
                     //Get vehicle information of infraction
                     val vehicleInfraction = SendInfractionManagerWeb.getVehicleInformation(it.id)
                     // Get the capture lines

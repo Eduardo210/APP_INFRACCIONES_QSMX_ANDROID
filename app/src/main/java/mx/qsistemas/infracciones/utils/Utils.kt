@@ -186,6 +186,21 @@ class Utils {
             return datestring
         }
 
+        fun parseJsonFromFile(file: File): String {
+            var json = ""
+            try {
+                val inputStream = file.inputStream()
+                val size = inputStream.available()
+                val buffer = ByteArray(size)
+                inputStream.read(buffer)
+                inputStream.close()
+                json = String(buffer, Charsets.UTF_8)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            return json
+        }
+
         private fun getIdCondensed(folio: String): String {
             val idInfraction = folio.toUpperCase()
             var c: String

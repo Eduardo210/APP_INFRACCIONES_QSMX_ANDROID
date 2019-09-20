@@ -2,6 +2,8 @@ package mx.qsistemas.infracciones.modules.login
 
 import android.util.Log
 import com.google.firebase.functions.FirebaseFunctionsException
+import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -9,17 +11,19 @@ import kotlinx.coroutines.tasks.await
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
+import mx.qsistemas.infracciones.db_web.entities.firebase_replica.City
+import mx.qsistemas.infracciones.db_web.entities.firebase_replica.Colony
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.ZipCodes
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.net.NetworkApi
+import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.result_web.LogInResult
-import mx.qsistemas.infracciones.utils.BBOX_KEY
-import mx.qsistemas.infracciones.utils.FF_CIPHER_DATA
-import mx.qsistemas.infracciones.utils.FF_ZIP_CODES
+import mx.qsistemas.infracciones.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.net.HttpURLConnection
 import java.util.*
 
@@ -28,43 +32,27 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
         Alarms()
     }
 
-    suspend fun getZipCodes(): MutableList<ZipCodes> {
-        val zipCodes = mutableListOf<ZipCodes>()
-        val firebase = Application.firebaseFunctions?.getHttpsCallable(FF_ZIP_CODES)?.call(null)?.addOnCompleteListener {
-            if (!it.isSuccessful) {
-                val e = it.exception
-                if (e is FirebaseFunctionsException)
-                    listener.onError(e.details.toString())
-                else
-                    listener.onError(Application.getContext().getString(R.string.e_without_internet))
-                return@addOnCompleteListener
-            }
-            if (it.exception == null && it.result != null) {
-                // Log.e(this.javaClass.simpleName, "result ${it.result?.data}")
-                val zipList = ((it.result?.data) as ArrayList<HashMap<*, *>>)
-                zipList.forEach { code ->
-                    zipCodes.add(ZipCodes(0, code["key"].toString(), code["value"].toString(), code["reference"].toString(), code["is_active"].toString().toBoolean()))
-                    Log.d("FBASE-ZIP", code["value"].toString())
-                }
-            }
-        }
-        firebase?.await()
-        return zipCodes
-    }
-
-    suspend fun insertZipCodes(zipCodes: MutableList<ZipCodes>): Boolean {
-        return CatalogsFirebaseManager.saveZipCodes(zipCodes)
-    }
-
     override suspend fun syncCatalogs() {
         /* Sync Catalogs Of Zip Codes */
         var zipCodes: MutableList<ZipCodes>
+        var colonies: MutableList<Colony>
+        var cities: MutableList<City>
         GlobalScope.launch(Dispatchers.IO) {
             zipCodes = getZipCodes()
             if (insertZipCodes(zipCodes)) {
-                Log.d("FBASE", "Codigos postales insertados de manera correcta. Size: ${zipCodes.size}")
+                colonies = getColonies()
+                if (insertColonies(colonies)) {
+                    cities = getCities()
+                    if (insertCities(cities)) {
+                        listener.onCatalogsDownloaded()
+                    } else {
+                        listener.onError("Error descargando municipios")
+                    }
+                } else {
+                    listener.onError("Error descargando colonias")
+                }
             } else {
-                Log.d("FBASE", "Error al insertar codigos postales")
+                listener.onError("Error descargando códigos postales")
             }
         }
     }
@@ -116,4 +104,76 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             }
         }
     }
+
+    private suspend fun getZipCodes(): MutableList<ZipCodes> {
+        val zipCodes = mutableListOf<ZipCodes>()
+        val firebase = Application.firebaseFunctions?.getHttpsCallable(FF_ZIP_CODES)?.call(null)?.addOnCompleteListener {
+            if (!it.isSuccessful) {
+                val e = it.exception
+                if (e is FirebaseFunctionsException)
+                    listener.onError(e.details.toString())
+                else
+                    listener.onError("Error descargando códigos postales")
+                return@addOnCompleteListener
+            }
+            if (it.exception == null && it.result != null) {
+                val zipList = ((it.result?.data) as ArrayList<HashMap<*, *>>)
+                zipList.forEach { code ->
+                    zipCodes.add(ZipCodes(0, code["key"].toString(), code["value"].toString(), code["reference"].toString(), code["is_active"].toString().toBoolean()))
+                }
+            }
+        }
+        firebase?.await()
+        return zipCodes
+    }
+
+    private suspend fun getColonies(): MutableList<Colony> {
+        val colonies = mutableListOf<Colony>()
+        val reference = Application.firebaseStorage?.reference?.child("documents/colonias.json")
+        val jsonFile = File.createTempFile("tempColonies", "json")
+        val firestore = reference?.getFile(jsonFile)?.addOnSuccessListener {
+            val jsonString = Utils.parseJsonFromFile(jsonFile)
+            val readColonies = Gson().fromJson(jsonString, Array<ColonyJson>::class.java).toMutableList()
+            readColonies.forEach {
+                colonies.add(Colony(0, it.key, it.value, it.reference, it.isActive))
+            }
+        }?.addOnFailureListener {
+            listener.onError("Error descargando colonias")
+        }
+        firestore?.await()
+        return colonies
+    }
+
+    private suspend fun getCities(): MutableList<City> {
+        val cities = mutableListOf<City>()
+        val firestore = Application.firestore?.collection(FS_COL_CITIES)?.get()?.addOnSuccessListener {
+            if (it != null && !it.isEmpty) {
+                it.documents.forEach { doc ->
+                    val data = doc.toObject(Townships::class.java)!!
+                    cities.add(City(0, doc.id, data.value, data.reference?.id
+                            ?: "", data.is_active))
+                }
+            }
+        }?.addOnFailureListener {
+            listener.onError(it.message
+                    ?: Application.getContext().getString(R.string.e_firestore_not_available))
+        }
+        firestore?.await()
+        return cities
+    }
+
+    suspend fun insertCities(cities: MutableList<City>): Boolean {
+        return CatalogsFirebaseManager.saveCities(cities)
+    }
+
+    suspend fun insertZipCodes(zipCodes: MutableList<ZipCodes>): Boolean {
+        return CatalogsFirebaseManager.saveZipCodes(zipCodes)
+    }
+
+    suspend fun insertColonies(colonies: MutableList<Colony>): Boolean {
+        return CatalogsFirebaseManager.saveColonies(colonies)
+    }
+
+    class ColonyJson(@SerializedName("key") val key: String, @SerializedName("value") val value: String,
+                     @SerializedName("reference") val reference: String, @SerializedName("is_active") val isActive: Boolean)
 }

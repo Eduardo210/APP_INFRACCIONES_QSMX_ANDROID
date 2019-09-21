@@ -11,6 +11,9 @@ interface ColonyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(list: MutableList<Colony>)
 
+    @Query("SELECT DISTINCT * FROM colony where reference = :zipCode ORDER BY value ASC")
+    fun selectByZipCode(zipCode: Int): MutableList<Colony>
+
     @Query("DELETE FROM colony")
     fun deleteAll()
 }

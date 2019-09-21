@@ -2,8 +2,9 @@ package mx.qsistemas.infracciones.modules.create.fr_infraction
 
 import android.widget.ArrayAdapter
 import com.google.firebase.firestore.DocumentReference
+import mx.qsistemas.infracciones.db_web.entities.firebase_replica.Colony
+import mx.qsistemas.infracciones.db_web.entities.firebase_replica.ZipCodes
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.GenericSubCatalog
 
 class InfractionContracts {
     interface Presenter {
@@ -23,15 +24,15 @@ class InfractionContracts {
 
     interface Iterator {
         fun getZipCodes()
-        fun getColonies(reference: DocumentReference?)
+        fun getColonies(reference: String)
         fun getArticlesAdapter()
         fun getFractionAdapter(reference: DocumentReference?)
         fun getRetainedDocAdapter()
         fun getDispositionAdapter()
         fun saveNewArticle(posArticle: Int, posFraction: Int)
         fun saveTownship()
-        fun getPositionZipCode(obj: GenericSubCatalog): Int
-        fun getPositionColony(obj: GenericSubCatalog): Int
+        fun getPositionZipCode(obj: ZipCodes): Int
+        fun getPositionColony(obj: Colony): Int
         fun getPositionRetainedDoc(obj: GenericCatalog): Int
         fun getPositionDisposition(obj: GenericCatalog): Int
         fun getAddressFromCoordinates(lat: Double, lon: Double)

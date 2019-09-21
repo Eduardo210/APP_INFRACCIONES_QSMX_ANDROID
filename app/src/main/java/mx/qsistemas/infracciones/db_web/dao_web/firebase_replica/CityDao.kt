@@ -11,6 +11,9 @@ interface CityDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(list: MutableList<City>)
 
+    @Query("SELECT DISTINCT * FROM city WHERE reference LIKE :reference ORDER BY value ASC")
+    fun selectByStateReference(reference: String): MutableList<City>
+
     @Query("DELETE FROM city")
     fun deleteAll()
 }

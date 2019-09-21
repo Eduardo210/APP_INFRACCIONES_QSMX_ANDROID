@@ -15,11 +15,6 @@ object SingletonTicket {
     var colonyOffender: String = "-"
     var stateOffender: String = "-"
 
-    var completeNamePayer: String = ""
-    var payerTaxDenomination: String = ""
-    var payerRfc: String = ""
-    var payerEmail: String = ""
-
     var noLicenseOffender: String = "-"
     var typeLicenseOffender: String = "-"
     var stateLicenseOffender: String = "-"
@@ -71,11 +66,6 @@ object SingletonTicket {
         noIntOffender = "-"
         colonyOffender = "-"
         stateOffender = "-"
-
-        completeNamePayer = ""
-        payerTaxDenomination = ""
-        payerRfc = ""
-        payerEmail = ""
 
         noLicenseOffender = "-"
         typeLicenseOffender = "-"

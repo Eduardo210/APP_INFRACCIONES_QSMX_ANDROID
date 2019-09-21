@@ -7,73 +7,47 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.net.catalogs.*
+import mx.qsistemas.infracciones.db_web.entities.firebase_replica.Colony
+import mx.qsistemas.infracciones.db_web.entities.firebase_replica.ZipCodes
+import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
+import mx.qsistemas.infracciones.net.catalogs.Articles
+import mx.qsistemas.infracciones.net.catalogs.Fractions
+import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
+import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.*
 import java.util.*
 
 class InfractionIterator(val listener: InfractionContracts.Presenter) : InfractionContracts.Iterator {
-    internal lateinit var zipCodesList: MutableList<GenericSubCatalog>
-    internal lateinit var coloniesList: MutableList<GenericSubCatalog>
+    internal lateinit var zipCodesList: MutableList<ZipCodes>
+    internal lateinit var coloniesList: MutableList<Colony>
     internal lateinit var articlesList: MutableList<Articles>
     internal lateinit var fractionList: MutableList<Fractions>
     internal lateinit var retainedDocList: MutableList<GenericCatalog>
     internal lateinit var dispositionList: MutableList<GenericCatalog>
 
     override fun getZipCodes() {
-        Application.firestore?.collection(FS_COL_TERMINALS)?.document(Utils.getImeiDevice(Application.getContext()))?.get()?.addOnSuccessListener {
-            if (it == null) {
-                listener.onError(Application.getContext().getString(R.string.e_firestore_not_available))
-            } else {
-                val cityReference = it["city"] as DocumentReference
-                Application.firestore?.collection(FS_COL_ZIP_CODES)?.whereEqualTo("reference", cityReference)?.whereEqualTo("is_active", true)?.addSnapshotListener { snapshot, exception ->
-                    if (exception != null) {
-                        listener.onError(exception.message
-                                ?: Application.getContext().getString(R.string.e_firestore_not_available))
-                    }
-                    zipCodesList = mutableListOf()
-                    zipCodesList.add(GenericSubCatalog("Selecciona...", cityReference, true))
-                    val list = mutableListOf<String>()
-                    list.add("Selecciona...")
-                    if (snapshot != null && !snapshot.isEmpty) {
-                        for (document in snapshot.documents) {
-                            val data = document.toObject(GenericSubCatalog::class.java)!!
-                            data.childReference = document.reference
-                            data.value = document.id
-                            list.add(data.value)
-                            zipCodesList.add(data)
-                        }
-                    }
-                    val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-                    adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-                    listener.onZipCodesReady(adapter)
-                }
-            }
+        zipCodesList = CatalogsFirebaseManager.getZipCodesByCityId("%${Application.prefs?.loadData(R.string.sp_id_township, "")!!}%")
+        zipCodesList.add(0, ZipCodes(0, "", "Selecciona...", "", true))
+        val list = mutableListOf<String>()
+        zipCodesList.forEach {
+            list.add(it.value)
         }
+        val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+        listener.onZipCodesReady(adapter)
     }
 
-    override fun getColonies(reference: DocumentReference?) {
-        Application.firestore?.collection(FS_COL_COLONIES)?.whereEqualTo("reference", reference)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            coloniesList = mutableListOf()
-            coloniesList.add(GenericSubCatalog("Selecciona...", reference, true))
-            val list = mutableListOf<String>()
-            list.add("Selecciona...")
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (document in snapshot.documents) {
-                    val data = document.toObject(GenericSubCatalog::class.java)!!
-                    data.childReference = document.reference
-                    list.add(data.value)
-                    coloniesList.add(data)
-                }
-            }
-            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-            listener.onColoniesReady(adapter)
+    override fun getColonies(reference: String) {
+        coloniesList = CatalogsFirebaseManager.getColoniesByZipCode(if (reference.isBlank()) 0 else reference.toInt())
+        val list = mutableListOf<String>()
+        coloniesList.add(0, Colony(0, "", "Selecciona...", reference, true))
+        coloniesList.forEach {
+            list.add(it.value)
         }
+        val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+        listener.onColoniesReady(adapter)
     }
 
     override fun getArticlesAdapter() {
@@ -178,7 +152,8 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     }
 
     override fun saveTownship() {
-        Application.firestore?.collection(FS_COL_CITIES)?.document(SingletonInfraction.zipCodeInfraction.reference!!.id)?.get()?.addOnSuccessListener { townshipSnapshot ->
+        val cityReference = SingletonInfraction.zipCodeInfraction.reference.split("/")
+        Application.firestore?.collection(FS_COL_CITIES)?.document(cityReference.last())?.get()?.addOnSuccessListener { townshipSnapshot ->
             if (townshipSnapshot == null) {
                 Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
             } else {
@@ -198,18 +173,18 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
         }
     }
 
-    override fun getPositionZipCode(obj: GenericSubCatalog): Int {
+    override fun getPositionZipCode(obj: ZipCodes): Int {
         for (i in 0 until zipCodesList.size) {
-            if (zipCodesList[i].childReference == obj.childReference) {
+            if (zipCodesList[i].key == obj.key) {
                 return i
             }
         }
         return 0
     }
 
-    override fun getPositionColony(obj: GenericSubCatalog): Int {
+    override fun getPositionColony(obj: Colony): Int {
         for (i in 0 until coloniesList.size) {
-            if (coloniesList[i].childReference == obj.childReference) {
+            if (coloniesList[i].key == obj.key) {
                 return i
             }
         }

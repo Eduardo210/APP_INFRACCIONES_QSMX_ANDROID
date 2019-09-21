@@ -33,7 +33,7 @@ import mx.qsistemas.infracciones.singletons.SingletonInfraction
  *
  */
 class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton.OnCheckedChangeListener, AdapterView.OnItemSelectedListener,
-        OnClickListener{
+        OnClickListener {
 
     private var isTicketCopy: Boolean = false
     private val iterator = lazy { OffenderIterator(this) }
@@ -136,7 +136,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
 
     override fun onColoniesReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnColony.adapter = adapter
-        binding.lytOffender.spnColony.setSelection(iterator.value.getPositionColony(SingletonInfraction.colonnyInfraction))
+        binding.lytOffender.spnColony.setSelection(iterator.value.getPositionColony(SingletonInfraction.colonyOffender))
     }
 
     override fun onTypeLicenseReady(adapter: ArrayAdapter<String>) {
@@ -169,11 +169,11 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             }
             binding.lytOffender.spnTownship.id -> {
                 SingletonInfraction.townshipOffender = iterator.value.townshipList[p2]
-                iterator.value.getZipCodesList(SingletonInfraction.townshipOffender.childReference)
+                iterator.value.getZipCodesList(SingletonInfraction.townshipOffender.key)
             }
             binding.lytOffender.spnZipCode.id -> {
                 SingletonInfraction.zipCodeOffender = iterator.value.zipCodesList[p2]
-                iterator.value.getColoniesList(SingletonInfraction.zipCodeOffender.childReference)
+                iterator.value.getColoniesList(SingletonInfraction.zipCodeOffender.key)
             }
             binding.lytOffender.spnColony.id -> {
                 SingletonInfraction.colonyOffender = iterator.value.coloniesList[p2]
@@ -268,15 +268,15 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 onError(getString(R.string.e_state_offender))
                                 1
                             }
-                            SingletonInfraction.townshipOffender.childReference == null -> {
+                            SingletonInfraction.townshipOffender.key.isBlank() -> {
                                 isValid = false
                                 onError(getString(R.string.e_township_offender))
                             }
-                            SingletonInfraction.zipCodeOffender.childReference == null -> {
+                            SingletonInfraction.zipCodeOffender.key.isBlank() -> {
                                 isValid = false
                                 onError(getString(R.string.e_zip_code))
                             }
-                            SingletonInfraction.colonyOffender.childReference == null -> {
+                            SingletonInfraction.colonyOffender.key.isBlank() -> {
                                 isValid = false
                                 onError(getString(R.string.e_colony_offender))
                             }
@@ -316,9 +316,9 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         var isAnswered = false
         when {
             SingletonInfraction.stateOffender.documentReference != null -> isAnswered = true
-            SingletonInfraction.townshipOffender.childReference != null -> isAnswered = true
-            SingletonInfraction.zipCodeOffender.childReference != null -> isAnswered = true
-            SingletonInfraction.colonyOffender.childReference != null -> isAnswered = true
+            SingletonInfraction.townshipOffender.key.isNotBlank() -> isAnswered = true
+            SingletonInfraction.zipCodeOffender.key.isNotBlank() -> isAnswered = true
+            SingletonInfraction.colonyOffender.key.isNotBlank() -> isAnswered = true
             SingletonInfraction.streetOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noExtOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noIntOffender.isNotEmpty() -> isAnswered = true

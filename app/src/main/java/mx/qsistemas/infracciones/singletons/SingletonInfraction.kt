@@ -1,5 +1,8 @@
 package mx.qsistemas.infracciones.singletons
 
+import mx.qsistemas.infracciones.db_web.entities.firebase_replica.City
+import mx.qsistemas.infracciones.db_web.entities.firebase_replica.Colony
+import mx.qsistemas.infracciones.db_web.entities.firebase_replica.ZipCodes
 import mx.qsistemas.infracciones.net.catalogs.*
 import mx.qsistemas.infracciones.net.result_web.detail_result.CaptureLinesItem
 
@@ -22,8 +25,8 @@ object SingletonInfraction {
     var isNewColor: Boolean = false
 
     /* Infracion Information */
-    var zipCodeInfraction: GenericSubCatalog = GenericSubCatalog()
-    var colonnyInfraction: GenericSubCatalog = GenericSubCatalog()
+    var zipCodeInfraction: ZipCodes = ZipCodes(0, "", "Selecciona...", "", true)
+    var colonnyInfraction: Colony = Colony(0, "", "Selecciona...", "", true)
     var streetInfraction: String = ""
     var betweenStreet1: String = ""
     var betweenStreet2: String = ""
@@ -45,9 +48,9 @@ object SingletonInfraction {
     var lastMotherName: String = "Responsable"
     var rfcOffenfer: String = ""
     var stateOffender: GenericCatalog = GenericCatalog()
-    var townshipOffender: Townships = Townships()
-    var zipCodeOffender: GenericSubCatalog = GenericSubCatalog()
-    var colonyOffender: GenericSubCatalog = GenericSubCatalog()
+    var townshipOffender: City = City(0, "", "Selecciona...", "", true)
+    var zipCodeOffender: ZipCodes = ZipCodes(0, "", "Selecciona...", "", true)
+    var colonyOffender: Colony = Colony(0, "", "Selecciona...", "", true)
     var streetOffender: String = ""
     var noExtOffender: String = ""
     var noIntOffender: String = ""
@@ -94,8 +97,8 @@ object SingletonInfraction {
         isNewColor = false
 
         /* Infraction Information Reset */
-        zipCodeInfraction = GenericSubCatalog()
-        colonnyInfraction = GenericSubCatalog()
+        zipCodeInfraction = ZipCodes(0, "", "Selecciona...", "", true)
+        colonnyInfraction = Colony(0, "", "Selecciona...", "", true)
         streetInfraction = ""
         betweenStreet1 = ""
         betweenStreet2 = ""
@@ -115,9 +118,9 @@ object SingletonInfraction {
         lastMotherName = "Responsable"
         rfcOffenfer = ""
         stateOffender = GenericCatalog()
-        townshipOffender = Townships()
-        zipCodeOffender = GenericSubCatalog()
-        colonyOffender = GenericSubCatalog()
+        townshipOffender = City(0, "", "Selecciona...", "", true)
+        zipCodeOffender = ZipCodes(0, "", "Selecciona...", "", true)
+        colonyOffender = Colony(0, "", "Selecciona...", "", true)
         streetOffender = ""
         noExtOffender = ""
         noIntOffender = ""

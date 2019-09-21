@@ -226,7 +226,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         when (p0?.id) {
             binding.spnZipCode.id -> {
                 SingletonInfraction.zipCodeInfraction = iterator.value.zipCodesList[p2]
-                iterator.value.getColonies(iterator.value.zipCodesList[p2].childReference)
+                iterator.value.getColonies(iterator.value.zipCodesList[p2].key)
             }
             binding.spnColony.id -> {
                 SingletonInfraction.colonnyInfraction = iterator.value.coloniesList[p2]

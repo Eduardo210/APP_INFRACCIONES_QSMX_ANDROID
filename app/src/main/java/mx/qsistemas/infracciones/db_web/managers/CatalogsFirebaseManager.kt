@@ -1,6 +1,7 @@
 package mx.qsistemas.infracciones.db_web.managers
 
 import android.annotation.SuppressLint
+import android.os.AsyncTask
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Source
@@ -53,5 +54,32 @@ object CatalogsFirebaseManager {
         }
         insert.join()
         return true
+    }
+
+    fun getZipCodesByCityId(idCity: String): MutableList<ZipCodes> {
+        return object : AsyncTask<Void, Void, MutableList<ZipCodes>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<ZipCodes> {
+                return Application.m_database_web?.zipCodeDao()?.selectByCityId(idCity)
+                        ?: mutableListOf()
+            }
+        }.execute().get()
+    }
+
+    fun getColoniesByZipCode(zipCode: Int): MutableList<Colony> {
+        return object : AsyncTask<Void, Void, MutableList<Colony>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<Colony> {
+                return Application.m_database_web?.colonyDao()?.selectByZipCode(zipCode)
+                        ?: mutableListOf()
+            }
+        }.execute().get()
+    }
+
+    fun getCitiesByStateReference(reference: String): MutableList<City> {
+        return object : AsyncTask<Void, Void, MutableList<City>>() {
+            override fun doInBackground(vararg p0: Void?): MutableList<City> {
+                return Application.m_database_web?.cityDao()?.selectByStateReference(reference)
+                        ?: mutableListOf()
+            }
+        }.execute().get()
     }
 }

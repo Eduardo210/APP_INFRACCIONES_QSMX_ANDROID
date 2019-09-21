@@ -136,12 +136,12 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                         SingletonInfraction.streetOffender,
                         SingletonInfraction.noExtOffender,
                         SingletonInfraction.noIntOffender,
-                        SingletonInfraction.townshipOffender.childReference?.id ?: "",
-                        if (SingletonInfraction.townshipOffender.childReference != null) SingletonInfraction.townshipOffender.value else "",
-                        SingletonInfraction.colonyOffender.childReference?.id ?: "",
-                        if (SingletonInfraction.colonyOffender.childReference != null) SingletonInfraction.colonyOffender.value else "",
-                        SingletonInfraction.zipCodeOffender.childReference?.id ?: "",
-                        if (SingletonInfraction.zipCodeOffender.childReference != null) SingletonInfraction.zipCodeOffender.value else "",
+                        SingletonInfraction.townshipOffender.key,
+                        if (SingletonInfraction.townshipOffender.key.isNotBlank()) SingletonInfraction.townshipOffender.value else "",
+                        SingletonInfraction.colonyOffender.key,
+                        if (SingletonInfraction.colonyOffender.key.isNotBlank()) SingletonInfraction.colonyOffender.value else "",
+                        SingletonInfraction.zipCodeOffender.key,
+                        if (SingletonInfraction.zipCodeOffender.key.isNotBlank()) SingletonInfraction.zipCodeOffender.value else "",
                         SingletonInfraction.idNewPersonInfraction.toString(),
                         SingletonInfraction.stateOffender.documentReference?.id ?: "",
                         if (SingletonInfraction.stateOffender.documentReference != null) SingletonInfraction.stateOffender.value else "")
@@ -177,9 +177,9 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     SingletonInfraction.betweenStreet2,
                     SingletonInfraction.townshipInfraction.childReference?.id ?: "",
                     SingletonInfraction.townshipInfraction.value,
-                    SingletonInfraction.colonnyInfraction.childReference?.id ?: "",
+                    SingletonInfraction.colonnyInfraction.key,
                     SingletonInfraction.colonnyInfraction.value,
-                    SingletonInfraction.zipCodeInfraction.childReference?.id ?: "",
+                    SingletonInfraction.zipCodeInfraction.key,
                     SingletonInfraction.zipCodeInfraction.value,
                     SingletonInfraction.stateInfraction.documentReference?.id ?: "",
                     SingletonInfraction.stateInfraction.value,
@@ -279,8 +279,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
         }
-        if (SingletonInfraction.noCirculationCard.isNotEmpty()) {
-            SingletonTicket.noLicenseOffender = SingletonInfraction.noCirculationCard
+        if (SingletonInfraction.noLicenseOffender.isNotEmpty()) {
+            SingletonTicket.noLicenseOffender = SingletonInfraction.noLicenseOffender
         }
         if (SingletonInfraction.typeLicenseOffender.documentReference != null) {
             SingletonTicket.typeLicenseOffender = SingletonInfraction.typeLicenseOffender.value
@@ -288,10 +288,6 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         if (SingletonInfraction.licenseIssuedInOffender.documentReference != null) {
             SingletonTicket.stateLicenseOffender = SingletonInfraction.licenseIssuedInOffender.value
         }
-        SingletonTicket.completeNamePayer = SingletonInfraction.payerName + " " + SingletonInfraction.payerLastName + " " + SingletonInfraction.payerMotherLastName
-        SingletonTicket.payerTaxDenomination = SingletonInfraction.payerTaxDenomination
-        SingletonTicket.payerRfc = SingletonInfraction.payerRfc
-        SingletonTicket.payerEmail = SingletonInfraction.payerEmail
         SingletonTicket.brandVehicle = SingletonInfraction.brandVehicle.value
         if (SingletonInfraction.subBrandVehicle.reference != null) {
             SingletonTicket.subBrandVehicle = SingletonInfraction.subBrandVehicle.value

@@ -72,19 +72,6 @@ class Ticket {
             else
                 printTest.put(getPrintObject("\n\n", "2", "left", "0"))
 
-            /* Datos del pagador */
-            if (SingletonTicket.completeNamePayer.isNotEmpty()) {
-                printTest.put(getPrintObject("Datos del pagador:\n\n", "2", "left", "1"))
-                printTest.put(getPrintObject("${SingletonTicket.completeNamePayer}\n", "2", "center", "0"))
-                if (SingletonTicket.payerTaxDenomination.isNotEmpty())
-                    printTest.put(getPrintObject("Denominación fiscal: ${SingletonTicket.payerTaxDenomination}\n", "2", "left", "0"))
-                if (SingletonTicket.payerRfc.isNotEmpty())
-                    printTest.put(getPrintObject("RFC: ${SingletonTicket.payerRfc}\n", "2", "left", "0"))
-                if (SingletonTicket.payerEmail.isNotEmpty())
-                    printTest.put(getPrintObject("Correo electrónico: ${SingletonTicket.payerEmail}\n", "2", "left", "0"))
-                printTest.put(getPrintObject("\n\n", "2", "left", "0"))
-            }
-
             // Características del vehículo
             printTest.put(getPrintObject("Características del vehículo:\n\n", "2", "left", "1"))
             printTest.put(getPrintObject("Marca: ${SingletonTicket.brandVehicle}\n", "2", "left", "0"))

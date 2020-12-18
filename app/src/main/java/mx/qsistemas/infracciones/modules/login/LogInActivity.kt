@@ -20,7 +20,7 @@ import mx.qsistemas.infracciones.dialogs.InitialConfigurationDialog
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
-import mx.qsistemas.infracciones.net.catalogs.RemoteVersion
+import mx.qsistemas.infracciones.net.catalogs.Versions
 import mx.qsistemas.infracciones.utils.*
 import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
@@ -67,9 +67,10 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
 
     override fun onConfigurationSuccessful(idTownship: String, prefix: String) {
         showLoader(getString(R.string.l_config_terminal))
-        PaymentsTransfer.configDevice(idTownship, prefix)
+        PaymentsTransfer.configDevice(1/*idTownship*/, prefix, 2, 1, "13F0A294679546195AD092C4E5937A41",
+                PTX_VOUCHER_TITLE, PTX_VOUCHER_ADDRESS_1, PTX_VOUCHER_ADDRESS_2)
         Handler().postDelayed({
-            val loadKeyData = LoadKeyData(PTX_SERIAL_NUMBER, PTX_MERCHANT_ID, PTX_USER, PTX_PSW)
+            val loadKeyData = LoadKeyData(PTX_SERIAL_NUMBER, PTX_MERCHANT_ID, PTX_MAIN, PTX_PSW)
             PaymentsTransfer.loadKeyDevice(this, loadKeyData, object : IPaymentsTransfer.LoadKeyListener {
                 override fun onLoadKey(success: Boolean, value: String) {
                     if (!success) {
@@ -100,27 +101,24 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
     }
 
     override fun validateVersion() {
-        Application.remoteConfig?.fetch(0)?.addOnCompleteListener {
+        Application.firestore?.collection(FS_COL_APP_VERSIONS)?.document(FS_DOC_VERSION)?.get()?.addOnCompleteListener {
             if (it.isSuccessful) {
-                Application.remoteConfig?.activateFetched()
-            }
-            Log.i(this.javaClass.simpleName, "Fetch Succeed?: ${it.result}")
-        }
-        val versionJson = Application.remoteConfig?.getString(getString(R.string.rc_version)) ?: ""
-        if (versionJson.isNotEmpty()) {
-            val versionData = Gson().fromJson(versionJson, RemoteVersion::class.java)
-            if (versionData.version != BuildConfig.VERSION_NAME) {
-                val builder = AlertDialogHelper.getGenericBuilder(
-                        getString(R.string.w_dialog_update), getString(R.string.w_need_to_update), this
-                )
-                builder.setPositiveButton("Aceptar") { _, _ ->
-                    try {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")))
-                    } catch (anfe: android.content.ActivityNotFoundException) {
-                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(versionData.url)))
+                val doc = it.result?.toObject(Versions::class.java)!!
+                if (doc.version != BuildConfig.VERSION_NAME) {
+                    val builder = AlertDialogHelper.getGenericBuilder(
+                            getString(R.string.w_dialog_update), getString(R.string.w_need_to_update), this
+                    )
+                    builder.setPositiveButton("Aceptar") { _, _ ->
+                        try {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")))
+                        } catch (anfe: android.content.ActivityNotFoundException) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(doc.url)))
+                        }
                     }
+                    builder.show()
                 }
-                builder.show()
+            } else {
+                Log.e(this.javaClass.simpleName, "Cannot obtain remote version of application")
             }
         }
     }

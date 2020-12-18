@@ -1,6 +1,7 @@
 package mx.qsistemas.infracciones.modules.main
 
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
@@ -15,7 +16,7 @@ import mx.qsistemas.payments_transfer.PaymentsTransfer
 class MainActivity : ActivityHelper(), MainContracts.Presenter {
 
     val router = lazy { MainRouter(this) }
-    private val iterator = lazy { MainIterator(this) }
+    private val iterator by lazy { MainIterator(this) }
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,8 +35,11 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
         PaymentsTransfer.runReversal(this)
         /* Always reconfigure */
         PaymentsTransfer.reconfigure()
+        /* Delete all photos in caché */
+        val cache = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        cache?.delete()
         /* Always validate session */
-        iterator.value.validateSession()
+        iterator.validateSession()
     }
 
     override fun enableHighAccuracyGps() {

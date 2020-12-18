@@ -1,51 +1,50 @@
 {
   "project_info": {
-    "project_number": "51886383811",
-    "firebase_url": "https://honos-7f224.firebaseio.com",
-    "project_id": "honos-7f224",
-    "storage_bucket": "honos-7f224.appspot.com"
+    "project_number": "167497196333",
+    "firebase_url": "https://dei-lucrii-qa.firebaseio.com",
+    "project_id": "dei-lucrii-qa",
+    "storage_bucket": "dei-lucrii-qa.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:51886383811:android:c2657a2cffa97ff1",
+        "mobilesdk_app_id": "1:167497196333:android:7f841505d4b7f9588029a4",
         "android_client_info": {
-          "package_name": "mx.qsistemas.infracciones"
+          "package_name": "mx.qsistemas.incidencias"
         }
       },
       "oauth_client": [
         {
-          "client_id": "51886383811-be7pihcdr3t9g9p4ngr1243k8ql51dan.apps.googleusercontent.com",
+          "client_id": "167497196333-fgoi749ov2dv5embmto07el4cjq30ahj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "mx.qsistemas.infracciones",
+            "package_name": "mx.qsistemas.incidencias",
             "certificate_hash": "7e582200c077255ac174965dca6fe65178f7fe5f"
           }
         },
         {
-          "client_id": "51886383811-0h9q3cl6n31dfqs3dk9kfklfdcj5mhed.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "mx.qsistemas.infracciones",
-            "certificate_hash": "378530d9472a4db5dfd54c9b215ce4874a3e9705"
-          }
-        },
-        {
-          "client_id": "51886383811-253u5qgoal1hjuca90ebcn6n4c92g78g.apps.googleusercontent.com",
+          "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCG0vsug2Ia7rK5OG3jyPw_5yp6YlbC3Og"
+          "current_key": "AIzaSyA7Qfje5xJ660gtTo2TsZ7UJ2dv9lrwT8o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "51886383811-253u5qgoal1hjuca90ebcn6n4c92g78g.apps.googleusercontent.com",
+              "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "167497196333-s71kk5odntrad418hd4cc5eo4hoi85ej.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mx.qsistemas.Cimovil"
+              }
             }
           ]
         }
@@ -53,36 +52,159 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:51886383811:android:1247e0f17bc8a95c",
+        "mobilesdk_app_id": "1:167497196333:android:6ab47b798c9396858029a4",
         "android_client_info": {
-          "package_name": "mx.qsistemas.infracciones_tultitlan"
+          "package_name": "mx.qsistemas.incidencias_san_mateo_atenco"
         }
       },
       "oauth_client": [
         {
-          "client_id": "51886383811-bai8i0bolljcdp06omhr7qffipufilta.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "mx.qsistemas.infracciones_tultitlan",
-            "certificate_hash": "378530d9472a4db5dfd54c9b215ce4874a3e9705"
-          }
-        },
-        {
-          "client_id": "51886383811-253u5qgoal1hjuca90ebcn6n4c92g78g.apps.googleusercontent.com",
+          "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCG0vsug2Ia7rK5OG3jyPw_5yp6YlbC3Og"
+          "current_key": "AIzaSyA7Qfje5xJ660gtTo2TsZ7UJ2dv9lrwT8o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "51886383811-253u5qgoal1hjuca90ebcn6n4c92g78g.apps.googleusercontent.com",
+              "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "167497196333-s71kk5odntrad418hd4cc5eo4hoi85ej.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mx.qsistemas.Cimovil"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167497196333:android:c03ea52207e5f9818029a4",
+        "android_client_info": {
+          "package_name": "mx.qsistemas.incidencias_tepotzotlan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167497196333-7nan6ur34etkp0hh2im6e47oep9c87b7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mx.qsistemas.incidencias_tepotzotlan",
+            "certificate_hash": "7e582200c077255ac174965dca6fe65178f7fe5f"
+          }
+        },
+        {
+          "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7Qfje5xJ660gtTo2TsZ7UJ2dv9lrwT8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "167497196333-s71kk5odntrad418hd4cc5eo4hoi85ej.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mx.qsistemas.Cimovil"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167497196333:android:ad6a4c13940be56a8029a4",
+        "android_client_info": {
+          "package_name": "mx.qsistemas.infracciones"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7Qfje5xJ660gtTo2TsZ7UJ2dv9lrwT8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "167497196333-s71kk5odntrad418hd4cc5eo4hoi85ej.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mx.qsistemas.Cimovil"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167497196333:android:81caa4271844beee8029a4",
+        "android_client_info": {
+          "package_name": "mx.qsistemas.pago_click"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167497196333-p9guls6gu7lo4pvh95pn4fhq1bs6b52j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "mx.qsistemas.pago_click",
+            "certificate_hash": "7e582200c077255ac174965dca6fe65178f7fe5f"
+          }
+        },
+        {
+          "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7Qfje5xJ660gtTo2TsZ7UJ2dv9lrwT8o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167497196333-c7vjcmgtudml3d0uvulakal7qs088se6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "167497196333-s71kk5odntrad418hd4cc5eo4hoi85ej.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "mx.qsistemas.Cimovil"
+              }
             }
           ]
         }

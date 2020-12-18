@@ -19,7 +19,6 @@ import mx.qsistemas.infracciones.databinding.FragmentInfractionListBinding
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.main.MainActivity
-import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.RC_PERMISSION_LOCATION
 import mx.qsistemas.infracciones.utils.Validator
@@ -64,7 +63,6 @@ class InfractionListFr : Fragment(), View.OnClickListener {
                     /* Validate if gps is enable */
                     val lm = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
                     if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && Validator.isHighAccuracyEnable(activity)) {
-                        FirebaseEvents.registerInfractionStarted()
                         SingletonInfraction.cleanSingleton()
                         activity.router.value.presentNewInfraction()
                     } else if (Validator.isMockLocationEnable(activity)) {
@@ -89,7 +87,6 @@ class InfractionListFr : Fragment(), View.OnClickListener {
 
                     override fun onTxVoucherFailed(message: String) {}
                     override fun onTxVoucherPrinted() {
-                        FirebaseEvents.registerReprintVoucher()
                     }
                 })
             }

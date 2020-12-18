@@ -16,6 +16,8 @@ import mx.qsistemas.infracciones.db_web.entities.firebase_replica.Colony
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.ZipCodes
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.net.NetworkApi
+import mx.qsistemas.infracciones.net.catalogs.CipherData
+import mx.qsistemas.infracciones.net.catalogs.CipherDataResult
 import mx.qsistemas.infracciones.net.catalogs.Townships
 import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.result_web.LogInResult
@@ -23,6 +25,7 @@ import mx.qsistemas.infracciones.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.net.HttpURLConnection
 import java.util.*
@@ -58,7 +61,53 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
     }
 
     override fun login(userName: String, psd: String) {
-        val request = hashMapOf("key" to BBOX_KEY, "value" to psd)
+        val requestCipher = CipherData(false, "$userName|$psd")
+        val networkApi = NetworkApi()
+        networkApi.getHonosService().cipherData(requestCipher).enqueue(object : Callback<CipherDataResult> {
+            override fun onResponse(call: Call<CipherDataResult>, response: Response<CipherDataResult>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    val result = response.body()!!.data
+                    val account = LogInRequest(result.value)
+                    networkApi.getNetworkService().login(account).enqueue(object : Callback<LogInResult> {
+                        override fun onFailure(call: Call<LogInResult>, t: Throwable) {
+                            presenter.onError(t.message.toString())
+                        }
+
+                        override fun onResponse(call: Call<LogInResult>, response: Response<LogInResult>) {
+                            when (response.code()) {
+                                HttpURLConnection.HTTP_OK -> {
+                                    Application.prefs?.saveData(R.string.sp_access_token, response.body()?.access_token
+                                            ?: "")
+                                    Application.prefs?.saveDataInt(R.string.sp_id_officer, response.body()?.idPerson
+                                            ?: 0)
+                                    Application.prefs?.saveData(R.string.sp_person_name, response.body()?.nameOfficer
+                                            ?: "")
+                                    Application.prefs?.saveData(R.string.sp_person_f_last_name, response.body()?.lastNameOfficer
+                                            ?: "")
+                                    Application.prefs?.saveData(R.string.sp_person_m_last_name, response.body()?.secLastNameOfficer
+                                            ?: "")
+                                    Application.prefs?.saveData(R.string.sp_person_photo_url, response.body()?.data?.image
+                                            ?: "")
+                                    Application.prefs?.saveDataBool(R.string.sp_has_session, true)
+                                    listener.onLoginSuccessful()
+                                }
+                                HttpURLConnection.HTTP_UNAUTHORIZED -> listener.onError(Application.getContext().getString(R.string.e_user_pss_incorrect))
+                                else -> listener.onError(Application.getContext().getString(R.string.e_other_problem_internet))
+                            }
+                        }
+                    })
+                } else {
+                    listener.onError(Application.getContext().getString(R.string.e_other_problem_internet))
+                }
+            }
+
+            override fun onFailure(call: Call<CipherDataResult>, t: Throwable) {
+                listener.onError(t.message.toString())
+            }
+        })
+
+
+        val request = hashMapOf("key" to BBOX_KEY, "value" to psd, "isEncrypted" to false)
         Application.firebaseFunctions?.getHttpsCallable(FF_CIPHER_DATA)?.call(request)?.addOnCompleteListener {
             if (!it.isSuccessful) {
                 val e = it.exception
@@ -70,9 +119,10 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             }
             if (it.exception == null && it.result != null) {
                 Log.e(this.javaClass.simpleName, "result ${it.result?.data}")
-                val cipher = ((it.result?.data) as HashMap<*, *>)["encrypted"].toString()
-                val request = LogInRequest(userName.trim(), cipher)
-                NetworkApi().getNetworkService().login(request).enqueue(object : Callback<LogInResult> {
+                val cipher = ((it.result?.data) as HashMap<*, *>)["value"].toString()
+                val request = LogInRequest(cipher)
+                val gsonConverter = GsonConverterFactory.create()
+                NetworkApi().getNetworkService(gsonConverter).login(request).enqueue(object : Callback<LogInResult> {
                     override fun onResponse(call: Call<LogInResult>, response: Response<LogInResult>) {
                         when (response.code()) {
                             HttpURLConnection.HTTP_OK -> {

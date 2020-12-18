@@ -13,7 +13,6 @@ import mx.qsistemas.infracciones.db_web.entities.firebase_replica.Colony
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.ZipCodes
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
-import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
@@ -380,8 +379,6 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             )
             //Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
             SaveInfractionManagerWeb.saveOficial(oficial)
-            /* Step 10. Register Event Infraction */
-            FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
             if (notify) listener.onDataSaved()
         }

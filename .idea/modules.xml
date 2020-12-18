@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/APP_INFRACCIONES.iml" filepath="$PROJECT_DIR$/APP_INFRACCIONES.iml" />
-      <module fileurl="file://$PROJECT_DIR$/APP_INFRACCIONES_QSMX_ANDROID.iml" filepath="$PROJECT_DIR$/APP_INFRACCIONES_QSMX_ANDROID.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/payments_transfer/payments_transfer.iml" filepath="$PROJECT_DIR$/payments_transfer/payments_transfer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/APP_INFRACCIONES_QSMX_ANDROID.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/APP_INFRACCIONES_QSMX_ANDROID.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/StudioProjects.APP_INFRACCIONES_QSMX_ANDROID.iml" filepath="$PROJECT_DIR$/.idea/modules/StudioProjects.APP_INFRACCIONES_QSMX_ANDROID.iml" />
     </modules>
   </component>
 </project>

@@ -24,6 +24,7 @@ import mx.qsistemas.infracciones.utils.Ticket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
@@ -50,8 +51,8 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
 
 
     override fun doSearchByFilter(filter: String) {
-
-        NetworkApi().getNetworkService().searchInfraction("Bearer ${(Application.prefs?.loadData(R.string.sp_access_token, "")!!)}", filter).enqueue(object : Callback<SearchResult> {
+        val gsonConverter = GsonConverterFactory.create()
+        NetworkApi().getNetworkService(gsonConverter).searchInfraction("Bearer ${(Application.prefs?.loadData(R.string.sp_access_token, "")!!)}", filter).enqueue(object : Callback<SearchResult> {
             override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val result = response.body()
@@ -89,9 +90,9 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     override fun doSearchByIdInfraction(id: String, origin: Int) {
         val dataToken: HashMap<String, String> = hashMapOf()
         dataToken["token"] = id
-
         Log.d("JSON-SEARCH", dataToken.toString())
-        NetworkApi().getNetworkService().detailInfraction((
+        val gsonConverter = GsonConverterFactory.create()
+        NetworkApi().getNetworkService(gsonConverter).detailInfraction((
                 "Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")}"),
                 dataToken).enqueue(object : Callback<DetailResult> {
             override fun onResponse(call: Call<DetailResult>, response: Response<DetailResult>) {

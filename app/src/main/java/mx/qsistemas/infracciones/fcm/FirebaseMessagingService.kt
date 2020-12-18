@@ -13,7 +13,7 @@ import java.io.File
 
 class FirebaseMessagingService : FirebaseMessagingService() {
 
-    override fun onNewToken(token: String?) {
+    override fun onNewToken(token: String) {
         Application.prefs?.saveData(R.string.sp_firebase_token_push, token ?: "")
         val map = hashMapOf("push_token" to token)
         val imei = Utils.getImeiDevice(Application.getContext())
@@ -24,7 +24,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    override fun onMessageReceived(p0: RemoteMessage?) {
+    override fun onMessageReceived(p0: RemoteMessage) {
         Log.d(this.javaClass.simpleName, "Message Received: ${p0?.data}")
         val idOperation = p0?.data?.get(FCM_TOKEN_OPERATION)?.toInt() ?: -1
         when (idOperation) {

@@ -8,19 +8,17 @@ import android.os.StrictMode
 import android.util.Log
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
-import com.crashlytics.android.Crashlytics
 import com.facebook.stetho.Stetho
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
-import io.fabric.sdk.android.Fabric
+import mx.qsistemas.infracciones.BuildConfig.FIREBASE_ID
 import mx.qsistemas.infracciones.db.AppDatabase
 import mx.qsistemas.infracciones.db_web.AppDatabaseWeb
 import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
@@ -41,8 +39,6 @@ class Application : MultiDexApplication() {
         var m_database_web: AppDatabaseWeb? = null
         var prefs: Preferences? = null
         var firestore: FirebaseFirestore? = null
-        var remoteConfig: FirebaseRemoteConfig? = null
-        var firebaseAnalytics: FirebaseAnalytics? = null
         var firebaseFunctions: FirebaseFunctions? = null
         var firebaseStorage: FirebaseStorage? = null
 
@@ -64,12 +60,11 @@ class Application : MultiDexApplication() {
         /* Granted permission to access to firebaseStorage*/
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
-        /* Initialize crashlytics */
-        Fabric.with(this, Crashlytics())
+        /* Initialize Stetho */
         if (BuildConfig.DEBUG) {
             Stetho.initializeWithDefaults(getContext())
         }
-        /* Create the NotificationChannel, but only on API 26+ because the NotificationChannel class is new and not in the support library*/
+        /* Create the NotificationChannel, but only on API 26+ because the NotificationChannel class is new and not in the support library */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
@@ -84,33 +79,27 @@ class Application : MultiDexApplication() {
     }
 
     private fun initializeFirebaseComponents() {
-        /* Initialize Firebase Firestore */
-        val settings = FirebaseFirestoreSettings.Builder().setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED).setPersistenceEnabled(true).build()
-        firestore = FirebaseFirestore.getInstance()
-        firestore?.firestoreSettings = settings
-        /* Initialize Firebase Analytics Events */
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        /* Initialize Firebase Storage */
-        firebaseStorage = FirebaseStorage.getInstance()
-        /* Initialize Firebase Functions */
-        firebaseFunctions = FirebaseFunctions.getInstance()
-        /* Initialize Firebase Remote Config */
-        remoteConfig = FirebaseRemoteConfig.getInstance()
-        val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(1000 * 60 * 5)
+        // Manually configure Firebase Options
+        val options = FirebaseOptions.Builder()
+                .setProjectId("honos-7f224")
+                .setApplicationId("1:51886383811:android:$FIREBASE_ID")
+                //.setApiKey("AIzaSyCl0zsMmGQ0dRFg0I3Uevx4Zp810YPtCxc")
+                .setDatabaseUrl("https://honos-7f224.firebaseio.com")
+                .setStorageBucket("honos-7f224.appspot.com")
+                .setGcmSenderId("51886383811")
                 .build()
-        remoteConfig?.setConfigSettings(configSettings)
-        remoteConfig?.setDefaults(R.xml.remote_config_defaults)
-        remoteConfig?.fetchAndActivate()?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val updated = task.result
-                Log.d(TAG, "Config params updated: $updated")
-            } else {
-                Log.e(TAG, "Fetch failed")
-            }
-        }
+        FirebaseApp.initializeApp(getContext(), options, "default")
+        val default = FirebaseApp.getInstance("default")
+        /* Initialize Firebase Firestore */
+        val settings = FirebaseFirestoreSettings.Builder().setCacheSizeBytes(100 * 1024 * 1024).setPersistenceEnabled(true).build()
+        firestore = FirebaseFirestore.getInstance(default)
+        firestore?.firestoreSettings = settings
+        /* Initialize Firebase Storage */
+        firebaseStorage = FirebaseStorage.getInstance(default)
+        /* Initialize Firebase Functions */
+        firebaseFunctions = FirebaseFunctions.getInstance(default)
         /* Get Firebase push notification token */
-        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(OnCompleteListener { task ->
+        FirebaseInstanceId.getInstance(default).instanceId.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w(this.javaClass.simpleName, "getInstanceId failed", task.exception)
                 return@OnCompleteListener

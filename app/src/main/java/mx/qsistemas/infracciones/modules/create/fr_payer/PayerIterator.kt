@@ -5,7 +5,6 @@ import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.entities.*
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
-import mx.qsistemas.infracciones.net.FirebaseEvents
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.request_web.DriverRequest
 import mx.qsistemas.infracciones.net.request_web.PaymentRequest
@@ -23,6 +22,7 @@ import mx.qsistemas.payments_transfer.dtos.Voucher
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
@@ -214,8 +214,6 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     SingletonInfraction.idNewInfraction
             )
             SaveInfractionManagerWeb.saveOficial(oficial)
-            /* Step 11. Register Event Infraction */
-            FirebaseEvents.registerInfractionFinished()
             /* Notify View That All Data Was Saved */
             listener.onDataSaved()
         } else {
@@ -225,7 +223,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
 
     override fun updatePayerData() {
         val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.payerName, SingletonInfraction.payerRfc, SingletonInfraction.payerLastName, SingletonInfraction.payerMotherLastName)
-        NetworkApi().getNetworkService().updatePayer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
+        val gsonConverter = GsonConverterFactory.create()
+        NetworkApi().getNetworkService(gsonConverter).updatePayer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     if (response.body()?.status == "success") {
@@ -343,7 +342,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
     override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
         val request = PaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
                 0F, subtotal.toFloat(), surcharges.toFloat(), tokenInfraction, totalPayment.toFloat(), txInfo.authorization)
-        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
+        val gsonConverter = GsonConverterFactory.create()
+        NetworkApi().getNetworkService(gsonConverter).savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
                 0, request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {

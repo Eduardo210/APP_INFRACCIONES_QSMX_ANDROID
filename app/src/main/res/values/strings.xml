@@ -3,11 +3,8 @@
 
     <!-- Shared Preferences -->
     <string name="sp_has_config_prefix">has_config_prefix</string>
-    <string name="sp_access_token">access_token</string>
     <string name="sp_id_officer">id_officer</string>
     <string name="sp_person_name">person_name</string>
-    <string name="sp_person_f_last_name">person_f_last_name</string>
-    <string name="sp_person_m_last_name">person_m_last_name</string>
     <string name="sp_person_photo_url">person_photo_url</string>
     <string name="sp_has_session">has_session</string>
     <string name="sp_firebase_token_push">firebase_token_push</string>

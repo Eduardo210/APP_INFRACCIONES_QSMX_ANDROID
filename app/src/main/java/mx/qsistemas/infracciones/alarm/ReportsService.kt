@@ -91,8 +91,7 @@ class ReportsService : JobService() {
                             it.is_absent, it.is_impound, addresInfraction.cp_id, personLicense.license_number, vehicleInfraction.issued_in_id,
                             requestPerson, requestPayer, requestCaptureLines, it.insured_document_id, it.folio, it.time, requestMotivations, "ACTIVO", it.third_impound_id)
                     //Send the infractions list
-                    val gsonConverter = GsonConverterFactory.create()
-                    NetworkApi().getNetworkService(gsonConverter).sendInfractionToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", infractionRequest).enqueue(object : Callback<InfractionResult> {
+                    NetworkApi().getNetworkService().sendInfractionToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", infractionRequest).enqueue(object : Callback<InfractionResult> {
                         override fun onResponse(call: Call<InfractionResult>, response: Response<InfractionResult>) {
                             if (response.code() == HttpsURLConnection.HTTP_OK) {
                                 val result = response.body()
@@ -145,8 +144,7 @@ class ReportsService : JobService() {
             val request = PaymentRequest("%.2f".format(it.discount).toFloat(), it.folio_payment, it.observations, it.payment_date, it.payment_method,
                     "%.2f".format(it.rounding).toFloat(), "%.2f".format(it.amount).toFloat(), "%.2f".format(it.surcharges).toFloat(),
                     it.infringement_id_server, "%.2f".format(it.total).toFloat(), it.authorize_no.toString())
-            val gsonConverter = GsonConverterFactory.create()
-            NetworkApi().getNetworkService(gsonConverter).savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
+            NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
                     it.id.toLong(), request).enqueue(object : Callback<GenericResult> {
                 override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {

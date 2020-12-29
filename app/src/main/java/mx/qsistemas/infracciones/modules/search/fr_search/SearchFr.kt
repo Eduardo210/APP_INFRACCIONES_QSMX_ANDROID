@@ -16,12 +16,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.custom_cardview.view.*
-import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.R
+import mx.qsistemas.infracciones.databinding.CustomCardviewBinding
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
 import mx.qsistemas.infracciones.db_web.entities.InfractionItem
 import mx.qsistemas.infracciones.db_web.entities.InfringementData
@@ -127,11 +126,11 @@ class SearchFr : Fragment()
         }
         binding.imvDialogInfo.setOnClickListener {
             val builder = AlertDialog.Builder(activity)
-            val view = activity.layoutInflater.inflate(R.layout.custom_cardview, null)
+            val binding: CustomCardviewBinding = DataBindingUtil.inflate(activity.layoutInflater, R.layout.custom_cardview, null, false)
             builder.setCancelable(false)
-            builder.setCustomTitle(view)
+            builder.setCustomTitle(binding.root)
             val mAlertDialog = builder.show()
-            view.btn_accepted.setOnClickListener {
+            binding.btnAccepted.setOnClickListener {
                 mAlertDialog.dismiss()
             }
         }
@@ -604,7 +603,7 @@ class SearchFr : Fragment()
 
         val totalResults = listInfractions.size
         if (totalResults > 0) {
-            constraint_results.visibility = View.VISIBLE
+            binding.constraintResults.visibility = View.VISIBLE
             binding.rclResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
             binding.rclResults.adapter = SearchAdapter(listInfractions, this)
             binding.txtTotalSearch.text = totalResults.toString()
@@ -698,14 +697,14 @@ class SearchFr : Fragment()
         val totalResults = listInfractions.size
 
         if (totalResults > 0) {
-            constraint_results.visibility = View.VISIBLE
+            binding.constraintResults.visibility = View.VISIBLE
             binding.rclResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
             binding.rclResults.adapter = HistoricalAdapter(listInfractions, this)
             binding.txtTotalSearch.text = totalResults.toString()
             binding.txtFilterSearch.text = "Infracciones locales"
         } else {
             SnackbarHelper.showErrorSnackBar(activity, "No se encontraron infracciones.", Snackbar.LENGTH_SHORT)
-            constraint_results.visibility = View.GONE
+            binding.constraintResults.visibility = View.GONE
         }
 
 

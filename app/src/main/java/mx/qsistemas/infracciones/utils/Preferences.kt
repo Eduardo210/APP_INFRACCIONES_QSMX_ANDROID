@@ -50,13 +50,13 @@ class Preferences(val context: Context) {
         return
     }
 
-    fun saveDataInt(key: Int, data: Int) {
+    fun saveData(key: Int, data: Long) {
         val editor = this.preferences.edit()
-        editor.putInt(context.getString(key), data)
+        editor.putLong(context.getString(key), data)
         editor.apply()
     }
 
-    fun loadDataInt(key: Int): Int {
-        return this.preferences.getInt(context.getString(key), -1)
+    fun loadData(key: Int): Long {
+        return this.preferences.getLong(context.getString(key), -1)
     }
 }

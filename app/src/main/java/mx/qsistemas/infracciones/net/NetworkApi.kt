@@ -48,19 +48,6 @@ open class NetworkApi {
         return builder.create(ApiService::class.java)
     }
 
-    fun getHonosService(): GetHonosApiService {
-        val customClient = OkHttpClient.Builder().readTimeout(20, TimeUnit.SECONDS)
-                .connectTimeout(20, TimeUnit.SECONDS)
-        /* Enable interceptor only in debug mode */
-        if (BuildConfig.DEBUG) {
-            customClient.addInterceptor(interceptor)
-        }
-        val clientBuilder = customClient.build()
-        val builder = Retrofit.Builder().baseUrl(HONOS_API_URL)
-                .addConverterFactory(GsonConverterFactory.create()).client(clientBuilder).build()
-        return builder.create(GetHonosApiService::class.java)
-    }
-
     interface ApiService {
         //Para la migración de la app
         @POST("api/infringement/login/")
@@ -83,10 +70,5 @@ open class NetworkApi {
 
         @POST("api/infringement/detail/")
         fun detailInfraction(@Header("Authorization") tokenSession: String, @Body token: HashMap<String,String>): Call<DetailResult>
-    }
-
-    interface GetHonosApiService {
-        @POST("cipherData")
-        fun cipherData(@Body body: CipherData): Call<CipherDataResult>
     }
 }

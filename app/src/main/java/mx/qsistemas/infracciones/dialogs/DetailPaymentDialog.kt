@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_title.view.*
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.DialogDetailPaymentBinding
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
@@ -25,7 +24,7 @@ class DetailPaymentDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_detail_payment, container, false)
-        binding.dialogTitle.custom_dialog_title.text = getString(R.string.w_dialog_title_payment)
+        binding.dialogTitle.customDialogTitle.text = getString(R.string.w_dialog_title_payment)
         binding.btnAccept.setOnClickListener {
             listener?.onAcceptPayment()
             dismiss()

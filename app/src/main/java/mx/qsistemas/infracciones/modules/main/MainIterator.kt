@@ -17,8 +17,7 @@ class MainIterator(private val presenter: MainContracts.Presenter) : MainContrac
 
     override fun validateSession() {
         val request = ValidateTokenRequest(Application.prefs?.loadData(R.string.sp_access_token, "")!!)
-        val gsonConverter = GsonConverterFactory.create()
-        NetworkApi().getNetworkService(gsonConverter).verifyToken(request).enqueue(object : Callback<GenericResult> {
+        NetworkApi().getNetworkService().verifyToken(request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     Application.prefs?.saveData(R.string.sp_access_token, "")

@@ -3,28 +3,26 @@ package mx.qsistemas.infracciones.modules.search
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TableLayout
-import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_search.*
 import mx.qsistemas.infracciones.R
-import mx.qsistemas.infracciones.db.entities.InfractionItem
+import mx.qsistemas.infracciones.databinding.ActivitySearchBinding
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
-import mx.qsistemas.infracciones.net.catalogs.InfractionList
-import mx.qsistemas.infracciones.net.catalogs.InfractionSearch
 
 class SearchActivity : ActivityHelper(), View.OnClickListener {
+
+    private lateinit var binding: ActivitySearchBinding
     val router = lazy { SearchRouter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search)
         initListeners()
         //TODO: Colocar en el when cuando se tenga el histórico del día
         router.value.presentSearchFragment(Direction.BACK)
         try{
-            tab_layout_search?.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            binding.tabLayoutSearch.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
                 override fun onTabReselected(tab: TabLayout.Tab?) {
                     Log.d("TAB_SEARCH-------->", "TablReselected: $tab.toString()")
                 }
@@ -51,7 +49,7 @@ class SearchActivity : ActivityHelper(), View.OnClickListener {
     }
 
     private fun initListeners() {
-        img_back.setOnClickListener(this)
+        binding.imgBack.setOnClickListener(this)
     }
 
     override fun onClick(id: View?) {

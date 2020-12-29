@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/custom_dialog_layout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    android:orientation="vertical"
-    android:padding="10dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/custom_dialog_title"
+    <LinearLayout
+        android:id="@+id/custom_dialog_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text=""
-        android:textAlignment="center"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp" />
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:padding="10dp">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/custom_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</layout>

@@ -11,7 +11,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
-import kotlinx.android.synthetic.main.dialog_title.view.*
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.DialogInitialConfigurationBinding
@@ -41,7 +40,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_initial_configuration, container, false)
-        binding.dialogTitle.custom_dialog_title.text = getString(R.string.t_initial_configuration)
+        binding.dialogTitle.customDialogTitle.text = getString(R.string.t_initial_configuration)
         binding.spnState.onItemSelectedListener = this
         binding.btnAccept.setOnClickListener(this)
         getStates()

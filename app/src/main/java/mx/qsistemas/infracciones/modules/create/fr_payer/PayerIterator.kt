@@ -223,8 +223,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
 
     override fun updatePayerData() {
         val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.payerName, SingletonInfraction.payerRfc, SingletonInfraction.payerLastName, SingletonInfraction.payerMotherLastName)
-        val gsonConverter = GsonConverterFactory.create()
-        NetworkApi().getNetworkService(gsonConverter).updatePayer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
+        NetworkApi().getNetworkService().updatePayer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     if (response.body()?.status == "success") {
@@ -342,8 +341,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
     override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
         val request = PaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
                 0F, subtotal.toFloat(), surcharges.toFloat(), tokenInfraction, totalPayment.toFloat(), txInfo.authorization)
-        val gsonConverter = GsonConverterFactory.create()
-        NetworkApi().getNetworkService(gsonConverter).savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
+        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
                 0, request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {

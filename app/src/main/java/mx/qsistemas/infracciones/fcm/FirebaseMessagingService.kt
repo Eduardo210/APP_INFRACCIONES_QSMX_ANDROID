@@ -14,7 +14,7 @@ import java.io.File
 class FirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
-        Application.prefs?.saveData(R.string.sp_firebase_token_push, token ?: "")
+        Application.prefs?.saveData(R.string.sp_firebase_token_push, token)
         val map = hashMapOf("push_token" to token)
         val imei = Utils.getImeiDevice(Application.getContext())
         Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.set(map, SetOptions.merge())?.addOnCompleteListener { t2 ->
@@ -25,8 +25,8 @@ class FirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(p0: RemoteMessage) {
-        Log.d(this.javaClass.simpleName, "Message Received: ${p0?.data}")
-        val idOperation = p0?.data?.get(FCM_TOKEN_OPERATION)?.toInt() ?: -1
+        Log.d(this.javaClass.simpleName, "Message Received: ${p0.data}")
+        val idOperation = p0.data?.get(FCM_TOKEN_OPERATION)?.toInt() ?: -1
         when (idOperation) {
             OP_SEND_DATABASE or OP_SEND_DATABASE_WEB -> uploadDatabase(idOperation)
             else -> ""

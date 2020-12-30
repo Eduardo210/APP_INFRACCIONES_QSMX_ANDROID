@@ -29,7 +29,7 @@ const val PAYMENT_CREDIT_CARD = 1
 const val PAYMENT_CODI = 10
 
 /* ALARMS TIMING */
-const val ALARM_SEND_REPORT_TIME = 1000 * 60 * 15L // 30 min
+const val ALARM_SEND_REPORT_TIME = 1000 * 60 * 15L // 15 min
 const val ALARM_SEND_GEOS_TIME = 1000 * 60 * 15L // 15 min
 const val ALARM_SYNC_CATALOGS_TIME = 1000 * 60 * 15L // 15 min
 

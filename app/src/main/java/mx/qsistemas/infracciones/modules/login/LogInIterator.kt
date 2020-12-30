@@ -114,7 +114,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             if (it.exception == null && it.result != null) {
                 val zipList = ((it.result?.data) as ArrayList<HashMap<*, *>>)
                 zipList.forEach { code ->
-                    zipCodes.add(ZipCodes(0, code["key"].toString(), code["value"].toString(), code["reference"].toString(), code["is_active"].toString().toBoolean()))
+                    zipCodes.add(ZipCodes(0, code["key"].toString(), code["value"].toString(), code["reference"].toString().split("/").last(), code["is_active"].toString().toBoolean()))
                 }
             }
         }

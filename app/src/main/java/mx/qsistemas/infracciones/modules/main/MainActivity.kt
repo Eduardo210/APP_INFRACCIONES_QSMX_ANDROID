@@ -38,8 +38,6 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
         /* Delete all photos in caché */
         val cache = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         cache?.delete()
-        /* Always validate session */
-        iterator.validateSession()
     }
 
     override fun enableHighAccuracyGps() {

@@ -8,8 +8,8 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="warn" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="AvailableLibraryUpdateStorage">
     <library-updates>
@@ -64,32 +64,125 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/BindingViewHolder.kt" afterDir="false" />
+    <list default="true" id="aaf79af6-5d15-4ed5-bf2d-db46c55613c0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/collapse_toolbar.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.rar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/google-services.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/debug/res/values/google_maps_api.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/DetailPaymentDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/DetailPaymentDialog.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/InitialConfigurationDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/InitialConfigurationDialog.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/MotivationAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/MotivationAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/fcm/FirebaseMessagingService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/fcm/FirebaseMessagingService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerIterator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainContracts.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainIterator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_infraction_history/InfractionListFr.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_infraction_history/InfractionListFr.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchIterator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/adapters/HistoricalAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/adapters/HistoricalAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/adapters/SearchAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/adapters/SearchAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/fr_search/SearchFr.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/fr_search/SearchFr.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Preferences.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Preferences.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_search.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/custom_cardview.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/custom_cardview.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_title.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_title.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/LogInResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/LogInResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/collapse_toolbar.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/expandable_toolbar.9.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_infraction.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_infraction.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_log_in.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_log_in.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_detail_payment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_detail_payment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_initial_configuration.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_initial_configuration.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_infraction.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_infraction.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_infraction_list.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_infraction_list.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_offender.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_offender.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_payer.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_payer.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_vehicle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_vehicle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/toolbar_infraction.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/toolbar_infraction.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/release/res/values/google_maps_api.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/release/res/values/google_maps_api.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/extern_libs/classes.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/libs/arm64-v8a/libBW_POS_Kernel_v1.0.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/libs/armeabi-v7a/libBW_POS_Kernel_v1.0.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/libs/armeabi/libBW_POS_Kernel_v1.0.so" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/libs/bcprov-jdk16-1.45.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/libs/bw_pos_sdk.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/libs/zxingcore.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/androidTest/java/mx/qsistemas/payments_transfer/ExampleInstrumentedTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/assets/catamaran_medium.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/assets/loader/img_0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/assets/loader/img_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/assets/loader/img_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/assets/loader/img_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/assets/sans_bold.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/IPaymentsTransfer.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsTransfer.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/PaymentsVoucher.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/db/PaymentsDatabase.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/db/dao/ReversalDao.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/db/entities/ReversalData.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/db/manager/ReversalManager.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dialogs/BaseDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dialogs/PinInputDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dialogs/StatusDialog.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/Banorte_Result.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/Banxico_Request.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/Banxico_Result.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/CoDi.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/CoDi_Decypher.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/Notification.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/PaymentsConfiguration.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/Quetzalcoatl_Request.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/Quetzalcoatl_Result.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/dtos/TicketInfo.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/net/API_Banorte.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/net/API_Banxico.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/net/API_Quetzalcoatl.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/pboc/PbocListener.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/AlertDialogHelper.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Constants.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/DialogStatusHelper.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/GlobalData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/KeyBoardViewOK.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Preferences.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/StringHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/TextViewHelper.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/java/mx/qsistemas/payments_transfer/utils/Utils.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/anim/center_in.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/anim/center_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/anim/push_bottom_in.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/anim/push_bottom_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/anim/push_right_in.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/anim/push_right_out.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/background.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/del_btn.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/divider_line_shape.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/ic_cancel.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/ic_car_type_default.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/ic_contactless.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/ic_delete.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/ic_ok.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/ico_delete_gray.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/keyboard_text_color_selector.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/drawable/pininput.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/font/product_sans_italic.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/font/product_sans_regular.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/font/pt_font.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/layout/dialog_title.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/layout/keyboadview2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/layout/pin_input_dialog.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/layout/status_dialog.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/raw/loader.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/values/colors.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/values/dimens.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/main/res/values/styles.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/payments_transfer/src/test/java/mx/qsistemas/payments_transfer/ExampleUnitTest.java" beforeDir="false" />
     </list>
-    <list id="d4afbee0-550c-400a-8373-a44a946b77b9" name="Ignore" comment="Ignore" />
+    <list id="79cd0ed3-dd84-4ba1-bdfe-29f9d7f759ea" name="Ignore" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -98,7 +191,7 @@
   <component name="CodeInsightWorkspaceSettings">
     <option name="optimizeImportsOnTheFly" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[0123456789ABCDEF]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -907,38 +1000,6 @@
     <option name="localTasksCounter" value="58" />
     <servers />
   </component>
-  <component name="TestHistory">
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 11m 00s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 11m 19s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 11m 38s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 15m 30s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 36m 44s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 39m 58s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 41m 49s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 41m 57s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 42m 17s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-    <history-entry file="KotinUnitTest_compareDates - 2019.08.26 at 16h 42m 31s.xml">
-      <configuration name="KotinUnitTest.compareDates" configurationId="AndroidJUnit" />
-    </history-entry>
-  </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
@@ -1025,26 +1086,26 @@
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state x="896" y="483" key="AndroidProcessChooserDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1608234414573" />
-    <state x="100" y="125" width="2360" height="1215" key="DiffContextDialog" timestamp="1608162391766">
+    <state x="100" y="125" width="2360" height="1215" key="DiffContextDialog" timestamp="1609342361156">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
-    <state x="100" y="125" width="2360" height="1215" key="DiffContextDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1608162391766" />
-    <state width="2518" height="399" key="GridCell.Tab.0.bottom" timestamp="1608234434571">
+    <state x="100" y="125" width="2360" height="1215" key="DiffContextDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609342361156" />
+    <state width="2518" height="613" key="GridCell.Tab.0.bottom" timestamp="1609345470786">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
-    <state width="2518" height="399" key="GridCell.Tab.0.bottom/0.25.2560.1415@0.25.2560.1415" timestamp="1608234434571" />
-    <state width="2518" height="399" key="GridCell.Tab.0.center" timestamp="1608234434571">
+    <state width="2518" height="613" key="GridCell.Tab.0.bottom/0.25.2560.1415@0.25.2560.1415" timestamp="1609345470786" />
+    <state width="2518" height="613" key="GridCell.Tab.0.center" timestamp="1609345470785">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
-    <state width="2518" height="399" key="GridCell.Tab.0.center/0.25.2560.1415@0.25.2560.1415" timestamp="1608234434571" />
-    <state width="2518" height="399" key="GridCell.Tab.0.left" timestamp="1608234434570">
+    <state width="2518" height="613" key="GridCell.Tab.0.center/0.25.2560.1415@0.25.2560.1415" timestamp="1609345470785" />
+    <state width="2518" height="613" key="GridCell.Tab.0.left" timestamp="1609345470785">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
-    <state width="2518" height="399" key="GridCell.Tab.0.left/0.25.2560.1415@0.25.2560.1415" timestamp="1608234434570" />
-    <state width="2518" height="399" key="GridCell.Tab.0.right" timestamp="1608234434571">
+    <state width="2518" height="613" key="GridCell.Tab.0.left/0.25.2560.1415@0.25.2560.1415" timestamp="1609345470785" />
+    <state width="2518" height="613" key="GridCell.Tab.0.right" timestamp="1609345470785">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
-    <state width="2518" height="399" key="GridCell.Tab.0.right/0.25.2560.1415@0.25.2560.1415" timestamp="1608234434571" />
+    <state width="2518" height="613" key="GridCell.Tab.0.right/0.25.2560.1415@0.25.2560.1415" timestamp="1609345470785" />
     <state width="2518" height="399" key="GridCell.Tab.1.bottom" timestamp="1608234434572">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
@@ -1065,10 +1126,18 @@
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state x="781" y="368" key="SettingsEditor/0.25.2560.1415@0.25.2560.1415" timestamp="1609261479672" />
-    <state x="101" y="125" width="2360" height="1215" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1608234257573">
+    <state x="101" y="125" width="2360" height="1215" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1609343134238">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
-    <state x="101" y="125" width="2360" height="1215" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1608234257573" />
+    <state x="101" y="125" width="2360" height="1215" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609343134238" />
+    <state x="972" y="458" width="739" height="548" key="find.popup" timestamp="1609342360800">
+      <screen x="0" y="25" width="2560" height="1415" />
+    </state>
+    <state x="972" y="458" width="739" height="548" key="find.popup/0.25.2560.1415@0.25.2560.1415" timestamp="1609342360800" />
+    <state x="1032" y="610" width="618" height="275" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1609342822551">
+      <screen x="0" y="25" width="2560" height="1415" />
+    </state>
+    <state x="1032" y="610" width="618" height="275" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609342822551" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

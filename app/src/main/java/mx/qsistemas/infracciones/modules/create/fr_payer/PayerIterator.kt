@@ -57,7 +57,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
 
     override fun saveData() {
         var totalUmas = 0F
-        SingletonInfraction.idOfficer = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
+        SingletonInfraction.idOfficer = Application.prefs?.loadData(R.string.sp_id_officer)!!
         /* Get configuration */
         //config = SaveInfractionManager.getConfig()
         /* Calculate infraction article variables */
@@ -207,10 +207,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
             /* Step 9. Save Officer Information */
             val oficial = PersonTownhall(
-                    Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong(),
-                    Application.prefs?.loadData(R.string.sp_person_name, "") ?: "",
-                    Application.prefs?.loadData(R.string.sp_person_f_last_name, "") ?: "",
-                    Application.prefs?.loadData(R.string.sp_person_m_last_name, "") ?: "",
+                    Application.prefs?.loadData(R.string.sp_id_officer)!!,
+                    Application.prefs?.loadData(R.string.sp_person_name, "") ?: "","", "",
                     SingletonInfraction.idNewInfraction
             )
             SaveInfractionManagerWeb.saveOficial(oficial)
@@ -223,7 +221,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
 
     override fun updatePayerData() {
         val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.payerName, SingletonInfraction.payerRfc, SingletonInfraction.payerLastName, SingletonInfraction.payerMotherLastName)
-        NetworkApi().getNetworkService().updatePayer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}", request).enqueue(object : Callback<GenericResult> {
+        NetworkApi().getNetworkService().updatePayer("Bearer ", request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     if (response.body()?.status == "success") {
@@ -310,8 +308,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
-        SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_f_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_m_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_name, "")}"
-        SingletonTicket.idAgent = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toString()
+        SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_name, "")}"
+        SingletonTicket.idAgent = Application.prefs?.loadData(R.string.sp_id_officer)!!.toString()
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
         captureLineList.forEach {
@@ -341,7 +339,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
     override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
         val request = PaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
                 0F, subtotal.toFloat(), surcharges.toFloat(), tokenInfraction, totalPayment.toFloat(), txInfo.authorization)
-        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
+        NetworkApi().getNetworkService().savePaymentToServer("Bearer",
                 0, request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {

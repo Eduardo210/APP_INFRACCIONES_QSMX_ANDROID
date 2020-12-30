@@ -45,11 +45,10 @@ class InfractionListFr : Fragment(), View.OnClickListener {
         binding.include.imgSearchInfraction.setOnClickListener(this)
         binding.include.imgUserPhoto.setOnClickListener(this)
         val name = Application.prefs?.loadData(R.string.sp_person_name, "")
-        val lastName = Application.prefs?.loadData(R.string.sp_person_f_last_name, "")
-        val mLastName = Application.prefs?.loadData(R.string.sp_person_m_last_name, "")
-        binding.include.txtNameDashboard.text = "$name $lastName $mLastName"
+        binding.include.txtNameDashboard.text = "$name"
         binding.include.txtNameDashboard.isSelected = true
-        Picasso.get().load(Application.prefs?.loadData(R.string.sp_person_photo_url, "")).error(R.drawable.ic_account).into(binding.include.imgUserPhoto)
+        if (Application.prefs?.loadData(R.string.sp_person_photo_url, "")!!.isNotBlank())
+            Picasso.get().load(Application.prefs?.loadData(R.string.sp_person_photo_url, "")).error(R.drawable.ic_account).into(binding.include.imgUserPhoto)
         return binding.root
     }
 
@@ -93,13 +92,10 @@ class InfractionListFr : Fragment(), View.OnClickListener {
             binding.include.imgUserPhoto.id -> {
                 val builder = AlertDialogHelper.getGenericBuilder(getString(R.string.w_dialog_close_session), getString(R.string.w_want_to_close_session), activity)
                 builder.setPositiveButton("Sí") { _, _ ->
-                    Application.prefs?.saveData(R.string.sp_access_token, "")
-                    Application.prefs?.saveDataInt(R.string.sp_id_officer, 0)
-                    Application.prefs?.saveData(R.string.sp_person_name, "")
-                    Application.prefs?.saveData(R.string.sp_person_f_last_name, "")
-                    Application.prefs?.saveData(R.string.sp_person_m_last_name, "")
-                    Application.prefs?.saveData(R.string.sp_person_photo_url, "")
-                    Application.prefs?.saveDataBool(R.string.sp_has_session, false)
+                    Application.prefs?.clearPreference(R.string.sp_id_officer)
+                    Application.prefs?.clearPreference(R.string.sp_person_name)
+                    Application.prefs?.clearPreference(R.string.sp_person_photo_url)
+                    Application.prefs?.clearPreference(R.string.sp_has_session)
                     activity.router.value.presentLogIn()
                 }
                 builder.setNegativeButton("No") { _, _ -> }

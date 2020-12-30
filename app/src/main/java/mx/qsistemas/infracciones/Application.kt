@@ -12,6 +12,7 @@ import com.facebook.stetho.Stetho
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.SetOptions
@@ -80,14 +81,25 @@ class Application : MultiDexApplication() {
 
     private fun initializeFirebaseComponents() {
         // Manually configure Firebase Options
-        val options = FirebaseOptions.Builder()
-                .setProjectId("honos-7f224")
-                .setApplicationId("1:51886383811:android:$FIREBASE_ID")
-                //.setApiKey("AIzaSyCl0zsMmGQ0dRFg0I3Uevx4Zp810YPtCxc")
-                .setDatabaseUrl("https://honos-7f224.firebaseio.com")
-                .setStorageBucket("honos-7f224.appspot.com")
-                .setGcmSenderId("51886383811")
-                .build()
+        val options = if (BuildConfig.DEBUG) {
+            FirebaseOptions.Builder()
+                    .setProjectId("dei-lucrii-qa")
+                    .setApplicationId("1:167497196333:android:$FIREBASE_ID")
+                    //.setApiKey("AIzaSyDZhHDvMk6fFFi0YTS6ngoND5po0KNiV_4")
+                    .setDatabaseUrl("https://dei-lucrii-qa.firebaseio.com")
+                    .setStorageBucket("dei-lucrii-qa.appspot.com")
+                    .setGcmSenderId("167497196333")
+                    .build()
+        } else {
+            FirebaseOptions.Builder()
+                    .setProjectId("dei-lucrii-prod")
+                    .setApplicationId("1:732222665509:android:$FIREBASE_ID")
+                    //.setApiKey("AIzaSyCl0zsMmGQ0dRFg0I3Uevx4Zp810YPtCxc")
+                    .setDatabaseUrl("https://dei-lucrii-prod.firebaseio.com")
+                    .setStorageBucket("dei-lucrii-prod.appspot.com")
+                    .setGcmSenderId("51886383811")
+                    .build()
+        }
         FirebaseApp.initializeApp(getContext(), options, "default")
         val default = FirebaseApp.getInstance("default")
         /* Initialize Firebase Firestore */

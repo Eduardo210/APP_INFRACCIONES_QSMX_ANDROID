@@ -11,7 +11,6 @@ class MainContracts {
     }
 
     interface Iterator {
-        fun validateSession()
     }
 
     interface Router {

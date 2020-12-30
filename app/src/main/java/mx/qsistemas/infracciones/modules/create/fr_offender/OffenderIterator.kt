@@ -221,7 +221,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
     override fun saveData(notify: Boolean) {
         var totalUmas = 0F
-        SingletonInfraction.idOfficer = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
+        SingletonInfraction.idOfficer = Application.prefs?.loadData(R.string.sp_id_officer)!!
         /* Get configuration */
         //config = SaveInfractionManager.getConfig()
         /* Calculate infraction article variables */
@@ -371,10 +371,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
             /* Step 9. */
             val oficial = PersonTownhall(
-                    Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong(),
-                    Application.prefs?.loadData(R.string.sp_person_name, "") ?: "",
-                    Application.prefs?.loadData(R.string.sp_person_f_last_name, "") ?: "",
-                    Application.prefs?.loadData(R.string.sp_person_m_last_name, "") ?: "",
+                    Application.prefs?.loadData(R.string.sp_id_officer)!!,
+                    Application.prefs?.loadData(R.string.sp_person_name, "") ?: "","", "",
                     SingletonInfraction.idNewInfraction
             )
             //Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
@@ -450,8 +448,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
-        SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_f_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_m_last_name, "")} ${Application.prefs?.loadData(R.string.sp_person_name, "")}"
-        SingletonTicket.idAgent = Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toString()
+        SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_name, "")}"
+        SingletonTicket.idAgent = Application.prefs?.loadData(R.string.sp_id_officer)!!.toString()
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
         captureLineList.forEach {

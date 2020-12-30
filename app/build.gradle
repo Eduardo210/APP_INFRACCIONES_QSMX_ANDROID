@@ -27,7 +27,7 @@ android {
             buildConfigField("String", "CODI_CERT_CHAIN", "\"ncLelc1X9DQqFitjMpjrHl9y6XJkxvgzr6l6flp3xl4=\"")
             buildConfigField("String", "BANK_ACCOUNT", "\"997000000000123663\"")
             buildConfigField("int", "BANK_ID", "40997")
-            buildConfigField("String", "FIREBASE_ID", "\"c2657a2cffa97ff1\"")
+            buildConfigField("String", "FIREBASE_ID", "\"ad6a4c13940be56a8029a4\"")
         }
         release {
             /* Configuración CoDi para ambiente Producción */
@@ -35,7 +35,7 @@ android {
             buildConfigField("String", "CODI_CERT_CHAIN", "\"\"")
             buildConfigField("String", "BANK_ACCOUNT", "\"\"")
             buildConfigField("int", "BANK_ID", "0")
-            buildConfigField("String", "FIREBASE_ID", "\"c2657a2cffa97ff1\"")
+            buildConfigField("String", "FIREBASE_ID", "\"65b771b1beea3b6e56e0cc\"")
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

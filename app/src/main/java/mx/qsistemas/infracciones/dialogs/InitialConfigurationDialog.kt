@@ -166,7 +166,8 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
     override fun onClick(p0: View?) {
         when (p0?.id) {
             binding.btnAccept.id -> {
-                if (binding.spnState.childCount == 0 || binding.spnTownship.childCount == 0) {
+                if (binding.spnState.childCount == 0 || binding.spnTownship.childCount == 0 ||
+                        binding.spnState.selectedItemPosition == 0 || binding.spnTownship.selectedItemPosition == 0) {
                     listener?.onDialogError(Application.getContext().getString(R.string.e_empty_fields))
                 } else if (binding.edtPswConfig.text.toString().trim() != BBOX) {
                     binding.edtPswConfig.error = Application.getContext().getString(R.string.e_pss_incorrect)

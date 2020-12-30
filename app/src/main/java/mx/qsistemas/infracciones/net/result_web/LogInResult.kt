@@ -9,7 +9,7 @@ data class InfoLogin(@SerializedName("city") val city: String,
                      @SerializedName("town_hall_person_id") val idPerson: Long,
                      @SerializedName("user") val user: String,
                      @SerializedName("person") val person: String,
-                     @SerializedName("image") val image: String,
+                     @SerializedName("image") val image: String?,
                      @SerializedName("permissions") val permissions: MutableList<Permissions>)
 
 data class Permissions(@SerializedName("name") val name: String,

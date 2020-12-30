@@ -132,7 +132,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_search"
-                    android:tint="@color/app_gray_text_color"
+                    app:tint="@color/app_gray_text_color"
                     app:layout_constraintBottom_toTopOf="@id/btn_search_infraction"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new"
@@ -208,7 +208,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_card"
-                    android:tint="@color/app_gray_text_color"
+                    app:tint="@color/app_gray_text_color"
                     app:layout_constraintBottom_toTopOf="@id/btn_print_voucher"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new2"
@@ -280,7 +280,7 @@
              android:layout_marginBottom="8dp"
              android:backgroundTint="@color/colorOrange"
              android:src="@drawable/ic_add"
-             android:tint="@color/colorWhite"
+             app:tint="@color/colorWhite"
              app:layout_constraintBottom_toBottomOf="parent"
              app:layout_constraintEnd_toEndOf="parent" />-->
 

@@ -1,5 +1,6 @@
 package mx.qsistemas.infracciones.helpers.activity_helper
 
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -42,6 +43,7 @@ open class ActivityHelper : AppCompatActivity(), IActivityHelper {
                 fragmentTransaction?.setCustomAnimations(direction.enterAnimation, direction.exitAnimation,
                         Direction.TOP.enterAnimation, Direction.TOP.enterAnimation)
             }
+            else -> Log.e(this.javaClass.simpleName, "Sin direcciones del fragmento")
         }
         if (addToBackStack) {
             fragmentTransaction?.addToBackStack(null)
@@ -69,6 +71,7 @@ open class ActivityHelper : AppCompatActivity(), IActivityHelper {
                 fragmentTransaction?.setCustomAnimations(direction.enterAnimation, direction.exitAnimation,
                         Direction.TOP.enterAnimation, Direction.TOP.enterAnimation)
             }
+            else -> Log.e(this.javaClass.simpleName, "Sin direcciones del fragmento")
         }
         if (addToBackStack) {
             fragmentTransaction?.addToBackStack(null)

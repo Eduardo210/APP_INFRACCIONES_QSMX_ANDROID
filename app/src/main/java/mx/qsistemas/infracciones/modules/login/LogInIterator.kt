@@ -60,7 +60,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
 
     override fun login(userName: String, psd: String) {
         val logInMap: HashMap<String, Any> = hashMapOf("isEncrypted" to false, "value" to "$userName|$psd")
-        Application.firebaseFunctions!!.getHttpsCallable(FF_CIPHER_DATA).call(logInMap).addOnCompleteListener {
+        Application.firebaseFunctions.getHttpsCallable(FF_CIPHER_DATA).call(logInMap).addOnCompleteListener {
             if (!it.isSuccessful) {
                 val e = it.exception
                 e?.let { FirebaseCrashlytics.getInstance().recordException(e.fillInStackTrace()) }
@@ -77,13 +77,13 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                     override fun onResponse(call: Call<LogInResult>, response: Response<LogInResult>) {
                         when (response.code()) {
                             HttpURLConnection.HTTP_OK -> {
-                                Application.prefs?.saveData(R.string.sp_id_officer, response.body()?.data?.idPerson
-                                        ?: 0)
-                                Application.prefs?.saveData(R.string.sp_person_name, response.body()?.data?.person
-                                        ?: "")
-                                Application.prefs?.saveData(R.string.sp_person_photo_url, response.body()?.data?.image
-                                        ?: "")
-                                Application.prefs?.saveDataBool(R.string.sp_has_session, true)
+                                Application.prefs.saveData(R.string.sp_id_officer, response.body()?.data?.idPerson ?: 0)
+                                Application.prefs.saveData(R.string.sp_person_name, response.body()?.data?.personName ?: "")
+                                Application.prefs.saveData(R.string.sp_person_paternal, response.body()?.data?.personPaternal ?: "")
+                                Application.prefs.saveData(R.string.sp_person_maternal, response.body()?.data?.personMaternal ?: "")
+                                Application.prefs.saveData(R.string.sp_person_photo_url, NetworkApi.API_URL + response.body()?.data?.image)
+                                Application.prefs.saveData(R.string.sp_no_employee, response.body()?.data?.employee ?: "")
+                                Application.prefs.saveDataBool(R.string.sp_has_session, true)
                                 listener.onLoginSuccessful()
                             }
                             HttpURLConnection.HTTP_UNAUTHORIZED -> listener.onError(Application.getContext().getString(R.string.e_user_pss_incorrect))
@@ -102,7 +102,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
 
     private suspend fun getZipCodes(): MutableList<ZipCodes> {
         val zipCodes = mutableListOf<ZipCodes>()
-        val firebase = Application.firebaseFunctions?.getHttpsCallable(FF_ZIP_CODES)?.call(null)?.addOnCompleteListener {
+        val firebase = Application.firebaseFunctions.getHttpsCallable(FF_ZIP_CODES).call(null).addOnCompleteListener {
             if (!it.isSuccessful) {
                 val e = it.exception
                 if (e is FirebaseFunctionsException)
@@ -118,30 +118,30 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                 }
             }
         }
-        firebase?.await()
+        firebase.await()
         return zipCodes
     }
 
     private suspend fun getColonies(): MutableList<Colony> {
         val colonies = mutableListOf<Colony>()
-        val reference = Application.firebaseStorage?.reference?.child("documents/colonias.json")
+        val reference = Application.firebaseStorage.reference.child("documents/colonias.json")
         val jsonFile = File.createTempFile("tempColonies", "json")
-        val firestore = reference?.getFile(jsonFile)?.addOnSuccessListener {
+        val firestore = reference.getFile(jsonFile).addOnSuccessListener {
             val jsonString = Utils.parseJsonFromFile(jsonFile)
             val readColonies = Gson().fromJson(jsonString, Array<ColonyJson>::class.java).toMutableList()
             readColonies.forEach {
                 colonies.add(Colony(0, it.key, it.value, it.reference, it.isActive))
             }
-        }?.addOnFailureListener {
+        }.addOnFailureListener {
             listener.onError("Error descargando colonias")
         }
-        firestore?.await()
+        firestore.await()
         return colonies
     }
 
     private suspend fun getCities(): MutableList<City> {
         val cities = mutableListOf<City>()
-        val firestore = Application.firestore?.collection(FS_COL_CITIES)?.get()?.addOnSuccessListener {
+        val firestore = Application.firestore.collection(FS_COL_CITIES).get().addOnSuccessListener {
             if (it != null && !it.isEmpty) {
                 it.documents.forEach { doc ->
                     val data = doc.toObject(Townships::class.java)!!
@@ -149,11 +149,11 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                             ?: "", data.is_active))
                 }
             }
-        }?.addOnFailureListener {
+        }.addOnFailureListener {
             listener.onError(it.message
                     ?: Application.getContext().getString(R.string.e_firestore_not_available))
         }
-        firestore?.await()
+        firestore.await()
         return cities
     }
 

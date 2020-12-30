@@ -8,14 +8,14 @@ import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.modules.create.OPTION_CREATE_INFRACTION
 import mx.qsistemas.infracciones.modules.login.LogInActivity
-import mx.qsistemas.infracciones.modules.main.fr_infraction_history.InfractionListFr
+import mx.qsistemas.infracciones.modules.main.fr_menu.MenuFragment
 import mx.qsistemas.infracciones.modules.search.SearchActivity
 import mx.qsistemas.infracciones.utils.EXTRA_OPTION_INFRACTION
 
 class MainRouter(private val activity: MainActivity) : MainContracts.Router {
 
     override fun presentInfractionList(direction: Direction) {
-        activity.loadFragment(InfractionListFr.newInstance(), R.id.main_container, direction, false)
+        activity.loadFragment(MenuFragment.newInstance(), R.id.main_container, direction, false)
     }
 
     override fun presentNewInfraction() {

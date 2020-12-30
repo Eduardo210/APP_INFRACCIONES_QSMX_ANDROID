@@ -30,11 +30,11 @@ class HistoricalAdapter(private val infraction: MutableList<InfractionItem>, pri
             holder.getBinding().txtVehicleHeader.text = "$brand $sub_brand $colour"
             holder.getBinding().txtFolio.text = folio
             if (sync) {
-                holder.getBinding().txtStatusInfra.text = Application.getContext().getString(R.string.status_send)
+                holder.getBinding().txtStatusInfra.text = Application.getContext().getString(R.string.t_status_send)
                 holder.getBinding().txtStatusInfra.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorGreen))
                 holder.getBinding().txtStatusInfra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.green_circle), null, null, null)
             } else {
-                holder.getBinding().txtStatusInfra.text = Application.getContext().getString(R.string.status_pending_local)
+                holder.getBinding().txtStatusInfra.text = Application.getContext().getString(R.string.t_status_pending_local)
                 holder.getBinding().txtStatusInfra.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorYellow))
                 holder.getBinding().txtStatusInfra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.yellow_circle), null, null, null)
             }

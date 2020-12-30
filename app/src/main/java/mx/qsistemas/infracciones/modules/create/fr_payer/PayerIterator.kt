@@ -41,7 +41,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
     private var captureLineList = mutableListOf<InfringementCapturelines>()
 
     override fun getHolidays() {
-        Application.firestore?.collection(FS_COL_HOLIDAYS)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_HOLIDAYS).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -57,7 +57,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
 
     override fun saveData() {
         var totalUmas = 0F
-        SingletonInfraction.idOfficer = Application.prefs?.loadData(R.string.sp_id_officer)!!
+        SingletonInfraction.idOfficer = Application.prefs.loadData(R.string.sp_id_officer)
         /* Get configuration */
         //config = SaveInfractionManager.getConfig()
         /* Calculate infraction article variables */
@@ -207,8 +207,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
             /* Step 9. Save Officer Information */
             val oficial = PersonTownhall(
-                    Application.prefs?.loadData(R.string.sp_id_officer)!!,
-                    Application.prefs?.loadData(R.string.sp_person_name, "") ?: "","", "",
+                    Application.prefs.loadData(R.string.sp_id_officer),
+                    Application.prefs.loadData(R.string.sp_person_name, "") ?: "","", "",
                     SingletonInfraction.idNewInfraction
             )
             SaveInfractionManagerWeb.saveOficial(oficial)
@@ -269,9 +269,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         if (SingletonInfraction.noIntOffender.isNotEmpty()) {
             SingletonTicket.noIntOffender = SingletonInfraction.noIntOffender
         }
-        if (SingletonInfraction.colonyOffender.reference != null) {
-            SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender.value
-        }
+        SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender.value
         if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
         }
@@ -308,8 +306,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
-        SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_name, "")}"
-        SingletonTicket.idAgent = Application.prefs?.loadData(R.string.sp_id_officer)!!.toString()
+        SingletonTicket.nameAgent = "${Application.prefs.loadData(R.string.sp_person_name, "")}"
+        SingletonTicket.idAgent = Application.prefs.loadData(R.string.sp_id_officer).toString()
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
         captureLineList.forEach {
@@ -360,7 +358,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
     }
 
     private fun generateNewFolio(): String {
-        val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs?.loadData(R.string.sp_prefix, "")}%")
+        val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs.loadData(R.string.sp_prefix, "")}%")
         val incremental = lastFolio.split("-")[1].toInt() + 1
         return "${lastFolio.split("-")[0]}-$incremental"
     }

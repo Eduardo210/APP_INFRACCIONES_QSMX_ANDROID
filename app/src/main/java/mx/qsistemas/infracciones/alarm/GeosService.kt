@@ -62,8 +62,8 @@ class GeosService : JobService() {
                 } finally {
                     fusedLocationClient.value.removeLocationUpdates(locationCallback)
                     if (lastLocation != null && Validator.isNetworkEnable(Application.getContext())) {
-                        Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.update("last_geo", GeoPoint(lastLocation!!.latitude, lastLocation!!.longitude))
-                        Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.update("time_geo", Date())
+                        Application.firestore.collection(FS_COL_TERMINALS).document(imei).update("last_geo", GeoPoint(lastLocation!!.latitude, lastLocation!!.longitude))
+                        Application.firestore.collection(FS_COL_TERMINALS).document(imei).update("time_geo", Date())
                     }
                 }
                 stopSelf()

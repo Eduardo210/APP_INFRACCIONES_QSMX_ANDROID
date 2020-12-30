@@ -120,7 +120,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
 
     /*override fun savePaymentToService(paymentRequest: PaymentRequest, token: String) {
 
-        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs?.loadData(R.string.sp_access_token, "")!!}",
+        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs.loadData(R.string.sp_access_token, "")!!}",
                 0L,
                 paymentRequest).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
@@ -283,7 +283,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     }
 
     override fun getIdentifierDocAdapter() {
-        Application.firestore?.collection(FS_COL_IDENTIF_DOC)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_IDENTIF_DOC).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))

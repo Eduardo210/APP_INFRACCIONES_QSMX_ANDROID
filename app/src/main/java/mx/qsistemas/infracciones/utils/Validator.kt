@@ -19,24 +19,24 @@ class Validator {
 
         fun isNetworkEnable(context: Context): Boolean {
             val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val networkCapabilities = connManager.getNetworkCapabilities(connManager.activeNetwork)
-                return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+                networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
             } else {
                 val networkCapabilities = connManager.activeNetworkInfo
-                return networkCapabilities != null && networkCapabilities.isConnectedOrConnecting
+                networkCapabilities != null && networkCapabilities.isConnectedOrConnecting
             }
         }
 
         fun isConnectedToWifi(context: Context): Boolean {
             val connManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val networkCapabilities = connManager.getNetworkCapabilities(connManager.activeNetwork)
-                return networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
-                        && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+                        && networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
             } else {
                 val networkCapabilities = connManager.activeNetworkInfo
-                return networkCapabilities != null && networkCapabilities.type == ConnectivityManager.TYPE_WIFI
+                networkCapabilities != null && networkCapabilities.type == ConnectivityManager.TYPE_WIFI
             }
         }
 

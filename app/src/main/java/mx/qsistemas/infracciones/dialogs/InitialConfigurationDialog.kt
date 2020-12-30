@@ -53,7 +53,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
     }
 
     override fun getStates() {
-        Application.firestore?.collection(FS_COL_STATES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_STATES).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener?.onDialogError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -86,7 +86,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
 
     override fun getTownships(state: DocumentReference?) {
         if (state != null) {
-            Application.firestore?.collection(FS_COL_CITIES)?.whereEqualTo("reference", state)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { querySnapshot, exception ->
+            Application.firestore.collection(FS_COL_CITIES).whereEqualTo("reference", state).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { querySnapshot, exception ->
                 if (exception != null) {
                     listener?.onDialogError(exception.message
                             ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -127,16 +127,16 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
     }
 
     override fun savePrefix(prefix: String, township: Townships, townKey: String) {
-        Application.firestore?.collection(FS_COL_CITIES)?.document(townKey)?.update("counter_prefix", township.counter_prefix + 1)?.addOnCompleteListener { t1 ->
+        Application.firestore.collection(FS_COL_CITIES).document(townKey).update("counter_prefix", township.counter_prefix + 1).addOnCompleteListener { t1 ->
             if (t1.isSuccessful) {
                 val map = hashMapOf("city" to township.childReference,
                         "prefix" to prefix,
                         "last_geo" to GeoPoint(0.0, 0.0),
                         "time_geo" to Date(),
                         "android_id" to Utils.getTokenDevice(Application.getContext()),
-                        "push_token" to Application.prefs?.loadData(R.string.sp_firebase_token_push, ""))
+                        "push_token" to Application.prefs.loadData(R.string.sp_firebase_token_push, ""))
                 val imei = Utils.getImeiDevice(Application.getContext())
-                Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.set(map, SetOptions.merge())?.addOnCompleteListener { t2 ->
+                Application.firestore.collection(FS_COL_TERMINALS).document(imei).set(map, SetOptions.merge()).addOnCompleteListener { t2 ->
                     if (t2.isSuccessful) {
                         dismiss()
                         listener?.onConfigurationSuccessful(township.childReference?.id
@@ -175,13 +175,13 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                     val township = townships[binding.spnTownship.selectedItemPosition]
                     val state = states[binding.spnState.selectedItemPosition]
                     val prefix = township.prefix + (township.counter_prefix + 1)
-                    Application.prefs?.saveData(R.string.sp_id_state, state.documentReference?.id
+                    Application.prefs.saveData(R.string.sp_id_state, state.documentReference?.id
                             ?: "0")
-                    Application.prefs?.saveData(R.string.sp_id_township, township.childReference?.id
+                    Application.prefs.saveData(R.string.sp_id_township, township.childReference?.id
                             ?: "0")
-                    Application.prefs?.saveData(R.string.sp_township_name, township.value)
-                    Application.prefs?.saveData(R.string.sp_prefix, prefix)
-                    Application.prefs?.saveDataBool(R.string.sp_has_config_prefix, true)
+                    Application.prefs.saveData(R.string.sp_township_name, township.value)
+                    Application.prefs.saveData(R.string.sp_prefix, prefix)
+                    Application.prefs.saveDataBool(R.string.sp_has_config_prefix, true)
                     savePrefix(prefix, township, townships[binding.spnTownship.selectedItemPosition].childReference?.id
                             ?: "0")
                 }

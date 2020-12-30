@@ -101,7 +101,7 @@ class Ticket {
             printTest.put(getPrintObject("Entre: ${SingletonTicket.betweenStreetInfraction}\n", "2", "left", "0"))
             printTest.put(getPrintObject("Y: ${SingletonTicket.andStreetInfraction}\n", "2", "left", "0"))
             printTest.put(getPrintObject("Colonia: ${SingletonTicket.colonyInfraction}\n", "2", "left", "0"))
-            printTest.put(getPrintObject("Municipio: ${Application.prefs?.loadData(R.string.sp_township_name, "")}\n\n", "2", "left", "0"))
+            printTest.put(getPrintObject("Municipio: ${Application.prefs.loadData(R.string.sp_township_name, "")}\n\n", "2", "left", "0"))
 
             // Datos de infracción
             printTest.put(getPrintObject("Documento que se retiene:\n", "2", "left", "0"))

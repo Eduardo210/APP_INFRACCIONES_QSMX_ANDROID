@@ -13,7 +13,7 @@ object SaveInfractionManagerWeb {
     fun insertInfraction(infraction: InfringementInfringements): Long {
         return object : AsyncTask<Void, Void, Long>() {
             override fun doInBackground(vararg p0: Void?): Long {
-                return Application.m_database_web?.infractionDaoWeb()?.insert(infraction)!!
+                return Application.m_database_web.infractionDaoWeb().insert(infraction)
             }
         }.execute().get()
     }
@@ -21,7 +21,7 @@ object SaveInfractionManagerWeb {
     fun saveVehicleInfraction(vehicleInfraction: VehicleVehicles): Long {
         return object : AsyncTask<Void, Void, Long>() {
             override fun doInBackground(vararg p0: Void?): Long {
-                return Application.m_database_web?.vehicleInfractionDaoWeb()?.insert(vehicleInfraction)!!
+                return Application.m_database_web.vehicleInfractionDaoWeb().insert(vehicleInfraction)
             }
         }.execute().get()
     }
@@ -29,7 +29,7 @@ object SaveInfractionManagerWeb {
     fun savePersonInformation(person: DriverDrivers): Long {
         return object : AsyncTask<Void, Void, Long>() {
             override fun doInBackground(vararg p0: Void?): Long {
-                return Application.m_database_web?.personDaoWeb()?.insert(person)!!
+                return Application.m_database_web.personDaoWeb().insert(person)
             }
         }.execute().get()
     }
@@ -37,7 +37,7 @@ object SaveInfractionManagerWeb {
     fun saveAddressPerson(address: DriverAddressDriver): Long {
         return object : AsyncTask<Void, Void, Long>() {
             override fun doInBackground(vararg p0: Void?): Long {
-                return Application.m_database_web?.addressPersonDaoWeb()?.insert(address)!!
+                return Application.m_database_web.addressPersonDaoWeb().insert(address)
             }
         }.execute().get()
     }
@@ -45,60 +45,59 @@ object SaveInfractionManagerWeb {
     fun saveAddressInfraction(address: InfringementAddressInfringement): Long {
         return object : AsyncTask<Void, Void, Long>() {
             override fun doInBackground(vararg p0: Void?): Long {
-                return Application.m_database_web?.addressInfringementDaoWeb()?.insert(address)!!
+                return Application.m_database_web.addressInfringementDaoWeb().insert(address)
             }
         }.execute().get()
     }
 
     fun saveTrafficViolation(trafficViolationFraction: InfringementRelfractionInfringements) {
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database_web?.infractionFractionDaoWeb()?.insert(trafficViolationFraction)
+            Application.m_database_web.infractionFractionDaoWeb().insert(trafficViolationFraction)
         }
     }
 
     fun getLastFolioSaved(prefix: String): String {
         return object : AsyncTask<Void, Void, String>() {
             override fun doInBackground(vararg p0: Void?): String {
-                return Application.m_database_web?.infractionDaoWeb()?.selectLastFolio(prefix)
-                        ?: "$prefix-0".replace("%", "")
+                return Application.m_database_web.infractionDaoWeb().selectLastFolio(prefix)
             }
         }.execute().get()
     }
 
     fun saveInfractionEvidence(infracionEvidence: InfringementPicturesInfringement) {
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database_web?.infractionEvidenceDaoWeb()?.insert(infracionEvidence)
+            Application.m_database_web.infractionEvidenceDaoWeb().insert(infracionEvidence)
         }
     }
 
     fun saveDriverLicense(driverLicense: DriverDriverLicense) {
         GlobalScope.launch {
-            Application.m_database_web?.driverLicenseDaoWeb()?.insert(driverLicense)
+            Application.m_database_web.driverLicenseDaoWeb().insert(driverLicense)
         }
 
     }
 
     fun saveCaptureLine(captureLines: MutableList<InfringementCapturelines>) {
         GlobalScope.launch {
-            Application.m_database_web?.captureLineDaoWeb()?.insertList(captureLines)
+            Application.m_database_web.captureLineDaoWeb().insertList(captureLines)
         }
     }
 
     fun savePayOrder(payorder: InfringementPayorder) {
         GlobalScope.launch {
-            Application.m_database_web?.payorderDaoWeb()?.insert(payorder)
+            Application.m_database_web.payorderDaoWeb().insert(payorder)
         }
     }
 
     fun saveOficial(oficial: PersonTownhall) {
         GlobalScope.launch {
-            Application.m_database_web?.personTownHallDaoWeb()?.insert(oficial)
+            Application.m_database_web.personTownHallDaoWeb().insert(oficial)
         }
     }
 
     fun savePayerInformation(payer: ElectronicBill) {
         GlobalScope.launch {
-            Application.m_database_web?.electronicBillDaoWeb()?.insert(payer)
+            Application.m_database_web.electronicBillDaoWeb().insert(payer)
         }
     }
 }

@@ -36,25 +36,24 @@ class Application : MultiDexApplication() {
     companion object {
         val TAG = "Infracciones"
         private var instance: Application? = null
-        var m_database: AppDatabase? = null
-        var m_database_web: AppDatabaseWeb? = null
-        var prefs: Preferences? = null
-        var firestore: FirebaseFirestore? = null
-        var firebaseFunctions: FirebaseFunctions? = null
-        var firebaseStorage: FirebaseStorage? = null
+        lateinit var m_database: AppDatabase
+        lateinit var m_database_web: AppDatabaseWeb
+        lateinit var prefs: Preferences
+        lateinit var firestore: FirebaseFirestore
+        lateinit var firebaseFunctions: FirebaseFunctions
+        lateinit var firebaseStorage: FirebaseStorage
 
         fun getContext(): Context {
             return instance!!.applicationContext
         }
-
     }
 
     override fun onCreate() {
         super.onCreate()
         MultiDex.install(getContext())
         prefs = Preferences(getContext())
-        m_database = AppDatabase.getInMemoryDatabase(getContext())
-        m_database_web = AppDatabaseWeb.getInMemoryDatabase(getContext())
+        m_database = AppDatabase.getInMemoryDatabase(getContext())!!
+        m_database_web = AppDatabaseWeb.getInMemoryDatabase(getContext())!!
         initializeFirebaseComponents()
         /* Initialize Payments Library */
         PaymentsTransfer.initialize(getContext())
@@ -105,7 +104,7 @@ class Application : MultiDexApplication() {
         /* Initialize Firebase Firestore */
         val settings = FirebaseFirestoreSettings.Builder().setCacheSizeBytes(100 * 1024 * 1024).setPersistenceEnabled(true).build()
         firestore = FirebaseFirestore.getInstance(default)
-        firestore?.firestoreSettings = settings
+        firestore.firestoreSettings = settings
         /* Initialize Firebase Storage */
         firebaseStorage = FirebaseStorage.getInstance(default)
         /* Initialize Firebase Functions */
@@ -118,11 +117,11 @@ class Application : MultiDexApplication() {
             }
             // Get new Instance ID token
             val token = task.result?.token
-            prefs?.saveData(R.string.sp_firebase_token_push, token ?: "")
+            prefs.saveData(R.string.sp_firebase_token_push, token ?: "")
             /* Register Firebase Push Token Into Firestore */
             val map = hashMapOf("push_token" to token)
             val imei = Utils.getImeiDevice(getContext())
-            firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.set(map, SetOptions.merge())?.addOnCompleteListener { t2 ->
+            firestore.collection(FS_COL_TERMINALS).document(imei).set(map, SetOptions.merge()).addOnCompleteListener { t2 ->
                 if (!t2.isSuccessful) {
                     Log.e(this.javaClass.simpleName, "Push Notification Token Not Registered")
                 }

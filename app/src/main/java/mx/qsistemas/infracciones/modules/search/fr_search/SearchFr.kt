@@ -461,7 +461,7 @@ class SearchFr : Fragment()
         if (captureSelected.amount.isNullOrEmpty()) {
             captureSelected = newCaptureLines[newCaptureLines.lastIndex]
             //Hacer operación para calcular los recargos
-            Application.firestore?.collection(FS_COL_CITIES)?.document(Application.prefs?.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
+            Application.firestore.collection(FS_COL_CITIES)?.document(Application.prefs.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
                 if (townshipSnapshot == null) {
                     Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
                     onError(Application.getContext().getString(R.string.e_firestore_not_available))

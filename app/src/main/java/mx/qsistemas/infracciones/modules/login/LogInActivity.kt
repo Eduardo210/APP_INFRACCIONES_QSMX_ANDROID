@@ -41,15 +41,15 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         /* Validate internet connection */
         if (Validator.isNetworkEnable(Application.getContext())) {
             /* If user doesn't config the device, open Configuration Dialog */
-            if (!Application.prefs?.loadDataBoolean(R.string.sp_has_config_prefix, false)!!) {
+            if (!Application.prefs.loadDataBoolean(R.string.sp_has_config_prefix, false)) {
                 val dialog = InitialConfigurationDialog()
                 dialog.listener = this
                 dialog.isCancelable = false
                 dialog.show(supportFragmentManager, InitialConfigurationDialog::class.java.simpleName)
-            } else if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
+            } else if (Application.prefs.loadDataBoolean(R.string.sp_has_session, false)) {
                 router.presentMainActivity()
             }
-        } else if (Application.prefs?.loadDataBoolean(R.string.sp_has_session, false)!!) {
+        } else if (Application.prefs.loadDataBoolean(R.string.sp_has_session, false)) {
             router.presentMainActivity()
         } else {
             onError(Application.getContext().getString(R.string.e_without_internet))
@@ -101,7 +101,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
     }
 
     override fun validateVersion() {
-        Application.firestore?.collection(FS_COL_APP_VERSIONS)?.document(FS_DOC_VERSION)?.get()?.addOnCompleteListener {
+        Application.firestore.collection(FS_COL_APP_VERSIONS).document(FS_DOC_VERSION).get().addOnCompleteListener {
             if (it.isSuccessful) {
                 val doc = it.result?.toObject(Versions::class.java)!!
                 if (doc.version != BuildConfig.VERSION_NAME) {

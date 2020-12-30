@@ -13,8 +13,8 @@ object CatalogsSyncManager {
                     it.idPerson.toLong()))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.personAttributeDao()?.deleteAll()
-            Application.m_database?.personAttributeDao()?.insertList(map)
+            Application.m_database.personAttributeDao().deleteAll()
+            Application.m_database.personAttributeDao().insertList(map)
         }
     }
 
@@ -25,7 +25,7 @@ object CatalogsSyncManager {
                     it.pswd))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.personAccountDao()?.insertList(map)
+            Application.m_database.personAccountDao().insertList(map)
         }
     }
 
@@ -35,7 +35,7 @@ object CatalogsSyncManager {
             map.add(Ascription(it.idAdscription.toLong(), it.adscription, it.isVisible.toInt()))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.ascriptionDao()?.insertList(map)
+            Application.m_database.ascriptionDao().insertList(map)
         }
     }
 
@@ -45,8 +45,8 @@ object CatalogsSyncManager {
             map.add(Attribute(it.idAttribute.toLong(), it.idModule.toInt(), it.attribute))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.attributeDao()?.deleteAll()
-            Application.m_database?.attributeDao()?.insertList(map)
+            Application.m_database.attributeDao().deleteAll()
+            Application.m_database.attributeDao().insertList(map)
         }
     }
 
@@ -56,7 +56,7 @@ object CatalogsSyncManager {
             map.add(Colour(it.idColor.toInt(), it.color))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.colourDao()?.insertList(map)
+            Application.m_database.colourDao().insertList(map)
         }
     }
 
@@ -69,8 +69,8 @@ object CatalogsSyncManager {
                     it.idCountry, it.idState, it.idTownship))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.configDao()?.deleteAll()
-            Application.m_database?.configDao()?.insertList(map)
+            Application.m_database.configDao().deleteAll()
+            Application.m_database.configDao().insertList(map)
         }
     }
 
@@ -80,7 +80,7 @@ object CatalogsSyncManager {
             map.add(NonWorkingDay(it.idDay.toLong(), it.date))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.nonWorkingDayDao()?.insertList(map)
+            Application.m_database.nonWorkingDayDao().insertList(map)
         }
     }
 
@@ -90,7 +90,7 @@ object CatalogsSyncManager {
             map.add(State(it.idState.toInt(), it.idCountry.toInt(), it.state))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.stateDao()?.insertList(map)
+            Application.m_database.stateDao().insertList(map)
         }
     }
 
@@ -100,7 +100,7 @@ object CatalogsSyncManager {
             map.add(Articles(it.id.toLong(), it.article, it.description))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.articlesDao()?.insertList(map)
+            Application.m_database.articlesDao().insertList(map)
         }
     }
 
@@ -110,7 +110,7 @@ object CatalogsSyncManager {
             map.add(AuthorityIssues(it.idAuthority.toInt(), it.authority))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.authorityIssuesDao()?.insertList(map)
+            Application.m_database.authorityIssuesDao().insertList(map)
         }
     }
 
@@ -120,7 +120,7 @@ object CatalogsSyncManager {
             map.add(Disposition(it.idDisposition.toInt(), it.disposition))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.dispositionDao()?.insertList(map)
+            Application.m_database.dispositionDao().insertList(map)
         }
     }
 
@@ -130,7 +130,7 @@ object CatalogsSyncManager {
             map.add(IdentifierDocument(it.id.toInt(), it.document))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.identifierDocumentDao()?.insertList(map)
+            Application.m_database.identifierDocumentDao().insertList(map)
         }
     }
 
@@ -140,7 +140,7 @@ object CatalogsSyncManager {
             map.add(RetainedDocument(it.idDocument.toInt(), it.document))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.retainedDocumentDao()?.insertList(map)
+            Application.m_database.retainedDocumentDao().insertList(map)
         }
     }
 
@@ -151,7 +151,7 @@ object CatalogsSyncManager {
                     it.ticket, it.minimumSalary.toInt(), it.penaltyPoints.toInt()))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.infractionFractionDao()?.insertList(map)
+            Application.m_database.infractionFractionDao().insertList(map)
         }
     }
 
@@ -161,7 +161,7 @@ object CatalogsSyncManager {
             map.add(LicenseType(it.id.toInt(), it.typeLicense))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.licenseTypeDao()?.insertList(map)
+            Application.m_database.licenseTypeDao().insertList(map)
         }
     }
 
@@ -171,7 +171,7 @@ object CatalogsSyncManager {
             map.add(VehicleType(it.idType.toLong(), it.type))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.vehicleTypeDao()?.insertList(map)
+            Application.m_database.vehicleTypeDao().insertList(map)
         }
     }
 
@@ -181,7 +181,7 @@ object CatalogsSyncManager {
             map.add(VehicleBrand(it.idBrandVehicle.toInt(), it.brandVehicle))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.vehicleBrandDao()?.insertList(map)
+            Application.m_database.vehicleBrandDao().insertList(map)
         }
     }
 
@@ -191,8 +191,8 @@ object CatalogsSyncManager {
             map.add(Module(it.idModule.toInt(), it.module))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.moduleDao()?.deleteAll()
-            Application.m_database?.moduleDao()?.inserList(map)
+            Application.m_database.moduleDao().deleteAll()
+            Application.m_database.moduleDao().inserList(map)
         }
     }
 
@@ -202,7 +202,7 @@ object CatalogsSyncManager {
             map.add(TownSepoMex(it.idTownship.toInt(), it.idState.toInt(), it.township))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.townSepomexDao()?.insertList(map)
+            Application.m_database.townSepomexDao().insertList(map)
         }
     }
 
@@ -212,7 +212,7 @@ object CatalogsSyncManager {
             map.add(Person(it.idPerson.toInt(), it.name, it.fatherLastName, it.motherLastName, ""))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.personDao()?.insertList(map)
+            Application.m_database.personDao().insertList(map)
         }
     }
 
@@ -222,7 +222,7 @@ object CatalogsSyncManager {
             map.add(PersonTownship(it.idTownhallPerson.toInt(), it.idPerson.toLong(), it.employee))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.personTownshipDao()?.insertList(map)
+            Application.m_database.personTownshipDao().insertList(map)
         }
     }
 
@@ -233,7 +233,7 @@ object CatalogsSyncManager {
                     it.subBrandVehicle))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.submarkingVehicleDao()?.insertList(map)
+            Application.m_database.submarkingVehicleDao().insertList(map)
         }
     }
 
@@ -243,8 +243,8 @@ object CatalogsSyncManager {
             map.add(Syncronization(0, it.activeApplication.toInt()))
         }
         Executors.newSingleThreadExecutor().execute {
-            Application.m_database?.synchronizationDao()?.deleteAll()
-            Application.m_database?.synchronizationDao()?.insertList(map)
+            Application.m_database.synchronizationDao().deleteAll()
+            Application.m_database.synchronizationDao().insertList(map)
         }
     }
 

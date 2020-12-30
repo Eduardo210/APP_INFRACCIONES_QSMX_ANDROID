@@ -91,21 +91,21 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         binding.spnIssuedIn.onItemSelectedListener = this
         binding.spnColorVehicle.onItemSelectedListener = this
         binding.spnIdentifierDoc.onItemSelectedListener = this
-        binding.edtNoDoc.doOnTextChanged { text, start, count, after -> SingletonInfraction.noDocument = text?.trim().toString() }
-        binding.edtNoCard.doOnTextChanged { text, start, count, after -> SingletonInfraction.noCirculationCard = text?.trim().toString() }
-        binding.edtYear.doOnTextChanged { text, start, count, after ->
+        binding.edtNoDoc.doOnTextChanged { text, _, _, _ -> SingletonInfraction.noDocument = text?.trim().toString() }
+        binding.edtNoCard.doOnTextChanged { text, _, _, _ -> SingletonInfraction.noCirculationCard = text?.trim().toString() }
+        binding.edtYear.doOnTextChanged { text, _, _, _ ->
             when {
                 text?.toString()!!.contentEquals("-") -> binding.edtYear.filters = arrayOf(InputFilter.LengthFilter(1))
                 text.isEmpty() -> binding.edtYear.filters = arrayOf(InputFilter.LengthFilter(4))
-                else -> binding.edtYear.filters = arrayOf(InputFilter.LengthFilter(4), InputFilter { charSequence, i1, i2, spanned, i3, i4 -> if (charSequence == "-") "" else charSequence })
+                else -> binding.edtYear.filters = arrayOf(InputFilter.LengthFilter(4), InputFilter { charSequence, _, _, _, _, _ -> if (charSequence == "-") "" else charSequence })
             }
             SingletonInfraction.yearVehicle = text.trim().toString()
         }
-        binding.edtNewSubBrand.doOnTextChanged { text, start, count, after ->
+        binding.edtNewSubBrand.doOnTextChanged { text, _, _, _ ->
             val parent = iterator.value.brandList[binding.spnBrandVehicle.selectedItemPosition]
             SingletonInfraction.subBrandVehicle = GenericSubCatalog(text.toString(), parent.documentReference, true, null)
         }
-        binding.edtNewColor.doOnTextChanged { text, start, count, after -> SingletonInfraction.colorVehicle = GenericCatalog(text.toString(), true) }
+        binding.edtNewColor.doOnTextChanged { text, _, _, _ -> SingletonInfraction.colorVehicle = GenericCatalog(text.toString(), true) }
         binding.imgEvidence1.setOnClickListener(this)
         binding.imgEvidence2.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)

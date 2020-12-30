@@ -32,7 +32,7 @@ class SearchAdapter(private val infractions: MutableList<DataItem>,
         with(infractions[position]) {
             holder.getBinding().txtVehicleHeader.text = "${vehicle?.brand} ${vehicle?.subBrand} ${vehicle?.colour}"
             holder.getBinding().txtFolio.text = folio
-            holder.getBinding().txtStatusInfra.text = Application.getContext().getString(R.string.status_send)
+            holder.getBinding().txtStatusInfra.text = Application.getContext().getString(R.string.t_status_send)
             holder.getBinding().txtStatusInfra.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorGreen))
             holder.getBinding().txtStatusInfra.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.green_circle), null, null, null)
             if (fractions != null && fractions.isNotEmpty()) {
@@ -45,7 +45,7 @@ class SearchAdapter(private val infractions: MutableList<DataItem>,
             holder.getBinding().btnPayment.setOnClickListener { view -> listener.onPaymentClick(view, position, PAYMENT_ONLINE) }
             if (is_paid!!) { // TODO: --> data.is_paid!!
                 holder.getBinding().btnPayment.visibility = View.GONE
-                holder.getBinding().txtStatusPayment.text = Application.getContext().getString(R.string.paid)
+                holder.getBinding().txtStatusPayment.text = Application.getContext().getString(R.string.t_paid)
                 holder.getBinding().txtStatusPayment.setTextColor(ContextCompat.getColor(Application.getContext(), R.color.colorRed))
                 holder.getBinding().txtStatusPayment.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(Application.getContext(), R.drawable.red_circle), null, null, null)
             } else {

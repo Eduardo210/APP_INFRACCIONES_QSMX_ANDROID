@@ -14,10 +14,10 @@ import java.io.File
 class FirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
-        Application.prefs?.saveData(R.string.sp_firebase_token_push, token)
+        Application.prefs.saveData(R.string.sp_firebase_token_push, token)
         val map = hashMapOf("push_token" to token)
         val imei = Utils.getImeiDevice(Application.getContext())
-        Application.firestore?.collection(FS_COL_TERMINALS)?.document(imei)?.set(map, SetOptions.merge())?.addOnCompleteListener { t2 ->
+        Application.firestore.collection(FS_COL_TERMINALS).document(imei).set(map, SetOptions.merge()).addOnCompleteListener { t2 ->
             if (!t2.isSuccessful) {
                 Log.e(this.javaClass.simpleName, "Push Notification Token Not Registered")
             }
@@ -37,19 +37,19 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         val sd = Environment.getExternalStorageDirectory()
         val imei = Utils.getImeiDevice(Application.getContext())
         val storageReference = if (option == OP_SEND_DATABASE) {
-            Application.firebaseStorage?.reference?.child("databases/$imei.db")
+            Application.firebaseStorage.reference.child("databases/$imei.db")
         } else {
-            Application.firebaseStorage?.reference?.child("databases/${imei}_web.db")
+            Application.firebaseStorage.reference.child("databases/${imei}_web.db")
         }
         if (sd.canWrite()) {
             val dbPath = if (option == OP_SEND_DATABASE) {
-                Application.m_database?.openHelper?.writableDatabase?.path ?: ""
+                Application.m_database.openHelper.writableDatabase?.path ?: ""
             } else {
-                Application.m_database_web?.openHelper?.writableDatabase?.path ?: ""
+                Application.m_database_web.openHelper.writableDatabase?.path ?: ""
             }
             val dbFile = File(dbPath)
             if (dbFile.exists()) {
-                storageReference?.putFile(Uri.fromFile(dbFile))?.addOnCompleteListener {
+                storageReference.putFile(Uri.fromFile(dbFile)).addOnCompleteListener {
                     if (!it.isSuccessful) {
                         Log.e(this.javaClass.simpleName, "Error Uploading Database")
                         return@addOnCompleteListener

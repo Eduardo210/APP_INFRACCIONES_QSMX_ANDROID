@@ -21,9 +21,9 @@ object CatalogsFirebaseManager {
     suspend fun getValue(reference: String, typeCollection: String, field: String): String {
         val value: String
         val document: Task<DocumentSnapshot>? = if (Validator.isNetworkEnable(Application.getContext())) {
-            Application.firestore?.collection(typeCollection)?.document(reference)?.get(Source.SERVER)
+            Application.firestore.collection(typeCollection).document(reference).get(Source.SERVER)
         } else {
-            Application.firestore?.collection(typeCollection)?.document(reference)?.get(Source.CACHE)
+            Application.firestore.collection(typeCollection).document(reference).get(Source.CACHE)
         }
         value = document?.await()?.get(field).toString()
         return value
@@ -31,8 +31,8 @@ object CatalogsFirebaseManager {
 
     suspend fun saveCities(cityList: MutableList<City>): Boolean {
         val insert = CoroutineScope(Dispatchers.IO).launch {
-            Application.m_database_web?.cityDao()?.deleteAll()
-            Application.m_database_web?.cityDao()?.insert(cityList)
+            Application.m_database_web.cityDao().deleteAll()
+            Application.m_database_web.cityDao().insert(cityList)
         }
         insert.join()
         return true
@@ -40,8 +40,8 @@ object CatalogsFirebaseManager {
 
     suspend fun saveZipCodes(zipCodeList: MutableList<ZipCodes>): Boolean {
         val insert = CoroutineScope(Dispatchers.IO).launch {
-            Application.m_database_web?.zipCodeDao()?.deleteAll()
-            Application.m_database_web?.zipCodeDao()?.insert(zipCodeList)
+            Application.m_database_web.zipCodeDao().deleteAll()
+            Application.m_database_web.zipCodeDao().insert(zipCodeList)
         }
         insert.join()
         return true
@@ -49,8 +49,8 @@ object CatalogsFirebaseManager {
 
     suspend fun saveColonies(colonyList: MutableList<Colony>): Boolean {
         val insert = CoroutineScope(Dispatchers.IO).launch {
-            Application.m_database_web?.colonyDao()?.deleteAll()
-            Application.m_database_web?.colonyDao()?.insert(colonyList)
+            Application.m_database_web.colonyDao().deleteAll()
+            Application.m_database_web.colonyDao().insert(colonyList)
         }
         insert.join()
         return true
@@ -59,8 +59,7 @@ object CatalogsFirebaseManager {
     fun getZipCodesByCityId(idCity: String): MutableList<ZipCodes> {
         return object : AsyncTask<Void, Void, MutableList<ZipCodes>>() {
             override fun doInBackground(vararg p0: Void?): MutableList<ZipCodes> {
-                return Application.m_database_web?.zipCodeDao()?.selectByCityId(idCity)
-                        ?: mutableListOf()
+                return Application.m_database_web.zipCodeDao().selectByCityId(idCity)
             }
         }.execute().get()
     }
@@ -68,8 +67,7 @@ object CatalogsFirebaseManager {
     fun getColoniesByZipCode(zipCode: Int): MutableList<Colony> {
         return object : AsyncTask<Void, Void, MutableList<Colony>>() {
             override fun doInBackground(vararg p0: Void?): MutableList<Colony> {
-                return Application.m_database_web?.colonyDao()?.selectByZipCode(zipCode)
-                        ?: mutableListOf()
+                return Application.m_database_web.colonyDao().selectByZipCode(zipCode)
             }
         }.execute().get()
     }
@@ -77,8 +75,7 @@ object CatalogsFirebaseManager {
     fun getCitiesByStateReference(reference: String): MutableList<City> {
         return object : AsyncTask<Void, Void, MutableList<City>>() {
             override fun doInBackground(vararg p0: Void?): MutableList<City> {
-                return Application.m_database_web?.cityDao()?.selectByStateReference(reference)
-                        ?: mutableListOf()
+                return Application.m_database_web.cityDao().selectByStateReference(reference)
             }
         }.execute().get()
     }

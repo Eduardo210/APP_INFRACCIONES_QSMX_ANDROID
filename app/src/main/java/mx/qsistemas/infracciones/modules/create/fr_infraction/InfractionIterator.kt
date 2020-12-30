@@ -27,7 +27,7 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     internal lateinit var dispositionList: MutableList<GenericCatalog>
 
     override fun getZipCodes() {
-        zipCodesList = CatalogsFirebaseManager.getZipCodesByCityId("%${Application.prefs?.loadData(R.string.sp_id_township, "")!!}%")
+        zipCodesList = CatalogsFirebaseManager.getZipCodesByCityId("%${Application.prefs.loadData(R.string.sp_id_township, "")!!}%")
         zipCodesList.add(0, ZipCodes(0, "", "Selecciona...", "", true))
         val list = mutableListOf<String>()
         zipCodesList.forEach {
@@ -51,7 +51,7 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     }
 
     override fun getArticlesAdapter() {
-        Application.firestore?.collection(FS_COL_ARTICLES)?.whereEqualTo("is_active", true)?.orderBy("number", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_ARTICLES).whereEqualTo("is_active", true).orderBy("number", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -75,7 +75,7 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     }
 
     override fun getFractionAdapter(reference: DocumentReference?) {
-        Application.firestore?.collection(FS_COL_FRACTIONS)?.whereEqualTo("reference", reference)?.whereEqualTo("is_active", true)?.orderBy("number", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_FRACTIONS).whereEqualTo("reference", reference).whereEqualTo("is_active", true).orderBy("number", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -99,7 +99,7 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     }
 
     override fun getRetainedDocAdapter() {
-        Application.firestore?.collection(FS_COL_INSURED_DOC)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_INSURED_DOC).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -123,7 +123,7 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     }
 
     override fun getDispositionAdapter() {
-        Application.firestore?.collection(FS_COL_CRANES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_CRANES).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -153,14 +153,14 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
 
     override fun saveTownship() {
         val cityReference = SingletonInfraction.zipCodeInfraction.reference.split("/")
-        Application.firestore?.collection(FS_COL_CITIES)?.document(cityReference.last())?.get()?.addOnSuccessListener { townshipSnapshot ->
+        Application.firestore.collection(FS_COL_CITIES).document(cityReference.last()).get().addOnSuccessListener { townshipSnapshot ->
             if (townshipSnapshot == null) {
                 Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
             } else {
                 val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
                 SingletonInfraction.townshipInfraction = township
                 SingletonInfraction.townshipInfraction.childReference = townshipSnapshot.reference
-                Application.firestore?.collection(FS_COL_STATES)?.document(township.reference!!.id)?.get()?.addOnSuccessListener {
+                Application.firestore.collection(FS_COL_STATES).document(township.reference!!.id).get().addOnSuccessListener {
                     if (it == null) {
                         Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
                     } else {

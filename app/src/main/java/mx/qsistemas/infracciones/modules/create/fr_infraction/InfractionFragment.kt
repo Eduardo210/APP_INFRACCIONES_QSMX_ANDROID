@@ -93,9 +93,9 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         binding.rdbReferralYes.setOnCheckedChangeListener(this)
         binding.btnAdd.setOnClickListener(this)
         binding.btnNext.setOnClickListener(this)
-        binding.edtStreet.doOnTextChanged { text, start, count, after -> SingletonInfraction.streetInfraction = text?.trim().toString() }
-        binding.edtBetweenStreet1.doOnTextChanged { text, start, count, after -> SingletonInfraction.betweenStreet1 = text?.trim().toString()}
-        binding.edtBetweenStreet2.doOnTextChanged { text, start, count, after -> SingletonInfraction.betweenStreet2 = text?.trim().toString() }
+        binding.edtStreet.doOnTextChanged { text, _, _, _ -> SingletonInfraction.streetInfraction = text?.trim().toString() }
+        binding.edtBetweenStreet1.doOnTextChanged { text, _, _, _ -> SingletonInfraction.betweenStreet1 = text?.trim().toString()}
+        binding.edtBetweenStreet2.doOnTextChanged { text, _, _, _ -> SingletonInfraction.betweenStreet2 = text?.trim().toString() }
         /* Init adapters */
         iterator.value.getZipCodes()  // Download From Firebase
         iterator.value.getArticlesAdapter()  // Download From Firebase
@@ -363,7 +363,7 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
             }
             SingletonInfraction.motivationList.isNotEmpty() -> {
                 SingletonInfraction.motivationList.forEach {
-                    if (it.motivation?.trim()?.isEmpty()!!) {
+                    if (it.motivation.trim().isEmpty()) {
                         onError("Artículo ${it.fraction}: " + getString(R.string.e_motivation_empty))
                         return false
                     }

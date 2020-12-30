@@ -80,12 +80,12 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
     }
 
     private fun initViews() {
-        binding.edtPayerName.doOnTextChanged { text, start, count, after -> SingletonInfraction.payerName = text.toString().trim() }
-        binding.edtPayerFln.doOnTextChanged { text, start, count, after -> SingletonInfraction.payerLastName = text.toString().trim() }
-        binding.edtPayerMln.doOnTextChanged { text, start, count, after -> SingletonInfraction.payerMotherLastName = text.toString().trim() }
-        binding.edtTaxDenomination.doOnTextChanged { text, start, count, after -> SingletonInfraction.payerTaxDenomination = text.toString().trim() }
-        binding.edtPayerRfc.doOnTextChanged { text, start, count, after -> SingletonInfraction.payerRfc = text.toString() }
-        binding.edtPayerEmail.doOnTextChanged { text, start, count, after -> SingletonInfraction.payerEmail = text.toString().trim() }
+        binding.edtPayerName.doOnTextChanged { text, _, _, _ -> SingletonInfraction.payerName = text.toString().trim() }
+        binding.edtPayerFln.doOnTextChanged { text, _, _, _ -> SingletonInfraction.payerLastName = text.toString().trim() }
+        binding.edtPayerMln.doOnTextChanged { text, _, _, _ -> SingletonInfraction.payerMotherLastName = text.toString().trim() }
+        binding.edtTaxDenomination.doOnTextChanged { text, _, _, _ -> SingletonInfraction.payerTaxDenomination = text.toString().trim() }
+        binding.edtPayerRfc.doOnTextChanged { text, _, _, _ -> SingletonInfraction.payerRfc = text.toString() }
+        binding.edtPayerEmail.doOnTextChanged { text, _, _, _ -> SingletonInfraction.payerEmail = text.toString().trim() }
         binding.btnDeleteData.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         /* Set Adapters */
@@ -251,7 +251,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
         if (captureSelected.amount.isNullOrEmpty()) {
             captureSelected = newCaptureLines[newCaptureLines.lastIndex]
             //Hacer operación para calcular los recargos
-            Application.firestore?.collection(FS_COL_CITIES)?.document(Application.prefs?.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
+            Application.firestore.collection(FS_COL_CITIES).document(Application.prefs.loadData(R.string.sp_id_township, "")!!).get().addOnSuccessListener { townshipSnapshot ->
                 if (townshipSnapshot == null) {
                     Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
                     onError(Application.getContext().getString(R.string.e_firestore_not_available))
@@ -301,9 +301,9 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
             iterator.value.savePayment(txInfo)
             SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_infraction_pay), Snackbar.LENGTH_SHORT)
         } else {
-            val discount = if (SingletonInfraction.discountInfraction.isNotBlank()) SingletonInfraction.discountInfraction else "0.0"
+            val dis_ = if (SingletonInfraction.discountInfraction.isNotBlank()) SingletonInfraction.discountInfraction else "0.0"
             val surcharges = if (SingletonInfraction.surchargesInfraction.isNotBlank()) SingletonInfraction.surchargesInfraction else "0.0"
-            iterator.value.savePaymentToService(tokenInfraction, SingletonInfraction.folioInfraction, txInfo, SingletonInfraction.subTotalInfraction, discount,
+            iterator.value.savePaymentToService(tokenInfraction, SingletonInfraction.folioInfraction, txInfo, SingletonInfraction.subTotalInfraction, dis_,
                     surcharges, SingletonInfraction.totalInfraction)
         }
     }

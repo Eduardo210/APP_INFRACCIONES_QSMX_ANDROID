@@ -46,7 +46,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     private var captureLineList = mutableListOf<InfringementCapturelines>()
 
     override fun getStatesList() {
-        Application.firestore?.collection(FS_COL_STATES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_STATES).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -115,7 +115,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun getTypeLicenseAdapter() {
-        Application.firestore?.collection(FS_COL_TYPE_LIC)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_TYPE_LIC).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -139,7 +139,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun getStatesIssuedList() {
-        Application.firestore?.collection(FS_COL_STATES)?.whereEqualTo("is_active", true)?.orderBy("value", Query.Direction.ASCENDING)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_STATES).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -163,7 +163,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     }
 
     override fun getHolidays() {
-        Application.firestore?.collection(FS_COL_HOLIDAYS)?.addSnapshotListener { snapshot, exception ->
+        Application.firestore.collection(FS_COL_HOLIDAYS).addSnapshotListener { snapshot, exception ->
             if (exception != null) {
                 listener.onError(exception.message
                         ?: Application.getContext().getString(R.string.e_firestore_not_available))
@@ -221,7 +221,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
 
     override fun saveData(notify: Boolean) {
         var totalUmas = 0F
-        SingletonInfraction.idOfficer = Application.prefs?.loadData(R.string.sp_id_officer)!!
+        SingletonInfraction.idOfficer = Application.prefs.loadData(R.string.sp_id_officer)
         /* Get configuration */
         //config = SaveInfractionManager.getConfig()
         /* Calculate infraction article variables */
@@ -371,11 +371,11 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
             /* Step 9. */
             val oficial = PersonTownhall(
-                    Application.prefs?.loadData(R.string.sp_id_officer)!!,
-                    Application.prefs?.loadData(R.string.sp_person_name, "") ?: "","", "",
+                    Application.prefs.loadData(R.string.sp_id_officer),
+                    Application.prefs.loadData(R.string.sp_person_name, "") ?: "","", "",
                     SingletonInfraction.idNewInfraction
             )
-            //Application.prefs?.loadDataInt(R.string.sp_id_officer)!!.toLong()
+            //Application.prefs.loadDataInt(R.string.sp_id_officer)!!.toLong()
             SaveInfractionManagerWeb.saveOficial(oficial)
             /* Notify View That All Data Was Saved */
             if (notify) listener.onDataSaved()
@@ -409,9 +409,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.noIntOffender.isNotEmpty()) {
             SingletonTicket.noIntOffender = SingletonInfraction.noIntOffender
         }
-        if (SingletonInfraction.colonyOffender.reference != null) {
-            SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender.value
-        }
+        SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender.value
         if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
         }
@@ -448,8 +446,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
-        SingletonTicket.nameAgent = "${Application.prefs?.loadData(R.string.sp_person_name, "")}"
-        SingletonTicket.idAgent = Application.prefs?.loadData(R.string.sp_id_officer)!!.toString()
+        SingletonTicket.nameAgent = "${Application.prefs.loadData(R.string.sp_person_name, "")}"
+        SingletonTicket.idAgent = Application.prefs.loadData(R.string.sp_id_officer).toString()
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
         captureLineList.forEach {
@@ -479,7 +477,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     private fun Boolean.toInt() = if (this) 1 else 0
 
     private fun generateNewFolio(): String {
-        val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs?.loadData(R.string.sp_prefix, "")}%")
+        val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs.loadData(R.string.sp_prefix, "")}%")
         val incremental = lastFolio.split("-")[1].toInt() + 1
         return "${lastFolio.split("-")[0]}-$incremental"
     }

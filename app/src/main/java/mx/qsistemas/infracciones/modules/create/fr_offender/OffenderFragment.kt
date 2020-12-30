@@ -70,16 +70,16 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.btnPay.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         if (SingletonInfraction.nameOffender == "Quien") {
-            binding.lytOffender.edtOffenderName.doOnTextChanged { text, start, count, after -> SingletonInfraction.nameOffender = text?.trim().toString() }
-            binding.lytOffender.edtOffenderFln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastFatherName = text?.trim().toString() }
-            binding.lytOffender.edtOffenderMln.doOnTextChanged { text, start, count, after -> SingletonInfraction.lastMotherName = text?.trim().toString() }
+            binding.lytOffender.edtOffenderName.doOnTextChanged { text, _, _, _ -> SingletonInfraction.nameOffender = text?.trim().toString() }
+            binding.lytOffender.edtOffenderFln.doOnTextChanged { text, _, _, _ -> SingletonInfraction.lastFatherName = text?.trim().toString() }
+            binding.lytOffender.edtOffenderMln.doOnTextChanged { text, _, _, _ -> SingletonInfraction.lastMotherName = text?.trim().toString() }
         }
 
-        binding.lytOffender.edtOffenderRfc.doOnTextChanged { text, start, count, after -> SingletonInfraction.rfcOffenfer = text?.trim().toString() }
-        binding.lytOffender.edtStreet.doOnTextChanged { text, start, count, after -> SingletonInfraction.streetOffender = text?.trim().toString() }
-        binding.lytOffender.edtOffenderNoExt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noExtOffender = text?.trim().toString() }
-        binding.lytOffender.edtOffenderNoInt.doOnTextChanged { text, start, count, after -> SingletonInfraction.noIntOffender = text?.trim().toString() }
-        binding.lytOffender.edtOffenderLicenseNo.doOnTextChanged { text, start, count, after -> SingletonInfraction.noLicenseOffender = text?.trim().toString() }
+        binding.lytOffender.edtOffenderRfc.doOnTextChanged { text, _, _, _ -> SingletonInfraction.rfcOffenfer = text?.trim().toString() }
+        binding.lytOffender.edtStreet.doOnTextChanged { text, _, _, _ -> SingletonInfraction.streetOffender = text?.trim().toString() }
+        binding.lytOffender.edtOffenderNoExt.doOnTextChanged { text, _, _, _ -> SingletonInfraction.noExtOffender = text?.trim().toString() }
+        binding.lytOffender.edtOffenderNoInt.doOnTextChanged { text, _, _, _ -> SingletonInfraction.noIntOffender = text?.trim().toString() }
+        binding.lytOffender.edtOffenderLicenseNo.doOnTextChanged { text, _, _, _ -> SingletonInfraction.noLicenseOffender = text?.trim().toString() }
         /* Init adapters */
         iterator.value.getStatesList()
         iterator.value.getStatesIssuedList()
@@ -266,7 +266,6 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                             SingletonInfraction.stateOffender.documentReference == null -> {
                                 isValid = false
                                 onError(getString(R.string.e_state_offender))
-                                1
                             }
                             SingletonInfraction.townshipOffender.key.isBlank() -> {
                                 isValid = false

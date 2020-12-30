@@ -160,5 +160,4 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/colorBlack</item>
     </style>
-
 </resources>

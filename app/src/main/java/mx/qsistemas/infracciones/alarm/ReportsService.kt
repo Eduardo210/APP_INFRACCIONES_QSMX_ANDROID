@@ -19,7 +19,6 @@ import mx.qsistemas.infracciones.utils.Validator
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import javax.net.ssl.HttpsURLConnection
@@ -96,7 +95,7 @@ class ReportsService : JobService() {
                             if (response.code() == HttpsURLConnection.HTTP_OK) {
                                 val result = response.body()
                                 if (result?.status == "success") {
-                                    SendInfractionManagerWeb.updateInfractionSend(result?.infringement.token, result?.infringement.folio)
+                                    SendInfractionManagerWeb.updateInfractionSend(result.infringement.token, result.infringement.folio)
                                     reportsSend++
                                     sendPayments()
                                     // When done, update the notification one more time to remove the progress bar
@@ -125,7 +124,7 @@ class ReportsService : JobService() {
                         override fun onFailure(call: Call<InfractionResult>, t: Throwable) {
                             Log.e(this.javaClass.simpleName, "Send Infractions Failed: ${t.message}")
                             // When done, update the notification one more time to remove the progress bar
-                            builderInfraction.setContentText(getString(R.string.e_send_infractions))
+                            builderInfraction.setContentText(getString(R.string.e_connect_server))
                                     .setProgress(0, 0, false)
                             notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
                         }

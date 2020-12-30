@@ -1,4 +1,4 @@
-package mx.qsistemas.infracciones.modules.main.fr_infraction_history
+package mx.qsistemas.infracciones.modules.main.fr_menu
 
 import android.Manifest
 import android.content.Context
@@ -26,7 +26,7 @@ import mx.qsistemas.payments_transfer.IPaymentsTransfer
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
-class InfractionListFr : Fragment(), View.OnClickListener {
+class MenuFragment : Fragment(), View.OnClickListener {
 
     private lateinit var activity: MainActivity
     private lateinit var binding: FragmentInfractionListBinding
@@ -44,11 +44,12 @@ class InfractionListFr : Fragment(), View.OnClickListener {
         binding.btnPrintVoucher.setOnClickListener(this)
         binding.include.imgSearchInfraction.setOnClickListener(this)
         binding.include.imgUserPhoto.setOnClickListener(this)
-        val name = Application.prefs?.loadData(R.string.sp_person_name, "")
-        binding.include.txtNameDashboard.text = "$name"
+        val name = Application.prefs.loadData(R.string.sp_person_name, "")
+        val paternal = Application.prefs.loadData(R.string.sp_person_paternal, "")
+        val maternal = Application.prefs.loadData(R.string.sp_person_maternal, "")
+        binding.include.txtNameDashboard.text = "$name $paternal $maternal"
         binding.include.txtNameDashboard.isSelected = true
-        if (Application.prefs?.loadData(R.string.sp_person_photo_url, "")!!.isNotBlank())
-            Picasso.get().load(Application.prefs?.loadData(R.string.sp_person_photo_url, "")).error(R.drawable.ic_account).into(binding.include.imgUserPhoto)
+        Picasso.get().load(Application.prefs.loadData(R.string.sp_person_photo_url, "")).error(R.drawable.ic_account).into(binding.include.imgUserPhoto)
         return binding.root
     }
 
@@ -92,10 +93,10 @@ class InfractionListFr : Fragment(), View.OnClickListener {
             binding.include.imgUserPhoto.id -> {
                 val builder = AlertDialogHelper.getGenericBuilder(getString(R.string.w_dialog_close_session), getString(R.string.w_want_to_close_session), activity)
                 builder.setPositiveButton("Sí") { _, _ ->
-                    Application.prefs?.clearPreference(R.string.sp_id_officer)
-                    Application.prefs?.clearPreference(R.string.sp_person_name)
-                    Application.prefs?.clearPreference(R.string.sp_person_photo_url)
-                    Application.prefs?.clearPreference(R.string.sp_has_session)
+                    Application.prefs.clearPreference(R.string.sp_id_officer)
+                    Application.prefs.clearPreference(R.string.sp_person_name)
+                    Application.prefs.clearPreference(R.string.sp_person_photo_url)
+                    Application.prefs.clearPreference(R.string.sp_has_session)
                     activity.router.value.presentLogIn()
                 }
                 builder.setNegativeButton("No") { _, _ -> }
@@ -107,7 +108,7 @@ class InfractionListFr : Fragment(), View.OnClickListener {
     companion object {
         @JvmStatic
         fun newInstance() =
-                InfractionListFr().apply {
+                MenuFragment().apply {
                     arguments = Bundle().apply { }
                 }
     }

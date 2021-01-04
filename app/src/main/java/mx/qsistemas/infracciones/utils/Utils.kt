@@ -51,41 +51,6 @@ class Utils {
             return "not_found"
         }
 
-        /**
-         *  Generate folioIncidence for new incidence reports
-         **/
-        fun generateFolioCoDi(): String {
-            val cal = Calendar.getInstance()
-            cal.firstDayOfWeek = Calendar.MONDAY
-            cal.timeInMillis = System.currentTimeMillis()
-            val year = cal.get(Calendar.YEAR)
-            val yearTwoDigits = cal.get(Calendar.YEAR) % 100
-            val month = cal.get(Calendar.MONTH) + 1
-            val day = cal.get(Calendar.DAY_OF_MONTH)
-            val hour = cal.get(Calendar.HOUR_OF_DAY)
-            val minutes = cal.get(Calendar.MINUTE)
-            val seconds = cal.get(Calendar.SECOND)
-            val millisencond = cal.get(Calendar.MILLISECOND)
-            var newId = 0
-            newId = (newId shl 7) + yearTwoDigits
-            newId = (newId shl 4) + month
-            newId = (newId shl 5) + day
-            var newIdHex = Integer.toHexString(newId)
-            while (newIdHex.length < 4) {
-                newIdHex = "0$newIdHex"
-            }
-            newId = 0
-            newId = (newId shl 5) + hour
-            newId = (newId shl 6) + minutes
-            newId = (newId shl 6) + seconds
-            newId = (newId shl 7) + millisencond
-            var secondIdHex = Integer.toHexString(newId)
-            while (secondIdHex.length < 6) {
-                secondIdHex = "0$secondIdHex"
-            }
-            return newIdHex + secondIdHex
-        }
-
         fun getOutputMediaFileUri(file: File): Uri {
             return Uri.fromFile(file)
         }

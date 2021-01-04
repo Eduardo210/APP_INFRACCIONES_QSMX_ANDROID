@@ -22,6 +22,7 @@ import com.google.firebase.storage.FirebaseStorage
 import mx.qsistemas.infracciones.BuildConfig.FIREBASE_ID
 import mx.qsistemas.infracciones.db.AppDatabase
 import mx.qsistemas.infracciones.db_web.AppDatabaseWeb
+import mx.qsistemas.infracciones.utils.CoDiPreferences
 import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
 import mx.qsistemas.infracciones.utils.Preferences
 import mx.qsistemas.infracciones.utils.Utils
@@ -39,6 +40,7 @@ class Application : MultiDexApplication() {
         lateinit var m_database: AppDatabase
         lateinit var m_database_web: AppDatabaseWeb
         lateinit var prefs: Preferences
+        lateinit var prefsCodi: CoDiPreferences
         lateinit var firestore: FirebaseFirestore
         lateinit var firebaseFunctions: FirebaseFunctions
         lateinit var firebaseStorage: FirebaseStorage
@@ -52,6 +54,7 @@ class Application : MultiDexApplication() {
         super.onCreate()
         MultiDex.install(getContext())
         prefs = Preferences(getContext())
+        prefsCodi = CoDiPreferences(getContext(), !BuildConfig.DEBUG)
         m_database = AppDatabase.getInMemoryDatabase(getContext())!!
         m_database_web = AppDatabaseWeb.getInMemoryDatabase(getContext())!!
         initializeFirebaseComponents()

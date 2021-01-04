@@ -5,7 +5,7 @@
         android:id="@+id/custom_dialog_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/title_gradient"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -13,10 +13,12 @@
             android:id="@+id/custom_dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/qfont"
             android:gravity="center"
             android:text=""
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
+            android:textStyle="bold"
             android:textSize="18sp" />
 
     </LinearLayout>

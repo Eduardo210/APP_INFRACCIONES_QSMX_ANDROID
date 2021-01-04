@@ -79,6 +79,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginStart="8dp"
@@ -94,8 +95,7 @@
                 android:id="@+id/img_user_photo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_account"/>
+                android:scaleType="centerCrop"/>
 
         </androidx.cardview.widget.CardView>
 

@@ -67,7 +67,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
 
     override fun onConfigurationSuccessful(idTownship: String, prefix: String) {
         showLoader(getString(R.string.l_config_terminal))
-        PaymentsTransfer.configDevice(1/*idTownship*/, prefix, 2, 1, "13F0A294679546195AD092C4E5937A41",
+        PaymentsTransfer.configDevice(idTownship, prefix, 2, 1, "13F0A294679546195AD092C4E5937A41",
                 PTX_VOUCHER_TITLE, PTX_VOUCHER_ADDRESS_1, PTX_VOUCHER_ADDRESS_2)
         Handler().postDelayed({
             val loadKeyData = LoadKeyData(PTX_SERIAL_NUMBER, PTX_MERCHANT_ID, PTX_MAIN, PTX_PSW)

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cdv_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_parent_search2"
+            android:layout_width="match_parent"
+            android:layout_height="110dp">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_line_vertical_icons_new2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent=".60" />
+
+            <TextView
+                android:id="@+id/txt_title_home_option"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:text="Títutlo"
+                android:textColor="@color/colorBlack"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txt_subtitle_home_option"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:lines="2"
+                android:maxLines="2"
+                android:singleLine="false"
+                android:text="Subtítulo"
+                app:layout_constraintEnd_toEndOf="@id/guide_line_vertical_icons_new2"
+                app:layout_constraintStart_toStartOf="@id/txt_title_home_option"
+                app:layout_constraintTop_toBottomOf="@id/txt_title_home_option" />
+
+
+            <ImageView
+                android:id="@+id/img_home_option"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:tint="@color/app_gray_text_color"
+                app:layout_constraintBottom_toTopOf="@id/btn_home_option"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/btn_home_option"
+                android:layout_width="110dp"
+                android:layout_height="35dp"
+                android:background="@drawable/small_btn_gradient_orange"
+                android:text="Boton"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guide_line_vertical_icons_new2"
+                app:layout_constraintTop_toBottomOf="@id/img_home_option" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

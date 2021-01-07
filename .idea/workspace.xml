@@ -8,6 +8,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="ok" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
@@ -65,54 +66,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/PermissionsDaoWeb.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/Permissions.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/PermissionsMgr.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/ReconfigureDialog.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/enum/Permissions.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_reconfigure.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db/AppDatabase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db/AppDatabase.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db/managers/CatalogsAdapterManager.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db/managers/CatalogsSyncManager.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db/managers/LogInManager.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db/managers/SaveInfractionManager.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db/managers/SearchManager.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db/managers/SendInfractionManager.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/AppDatabaseWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/AppDatabaseWeb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/AddressInfringementDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/AddressInfringementDaoWeb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionDaoWeb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionPayorderDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionPayorderDaoWeb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/CatalogsFirebaseManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/CatalogsFirebaseManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SaveInfractionManagerWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SaveInfractionManagerWeb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SearchManagerWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SearchManagerWeb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SendInfractionManagerWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SendInfractionManagerWeb.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/InitialConfigurationDialog.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/dialogs/InitialConfigurationDialog.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/PermissionsDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/PermissionsDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/PermissionsMgr.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/PermissionsMgr.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/fcm/FirebaseMessagingService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/fcm/FirebaseMessagingService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/activity_helper/ActivityHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/activity_helper/ActivityHelper.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerIterator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuContracts.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuIterator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchIterator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/fr_search/SearchFr.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/fr_search/SearchFr.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/catalogs/FirestoreCatalogs.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/LogInResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/LogInResult.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/UtilsCodi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/UtilsCodi.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_title.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_title.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
     <list id="d4afbee0-550c-400a-8373-a44a946b77b9" name="Ignore" comment="Ignore" />
     <option name="SHOW_DIALOG" value="false" />
@@ -177,11 +146,11 @@
         <option value="layoutResourceFile_vertical" />
         <option value="valueResourceFile" />
         <option value="resourceFile" />
-        <option value="Kotlin File" />
-        <option value="layoutResourceFile" />
         <option value="Kotlin Class" />
         <option value="Kotlin Interface" />
         <option value="Kotlin Object" />
+        <option value="layoutResourceFile" />
+        <option value="Kotlin File" />
       </list>
     </option>
   </component>
@@ -588,13 +557,6 @@
       <option name="presentableId" value="Default" />
       <updated>1534195955826</updated>
     </task>
-    <task id="LOCAL-00010" summary="* Update Remote Config Default">
-      <created>1560381755431</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1560381755431</updated>
-    </task>
     <task id="LOCAL-00011" summary="* Create report package&#10;* Search report package&#10;* Main activity">
       <created>1560439355218</created>
       <option name="number" value="00011" />
@@ -931,7 +893,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609345784363</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="* New: Process To validate Session Of User">
+      <created>1610040015604</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1610040015605</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TodoView">
@@ -980,7 +949,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="* Update process payment&#10;* Update gradle libraries version" />
     <MESSAGE value="* Terminal geolocation" />
     <MESSAGE value="* Correction Payments Tranfer Library - Save Masked Pan&#10;* Update Login Activity - Offline download catalogs" />
     <MESSAGE value="* Correction Print Action: Show PrePrinting Loader&#10;* Correction Year Vehicle: Input New Filters&#10;* Update Payments Transfer Strings" />
@@ -1005,7 +973,8 @@
     <MESSAGE value="* Update: Process Of Sync Catalogs" />
     <MESSAGE value="* Update: Sync Offline Catalogs" />
     <MESSAGE value="* Delete: Payments Transfer Library Old Module&#10;* Delete: Expandable Toolbar 9Patch&#10;* Update: Change android:tint To app:tint&#10;* Update: Toolbar Infraction Size And Background Image&#10;* Update: Firebase Init Provider Disable Automatically" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Delete: Payments Transfer Library Old Module&#10;* Delete: Expandable Toolbar 9Patch&#10;* Update: Change android:tint To app:tint&#10;* Update: Toolbar Infraction Size And Background Image&#10;* Update: Firebase Init Provider Disable Automatically" />
+    <MESSAGE value="* New: Process To validate Session Of User" />
+    <option name="LAST_COMMIT_MESSAGE" value="* New: Process To validate Session Of User" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1059" y="452" key="#com.intellij.ide.util.MemberChooser" timestamp="1609369220149">
@@ -1028,46 +997,48 @@
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state x="100" y="125" width="2360" height="1215" key="AVDManager/0.25.2560.1415@0.25.2560.1415" timestamp="1608153879026" />
-    <state x="868" y="491" key="AndroidCreateResourceFileDialog" timestamp="1609427582842">
-      <screen x="0" y="25" width="2560" height="1415" />
+    <state x="651" y="343" key="AndroidCreateResourceFileDialog" timestamp="1610041024955">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="651" y="343" key="AndroidCreateResourceFileDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610041024955" />
     <state x="868" y="491" key="AndroidCreateResourceFileDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609427582842" />
     <state x="896" y="483" key="AndroidProcessChooserDialog" timestamp="1609429010676">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state x="896" y="483" key="AndroidProcessChooserDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609429010676" />
-    <state x="698" y="325" key="CommitChangelistDialog2" timestamp="1609345783857">
-      <screen x="0" y="25" width="2560" height="1415" />
-    </state>
-    <state x="698" y="325" key="CommitChangelistDialog2/0.25.2560.1415@0.25.2560.1415" timestamp="1609345783857" />
-    <state x="75" y="73" width="1770" height="894" key="DiffContextDialog" timestamp="1610034760520">
+    <state x="524" y="98" key="CommitChangelistDialog2" timestamp="1610040011430">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="75" y="73" width="1770" height="894" key="DiffContextDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610034760520" />
+    <state x="524" y="98" key="CommitChangelistDialog2/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610040011430" />
+    <state x="698" y="325" key="CommitChangelistDialog2/0.25.2560.1415@0.25.2560.1415" timestamp="1609345783857" />
+    <state x="75" y="73" width="1770" height="894" key="DiffContextDialog" timestamp="1610041713582">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="75" y="73" width="1770" height="894" key="DiffContextDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610041713582" />
     <state x="100" y="125" width="2360" height="1215" key="DiffContextDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609427586429" />
     <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1609789567205">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609789567205" />
-    <state width="1877" height="367" key="GridCell.Tab.0.bottom" timestamp="1609788686919">
+    <state width="1877" height="232" key="GridCell.Tab.0.bottom" timestamp="1610041662162">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="367" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609788686919" />
+    <state width="1877" height="232" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610041662162" />
     <state width="2518" height="399" key="GridCell.Tab.0.bottom/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="367" key="GridCell.Tab.0.center" timestamp="1609788686919">
+    <state width="1877" height="232" key="GridCell.Tab.0.center" timestamp="1610041662162">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="367" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609788686919" />
+    <state width="1877" height="232" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610041662162" />
     <state width="2518" height="399" key="GridCell.Tab.0.center/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="367" key="GridCell.Tab.0.left" timestamp="1609788686919">
+    <state width="1877" height="232" key="GridCell.Tab.0.left" timestamp="1610041662162">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="367" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609788686919" />
+    <state width="1877" height="232" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610041662162" />
     <state width="2518" height="399" key="GridCell.Tab.0.left/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503557" />
-    <state width="1877" height="367" key="GridCell.Tab.0.right" timestamp="1609788686919">
+    <state width="1877" height="232" key="GridCell.Tab.0.right" timestamp="1610041662162">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="367" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609788686919" />
+    <state width="1877" height="232" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610041662162" />
     <state width="2518" height="399" key="GridCell.Tab.0.right/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
     <state width="2518" height="399" key="GridCell.Tab.1.bottom" timestamp="1609429503559">
       <screen x="0" y="25" width="2560" height="1415" />
@@ -1085,30 +1056,34 @@
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state width="2518" height="399" key="GridCell.Tab.1.right/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503559" />
-    <state x="586" y="252" key="SettingsEditor" timestamp="1610036805276">
+    <state x="586" y="252" key="SettingsEditor" timestamp="1610047193519">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="586" y="252" key="SettingsEditor/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610036805276" />
+    <state x="586" y="252" key="SettingsEditor/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610047193519" />
     <state x="781" y="368" key="SettingsEditor/0.25.2560.1415@0.25.2560.1415" timestamp="1609348489317" />
-    <state x="1022" y="176" key="VcsDiffUtil.ChangesDialog" timestamp="1609973592150">
+    <state x="498" y="193" width="746" height="516" key="VcsDiffUtil.ChangesDialog" timestamp="1610041648096">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="1022" y="176" key="VcsDiffUtil.ChangesDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609973592150" />
+    <state x="498" y="193" width="746" height="516" key="VcsDiffUtil.ChangesDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610041648096" />
     <state x="1363" y="265" key="VcsDiffUtil.ChangesDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609427598420" />
-    <state x="76" y="73" width="1770" height="894" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1609796322223">
+    <state x="76" y="73" width="1770" height="894" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1610047175234">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="76" y="73" width="1770" height="894" key="com.intellij.history.integration.ui.views.FileHistoryDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609796322223" />
+    <state x="76" y="73" width="1770" height="894" key="com.intellij.history.integration.ui.views.FileHistoryDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610047175234" />
     <state x="101" y="125" width="2360" height="1215" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609343134238" />
-    <state x="725" y="319" width="600" height="534" key="find.popup" timestamp="1610039060722">
+    <state x="725" y="319" width="664" height="534" key="find.popup" timestamp="1610046911858">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="725" y="319" width="600" height="534" key="find.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610039060722" />
+    <state x="725" y="319" width="664" height="534" key="find.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610046911858" />
     <state x="967" y="459" width="746" height="548" key="find.popup/0.25.2560.1415@0.25.2560.1415" timestamp="1609427644051" />
     <state x="1032" y="610" width="618" height="275" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1609342822551">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state x="1032" y="610" width="618" height="275" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609342822551" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1610042114475">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610042114475" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1264,22 +1239,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>70</line>
+          <line>71</line>
           <option name="timeStamp" value="482" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>74</line>
+          <line>75</line>
           <option name="timeStamp" value="483" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>77</line>
+          <line>78</line>
           <option name="timeStamp" value="484" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>79</line>
+          <line>80</line>
           <option name="timeStamp" value="485" />
         </line-breakpoint>
       </breakpoints>

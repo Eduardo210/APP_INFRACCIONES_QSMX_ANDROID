@@ -1,8 +1,14 @@
 package mx.qsistemas.infracciones.modules.main.fr_menu
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
+import android.content.pm.PackageManager
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +21,22 @@ import com.squareup.picasso.Picasso
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.FragmentMenuBinding
+import mx.qsistemas.infracciones.dialogs.ReconfigurationCallback
+import mx.qsistemas.infracciones.dialogs.ReconfigureDialog
+import mx.qsistemas.infracciones.enum.InfringementPermissions
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.main.MainActivity
 import mx.qsistemas.infracciones.net.catalogs.HomeOptions
-import mx.qsistemas.infracciones.utils.CircleTransformation
+import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.infracciones.utils.*
+import mx.qsistemas.payments_transfer.IPaymentsTransfer
+import mx.qsistemas.payments_transfer.PaymentsTransfer
+import mx.qsistemas.payments_transfer.dtos.LoadKeyData
+import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
 class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOptionListener,
-        /*ReconfigurationCallback,*/ View.OnClickListener {
+        ReconfigurationCallback, View.OnClickListener {
 
     private val iterator by lazy { MenuIterator(this) }
     private lateinit var activity: MainActivity
@@ -71,9 +85,9 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
     override fun onSessionExpired() {
         val sessionDialog = AlertDialogHelper.getErrorBuilder(getString(R.string.w_dialog_close_session), getString(R.string.w_please_close_session), activity)
         sessionDialog.setCancelable(false)
-        sessionDialog.setPositiveButton(getString(R.string.t_close)){ _,_ ->
+        sessionDialog.setPositiveButton(getString(R.string.t_close)) { _, _ ->
             iterator.closeSession()
-            activity.router.value.presentLogIn()
+            activity.router.presentLogIn()
         }
         sessionDialog.show()
     }
@@ -84,7 +98,7 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
                 val builder = AlertDialogHelper.getGenericBuilder(getString(R.string.w_dialog_close_session), getString(R.string.w_want_to_close_session), activity)
                 builder.setPositiveButton("Sí") { _, _ ->
                     iterator.closeSession()
-                    activity.router.value.presentLogIn()
+                    activity.router.presentLogIn()
                 }
                 builder.setNegativeButton("No") { _, _ -> }
                 builder.show()
@@ -102,17 +116,17 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
     }
 
     override fun onClickOption(idOption: String) {
-       /* when (idOption) {
+        when (idOption) {
             HO_ID_INFRACTION -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                         activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     activity.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), RC_PERMISSION_LOCATION)
-                } else if (InfringementPermissions.INSERT.idPermission in iterator.getAttributes()) {
+                } else if (InfringementPermissions.INSERT.permission in iterator.getAttributes()) {
                     /* Validate if gps is enable */
                     val lm = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
                     if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER) && Validator.isHighAccuracyEnable(activity)) {
                         SingletonInfraction.cleanSingleton()
-                        activity.router.value.presentNewInfraction()
+                        activity.router.presentNewInfraction()
                     } else if (Validator.isMockLocationEnable(activity)) {
                         Snackbar.make(binding.root, getString(R.string.e_mock_location), Snackbar.LENGTH_SHORT).show()
                     } else {
@@ -123,8 +137,8 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
                 }
             }
             HO_ID_SEARCH -> {
-                if (InfringementPermissions.SEARCH.idPermission in iterator.value.getAttributes())
-                    activity.router.value.presentSearchInfraction()
+                if (InfringementPermissions.SEARCH.permission in iterator.getAttributes())
+                    activity.router.presentSearchInfraction()
                 else
                     onError(getString(R.string.e_without_permissions))
             }
@@ -139,19 +153,19 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
                 override fun onTxVoucherPrinted() {
                 }
             })
-            HO_ID_PREFERENCES -> activity.router.value.presentMyPreferences(Direction.FORDWARD)
+            HO_ID_PREFERENCES -> ""//activity.router.presentMyPreferences(Direction.FORDWARD)
             HO_ID_SETTINGS -> {
                 val dialog = ReconfigureDialog()
                 dialog.isCancelable = true
                 dialog.listener = this
                 dialog.show(activity.supportFragmentManager, ReconfigureDialog::class.java.simpleName)
             }
-            HO_VALIDATE_ACCOUNT_CODI -> activity.router.value.presentBankAccountValidation()
+            HO_VALIDATE_ACCOUNT_CODI -> ""//activity.router.presentBankAccountValidation()
             HO_SEND_DB -> {
                 activity.showLoader(getString(R.string.l_sending_database))
                 iterator.sendDatabase()
             }
-        }*/
+        }
     }
 
     override fun onDatabaseSend() {
@@ -159,29 +173,30 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_send_db_success), Snackbar.LENGTH_SHORT)
     }
 
-   /* override fun onDialogError(msg: String) {
-        SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_SHORT)
+    override fun onPasswordConfirm(psd: String) {
+        activity.showLoader(getString(R.string.l_config_terminal))
+        iterator.reconfigureDevice(psd)
     }
 
-    override fun onPasswordConfirm() {
-        activity.showLoader(getString(R.string.l_config_terminal))
+    override fun onReconfigureFirestore() {
         val prefix = Application.prefs.loadData(R.string.sp_prefix, "")!!
         val idTownship = Application.prefs.loadData(R.string.sp_id_township, "")!!
         PaymentsTransfer.configDevice(idTownship, prefix, 2, 1, "13F0A294679546195AD092C4E5937A41",
                 PTX_VOUCHER_TITLE, PTX_VOUCHER_ADDRESS_1, PTX_VOUCHER_ADDRESS_2)
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             val loadKeyData = LoadKeyData(PTX_SERIAL_NUMBER, PTX_MERCHANT_ID, PTX_MAIN, PTX_PSW)
             PaymentsTransfer.loadKeyDevice(activity, loadKeyData, object : IPaymentsTransfer.LoadKeyListener {
                 override fun onLoadKey(success: Boolean, value: String) {
                     if (!success) {
                         onError(value)
                     } else {
+                        activity.hideLoader()
                         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_reconfigure_success), Snackbar.LENGTH_SHORT)
                     }
                 }
             })
         }, 2000)
-    }*/
+    }
 
     companion object {
         @JvmStatic

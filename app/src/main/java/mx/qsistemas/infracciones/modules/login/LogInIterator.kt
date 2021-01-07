@@ -89,6 +89,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                                 Application.prefs.saveData(R.string.sp_person_maternal, response.body()?.data?.personMaternal ?: "")
                                 Application.prefs.saveData(R.string.sp_person_photo_url, NetworkApi.API_URL + response.body()?.data?.image)
                                 Application.prefs.saveData(R.string.sp_no_employee, response.body()?.data?.employee ?: "")
+                                Application.prefs.saveData(R.string.sp_user, userName)
                                 Application.prefs.saveDataBool(R.string.sp_has_session, true)
                                 val map = hashMapOf<String, Any>("logged_user" to response.body()?.data?.idPerson!!)
                                 val imei = Utils.getImeiDevice(Application.getContext())

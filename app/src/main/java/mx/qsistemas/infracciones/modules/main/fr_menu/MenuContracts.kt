@@ -10,15 +10,17 @@ class MenuContracts {
         fun onApplicationEnable()
         fun onApplicationDisable()
         fun onSessionExpired()
+        fun onReconfigureFirestore()
     }
 
     interface Iterator {
-        fun getAttributes(): MutableList<Long>
+        fun getAttributes(): MutableList<String>
         fun getHomeOptions()
         fun sendDatabase()
         fun checkIfApplicationIsActive()
         fun validateSession()
         fun closeSession()
+        fun reconfigureDevice(psd: String)
     }
 
     interface OnHomeOptionListener {

@@ -37,17 +37,9 @@ class FirebaseMessagingService : FirebaseMessagingService() {
     private fun uploadDatabase(option: Int) {
         val sd = Environment.getExternalStorageDirectory()
         val imei = Utils.getImeiDevice(Application.getContext())
-        val storageReference = if (option == OP_SEND_DATABASE) {
-            Application.firebaseStorage.reference.child("databases/$imei.db")
-        } else {
-            Application.firebaseStorage.reference.child("databases/${imei}_web.db")
-        }
+        val storageReference = Application.firebaseStorage.reference.child("databases/${imei}_web.db")
         if (sd.canWrite()) {
-            val dbPath = if (option == OP_SEND_DATABASE) {
-                Application.m_database.openHelper.writableDatabase?.path ?: ""
-            } else {
-                Application.m_database_web.openHelper.writableDatabase?.path ?: ""
-            }
+            val dbPath = Application.m_database_web.openHelper.writableDatabase?.path ?: ""
             val dbFile = File(dbPath)
             if (dbFile.exists()) {
                 storageReference.putFile(Uri.fromFile(dbFile)).addOnCompleteListener {

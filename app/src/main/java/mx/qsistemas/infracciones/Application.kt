@@ -37,7 +37,7 @@ class Application : MultiDexApplication() {
     companion object {
         val TAG = "Infracciones"
         private var instance: Application? = null
-        lateinit var m_database: AppDatabase
+        //lateinit var m_database: AppDatabase
         lateinit var m_database_web: AppDatabaseWeb
         lateinit var prefs: Preferences
         lateinit var prefsCodi: CoDiPreferences
@@ -55,7 +55,7 @@ class Application : MultiDexApplication() {
         MultiDex.install(getContext())
         prefs = Preferences(getContext())
         prefsCodi = CoDiPreferences(getContext(), !BuildConfig.DEBUG)
-        m_database = AppDatabase.getInMemoryDatabase(getContext())!!
+        //m_database = AppDatabase.getInMemoryDatabase(getContext())!!
         m_database_web = AppDatabaseWeb.getInMemoryDatabase(getContext())!!
         initializeFirebaseComponents()
         /* Initialize Payments Library */

@@ -11,6 +11,9 @@ interface PermissionsDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(permission: Permissions)
 
+    @Query("SELECT * FROM permissions")
+    suspend fun selectAll(): MutableList<Permissions>
+
     @Query("DELETE FROM permissions")
     fun deleteAll()
 }

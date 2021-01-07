@@ -202,7 +202,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
 
     override fun onDataSaved() {
         SnackbarHelper.showSuccessSnackBar(activity, getString(R.string.s_data_saved), Snackbar.LENGTH_SHORT)
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             val dialog = DetailPaymentDialog()
             dialog.listener = this
             dialog.showDeclineOption = false
@@ -212,7 +212,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
     }
 
     override fun onDataDuplicate() {
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             val dialog = DetailPaymentDialog()
             dialog.listener = this
             dialog.showDeclineOption = false
@@ -353,7 +353,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
     override fun onCtlsDoubleTap() {
         activity.runOnUiThread {
             activity.showLoader(getString(R.string.l_waiting_confirm))
-            Handler().postDelayed({ PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this) }, 3500)
+            Handler(Looper.getMainLooper()).postDelayed({ PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this) }, 3500)
         }
     }
 

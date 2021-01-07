@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -70,7 +71,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
         showLoader(getString(R.string.l_config_terminal))
         PaymentsTransfer.configDevice(idTownship, prefix, 2, 1, "13F0A294679546195AD092C4E5937A41",
                 PTX_VOUCHER_TITLE, PTX_VOUCHER_ADDRESS_1, PTX_VOUCHER_ADDRESS_2)
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             val loadKeyData = LoadKeyData(PTX_SERIAL_NUMBER, PTX_MERCHANT_ID, PTX_MAIN, PTX_PSW)
             PaymentsTransfer.loadKeyDevice(this, loadKeyData, object : IPaymentsTransfer.LoadKeyListener {
                 override fun onLoadKey(success: Boolean, value: String) {

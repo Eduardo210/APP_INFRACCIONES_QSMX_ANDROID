@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayout
+import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivitySearchBinding
 import mx.qsistemas.infracciones.helpers.activity_helper.ActivityHelper
@@ -24,11 +25,11 @@ class SearchActivity : ActivityHelper(), View.OnClickListener {
         try{
             binding.tabLayoutSearch.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
                 override fun onTabReselected(tab: TabLayout.Tab?) {
-                    Log.d("TAB_SEARCH-------->", "TablReselected: $tab.toString()")
+                    Log.d(TAG, "TablReselected: $tab.toString()")
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
-                    Log.d("TAB_SEARCH-------->", "TablUnselected: $tab.toString()")
+                    Log.d(TAG, "TablUnselected: $tab.toString()")
                 }
 
                 override fun onTabSelected(tab: TabLayout.Tab?) {

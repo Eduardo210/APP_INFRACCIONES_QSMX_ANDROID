@@ -20,12 +20,12 @@ import mx.qsistemas.infracciones.utils.Validator
 object CatalogsFirebaseManager {
     suspend fun getValue(reference: String, typeCollection: String, field: String): String {
         val value: String
-        val document: Task<DocumentSnapshot>? = if (Validator.isNetworkEnable(Application.getContext())) {
+        val document: Task<DocumentSnapshot> = if (Validator.isNetworkEnable(Application.getContext())) {
             Application.firestore.collection(typeCollection).document(reference).get(Source.SERVER)
         } else {
             Application.firestore.collection(typeCollection).document(reference).get(Source.CACHE)
         }
-        value = document?.await()?.get(field).toString()
+        value = document.await().get(field).toString()
         return value
     }
 

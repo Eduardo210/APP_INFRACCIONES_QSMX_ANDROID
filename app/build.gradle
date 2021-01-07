@@ -5,12 +5,12 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "mx.qsistemas.infracciones"
         minSdkVersion 22
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "3.0.0"
         multiDexEnabled true
@@ -27,6 +27,7 @@ android {
             buildConfigField("String", "CODI_CERT_CHAIN", "\"ncLelc1X9DQqFitjMpjrHl9y6XJkxvgzr6l6flp3xl4=\"")
             buildConfigField("String", "BANK_ACCOUNT", "\"997000000000123663\"")
             buildConfigField("int", "BANK_ID", "40997")
+            buildConfigField("int", "CODI_CONFIG_VERSION", "1")
             buildConfigField("String", "FIREBASE_ID", "\"ad6a4c13940be56a8029a4\"")
         }
         release {
@@ -35,6 +36,7 @@ android {
             buildConfigField("String", "CODI_CERT_CHAIN", "\"\"")
             buildConfigField("String", "BANK_ACCOUNT", "\"\"")
             buildConfigField("int", "BANK_ID", "0")
+            buildConfigField("int", "CODI_CONFIG_VERSION", "1")
             buildConfigField("String", "FIREBASE_ID", "\"65b771b1beea3b6e56e0cc\"")
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -59,10 +61,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.21'
     // Android X
+    implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-rc01"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-rc01'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.appcompat:appcompat:1.3.0-alpha02'
@@ -70,7 +74,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
     implementation 'androidx.room:room-runtime:2.2.6'
-    implementation 'androidx.room:room-coroutines:2.1.0-alpha04'
+    implementation 'androidx.room:room-ktx:2.2.6'
     kapt 'androidx.room:room-compiler:2.2.6'
     // Testing
     testImplementation 'junit:junit:4.12'
@@ -111,6 +115,6 @@ dependencies {
         exclude group: 'xpp3', module: 'xpp3'
     }
     // Payment Transfer Library
-    implementation 'com.github.QuetzalcoatlSistemas:payments_transfer:0.1.4-alpha04'
+    implementation 'com.github.QuetzalcoatlSistemas:payments_transfer:0.1.4-alpha06'
     //implementation project(':payments_transfer')
 }

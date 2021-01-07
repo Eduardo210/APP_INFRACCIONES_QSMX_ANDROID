@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
@@ -25,7 +26,7 @@ import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.modules.search.fr_search.TOKEN_INFRACTION
-import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.catalogs.Cities
 import mx.qsistemas.infracciones.net.result_web.detail_result.NewCaptureLines
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonInfraction.tokenInfraction
@@ -253,11 +254,11 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
             //Hacer operación para calcular los recargos
             Application.firestore.collection(FS_COL_CITIES).document(Application.prefs.loadData(R.string.sp_id_township, "")!!).get().addOnSuccessListener { townshipSnapshot ->
                 if (townshipSnapshot == null) {
-                    Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
+                    Log.e(TAG, Application.getContext().getString(R.string.e_firestore_not_available))
                     onError(Application.getContext().getString(R.string.e_firestore_not_available))
                     activity.hideLoader()
                 } else {
-                    val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
+                    val township = townshipSnapshot.toObject(Cities::class.java) ?: Cities()
                     val diff = Date().time - captureSelected.date?.time!!
                     val days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
                     SingletonInfraction.surchargesInfraction = "%.2f".format(days * township.surcharges_rate)

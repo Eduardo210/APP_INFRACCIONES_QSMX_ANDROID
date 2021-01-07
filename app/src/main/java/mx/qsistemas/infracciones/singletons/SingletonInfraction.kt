@@ -32,7 +32,7 @@ object SingletonInfraction {
     var betweenStreet2: String = ""
     var motivationList: MutableList<DtoMotivation> = mutableListOf()
     var retainedDocument: GenericCatalog = GenericCatalog()
-    var townshipInfraction: Townships = Townships()
+    var townshipInfraction: Cities = Cities()
     var stateInfraction: GenericCatalog = GenericCatalog()
     var isRemited: Boolean = false
     var dispositionRemited: GenericCatalog = GenericCatalog()

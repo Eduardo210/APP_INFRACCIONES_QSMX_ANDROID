@@ -1,6 +1,7 @@
 package mx.qsistemas.infracciones.modules.login
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.functions.FirebaseFunctionsException
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
@@ -9,14 +10,16 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.City
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.Colony
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.ZipCodes
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
+import mx.qsistemas.infracciones.db_web.managers.PermissionsMgr
 import mx.qsistemas.infracciones.net.NetworkApi
-import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.catalogs.Cities
 import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.result_web.LogInResult
 import mx.qsistemas.infracciones.utils.*
@@ -77,6 +80,9 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                     override fun onResponse(call: Call<LogInResult>, response: Response<LogInResult>) {
                         when (response.code()) {
                             HttpURLConnection.HTTP_OK -> {
+                                if (response.body()?.data != null) {
+                                    PermissionsMgr.insertPermissions(response.body()?.data?.permissions!!)
+                                }
                                 Application.prefs.saveData(R.string.sp_id_officer, response.body()?.data?.idPerson ?: 0)
                                 Application.prefs.saveData(R.string.sp_person_name, response.body()?.data?.personName ?: "")
                                 Application.prefs.saveData(R.string.sp_person_paternal, response.body()?.data?.personPaternal ?: "")
@@ -84,6 +90,9 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
                                 Application.prefs.saveData(R.string.sp_person_photo_url, NetworkApi.API_URL + response.body()?.data?.image)
                                 Application.prefs.saveData(R.string.sp_no_employee, response.body()?.data?.employee ?: "")
                                 Application.prefs.saveDataBool(R.string.sp_has_session, true)
+                                val map = hashMapOf<String, Any>("logged_user" to response.body()?.data?.idPerson!!)
+                                val imei = Utils.getImeiDevice(Application.getContext())
+                                Application.firestore.collection(FS_COL_TERMINALS).document(imei).set(map, SetOptions.merge())
                                 listener.onLoginSuccessful()
                             }
                             HttpURLConnection.HTTP_UNAUTHORIZED -> listener.onError(Application.getContext().getString(R.string.e_user_pss_incorrect))
@@ -144,7 +153,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
         val firestore = Application.firestore.collection(FS_COL_CITIES).get().addOnSuccessListener {
             if (it != null && !it.isEmpty) {
                 it.documents.forEach { doc ->
-                    val data = doc.toObject(Townships::class.java)!!
+                    val data = doc.toObject(Cities::class.java)!!
                     cities.add(City(0, doc.id, data.value, data.reference?.id
                             ?: "", data.is_active))
                 }

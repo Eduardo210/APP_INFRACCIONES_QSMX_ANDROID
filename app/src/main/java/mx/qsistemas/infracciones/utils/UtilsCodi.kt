@@ -155,18 +155,18 @@ class UtilsCodi {
         /** Obtener el número de serie del mensaje de cobro que se realizó durante el día, este serial
          *  se reinicia diario para así llevar una contabilidad de los cobros generados al día */
         fun getSerialCoDi(): Int {
-            val serialUpdateTime = if (Application.prefsCodi?.containsData(R.string.sp_codi_serial_update)!!) Application.prefsCodi?.loadDataInt(R.string.sp_codi_serial_update)!!.toLong() else System.currentTimeMillis()
-            val serialNumber = if (Application.prefsCodi?.containsData(R.string.sp_codi_serial)!!) Application.prefsCodi?.loadDataInt(R.string.sp_codi_serial)!! else 0
+            val serialUpdateTime = if (Application.prefsCodi.containsData(R.string.sp_codi_serial_update)) Application.prefsCodi.loadDataInt(R.string.sp_codi_serial_update).toLong() else System.currentTimeMillis()
+            val serialNumber = if (Application.prefsCodi.containsData(R.string.sp_codi_serial)) Application.prefsCodi.loadDataInt(R.string.sp_codi_serial) else 0
             val calendarUpdate = Calendar.getInstance()
             calendarUpdate.time = Date(serialUpdateTime)
             val calendarToday = Calendar.getInstance()
             calendarToday.time = Date()
-            Application.prefsCodi?.saveDataInt(R.string.sp_codi_serial_update, System.currentTimeMillis().toInt())
+            Application.prefsCodi.saveDataInt(R.string.sp_codi_serial_update, System.currentTimeMillis().toInt())
             return if (calendarToday.get(Calendar.DAY_OF_MONTH) != calendarUpdate.get(Calendar.DAY_OF_MONTH)) {
-                Application.prefsCodi?.saveDataInt(R.string.sp_codi_serial, 0)
+                Application.prefsCodi.saveDataInt(R.string.sp_codi_serial, 0)
                 0
             } else {
-                Application.prefsCodi?.saveDataInt(R.string.sp_codi_serial, serialNumber + 1)
+                Application.prefsCodi.saveDataInt(R.string.sp_codi_serial, serialNumber + 1)
                 serialNumber + 1
             }
         }

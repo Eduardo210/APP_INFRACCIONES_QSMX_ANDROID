@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.google.firebase.firestore.Query
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db.entities.NonWorkingDay
 import mx.qsistemas.infracciones.db_web.entities.InfractionItem
@@ -58,7 +59,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                     if (result?.data != null) {
 
                         itemInfraOnline = result.data as MutableList<DataItem>
-                        Log.d("SEARCH_ONLINE", "${result.data}")
+                        Log.d(TAG, "${result.data}")
                         if (result.count?.compareTo(0) != 0) {
                             listener.onResultSearch(result.data)
                         } else {
@@ -66,20 +67,20 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                         }
                     } else {//No se encontraron datos
                         listener.onResultSearch(mutableListOf())
-                        Log.d("SEARCH_ONLINE", "${result?.data}")
+                        Log.d(TAG, "${result?.data}")
                     }
 
                 } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    Log.e("SEARCH_ONLINE", response.message())
+                    Log.e(TAG, response.message())
                     listener.onError(response.message().toString())
                 } else {
-                    Log.e("SEARCH_ONLINE", response.message())
+                    Log.e(TAG, response.message())
                     listener.onError(response.message().toString())
                 }
             }
 
             override fun onFailure(call: Call<SearchResult>, t: Throwable) {
-                Log.d("SEARCH ---->>>>>", t.message.toString())
+                Log.d(TAG, t.message.toString())
                 listener.onError(t.message ?: "")
             }
 
@@ -89,7 +90,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
     override fun doSearchByIdInfraction(id: String, origin: Int) {
         val dataToken: HashMap<String, String> = hashMapOf()
         dataToken["token"] = id
-        Log.d("JSON-SEARCH", dataToken.toString())
+        Log.d(TAG, dataToken.toString())
         NetworkApi().getNetworkService().detailInfraction((
                 "Bearer"),
                 dataToken).enqueue(object : Callback<DetailResult> {
@@ -98,13 +99,13 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
                     val data = response.body()//Gson().fromJson(response.body(), DetailResult::class.java)
                     if (data != null) {
                         listener.onResultInfractionById(data, origin)
-                        Log.d("SEARCH_BY_TOKEN", data.toString())
+                        Log.d(TAG, data.toString())
                     } else {
                         listener.onError("Ocurrió un error al obtener los datos del servidor.")
                     }
 
                 } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    Log.e("SEARCH_ONLINE", response.message())
+                    Log.e(TAG, response.message())
                     listener.onError(response.message())
                 } else {
                     listener.onError(response.message())
@@ -112,7 +113,7 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
             }
 
             override fun onFailure(call: Call<DetailResult>, t: Throwable) {
-                Log.e("SEARCH_BY_ID", t.message.toString())
+                Log.e(TAG, t.message.toString())
                 listener.onError(t.message ?: "")
             }
         })

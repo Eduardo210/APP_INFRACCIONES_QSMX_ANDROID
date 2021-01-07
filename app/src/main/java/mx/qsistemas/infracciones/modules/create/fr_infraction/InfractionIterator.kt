@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.Colony
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.ZipCodes
@@ -13,7 +14,7 @@ import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
 import mx.qsistemas.infracciones.net.catalogs.Articles
 import mx.qsistemas.infracciones.net.catalogs.Fractions
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.catalogs.Cities
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.utils.*
 import java.util.*
@@ -155,14 +156,14 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
         val cityReference = SingletonInfraction.zipCodeInfraction.reference.split("/")
         Application.firestore.collection(FS_COL_CITIES).document(cityReference.last()).get().addOnSuccessListener { townshipSnapshot ->
             if (townshipSnapshot == null) {
-                Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
+                Log.e(TAG, Application.getContext().getString(R.string.e_firestore_not_available))
             } else {
-                val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
+                val township = townshipSnapshot.toObject(Cities::class.java) ?: Cities()
                 SingletonInfraction.townshipInfraction = township
                 SingletonInfraction.townshipInfraction.childReference = townshipSnapshot.reference
                 Application.firestore.collection(FS_COL_STATES).document(township.reference!!.id).get().addOnSuccessListener {
                     if (it == null) {
-                        Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
+                        Log.e(TAG, Application.getContext().getString(R.string.e_firestore_not_available))
                     } else {
                         val state = it.toObject(GenericCatalog::class.java) ?: GenericCatalog()
                         SingletonInfraction.stateInfraction = state

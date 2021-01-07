@@ -13,7 +13,7 @@ data class InfoLogin(@SerializedName("city") val city: String,
                      @SerializedName("person_maternal") val personMaternal: String,
                      @SerializedName("employee") val employee: String,
                      @SerializedName("image") val image: String?,
-                     @SerializedName("permissions") val permissions: MutableList<Permissions>)
+                     @SerializedName("permissions") val permissions: MutableList<CPermissions>)
 
-data class Permissions(@SerializedName("name") val name: String,
+data class CPermissions(@SerializedName("name") val name: String,
                        @SerializedName("code_name") val code: String)

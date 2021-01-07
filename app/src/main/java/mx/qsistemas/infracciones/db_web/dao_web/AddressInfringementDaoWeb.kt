@@ -13,5 +13,4 @@ interface AddressInfringementDaoWeb {
 
     @Query("SELECT * FROM infringement_address_infringement WHERE infringement_id =:idInfraction")
     fun selectInfractionAddres(idInfraction: Long): InfringementAddressInfringement
-
 }

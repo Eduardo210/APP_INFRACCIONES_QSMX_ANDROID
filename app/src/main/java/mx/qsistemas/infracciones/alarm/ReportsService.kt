@@ -7,6 +7,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.managers.SendInfractionManagerWeb
 import mx.qsistemas.infracciones.net.NetworkApi
@@ -122,7 +123,7 @@ class ReportsService : JobService() {
                         }
 
                         override fun onFailure(call: Call<InfractionResult>, t: Throwable) {
-                            Log.e(this.javaClass.simpleName, "Send Infractions Failed: ${t.message}")
+                            Log.e(TAG, "Send Infractions Failed: ${t.message}")
                             // When done, update the notification one more time to remove the progress bar
                             builderInfraction.setContentText(getString(R.string.e_connect_server))
                                     .setProgress(0, 0, false)

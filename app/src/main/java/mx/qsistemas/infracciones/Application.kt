@@ -115,7 +115,7 @@ class Application : MultiDexApplication() {
         /* Get Firebase push notification token */
         FirebaseInstanceId.getInstance(default).instanceId.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.w(this.javaClass.simpleName, "getInstanceId failed", task.exception)
+                Log.w(TAG, "getInstanceId failed", task.exception)
                 return@OnCompleteListener
             }
             // Get new Instance ID token
@@ -126,7 +126,7 @@ class Application : MultiDexApplication() {
             val imei = Utils.getImeiDevice(getContext())
             firestore.collection(FS_COL_TERMINALS).document(imei).set(map, SetOptions.merge()).addOnCompleteListener { t2 ->
                 if (!t2.isSuccessful) {
-                    Log.e(this.javaClass.simpleName, "Push Notification Token Not Registered")
+                    Log.e(TAG, "Push Notification Token Not Registered")
                 }
             }
         })

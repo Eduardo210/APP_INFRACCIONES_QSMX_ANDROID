@@ -244,6 +244,7 @@
     <string name="t_save">Guardar</string>
     <string name="t_validate_payment">Verificar cobro</string>
     <string name="t_send_payment">Enviar a celular</string>
+    <string name="t_close">Cerrar</string>
 
     <!-- Loader Strings -->
     <string name="l_log_in">Iniciando sesión</string>

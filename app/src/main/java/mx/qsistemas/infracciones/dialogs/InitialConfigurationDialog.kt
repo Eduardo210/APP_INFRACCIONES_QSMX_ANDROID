@@ -15,7 +15,7 @@ import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.DialogInitialConfigurationBinding
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
-import mx.qsistemas.infracciones.net.catalogs.Townships
+import mx.qsistemas.infracciones.net.catalogs.Cities
 import mx.qsistemas.infracciones.utils.FS_COL_CITIES
 import mx.qsistemas.infracciones.utils.FS_COL_STATES
 import mx.qsistemas.infracciones.utils.FS_COL_TERMINALS
@@ -29,7 +29,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
     val BBOX = "@_x2Quetza+*qsi9900"
     var listener: InitialConfigurationCallback? = null
     private var states = mutableListOf<GenericCatalog>()
-    private var townships = mutableListOf<Townships>()
+    private var townships = mutableListOf<Cities>()
     private lateinit var binding: DialogInitialConfigurationBinding
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -93,11 +93,11 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                 }
                 if (querySnapshot != null && !querySnapshot.isEmpty) {
                     townships = mutableListOf()
-                    townships.add(Townships("PRX", 0, "Seleccionar...", state, true))
+                    townships.add(Cities("PRX", 0, "Seleccionar...", state, true))
                     val list = mutableListOf<String>()
                     list.add("Seleccionar...")
                     for (document in querySnapshot.documents) {
-                        val data = document.toObject(Townships::class.java)!!
+                        val data = document.toObject(Cities::class.java)!!
                         data.childReference = document.reference
                         list.add(data.value)
                         townships.add(data)
@@ -107,7 +107,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
                     binding.spnTownship.adapter = adapter
                 } else {
                     townships = mutableListOf()
-                    townships.add(Townships("PRX", 0, "Seleccionar...", state, true))
+                    townships.add(Cities("PRX", 0, "Seleccionar...", state, true))
                     val list = mutableListOf<String>()
                     list.add("Seleccionar...")
                     val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
@@ -117,7 +117,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
             }
         } else {
             townships = mutableListOf()
-            townships.add(Townships("PRX", 0, "Seleccionar...", state, true))
+            townships.add(Cities("PRX", 0, "Seleccionar...", state, true))
             val list = mutableListOf<String>()
             list.add("Seleccionar...")
             val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
@@ -126,7 +126,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
         }
     }
 
-    override fun savePrefix(prefix: String, township: Townships, townKey: String) {
+    override fun savePrefix(prefix: String, township: Cities, townKey: String) {
         Application.firestore.collection(FS_COL_CITIES).document(townKey).update("counter_prefix", township.counter_prefix + 1).addOnCompleteListener { t1 ->
             if (t1.isSuccessful) {
                 val map = hashMapOf("city" to township.childReference,
@@ -193,7 +193,7 @@ class InitialConfigurationDialog : DialogFragment(), DialogPresenter, AdapterVie
 interface DialogPresenter {
     fun getStates()
     fun getTownships(state: DocumentReference?)
-    fun savePrefix(prefix: String, township: Townships, townKey: String)
+    fun savePrefix(prefix: String, township: Cities, townKey: String)
 }
 
 interface InitialConfigurationCallback {

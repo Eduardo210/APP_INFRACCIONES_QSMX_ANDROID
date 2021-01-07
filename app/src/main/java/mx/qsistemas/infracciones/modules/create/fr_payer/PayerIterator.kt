@@ -22,7 +22,6 @@ import mx.qsistemas.payments_transfer.dtos.Voucher
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
@@ -211,7 +210,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     Application.prefs.loadData(R.string.sp_person_name, "") ?: "","", "",
                     SingletonInfraction.idNewInfraction
             )
-            SaveInfractionManagerWeb.saveOficial(oficial)
+            SaveInfractionManagerWeb.saveOfficial(oficial)
             /* Notify View That All Data Was Saved */
             listener.onDataSaved()
         } else {

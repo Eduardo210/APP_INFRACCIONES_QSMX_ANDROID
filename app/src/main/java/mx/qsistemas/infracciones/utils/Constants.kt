@@ -67,7 +67,7 @@ const val FS_COL_TERMINALS = "terminals"
 const val FS_COL_STATES = "state"
 const val FS_COL_ZIP_CODES = "zip_codes"
 const val FS_COL_HOLIDAYS = "holidays"
-const val FS_COL_HOME_OPTIONS = "home_options"
+const val FS_COL_INFRINGEMENT_APP_OPTIONS = "infringement_app_options"
 
 /* FIRESTORE DOCUMENTS */
 const val FS_DOC_VERSION = "qsistemas"

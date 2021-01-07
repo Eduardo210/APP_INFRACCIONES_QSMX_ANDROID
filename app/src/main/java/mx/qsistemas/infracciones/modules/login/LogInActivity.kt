@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.ActivityLogInBinding
@@ -118,7 +119,7 @@ class LogInActivity : ActivityHelper(), LogInContracts.Presenter, View.OnClickLi
                     builder.show()
                 }
             } else {
-                Log.e(this.javaClass.simpleName, "Cannot obtain remote version of application")
+                Log.e(TAG, "Cannot obtain remote version of application")
             }
         }
     }

@@ -376,7 +376,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.idNewInfraction
             )
             //Application.prefs.loadDataInt(R.string.sp_id_officer)!!.toLong()
-            SaveInfractionManagerWeb.saveOficial(oficial)
+            SaveInfractionManagerWeb.saveOfficial(oficial)
             /* Notify View That All Data Was Saved */
             if (notify) listener.onDataSaved()
         }

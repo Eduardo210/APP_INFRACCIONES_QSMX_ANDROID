@@ -14,6 +14,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.databinding.FragmentOffenderBinding
@@ -202,7 +203,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         when (p0?.id) {
             binding.btnSave.id -> {
                 if (validFields()) {
-                    Log.d("OFFENDER", thereIsAnOffender().toString())
+                    Log.d(TAG, thereIsAnOffender().toString())
                     if (thereIsAnOffender()) {
                         val builder = AlertDialogHelper.getGenericBuilder(
                                 getString(R.string.w_dialog_title), getString(R.string.w_want_to_pay), activity

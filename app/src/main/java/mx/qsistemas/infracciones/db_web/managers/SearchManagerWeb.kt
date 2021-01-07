@@ -11,96 +11,50 @@ import mx.qsistemas.infracciones.db_web.entities.*
 @SuppressLint("StaticFieldLeak")
 object SearchManagerWeb {
     fun getItemInfraction(query: SupportSQLiteQuery): MutableList<InfractionItem> = runBlocking {
-        object : AsyncTask<Void, Void, MutableList<InfractionItem>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<InfractionItem>? {
-                return Application.m_database_web.infractionDaoWeb().searchResumeInfraction(query)
-            }
-        }.execute().get()
+        return@runBlocking Application.m_database_web.infractionDaoWeb().searchResumeInfraction(query)
     }
 
     fun getAddressInfringement(idInfraction: Long): InfringementAddressInfringement = runBlocking {
-        object : AsyncTask<Void, Void, InfringementAddressInfringement>() {
-            override fun doInBackground(vararg p0: Void?): InfringementAddressInfringement {
-                return Application.m_database_web.addressInfringementDaoWeb().selectInfractionAddres(idInfraction)
-            }
-        }.execute().get()
+        return@runBlocking Application.m_database_web.addressInfringementDaoWeb().selectInfractionAddres(idInfraction)
     }
 
     fun getAddressDriver(idInfraction: Long): DriverAddressDriver = runBlocking {
-        object : AsyncTask<Void, Void, DriverAddressDriver>() {
-            override fun doInBackground(vararg p0: Void?): DriverAddressDriver {
-                return Application.m_database_web.addressPersonDaoWeb().selectPersonAddress(idInfraction)
-            }
-        }.execute().get()
-
+        return@runBlocking Application.m_database_web.addressPersonDaoWeb().selectPersonAddress(idInfraction)
     }
 
     fun getDriverLicense(idInfraction: Long): DriverDriverLicense = runBlocking {
-        object : AsyncTask<Void, Void, DriverDriverLicense>() {
-            override fun doInBackground(vararg p0: Void?): DriverDriverLicense {
-                return Application.m_database_web.driverLicenseDaoWeb().selectDriverLicense(idInfraction)
-            }
-        }.execute().get()
+        return@runBlocking Application.m_database_web.driverLicenseDaoWeb().selectDriverLicense(idInfraction)
     }
 
     fun getDriverDriver(idInfraction: Long): DriverDrivers = runBlocking {
-        object : AsyncTask<Void, Void, DriverDrivers>() {
-            override fun doInBackground(vararg p0: Void?): DriverDrivers {
-                return Application.m_database_web.personDaoWeb().selectPersonInfo(idInfraction)
-            }
-        }.execute().get()
+        return@runBlocking Application.m_database_web.personDaoWeb().selectPersonInfo(idInfraction)
     }
 
     fun getCaptureLines(idInfraction: Long): MutableList<InfringementCapturelines> = runBlocking {
-        object : AsyncTask<Void, Void, MutableList<InfringementCapturelines>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<InfringementCapturelines> {
-                return Application.m_database_web.captureLineDaoWeb().selectCaptureLine(idInfraction)
-            }
-        }.execute().get()
+        return@runBlocking Application.m_database_web.captureLineDaoWeb().selectCaptureLine(idInfraction)
     }
 
     fun getInfraction(idInfraction: Long): InfringementInfringements = runBlocking {
-        object : AsyncTask<Void, Void, InfringementInfringements>() {
-            override fun doInBackground(vararg p0: Void?): InfringementInfringements {
-                return Application.m_database_web.infractionDaoWeb().selectInfraction(idInfraction)
-            }
-        }.execute().get()
+        return@runBlocking Application.m_database_web.infractionDaoWeb().selectInfraction(idInfraction)
     }
 
     fun getFractionsInfringements(idInfraction: Long): MutableList<InfringementRelfractionInfringements> = runBlocking {
-        object : AsyncTask<Void, Void, MutableList<InfringementRelfractionInfringements>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<InfringementRelfractionInfringements> {
-                return Application.m_database_web.infractionFractionDaoWeb().selectFractions(idInfraction)
-            }
-        }.execute().get()
+        return@runBlocking Application.m_database_web.infractionFractionDaoWeb().selectFractions(idInfraction)
     }
 
     fun getVehicle(idInfraction: Long): VehicleVehicles = runBlocking {
-        object : AsyncTask<Void, Void, VehicleVehicles>() {
-            override fun doInBackground(vararg p0: Void?): VehicleVehicles {
-                return Application.m_database_web.vehicleInfractionDaoWeb().selectVehicle(idInfraction)
-            }
-        }.execute().get()
+        return@runBlocking Application.m_database_web.vehicleInfractionDaoWeb().selectVehicle(idInfraction)
     }
+
     fun getTownHallPerson(idInfraction: Long): PersonTownhall = runBlocking {
-        object : AsyncTask<Void, Void, PersonTownhall>() {
-            override fun doInBackground(vararg p0: Void?): PersonTownhall {
-                return Application.m_database_web.personTownHallDaoWeb().selectTownPerson(idInfraction)
-            }
-        }.execute().get()
+        return@runBlocking Application.m_database_web.personTownHallDaoWeb().selectTownPerson(idInfraction)
     }
-    fun getPayOrder(idInfraction: Long): InfringementPayorder? = runBlocking {
-        object : AsyncTask<Void, Void, InfringementPayorder?>() {
-            override fun doInBackground(vararg p0: Void?): InfringementPayorder {
-                return Application.m_database_web.payorderDaoWeb().selectPayOrder(idInfraction)
-            }
-        }.execute().get()
+
+    fun getPayOrder(idInfraction: Long): InfringementPayorder = runBlocking {
+        return@runBlocking Application.m_database_web.payorderDaoWeb().selectPayOrder(idInfraction)
     }
-    fun getElectronicBill(idInfraction: Long): ElectronicBill? = runBlocking {
-        object : AsyncTask<Void, Void, ElectronicBill>() {
-            override fun doInBackground(vararg p0: Void?): ElectronicBill {
-                return Application.m_database_web.electronicBillDaoWeb().selectElectronicBill(idInfraction)
-            }
-        }.execute().get()
+
+    fun getElectronicBill(idInfraction: Long): ElectronicBill = runBlocking {
+        return@runBlocking Application.m_database_web.electronicBillDaoWeb().selectElectronicBill(idInfraction)
     }
 }

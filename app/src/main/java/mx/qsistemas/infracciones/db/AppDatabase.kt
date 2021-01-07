@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import mx.qsistemas.infracciones.db.dao.*
 import mx.qsistemas.infracciones.db.entities.*
+import mx.qsistemas.infracciones.db_web.dao_web.PermissionsDaoWeb
 
 private const val DB_NAME = "infracciones"
 private const val DB_VERSION = 1

@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.CustomCardviewBinding
 import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
@@ -155,14 +156,14 @@ class SearchFr : Fragment()
         when (origin) {
             PRINT_LOCAL -> {
                 TOKEN_INFRACTION = itemInfraOffLine[position].id_infraction.toString()
-                Log.d("ID_INFRACCION_LIST", TOKEN_INFRACTION)
+                Log.d(TAG, TOKEN_INFRACTION)
                 lifecycleScope.launch {
                     iterator.value.doSearchByIdInfractionOffLine(TOKEN_INFRACTION, PRINT)
                 }
             }
             PRINT_ONLINE -> {
                 TOKEN_INFRACTION = itemInfraOnline[position].token.toString()
-                Log.d("ID_INFRACCION_LIST", TOKEN_INFRACTION)
+                Log.d(TAG, TOKEN_INFRACTION)
                 iterator.value.doSearchByIdInfraction(TOKEN_INFRACTION, PRINT)
             }
         }

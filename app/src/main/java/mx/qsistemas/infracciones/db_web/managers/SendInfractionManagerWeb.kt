@@ -1,109 +1,66 @@
 package mx.qsistemas.infracciones.db_web.managers
 
 import android.annotation.SuppressLint
-import android.os.AsyncTask
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.db_web.entities.*
-import java.util.concurrent.Executors
 
 @SuppressLint("StaticFieldLeak")
 object SendInfractionManagerWeb {
-    fun getInfractionsToSend(): MutableList<InfringementInfringements> {
-        return object : AsyncTask<Void, Void, MutableList<InfringementInfringements>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<InfringementInfringements> {
-                return Application.m_database_web.infractionDaoWeb().selectInfractionsToSend()
-            }
-        }.execute().get()
+    fun getInfractionsToSend(): MutableList<InfringementInfringements> = runBlocking {
+        return@runBlocking Application.m_database_web.infractionDaoWeb().selectInfractionsToSend()
     }
 
-    fun getInfractionPictures(idInfraction: Long): MutableList<InfringementPicturesInfringement> {
-        return object : AsyncTask<Void, Void, MutableList<InfringementPicturesInfringement>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<InfringementPicturesInfringement> {
-                return Application.m_database_web.pictureInfractionDaoWeb().selectPicturesToSend(idInfraction)
-            }
-        }.execute().get()
+    fun getInfractionPictures(idInfraction: Long): MutableList<InfringementPicturesInfringement> = runBlocking {
+        return@runBlocking Application.m_database_web.pictureInfractionDaoWeb().selectPicturesToSend(idInfraction)
     }
 
-    fun getInfractionAddress(idInfraction: Long): InfringementAddressInfringement {
-        return object : AsyncTask<Void, Void, InfringementAddressInfringement>() {
-            override fun doInBackground(vararg p0: Void?): InfringementAddressInfringement {
-                return Application.m_database_web.addressInfringementDaoWeb().selectInfractionAddres(idInfraction)
-            }
-        }.execute().get()
+    fun getInfractionAddress(idInfraction: Long): InfringementAddressInfringement = runBlocking {
+        return@runBlocking Application.m_database_web.addressInfringementDaoWeb().selectInfractionAddres(idInfraction)
     }
 
-    fun getInfractionMotivationList(idInfraction: Long): MutableList<InfringementRelfractionInfringements> {
-        return object : AsyncTask<Void, Void, MutableList<InfringementRelfractionInfringements>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<InfringementRelfractionInfringements> {
-                return Application.m_database_web.infractionFractionDaoWeb().selectFractions(idInfraction)
-            }
-        }.execute().get()
+    fun getInfractionMotivationList(idInfraction: Long): MutableList<InfringementRelfractionInfringements> = runBlocking {
+        return@runBlocking Application.m_database_web.infractionFractionDaoWeb().selectFractions(idInfraction)
     }
 
-    fun getPersonLicense(idInfraction: Long): DriverDriverLicense {
-        return object : AsyncTask<Void, Void, DriverDriverLicense>() {
-            override fun doInBackground(vararg p0: Void?): DriverDriverLicense {
-                return Application.m_database_web.driverLicenseDaoWeb().selectDriverLicense(idInfraction)
-            }
-        }.execute().get()
+    fun getPersonLicense(idInfraction: Long): DriverDriverLicense = runBlocking {
+        return@runBlocking Application.m_database_web.driverLicenseDaoWeb().selectDriverLicense(idInfraction)
     }
 
-    fun getPersonAddress(idDriver: Long): DriverAddressDriver {
-        return object : AsyncTask<Void, Void, DriverAddressDriver>() {
-            override fun doInBackground(vararg p0: Void?): DriverAddressDriver {
-                return Application.m_database_web.addressPersonDaoWeb().selectPersonAddress(idDriver)
-            }
-        }.execute().get()
+    fun getPersonAddress(idDriver: Long): DriverAddressDriver = runBlocking {
+        return@runBlocking Application.m_database_web.addressPersonDaoWeb().selectPersonAddress(idDriver)
     }
 
-    fun getPersonInformation(idInfraction: Long): DriverDrivers {
-        return object : AsyncTask<Void, Void, DriverDrivers>() {
-            override fun doInBackground(vararg p0: Void?): DriverDrivers {
-                return Application.m_database_web.personDaoWeb().selectPersonInfo(idInfraction)
-            }
-        }.execute().get()
+    fun getPersonInformation(idInfraction: Long): DriverDrivers = runBlocking {
+        return@runBlocking Application.m_database_web.personDaoWeb().selectPersonInfo(idInfraction)
     }
 
-    fun getPayerInformation(idInfraction: Long): ElectronicBill {
-        return object : AsyncTask<Void, Void, ElectronicBill>() {
-            override fun doInBackground(vararg p0: Void?): ElectronicBill {
-                return Application.m_database_web.electronicBillDaoWeb().selectElectronicBill(idInfraction)
-            }
-        }.execute().get()
+    fun getPayerInformation(idInfraction: Long): ElectronicBill = runBlocking {
+        return@runBlocking Application.m_database_web.electronicBillDaoWeb().selectElectronicBill(idInfraction)
     }
 
-    fun getVehicleInformation(idInfraction: Long): VehicleVehicles {
-        return object : AsyncTask<Void, Void, VehicleVehicles>() {
-            override fun doInBackground(vararg p0: Void?): VehicleVehicles {
-                return Application.m_database_web.vehicleInfractionDaoWeb().selectVehicle(idInfraction)
-            }
-        }.execute().get()
+    fun getVehicleInformation(idInfraction: Long): VehicleVehicles = runBlocking {
+        return@runBlocking Application.m_database_web.vehicleInfractionDaoWeb().selectVehicle(idInfraction)
     }
 
-    fun getCaptureLines(idInfraction: Long): MutableList<InfringementCapturelines> {
-        return object : AsyncTask<Void, Void, MutableList<InfringementCapturelines>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<InfringementCapturelines> {
-                return Application.m_database_web.captureLineDaoWeb().selectCaptureLine(idInfraction)
-            }
-        }.execute().get()
+    fun getCaptureLines(idInfraction: Long): MutableList<InfringementCapturelines> = runBlocking {
+        return@runBlocking Application.m_database_web.captureLineDaoWeb().selectCaptureLine(idInfraction)
     }
 
-    fun getPayments(): MutableList<InfringementPayorderToSend> {
-        return object : AsyncTask<Void, Void, MutableList<InfringementPayorderToSend>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<InfringementPayorderToSend> {
-                return Application.m_database_web.payorderDaoWeb().selectToSend()
-            }
-        }.execute().get()
+    fun getPayments(): MutableList<InfringementPayorderToSend> = runBlocking {
+        return@runBlocking Application.m_database_web.payorderDaoWeb().selectToSend()
     }
 
     fun updateInfractionSend(tokenServer: String, folio: String) {
-        Executors.newSingleThreadExecutor().execute {
+        GlobalScope.launch {
             Application.m_database_web.infractionDaoWeb().updateSendByFolio(tokenServer, folio)
         }
     }
 
     fun updatePaymentSend(idPayment: Long) {
-        Executors.newSingleThreadExecutor().execute {
+        GlobalScope.launch {
             Application.m_database_web.payorderDaoWeb().update(idPayment)
         }
     }

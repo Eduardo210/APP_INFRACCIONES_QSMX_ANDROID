@@ -1,5 +1,6 @@
 package mx.qsistemas.infracciones.modules.main.fr_menu
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,13 +27,14 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
     private val iterator by lazy { MenuIterator(this) }
     private lateinit var activity: MainActivity
     private lateinit var binding: FragmentMenuBinding
+    private var dialogApplication: AlertDialog? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activity = context as MainActivity
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_menu, container, false)
         binding.rcvInfractions.layoutManager = GridLayoutManager(activity, 1, RecyclerView.VERTICAL, false)
         binding.include.imgSearchInfraction.setOnClickListener(this)
@@ -45,13 +47,35 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
         Picasso.get().load(Application.prefs.loadData(R.string.sp_person_photo_url, "")).error(R.drawable.ic_account)
                 .transform(CircleTransformation()).into(binding.include.imgUserPhoto)
         iterator.getHomeOptions()
-        /* Si la aplicación no se encuentra activa se deberá mostrar el diálogo de bloqueo
-        if (!iterator.checkIfApplicationIsActive()) {
-            val dialog = BlockApplicationDialog()
-            dialog.isCancelable = false
-            dialog.show(activity.supportFragmentManager, BlockApplicationDialog::class.java.simpleName)
-        }*/
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        /* Si la aplicación no se encuentra activa se deberá mostrar el diálogo de bloqueo */
+        iterator.checkIfApplicationIsActive()
+        /* Validar que el usuario no haya iniciadio sesión en otro dispositivo */
+        iterator.validateSession()
+    }
+
+    override fun onApplicationDisable() {
+        dialogApplication = AlertDialogHelper.getErrorBuilder(getString(R.string.w_dialog_title), getString(R.string.w_application_block), activity).create()
+        dialogApplication?.setCancelable(false)
+        dialogApplication?.show()
+    }
+
+    override fun onApplicationEnable() {
+        dialogApplication?.dismiss()
+    }
+
+    override fun onSessionExpired() {
+        val sessionDialog = AlertDialogHelper.getErrorBuilder(getString(R.string.w_dialog_close_session), getString(R.string.w_please_close_session), activity)
+        sessionDialog.setCancelable(false)
+        sessionDialog.setPositiveButton(getString(R.string.t_close)){ _,_ ->
+            iterator.closeSession()
+            activity.router.value.presentLogIn()
+        }
+        sessionDialog.show()
     }
 
     override fun onClick(p0: View?) {
@@ -59,10 +83,7 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
             binding.include.imgUserPhoto.id -> {
                 val builder = AlertDialogHelper.getGenericBuilder(getString(R.string.w_dialog_close_session), getString(R.string.w_want_to_close_session), activity)
                 builder.setPositiveButton("Sí") { _, _ ->
-                    Application.prefs.clearPreference(R.string.sp_id_officer)
-                    Application.prefs.clearPreference(R.string.sp_person_name)
-                    Application.prefs.clearPreference(R.string.sp_person_photo_url)
-                    Application.prefs.clearPreference(R.string.sp_has_session)
+                    iterator.closeSession()
                     activity.router.value.presentLogIn()
                 }
                 builder.setNegativeButton("No") { _, _ -> }

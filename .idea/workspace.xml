@@ -8,7 +8,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="warn" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="AvailableLibraryUpdateStorage">
@@ -58,26 +58,40 @@
     </library-updates>
     <last-search-timestamp>1559927407383</last-search-timestamp>
   </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="CMakeSettings">
     <configurations>
       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesContracts.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesFragment.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesIterator.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_preferences.xml" afterDir="false" />
+    <list default="true" id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="* New: My Preferences Fragment&#10;* New: My Preferences Layout">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/firebase_replica/ZipCodeDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/firebase_replica/ZipCodeDao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/CatalogsFirebaseManager.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/CatalogsFirebaseManager.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/SnackbarHelper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/helpers/SnackbarHelper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainContracts.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainRouter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainRouter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesContracts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_infraction.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_infraction.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_preferences.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_preferences.xml" afterDir="false" />
     </list>
     <list id="d4afbee0-550c-400a-8373-a44a946b77b9" name="Ignore" comment="Ignore" />
     <option name="SHOW_DIALOG" value="false" />
@@ -553,13 +567,6 @@
       <option name="presentableId" value="Default" />
       <updated>1534195955826</updated>
     </task>
-    <task id="LOCAL-00012" summary="* Infraction list fragment&#10;* Infraction list layout&#10;* Main activity dependencies (iterator, router, presenter)&#10;* Search icon&#10;* New strings">
-      <created>1560449062144</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1560449062144</updated>
-    </task>
     <task id="LOCAL-00013" summary="* New Loader">
       <created>1560789696927</created>
       <option name="number" value="00013" />
@@ -896,7 +903,14 @@
       <option name="project" value="LOCAL" />
       <updated>1610048268231</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="* New: My Preferences Fragment&#10;* New: My Preferences Layout">
+      <created>1610126723424</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1610126723425</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="TodoView">
@@ -945,7 +959,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="* Correction Payments Tranfer Library - Save Masked Pan&#10;* Update Login Activity - Offline download catalogs" />
     <MESSAGE value="* Correction Print Action: Show PrePrinting Loader&#10;* Correction Year Vehicle: Input New Filters&#10;* Update Payments Transfer Strings" />
     <MESSAGE value="* Correction Print Ticket: Import Format String" />
     <MESSAGE value="* New Ticket Format&#10;* New Print Ticket Class&#10;* New Ticket Singleton&#10;* Update Mapping Of Ticket Data" />
@@ -970,7 +983,8 @@
     <MESSAGE value="* Delete: Payments Transfer Library Old Module&#10;* Delete: Expandable Toolbar 9Patch&#10;* Update: Change android:tint To app:tint&#10;* Update: Toolbar Infraction Size And Background Image&#10;* Update: Firebase Init Provider Disable Automatically" />
     <MESSAGE value="* New: Process To validate Session Of User" />
     <MESSAGE value="* Update: Reconfigure Terminal By Principal Menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Update: Reconfigure Terminal By Principal Menu" />
+    <MESSAGE value="* New: My Preferences Fragment&#10;* New: My Preferences Layout" />
+    <option name="LAST_COMMIT_MESSAGE" value="* New: My Preferences Fragment&#10;* New: My Preferences Layout" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1059" y="452" key="#com.intellij.ide.util.MemberChooser" timestamp="1609369220149">
@@ -985,6 +999,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="585" y="311" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609783377917" />
+    <state x="507" y="173" key="#xdebugger.evaluate" timestamp="1610136510717">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="507" y="173" key="#xdebugger.evaluate/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136510717" />
     <state x="707" y="410" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1609777570760">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -998,69 +1016,69 @@
     </state>
     <state x="916" y="329" key="AndroidCreateResourceFileDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610123260702" />
     <state x="868" y="491" key="AndroidCreateResourceFileDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609427582842" />
-    <state x="672" y="337" key="AndroidProcessChooserDialog" timestamp="1610117995047">
+    <state x="672" y="337" key="AndroidProcessChooserDialog" timestamp="1610136223993">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="672" y="337" key="AndroidProcessChooserDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610117995047" />
+    <state x="672" y="337" key="AndroidProcessChooserDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136223993" />
     <state x="896" y="483" key="AndroidProcessChooserDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609429010676" />
-    <state x="524" y="98" key="CommitChangelistDialog2" timestamp="1610048265672">
+    <state x="524" y="98" key="CommitChangelistDialog2" timestamp="1610126623432">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="524" y="98" key="CommitChangelistDialog2/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610048265672" />
+    <state x="524" y="98" key="CommitChangelistDialog2/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610126623432" />
     <state x="698" y="325" key="CommitChangelistDialog2/0.25.2560.1415@0.25.2560.1415" timestamp="1609345783857" />
-    <state x="75" y="73" width="1770" height="894" key="DiffContextDialog" timestamp="1610123528119">
+    <state x="75" y="73" width="1770" height="894" key="DiffContextDialog" timestamp="1610131215299">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="75" y="73" width="1770" height="894" key="DiffContextDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610123528119" />
+    <state x="75" y="73" width="1770" height="894" key="DiffContextDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610131215299" />
     <state x="100" y="125" width="2360" height="1215" key="DiffContextDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609427586429" />
     <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1609789567205">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609789567205" />
-    <state width="1877" height="274" key="GridCell.Tab.0.bottom" timestamp="1610121285656">
+    <state width="1877" height="274" key="GridCell.Tab.0.bottom" timestamp="1610136224101">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="274" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610121285656" />
+    <state width="1877" height="274" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136224101" />
     <state width="2518" height="399" key="GridCell.Tab.0.bottom/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="274" key="GridCell.Tab.0.center" timestamp="1610121285656">
+    <state width="1877" height="274" key="GridCell.Tab.0.center" timestamp="1610136224101">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="274" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610121285656" />
+    <state width="1877" height="274" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136224101" />
     <state width="2518" height="399" key="GridCell.Tab.0.center/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="274" key="GridCell.Tab.0.left" timestamp="1610121285656">
+    <state width="1877" height="274" key="GridCell.Tab.0.left" timestamp="1610136224101">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="274" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610121285656" />
+    <state width="1877" height="274" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136224101" />
     <state width="2518" height="399" key="GridCell.Tab.0.left/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503557" />
-    <state width="1877" height="274" key="GridCell.Tab.0.right" timestamp="1610121285656">
+    <state width="1877" height="274" key="GridCell.Tab.0.right" timestamp="1610136224101">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="274" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610121285656" />
+    <state width="1877" height="274" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136224101" />
     <state width="2518" height="399" key="GridCell.Tab.0.right/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="274" key="GridCell.Tab.1.bottom" timestamp="1610121285656">
+    <state width="1877" height="274" key="GridCell.Tab.1.bottom" timestamp="1610136228027">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="274" key="GridCell.Tab.1.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610121285656" />
+    <state width="1877" height="274" key="GridCell.Tab.1.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136228027" />
     <state width="2518" height="399" key="GridCell.Tab.1.bottom/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503559" />
-    <state width="1877" height="274" key="GridCell.Tab.1.center" timestamp="1610121285656">
+    <state width="1877" height="274" key="GridCell.Tab.1.center" timestamp="1610136228027">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="274" key="GridCell.Tab.1.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610121285656" />
+    <state width="1877" height="274" key="GridCell.Tab.1.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136228027" />
     <state width="2518" height="399" key="GridCell.Tab.1.center/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503559" />
-    <state width="1877" height="274" key="GridCell.Tab.1.left" timestamp="1610121285656">
+    <state width="1877" height="274" key="GridCell.Tab.1.left" timestamp="1610136228027">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="274" key="GridCell.Tab.1.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610121285656" />
+    <state width="1877" height="274" key="GridCell.Tab.1.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136228027" />
     <state width="2518" height="399" key="GridCell.Tab.1.left/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="274" key="GridCell.Tab.1.right" timestamp="1610121285656">
+    <state width="1877" height="274" key="GridCell.Tab.1.right" timestamp="1610136228027">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="274" key="GridCell.Tab.1.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610121285656" />
+    <state width="1877" height="274" key="GridCell.Tab.1.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136228027" />
     <state width="2518" height="399" key="GridCell.Tab.1.right/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503559" />
-    <state x="586" y="252" key="SettingsEditor" timestamp="1610047193519">
+    <state x="586" y="252" key="SettingsEditor" timestamp="1610143789094">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="586" y="252" key="SettingsEditor/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610047193519" />
+    <state x="586" y="252" key="SettingsEditor/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610143789094" />
     <state x="781" y="368" key="SettingsEditor/0.25.2560.1415@0.25.2560.1415" timestamp="1609348489317" />
     <state x="795" y="134" width="746" height="516" key="VcsDiffUtil.ChangesDialog" timestamp="1610123385849">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -1072,10 +1090,10 @@
     </state>
     <state x="76" y="73" width="1770" height="894" key="com.intellij.history.integration.ui.views.FileHistoryDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610047175234" />
     <state x="101" y="125" width="2360" height="1215" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609343134238" />
-    <state x="725" y="319" width="664" height="534" key="find.popup" timestamp="1610125102922">
+    <state x="725" y="319" width="664" height="534" key="find.popup" timestamp="1610134675036">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="725" y="319" width="664" height="534" key="find.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610125102922" />
+    <state x="725" y="319" width="664" height="534" key="find.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610134675036" />
     <state x="967" y="459" width="746" height="548" key="find.popup/0.25.2560.1415@0.25.2560.1415" timestamp="1609427644051" />
     <state x="1032" y="610" width="618" height="275" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1609342822551">
       <screen x="0" y="25" width="2560" height="1415" />
@@ -1263,79 +1281,13 @@
           <line>119</line>
           <option name="timeStamp" value="487" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesIterator.kt</url>
+          <line>81</line>
+          <option name="timeStamp" value="489" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="evaluateCodeFragment">
-      <expression>
-        <expression-string>zipCodesList</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>CatalogsFirebaseManager.getZipCodesByCityId(&quot;'%${Application.prefs?.loadData(R.string.sp_id_township, &quot;&quot;)}%'&quot;)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Application.prefs?.loadData(R.string.sp_id_township, &quot;&quot;)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Utils.parseJsonFromFile(jsonFile)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>((it.result?.data) as ArrayList&lt;HashMap&lt;*, *&gt;&gt;)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>it.result?.data</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>it.result?.data}</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>actualDate.before(expDate)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>DateUtils.isSameDay(actualDate, expDate)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
-      </expression>
-    </expressions>
-    <expressions id="watch">
-      <expression>
-        <expression-string>percentSameDay</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>per</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Utils.Sha512Hex(System.currentTimeMillis().toString()).toUpperCase().substring(0, 32)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>preCode.length()</expression-string>
-        <language-id>JAVA</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
   </component>
   <component name="gradleExecuteTaskHistory">
     <option value="$PROJECT_DIR$/app" />

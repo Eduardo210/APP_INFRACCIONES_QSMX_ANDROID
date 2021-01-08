@@ -1,5 +1,6 @@
 package mx.qsistemas.infracciones.modules.login
 
+import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.functions.FirebaseFunctionsException
@@ -66,7 +67,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
         Application.firebaseFunctions.getHttpsCallable(FF_CIPHER_DATA).call(logInMap).addOnCompleteListener {
             if (!it.isSuccessful) {
                 val e = it.exception
-                e?.let { FirebaseCrashlytics.getInstance().recordException(e.fillInStackTrace()) }
+                e?.let {  Log.e(Application.TAG, e.toString()) }
                 if (e is FirebaseFunctionsException)
                     listener.onError(e.details.toString())
                 else

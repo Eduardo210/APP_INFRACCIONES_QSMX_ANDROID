@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
@@ -40,12 +41,12 @@ class MyPreferencesFragment : Fragment(), MyPreferencesContracts.Presenter, View
         binding.spnZipCode.onItemSelectedListener = this
         binding.spnArticle.onItemSelectedListener = this
         binding.spnZipCode.adapter = iterator.getPostalCodesAdapter()
-        //binding.spnArticle.adapter = iterator.getArticlesAdapter()
-        //binding.spnArticle.setSelection(iterator.getPositionArticle())
+        binding.spnZipCode.setSelection(iterator.getPositionZipCode())
         binding.edtStreet.setText(Application.prefs.loadData(R.string.sp_default_street, ""))
         binding.edtBetweenStreet1.setText(Application.prefs.loadData(R.string.sp_default_street1, ""))
         binding.edtBetweenStreet2.setText(Application.prefs.loadData(R.string.sp_default_street2, ""))
         binding.edtMotivation.setText(Application.prefs.loadData(R.string.sp_default_motivation, ""))
+        iterator.getArticlesAdapter()
         return binding.root
     }
 
@@ -57,16 +58,21 @@ class MyPreferencesFragment : Fragment(), MyPreferencesContracts.Presenter, View
             binding.btnSave.id -> {
                 val postalCode = iterator.postalCodesList[binding.spnZipCode.selectedItemPosition].key
                 val colony = iterator.coloniesList[binding.spnColony.selectedItemPosition].key
-                val street = binding.edtStreet.text.toString().toUpperCase()
-                val betweenStreet = binding.edtBetweenStreet1.text.toString().toUpperCase()
-                val andStreet = binding.edtBetweenStreet2.text.toString().toUpperCase()
-                val idArticle = iterator.articlesList[binding.spnArticle.selectedItemPosition].id
-                val idFraction = iterator.fractionList[binding.spnFraction.selectedItemPosition].id
-                val motivation = binding.edtMotivation.text.toString().toUpperCase()
-                //iterator.saveDefaultMotivation(idArticle.toInt(), idFraction.toInt(), motivation)
+                val street = binding.edtStreet.text.toString()
+                val betweenStreet = binding.edtBetweenStreet1.text.toString()
+                val andStreet = binding.edtBetweenStreet2.text.toString()
+                val idArticle = iterator.articlesList[binding.spnArticle.selectedItemPosition].documentReference?.id ?: ""
+                val idFraction = iterator.fractionList[binding.spnFraction.selectedItemPosition].childReference?.id ?: ""
+                val motivation = binding.edtMotivation.text.toString()
+                iterator.saveDefaultMotivation(idArticle, idFraction, motivation)
                 iterator.saveDefaultDirection(postalCode, colony, street, betweenStreet, andStreet)
             }
         }
+    }
+
+    override fun onError(msg: String) {
+        activity.hideLoader()
+        SnackbarHelper.showErrorSnackBar(activity, msg, Snackbar.LENGTH_LONG)
     }
 
     override fun onPreferencesSaved() {
@@ -80,12 +86,22 @@ class MyPreferencesFragment : Fragment(), MyPreferencesContracts.Presenter, View
         when (p0?.id) {
             binding.spnZipCode.id -> {
                 binding.spnColony.adapter = iterator.getColoniesAdapter(iterator.postalCodesList[p2].key)
+                binding.spnColony.setSelection(iterator.getPositionColony())
             }
             binding.spnArticle.id -> {
-                /*binding.spnFraction.adapter = iterator.getFractionAdapter(p2)
-                binding.spnFraction.setSelection(iterator.getPositionFraction())*/
+                iterator.getFractionAdapter(p2)
             }
         }
+    }
+
+    override fun onArticlesLoad(adapter: ArrayAdapter<String>) {
+        binding.spnArticle.adapter = adapter
+        binding.spnArticle.setSelection(iterator.getPositionArticle())
+    }
+
+    override fun onFractionsLoad(adapter: ArrayAdapter<String>) {
+        binding.spnFraction.adapter = adapter
+        binding.spnFraction.setSelection(iterator.getPositionFraction())
     }
 
     companion object {

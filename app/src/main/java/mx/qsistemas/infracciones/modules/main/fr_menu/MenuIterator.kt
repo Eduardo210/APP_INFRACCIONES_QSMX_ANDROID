@@ -2,12 +2,14 @@ package mx.qsistemas.infracciones.modules.main.fr_menu
 
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.functions.FirebaseFunctionsException
 import mx.qsistemas.infracciones.Application
+import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.managers.PermissionsMgr
@@ -95,7 +97,7 @@ class MenuIterator(val listener: MenuContracts.Presenter) : MenuContracts.Iterat
                         if (!document.app_is_active) listener.onApplicationDisable()
                         else listener.onApplicationEnable()
                     }
-                }.addOnFailureListener { exception -> FirebaseCrashlytics.getInstance().recordException(exception) }
+                }.addOnFailureListener { exception -> Log.e(TAG, exception.toString()) }
     }
 
     override fun validateSession() {
@@ -112,7 +114,7 @@ class MenuIterator(val listener: MenuContracts.Presenter) : MenuContracts.Iterat
                             }
                         }
                     }
-                }.addOnFailureListener { exception -> FirebaseCrashlytics.getInstance().recordException(exception) }
+                }.addOnFailureListener { exception -> Log.e(TAG, exception.toString()) }
     }
 
     override fun reconfigureDevice(psd: String) {
@@ -120,7 +122,7 @@ class MenuIterator(val listener: MenuContracts.Presenter) : MenuContracts.Iterat
         Application.firebaseFunctions.getHttpsCallable(FF_CIPHER_DATA).call(logInMap).addOnCompleteListener {
             if (!it.isSuccessful) {
                 val e = it.exception
-                e?.let { FirebaseCrashlytics.getInstance().recordException(e.fillInStackTrace()) }
+                e?.let {  Log.e(TAG, e.toString()) }
                 if (e is FirebaseFunctionsException)
                     listener.onError(e.details.toString())
                 else

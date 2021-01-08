@@ -26,6 +26,7 @@ import mx.qsistemas.infracciones.dialogs.ReconfigureDialog
 import mx.qsistemas.infracciones.enum.InfringementPermissions
 import mx.qsistemas.infracciones.helpers.AlertDialogHelper
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
+import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.main.MainActivity
 import mx.qsistemas.infracciones.net.catalogs.HomeOptions
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
@@ -147,20 +148,19 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
                 override fun onTxFailed(retry: Boolean, message: String) {
                     SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
                 }
-
                 override fun onCtlsDoubleTap() {}
                 override fun onTxVoucherFailed(message: String) {}
                 override fun onTxVoucherPrinted() {
                 }
             })
-            HO_ID_PREFERENCES -> ""//activity.router.presentMyPreferences(Direction.FORDWARD)
+            HO_ID_PREFERENCES -> activity.router.presentMyPreferences(Direction.FORDWARD)
             HO_ID_SETTINGS -> {
                 val dialog = ReconfigureDialog()
                 dialog.isCancelable = true
                 dialog.listener = this
                 dialog.show(activity.supportFragmentManager, ReconfigureDialog::class.java.simpleName)
             }
-            HO_VALIDATE_ACCOUNT_CODI -> ""//activity.router.presentBankAccountValidation()
+            HO_VALIDATE_ACCOUNT_CODI -> activity.router.presentBankAccountValidation()
             HO_SEND_DB -> {
                 activity.showLoader(getString(R.string.l_sending_database))
                 iterator.sendDatabase()

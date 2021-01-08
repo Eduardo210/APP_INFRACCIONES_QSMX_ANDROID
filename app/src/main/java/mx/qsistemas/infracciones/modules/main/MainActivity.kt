@@ -45,13 +45,4 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
         onError(getString(R.string.e_high_accuracy_required))
         Handler(Looper.getMainLooper()).postDelayed({ router.presentLocationSettings() }, 3000)
     }
-
-    override fun onSessionClosed() {
-        val builder = AlertDialogHelper.getGenericBuilder(getString(R.string.w_dialog_close_session),
-                getString(R.string.w_please_close_session), this)
-        builder.setPositiveButton("Aceptar") { _, _ ->
-            router.presentLogIn()
-        }
-        builder.show()
-    }
 }

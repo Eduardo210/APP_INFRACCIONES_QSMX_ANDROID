@@ -7,7 +7,6 @@ class MainContracts {
     interface Presenter {
         fun enableHighAccuracyGps()
         fun onError(msg: String)
-        fun onSessionClosed()
     }
 
     interface Iterator {
@@ -15,10 +14,12 @@ class MainContracts {
 
     interface Router {
         fun presentInfractionList(direction: Direction)
+        fun presentMyPreferences(direction: Direction)
         fun presentNewInfraction()
         fun presentSearchInfraction()
         fun presentDetailInfraction(folio: String)
         fun presentLogIn()
         fun presentLocationSettings()
+        fun presentBankAccountValidation()
     }
 }

@@ -12,7 +12,7 @@ interface ZipCodeDao {
     fun insert(list: MutableList<ZipCodes>)
 
     @Query("SELECT DISTINCT * FROM zip_codes where reference LIKE :idCity ORDER BY value ASC")
-    fun selectByCityId(idCity: String): MutableList<ZipCodes>
+    suspend fun selectByCityId(idCity: String): MutableList<ZipCodes>
 
     @Query("DELETE FROM zip_codes")
     fun deleteAll()

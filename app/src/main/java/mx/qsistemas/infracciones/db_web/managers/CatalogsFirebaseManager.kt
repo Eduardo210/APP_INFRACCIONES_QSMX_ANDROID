@@ -8,6 +8,7 @@ import com.google.firebase.firestore.Source
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.City
@@ -56,12 +57,8 @@ object CatalogsFirebaseManager {
         return true
     }
 
-    fun getZipCodesByCityId(idCity: String): MutableList<ZipCodes> {
-        return object : AsyncTask<Void, Void, MutableList<ZipCodes>>() {
-            override fun doInBackground(vararg p0: Void?): MutableList<ZipCodes> {
-                return Application.m_database_web.zipCodeDao().selectByCityId(idCity)
-            }
-        }.execute().get()
+    fun getZipCodesByCityId(idCity: String): MutableList<ZipCodes> = runBlocking {
+        return@runBlocking Application.m_database_web.zipCodeDao().selectByCityId(idCity)
     }
 
     fun getColoniesByZipCode(zipCode: Int): MutableList<Colony> {

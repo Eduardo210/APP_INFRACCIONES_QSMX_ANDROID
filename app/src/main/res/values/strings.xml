@@ -17,6 +17,9 @@
     <string name="sp_prefix">prefix</string>
     <string name="sp_last_synch">last_synch</string>
     <string name="sp_no_employee">no_employee</string>
+
+    <!-- My Default Preferences -->
+    <string name="sp_default_zip_code">default_zip_code</string>
     <string name="sp_default_colony">default_colony</string>
     <string name="sp_default_street">default_street</string>
     <string name="sp_default_street1">default_street1</string>

@@ -123,7 +123,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     retainedAnyDocument, // is insured
                     false,
                     SingletonInfraction.typeLicenseOffender.documentReference?.id ?: "",
-                    "%.2f".format(totalImport).toFloat(),
+                    "%.2f".format(totalImport).replace(",",".").toFloat(),
                     SingletonInfraction.idNewPersonInfraction,
                     totalUmas,
                     "")
@@ -160,11 +160,11 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
             captureLineList = mutableListOf()
             SingletonInfraction.townshipInfraction.discount.toSortedMap(reverseOrder()).entries.forEachIndexed { index, mutableEntry ->
                 val expDate = Utils.getFutureWorkingDay(mutableEntry.value[mutableEntry.value.size - 1], holidayList)  // Get last day of validity
-                val discount = totalImport * mutableEntry.key.replace("%", "").toFloat() / 100
+                val discount = totalImport * mutableEntry.key.replace("%", "").replace(",",".").toFloat() / 100
                 val total = totalImport - discount
                 val codeCaptureLine = Utils.generateCaptureLine(newFolio.replace("-", ""), expDate, "%.2f".format(total), "2")
                 captureLineList.add(InfringementCapturelines(0, codeCaptureLine, SimpleDateFormat("dd/MM/yyyy").format(dateFormat.parse(expDate)),
-                        "%.2f".format(total).toFloat(), "Bancaria", index + 1, SingletonInfraction.idNewInfraction.toString(), mutableEntry.key))
+                        "%.2f".format(total).replace(",",".").toFloat(), "Bancaria", index + 1, SingletonInfraction.idNewInfraction.toString(), mutableEntry.key))
             }
             /* Step 6. Save Capture Lines */
             SaveInfractionManagerWeb.saveCaptureLine(captureLineList)

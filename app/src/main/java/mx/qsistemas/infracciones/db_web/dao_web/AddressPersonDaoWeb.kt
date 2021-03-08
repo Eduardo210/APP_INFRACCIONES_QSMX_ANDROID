@@ -9,14 +9,14 @@ import mx.qsistemas.infracciones.db_web.entities.DriverAddressDriver
 @Dao
 interface AddressPersonDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertList(list: MutableList<DriverAddressDriver>)
+    suspend fun insertList(list: MutableList<DriverAddressDriver>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(address: DriverAddressDriver): Long
+    suspend fun insert(address: DriverAddressDriver): Long
 
  /*   @Query("SELECT a.* FROM address a INNER JOIN address_infringement ai ON ai.ID_DIRECCION = a.ID_DIRECCION AND ai.ID_INFRACCION = :idInfraction INNER JOIN infraction i ON i.ID_INFRACCION = ai.ID_INFRACCION")
     fun selectInfractionAddres(idInfraction: Long): Address*/
 
     @Query("SELECT * FROM driver_address_driver WHERE driver_id = :idDriver")
-    fun selectPersonAddress(idDriver: Long): DriverAddressDriver
+    suspend fun selectPersonAddress(idDriver: Long): DriverAddressDriver
 }

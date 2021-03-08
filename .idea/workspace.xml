@@ -8,8 +8,8 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="warn" />
-    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
   <component name="AvailableLibraryUpdateStorage">
     <library-updates>
@@ -82,18 +82,75 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="* New: My Preferences Fragment&#10;* New: My Preferences Layout">
+    <list default="true" id="aaf79af6-5d15-4ed5-bf2d-db46c55613c0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/AddressInfraction.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/PayerInfraction.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/SendPaymentRequest.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/VehicleInfraction.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/AddressInfringementDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/AddressInfringementDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/AddressPersonDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/AddressPersonDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/CaptureLineDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/CaptureLineDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/DriverDriverLicenseDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/DriverDriverLicenseDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/ElectronicBillDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/ElectronicBillDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionEvidenceDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionEvidenceDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionFractionDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionFractionDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionPayorderDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/InfractionPayorderDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/PersonDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/PersonDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/PersonTownHallDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/PersonTownHallDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/PictureInfractionDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/PictureInfractionDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/VehicleInfractionDaoWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/dao_web/VehicleInfractionDaoWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/InfringementAddressInfringement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/InfringementAddressInfringement.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/InfringementPayorder.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/InfringementPayorder.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/InfringementPicturesInfringement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/InfringementPicturesInfringement.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SendInfractionManagerWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/managers/SendInfractionManagerWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionContracts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderContracts.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_vehicle/VehicleIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_vehicle/VehicleIterator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesContracts.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesFragment.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/SearchIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/fr_search/SearchFr.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/fr_search/SearchFr.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/AddressDriver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/AddressDriver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/CaptureLinesItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/CaptureLinesItem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/DriverRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/DriverRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/FractionsItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/FractionsItem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/InfractionRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/InfractionRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/PaymentRequest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/PaymentRequest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/GenericResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/GenericResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/InfractionResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/InfractionResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/search_result/DataItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/search_result/DataItem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/search_result/FractionsItem.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/search_result/FractionsItem.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/search_result/SearchResult.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/search_result/SearchResult.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/search_result/Vehicle.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/search_result/Vehicle.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonInfraction.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonTicket.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/singletons/SingletonTicket.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Constants.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Ticket.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Ticket.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/utils/Utils.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_infraction.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_infraction.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_preferences.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_my_preferences.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_offender.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_offender.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
     </list>
-    <list id="d4afbee0-550c-400a-8373-a44a946b77b9" name="Ignore" comment="Ignore" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -122,25 +179,7 @@
             <expand>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="APP_INFRACCIONES_QSMX_ANDROID" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="APP_INFRACCIONES_QSMX_ANDROID" type="f1a62948:ProjectNode" />
-                <item name="app" type="2d1252cf:ModuleNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="APP_INFRACCIONES_QSMX_ANDROID" type="f1a62948:ProjectNode" />
-                <item name="app" type="2d1252cf:ModuleNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="APP_INFRACCIONES_QSMX_ANDROID" type="f1a62948:ProjectNode" />
-                <item name="app" type="2d1252cf:ModuleNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="android" type="c8890929:TasksNode$1" />
+                <item name="APP_INFRACCIONES" type="f1a62948:ProjectNode" />
               </path>
             </expand>
             <select />
@@ -156,11 +195,11 @@
         <option value="layoutResourceFile_vertical" />
         <option value="valueResourceFile" />
         <option value="resourceFile" />
-        <option value="Kotlin Class" />
         <option value="Kotlin Interface" />
-        <option value="Kotlin Object" />
         <option value="layoutResourceFile" />
         <option value="Kotlin File" />
+        <option value="Kotlin Class" />
+        <option value="Kotlin Object" />
       </list>
     </option>
   </component>
@@ -170,7 +209,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="ValleChalco-0.0.1" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -200,14 +239,14 @@
     <property name="format" value="PNG" />
     <property name="lastFolderRoot" value="S:/Pictures/PAP/icn_incidencia.png" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/universal_customer_encrpted.zip" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Compare" />
     <property name="method" value="Automatic" />
     <property name="not.eligible.for.single.variant.sync" value="true" />
     <property name="project.structure.last.edited" value="Suggestions" />
     <property name="project.structure.proportion" value="0.17" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="resolutions" value="MDPI&#10;XXHDPI&#10;XXXHDPI&#10;XHDPI&#10;HDPI" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.do.not.ask.upgrade.gradle.plugin" value="3.0.1" />
     <property name="sourceResolution" value="XHDPI" />
     <property name="sync.plugin.last.upgrade.timestamp" value="1562702728897" />
@@ -561,7 +600,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="bb0afcf5-3898-4460-8559-0be468a29d50" name="Default Changelist" comment="" />
+      <changelist id="aaf79af6-5d15-4ed5-bf2d-db46c55613c0" name="Default Changelist" comment="" />
       <created>1534195955826</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -913,15 +952,6 @@
     <option name="localTasksCounter" value="62" />
     <servers />
   </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ORDER">
       <list>
@@ -987,10 +1017,15 @@
     <option name="LAST_COMMIT_MESSAGE" value="* New: My Preferences Fragment&#10;* New: My Preferences Layout" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1059" y="452" key="#com.intellij.ide.util.MemberChooser" timestamp="1609369220149">
-      <screen x="0" y="25" width="2560" height="1415" />
+    <state x="635" y="249" key="#com.intellij.ide.util.MemberChooser" timestamp="1614019844773">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
+    <state x="635" y="249" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824@0.0.1536.824" timestamp="1614019844773" />
     <state x="1059" y="452" key="#com.intellij.ide.util.MemberChooser/0.25.2560.1415@0.25.2560.1415" timestamp="1609369220149" />
+    <state x="449" y="148" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1610666186737">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="449" y="148" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1536.824@0.0.1536.824" timestamp="1610666186737" />
     <state x="1018" y="483" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1608143186754">
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
@@ -1016,10 +1051,11 @@
     </state>
     <state x="916" y="329" key="AndroidCreateResourceFileDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610123260702" />
     <state x="868" y="491" key="AndroidCreateResourceFileDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609427582842" />
-    <state x="672" y="337" key="AndroidProcessChooserDialog" timestamp="1610136223993">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="538" y="267" key="AndroidProcessChooserDialog" timestamp="1614901711977">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="672" y="337" key="AndroidProcessChooserDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136223993" />
+    <state x="538" y="267" key="AndroidProcessChooserDialog/0.0.1536.824@0.0.1536.824" timestamp="1614901711977" />
     <state x="896" y="483" key="AndroidProcessChooserDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609429010676" />
     <state x="524" y="98" key="CommitChangelistDialog2" timestamp="1610126623432">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -1031,65 +1067,80 @@
     </state>
     <state x="75" y="73" width="1770" height="894" key="DiffContextDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610131215299" />
     <state x="100" y="125" width="2360" height="1215" key="DiffContextDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609427586429" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1609789567205">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="592" y="218" key="FileChooserDialogImpl" timestamp="1614191045346">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1609789567205" />
-    <state width="1877" height="274" key="GridCell.Tab.0.bottom" timestamp="1610136224101">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="592" y="218" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1614191045346" />
+    <state width="1476" height="183" key="GridCell.Tab.0.bottom" timestamp="1615226918759">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="274" key="GridCell.Tab.0.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136224101" />
+    <state width="1476" height="183" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1615226918759" />
     <state width="2518" height="399" key="GridCell.Tab.0.bottom/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="274" key="GridCell.Tab.0.center" timestamp="1610136224101">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1476" height="183" key="GridCell.Tab.0.center" timestamp="1615226918759">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="274" key="GridCell.Tab.0.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136224101" />
+    <state width="1476" height="183" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1615226918759" />
     <state width="2518" height="399" key="GridCell.Tab.0.center/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="274" key="GridCell.Tab.0.left" timestamp="1610136224101">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1476" height="183" key="GridCell.Tab.0.left" timestamp="1615226918758">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="274" key="GridCell.Tab.0.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136224101" />
+    <state width="1476" height="183" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1615226918758" />
     <state width="2518" height="399" key="GridCell.Tab.0.left/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503557" />
-    <state width="1877" height="274" key="GridCell.Tab.0.right" timestamp="1610136224101">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1476" height="183" key="GridCell.Tab.0.right" timestamp="1615226918759">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="274" key="GridCell.Tab.0.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136224101" />
+    <state width="1476" height="183" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1615226918759" />
     <state width="2518" height="399" key="GridCell.Tab.0.right/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="274" key="GridCell.Tab.1.bottom" timestamp="1610136228027">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1491" height="348" key="GridCell.Tab.1.bottom" timestamp="1614905354142">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="274" key="GridCell.Tab.1.bottom/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136228027" />
+    <state width="1491" height="348" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1614905354142" />
     <state width="2518" height="399" key="GridCell.Tab.1.bottom/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503559" />
-    <state width="1877" height="274" key="GridCell.Tab.1.center" timestamp="1610136228027">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1491" height="348" key="GridCell.Tab.1.center" timestamp="1614905354142">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="274" key="GridCell.Tab.1.center/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136228027" />
+    <state width="1491" height="348" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1614905354142" />
     <state width="2518" height="399" key="GridCell.Tab.1.center/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503559" />
-    <state width="1877" height="274" key="GridCell.Tab.1.left" timestamp="1610136228027">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1491" height="348" key="GridCell.Tab.1.left" timestamp="1614905354142">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="274" key="GridCell.Tab.1.left/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136228027" />
+    <state width="1491" height="348" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1614905354142" />
     <state width="2518" height="399" key="GridCell.Tab.1.left/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503558" />
-    <state width="1877" height="274" key="GridCell.Tab.1.right" timestamp="1610136228027">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1491" height="348" key="GridCell.Tab.1.right" timestamp="1614905354142">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1877" height="274" key="GridCell.Tab.1.right/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610136228027" />
+    <state width="1491" height="348" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1614905354142" />
     <state width="2518" height="399" key="GridCell.Tab.1.right/0.25.2560.1415@0.25.2560.1415" timestamp="1609429503559" />
-    <state x="586" y="252" key="SettingsEditor" timestamp="1610143789094">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="469" y="115" key="SettingsEditor" timestamp="1614213099476">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="586" y="252" key="SettingsEditor/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610143789094" />
+    <state x="469" y="115" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1614213099476" />
     <state x="781" y="368" key="SettingsEditor/0.25.2560.1415@0.25.2560.1415" timestamp="1609348489317" />
     <state x="795" y="134" width="746" height="516" key="VcsDiffUtil.ChangesDialog" timestamp="1610123385849">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="795" y="134" width="746" height="516" key="VcsDiffUtil.ChangesDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610123385849" />
     <state x="1363" y="265" key="VcsDiffUtil.ChangesDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609427598420" />
-    <state x="76" y="73" width="1770" height="894" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1610047175234">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="61" y="58" width="1416" height="709" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1614970453990">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="76" y="73" width="1770" height="894" key="com.intellij.history.integration.ui.views.FileHistoryDialog/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610047175234" />
+    <state x="61" y="58" width="1416" height="709" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1536.824@0.0.1536.824" timestamp="1614970453990" />
     <state x="101" y="125" width="2360" height="1215" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609343134238" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1610666049976">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1610666049976" />
     <state x="725" y="319" width="664" height="534" key="find.popup" timestamp="1610134675036">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -1099,10 +1150,15 @@
       <screen x="0" y="25" width="2560" height="1415" />
     </state>
     <state x="1032" y="610" width="618" height="275" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.25.2560.1415@0.25.2560.1415" timestamp="1609342822551" />
-    <state x="616" y="240" key="run.anything.popup" timestamp="1610042114475">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="494" y="190" key="run.anything.popup" timestamp="1614122469966">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="616" y="240" key="run.anything.popup/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1610042114475" />
+    <state x="494" y="190" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1614122469966" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1614881163554">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1614881163554" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1163,57 +1219,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>91</line>
-          <option name="timeStamp" value="437" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>93</line>
-          <option name="timeStamp" value="438" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>116</line>
+          <line>35</line>
           <option name="timeStamp" value="439" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>123</line>
-          <option name="timeStamp" value="440" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>110</line>
-          <option name="timeStamp" value="453" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>104</line>
-          <option name="timeStamp" value="454" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>101</line>
-          <option name="timeStamp" value="455" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>139</line>
+          <line>202</line>
           <option name="timeStamp" value="456" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>143</line>
-          <option name="timeStamp" value="457" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>146</line>
+          <line>249</line>
           <option name="timeStamp" value="458" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>148</line>
+          <line>251</line>
           <option name="timeStamp" value="459" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
@@ -1277,17 +1298,116 @@
           <option name="timeStamp" value="485" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_menu/MenuFragment.kt</url>
-          <line>119</line>
-          <option name="timeStamp" value="487" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/fr_my_preferences/MyPreferencesIterator.kt</url>
           <line>81</line>
           <option name="timeStamp" value="489" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/search/fr_search/SearchFr.kt</url>
+          <line>118</line>
+          <option name="timeStamp" value="499" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt</url>
+          <line>79</line>
+          <option name="timeStamp" value="501" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt</url>
+          <line>69</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="502" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>325</line>
+          <option name="timeStamp" value="503" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>334</line>
+          <option name="timeStamp" value="504" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt</url>
+          <line>161</line>
+          <option name="timeStamp" value="505" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt</url>
+          <line>155</line>
+          <option name="timeStamp" value="506" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt</url>
+          <line>194</line>
+          <option name="timeStamp" value="508" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt</url>
+          <line>192</line>
+          <option name="timeStamp" value="509" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt</url>
+          <line>261</line>
+          <option name="timeStamp" value="510" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt</url>
+          <line>79</line>
+          <option name="timeStamp" value="511" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt</url>
+          <line>158</line>
+          <option name="timeStamp" value="512" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt</url>
+          <line>197</line>
+          <option name="timeStamp" value="513" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt</url>
+          <line>213</line>
+          <option name="timeStamp" value="514" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt</url>
+          <line>220</line>
+          <option name="timeStamp" value="515" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt</url>
+          <line>217</line>
+          <option name="timeStamp" value="516" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt</url>
+          <line>385</line>
+          <option name="timeStamp" value="517" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt</url>
+          <line>384</line>
+          <option name="timeStamp" value="518" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="app">
+        <watch expression="snapshot.isEmpty" language="kotlin" />
+      </configuration>
+      <configuration name="Remote">
+        <watch expression="SingletonInfraction.townshipInfraction.discount.size" language="kotlin" />
+        <watch expression="add" language="kotlin" />
+        <watch expression="geocoder.getFromLocation(lat, lon, 5)" language="kotlin" />
+        <watch expression="geocoder.getFromLocation(lat, lon, 10)" language="kotlin" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="gradleExecuteTaskHistory">
     <option value="$PROJECT_DIR$/app" />

@@ -3,6 +3,7 @@
 
     <!-- Shared Preferences -->
     <string name="sp_has_config_prefix">has_config_prefix</string>
+    <string name="sp_session_token">session_token</string>
     <string name="sp_user">sp_user</string>
     <string name="sp_id_officer">id_officer</string>
     <string name="sp_person_name">person_name</string>

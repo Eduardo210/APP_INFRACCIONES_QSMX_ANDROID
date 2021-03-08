@@ -52,22 +52,23 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
 
 
     override fun doSearchByFilter(filter: String) {
-        NetworkApi().getNetworkService().searchInfraction("Bearer ", filter).enqueue(object : Callback<SearchResult> {
+        val token = Application.prefs.loadData(R.string.sp_session_token, "")!!
+        NetworkApi().getNetworkService().searchInfraction(token, filter).enqueue(object : Callback<SearchResult> {
             override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val result = response.body()
-                    if (result?.data != null) {
+                    if (result?.results != null) {
 
-                        itemInfraOnline = result.data as MutableList<DataItem>
-                        Log.d(TAG, "${result.data}")
+                        itemInfraOnline = result.results as MutableList<DataItem>
+                        Log.d(TAG, "${result.results}")
                         if (result.count?.compareTo(0) != 0) {
-                            listener.onResultSearch(result.data)
+                            listener.onResultSearch(result.results)
                         } else {
-                            listener.onResultSearch(result.data)
+                            listener.onResultSearch(result.results)
                         }
                     } else {//No se encontraron datos
                         listener.onResultSearch(mutableListOf())
-                        Log.d(TAG, "${result?.data}")
+                        Log.d(TAG, "${result?.results}")
                     }
 
                 } else if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -89,11 +90,11 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
 
     override fun doSearchByIdInfraction(id: String, origin: Int) {
         val dataToken: HashMap<String, String> = hashMapOf()
-        dataToken["token"] = id
         Log.d(TAG, dataToken.toString())
-        NetworkApi().getNetworkService().detailInfraction((
-                "Bearer"),
-                dataToken).enqueue(object : Callback<DetailResult> {
+        val token = Application.prefs.loadData(R.string.sp_session_token, "")!!
+        NetworkApi().getNetworkService().detailInfraction((token
+                ),
+                id).enqueue(object : Callback<DetailResult> {
             override fun onResponse(call: Call<DetailResult>, response: Response<DetailResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val data = response.body()//Gson().fromJson(response.body(), DetailResult::class.java)
@@ -246,14 +247,14 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
         SingletonTicket.andStreetInfraction = SingletonInfraction.betweenStreet2
-        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction.value
+        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction
         SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.value
         SingletonTicket.isRemitedInfraction = SingletonInfraction.isRemited
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
-        SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
-        SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine1, "CON 50% DE DESCUENTO", fifteenthDay, SingletonInfraction.totalInfraction))
+        SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(captureLine2, "SIN DESCUENTO", thirtythDay, SingletonInfraction.subTotalInfraction))
         Ticket.printTicket(activity, object : Ticket.TicketListener {
             override fun onTicketPrint() {
                 listener.onTicketPrinted()

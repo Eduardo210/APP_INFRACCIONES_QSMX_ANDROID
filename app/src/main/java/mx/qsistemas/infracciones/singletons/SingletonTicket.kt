@@ -7,7 +7,7 @@ object SingletonTicket {
     var dateTicket: String = "-"
     var folioTicket: String = "-"
 
-    var completeNameOffender: String = "Quien Resulte Responsable"
+    var completeNameOffender: String = "QUIEN RESULTE RESPONSABLE"
     var rfcOffender: String = ""
     var streetOffender: String = "-"
     var noExtOffender: String = "-"
@@ -40,26 +40,24 @@ object SingletonTicket {
     var isRemitedInfraction: Boolean = false
     var remitedDispositionInfraction: String = ""
     var nameAgent: String = ""
-    var idAgent: String = ""
+    var noEmployee: Int = 0
 
     var paymentAuthCode: String = ""
-    var captureLines: MutableList<CaptureLine> = mutableListOf()
-
-    var footers: MutableList<String> = mutableListOf()
+    var captureLineList: MutableList<CaptureLine> = mutableListOf()
+    var isPaymentCoDi: Boolean = false
 
     class ArticleFraction(var article: String = "-", var fraction: String = "-", var umas: String = "-",
-                          var motivation: String = "-")
+                          var points: String = "-", var motivation: String = "-")
 
     class CaptureLine(var captureLine: String = "0", var labelDiscount: String = "", var expirationDiscount: String = "",
                       var importInfraction: String = "")
+    var footers: MutableList<String> = mutableListOf()
 
     fun cleanData() {
-        headers = mutableListOf()
-
         dateTicket = "-"
         folioTicket = "-"
 
-        completeNameOffender = "Quien Resulte Responsable"
+        completeNameOffender = "QUIEN RESULTE RESPONSABLE"
         rfcOffender = ""
         streetOffender = "-"
         noExtOffender = "-"
@@ -92,10 +90,11 @@ object SingletonTicket {
         isRemitedInfraction = false
         remitedDispositionInfraction = ""
         nameAgent = ""
+        noEmployee = 0
 
         paymentAuthCode = ""
-        captureLines = mutableListOf()
-
+        captureLineList = mutableListOf()
+        isPaymentCoDi = false
         footers = mutableListOf()
     }
 }

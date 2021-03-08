@@ -10,8 +10,8 @@ import mx.qsistemas.infracciones.db_web.entities.ElectronicBill
 interface ElectronicBillDaoWeb {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(bill: ElectronicBill)
+    suspend fun insert(bill: ElectronicBill)
 
     @Query("SELECT bill.* FROM infringement_infringements infra INNER JOIN electronic_bill bill ON infra.id = bill.infringements_id WHERE infra.id = :idInfringement")
-    fun selectElectronicBill(idInfringement: Long): ElectronicBill
+    suspend fun selectElectronicBill(idInfringement: Long): ElectronicBill
 }

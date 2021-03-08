@@ -115,6 +115,6 @@ dependencies {
         exclude group: 'xpp3', module: 'xpp3'
     }
     // Payment Transfer Library
-    implementation 'com.github.QuetzalcoatlSistemas:payments_transfer:0.1.4-alpha06'
+    implementation 'com.github.QuetzalcoatlSistemas:payments_transfer:0.1.4-alpha12'
     //implementation project(':payments_transfer')
 }

@@ -45,7 +45,11 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
 
     override fun getSubBrandAdapter(reference: DocumentReference?) {
         if (reference != null) {
-            Application.firestore.collection(FS_COL_MODELS).whereEqualTo("reference", reference).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
+            Application.firestore.collection(FS_COL_MODELS)
+                    .whereEqualTo("reference", reference)
+                    .whereEqualTo("is_active", true)
+                    .orderBy("value", Query.Direction.ASCENDING)
+                    .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
                     listener.onError(exception.message
                             ?: Application.getContext().getString(R.string.e_firestore_not_available))

@@ -297,6 +297,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
     }
 
     override fun onTxApproved(txInfo: TransactionInfo) {
+        Log.d("PAYMENT", "onTxFailed: ${txInfo.reference}")
         isPaid = true
         if (isCreation) {
             iterator.value.savePayment(txInfo)
@@ -323,6 +324,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
     }
 
     override fun onTxFailed(retry: Boolean, message: String) {
+        Log.d("PAYMENT", "onTxFailed: $message")
         isPaid = false
         if (retry) {
             if (Looper.myLooper() == null)
@@ -380,6 +382,7 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
     }
 
     override fun onAcceptPayment() {
+        Log.d("PAYMENT", "Total a pagar: "+SingletonInfraction.totalInfraction)
         PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
     }
 

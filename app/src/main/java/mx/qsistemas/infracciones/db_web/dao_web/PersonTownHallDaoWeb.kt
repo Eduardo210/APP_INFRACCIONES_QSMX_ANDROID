@@ -9,8 +9,8 @@ import mx.qsistemas.infracciones.db_web.entities.PersonTownhall
 @Dao
 interface PersonTownHallDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(personTownHall: PersonTownhall): Long
+    suspend fun insert(personTownHall: PersonTownhall): Long
 
     @Query("SELECT DISTINCT town.* from infringement_infringements infringements INNER JOIN person_townhall town on infringements.id = town.infringement_id  WHERE infringements.id= :idInfraction")
-    fun selectTownPerson(idInfraction: Long): PersonTownhall
+    suspend fun selectTownPerson(idInfraction: Long): PersonTownhall
 }

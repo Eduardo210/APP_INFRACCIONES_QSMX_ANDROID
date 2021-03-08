@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
+import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.databinding.FragmentMenuBinding
 import mx.qsistemas.infracciones.dialogs.ReconfigurationCallback
 import mx.qsistemas.infracciones.dialogs.ReconfigureDialog
@@ -37,7 +38,7 @@ import mx.qsistemas.payments_transfer.dtos.LoadKeyData
 import mx.qsistemas.payments_transfer.dtos.TransactionInfo
 
 class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOptionListener,
-        ReconfigurationCallback, View.OnClickListener {
+        ReconfigurationCallback, View.OnClickListener, View.OnLongClickListener {
 
     private val iterator by lazy { MenuIterator(this) }
     private lateinit var activity: MainActivity
@@ -180,8 +181,8 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
 
     override fun onReconfigureFirestore() {
         val prefix = Application.prefs.loadData(R.string.sp_prefix, "")!!
-        val idTownship = Application.prefs.loadData(R.string.sp_id_township, "")!!
-        PaymentsTransfer.configDevice(idTownship, prefix, 2, 1, "13F0A294679546195AD092C4E5937A41",
+        val idTownship = Application.prefs.loadData(R.string.sp_id_township, "")
+        PaymentsTransfer.configDevice(idTownship.toString(), prefix, 2, 1, "13F0A294679546195AD092C4E5937A41",
                 PTX_VOUCHER_TITLE, PTX_VOUCHER_ADDRESS_1, PTX_VOUCHER_ADDRESS_2)
         Handler(Looper.getMainLooper()).postDelayed({
             val loadKeyData = LoadKeyData(PTX_SERIAL_NUMBER, PTX_MERCHANT_ID, PTX_MAIN, PTX_PSW)
@@ -204,5 +205,12 @@ class MenuFragment : Fragment(), MenuContracts.Presenter, MenuContracts.OnHomeOp
                 MenuFragment().apply {
                     arguments = Bundle().apply { }
                 }
+    }
+
+    override fun onLongClick(p0: View?): Boolean {
+        when(p0?.id){
+            binding.include.imgUserPhoto.id -> Alarms()
+        }
+        return true
     }
 }

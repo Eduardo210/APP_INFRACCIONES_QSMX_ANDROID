@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 open class NetworkApi {
 
     companion object {
-        var API_URL = "http://3.15.191.119:8000/"
+        var API_URL = "http://3.15.191.119:8080/"
         var HONOS_API_URL = "https://us-central1-honos-7f224.cloudfunctions.net/"
 
         private val interceptor = HttpLoggingInterceptor()
@@ -56,19 +56,19 @@ open class NetworkApi {
         @POST("api/accounts/token-verify/")
         fun verifyToken(@Body body: ValidateTokenRequest): Call<GenericResult>
 
-        @POST("api/infringement/add/")
-        fun sendInfractionToServer(@Header("Authorization") tokenSession: String, @Body body: InfractionRequest): Call<InfractionResult>
+        @POST("api/infringement/add-infringement/")
+        fun sendInfractionToServer(@Header("token") tokenSession: String, @Body body: InfractionRequest): Call<InfractionResult>
 
-        @POST("api/infringement/add-payment-order/")
-        fun savePaymentToServer(@Header("Authorization") tokenSession: String, @Header(value = "idPayment") idPayment: Long, @Body body: PaymentRequest): Call<GenericResult>
+        @POST("api/infringement/save-payer/")
+        fun savePaymentToServer(@Header("token") tokenSession: String, @Header(value = "idPayment") idPayment: Long, @Body body: SendPaymentRequest): Call<GenericResult>
 
-        @GET("api/infringement/search/")
-        fun searchInfraction(@Header("Authorization") tokenSession: String, @Query("name") name: String): Call<SearchResult>
+        @GET("api/infringement/get-infringements/")
+        fun searchInfraction(@Header("token") tokenSession: String, @Query("param") name: String): Call<SearchResult>
 
         @POST("api/infringement/order-payer/")
-        fun updatePayer(@Header("Authorization") tokenSession: String, @Body body: DriverRequest): Call<GenericResult>
+        fun updatePayer(@Header("Authorization") tokenSession: String, @Body body: PayerInfraction): Call<GenericResult>
 
-        @POST("api/infringement/detail/")
-        fun detailInfraction(@Header("Authorization") tokenSession: String, @Body token: HashMap<String,String>): Call<DetailResult>
+        @GET("api/infringement/get-selected-infringement/")
+        fun detailInfraction(@Header("token") tokenSession: String, @Query("param") token: String): Call<DetailResult>
     }
 }

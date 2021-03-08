@@ -28,6 +28,6 @@ data class DataItem(
         @field:SerializedName("is_paid")
         val is_paid: Boolean? = null,
 
-        @field:SerializedName("reference")
-        val reference: String? = null
+        @field:SerializedName("amount")
+        val amount: String? = null
 )

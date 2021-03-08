@@ -59,7 +59,7 @@ class Application : MultiDexApplication() {
         m_database_web = AppDatabaseWeb.getInMemoryDatabase(getContext())!!
         initializeFirebaseComponents()
         /* Initialize Payments Library */
-        PaymentsTransfer.initialize(getContext())
+        PaymentsTransfer.initialize(getContext(), BuildConfig.DEBUG)
         /* Granted permission to access to firebaseStorage*/
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())

@@ -11,15 +11,15 @@ class MyPreferencesContracts {
     }
 
     interface Iterator {
-        fun getPostalCodesAdapter(): ArrayAdapter<String>
-        fun getColoniesAdapter(postalCode: String): ArrayAdapter<String>
+        //fun getPostalCodesAdapter(): ArrayAdapter<String>
+        //fun getColoniesAdapter(postalCode: String): ArrayAdapter<String>
         fun getArticlesAdapter()
         fun getFractionAdapter(articlePosition: Int)
-        fun saveDefaultDirection(zipCode: String, colony: String, street: String, street1: String, street2: String)
+        fun saveDefaultDirection(colony: String, street: String, street1: String, street2: String)
         fun saveDefaultMotivation(idArticle: String, idFraction: String, motivation: String)
         fun getPositionArticle(): Int
         fun getPositionFraction(): Int
-        fun getPositionZipCode(): Int
-        fun getPositionColony(): Int
+        //fun getPositionZipCode(): Int
+        //fun getPositionColony(): Int
     }
 }

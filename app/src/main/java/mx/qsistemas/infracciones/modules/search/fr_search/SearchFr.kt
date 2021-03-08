@@ -55,12 +55,9 @@ import java.util.*
 val OK_PAYMENT = 100
 var TOKEN_INFRACTION: String = ""
 
-class SearchFr : Fragment()
-        , SearchContracts.Presenter
-        , AdapterView.OnItemSelectedListener
-        , SearchContracts.OnInfractionClick
-       /* , IPaymentsTransfer.PrintListener
-        , IPaymentsTransfer.TransactionListener, DetailPaymentCallback*/ {
+class SearchFr : Fragment(), SearchContracts.Presenter, AdapterView.OnItemSelectedListener, SearchContracts.OnInfractionClick
+/* , IPaymentsTransfer.PrintListener
+ , IPaymentsTransfer.TransactionListener, DetailPaymentCallback*/ {
 
     private lateinit var binding: FragmentSearchBinding
     private val iterator = lazy { SearchIterator(this) }
@@ -115,10 +112,13 @@ class SearchFr : Fragment()
 
             if (Validator.isNetworkEnable(activity) && binding.edtFilterAny.text.toString().isNotEmpty()) {
                 activity.showLoader("Buscando infracciones ...")
-                iterator.value.doSearchByFilter(binding.edtFilterAny.text.toString())
+                GlobalScope.launch {
+                    iterator.value.doSearchByFilter(binding.edtFilterAny.text.toString())
+                }
             } else {
                 activity.showLoader("Buscando infracciones ...")
                 iterator.value.doSearchByFilterOffLine(binding.edtFilterAny.text.toString())
+
 
             }
         }
@@ -183,7 +183,7 @@ class SearchFr : Fragment()
         if (!infraction.driver?.rfc.isNullOrEmpty()) {
             SingletonTicket.rfcOffender = infraction.driver?.rfc ?: ""
         }
-        if(infraction.payOrder !=null){
+        if (infraction.payOrder != null) {
             //SingletonTicket.completeNamePayer = "${infraction.electronicBill?.name} ${infraction.electronicBill?.paternal} ${infraction.electronicBill?.maternal}"
             SingletonTicket.paymentAuthCode = infraction.payOrder!!.authorize_no.toString()
         }
@@ -227,7 +227,7 @@ class SearchFr : Fragment()
         }
 
         if (!infraction.driverAddressDriver?.colony.isNullOrEmpty()) {
-            SingletonTicket.colonyOffender = infraction.driverAddressDriver?.colony ?:""
+            SingletonTicket.colonyOffender = infraction.driverAddressDriver?.colony ?: ""
         }
         if (!infraction.driverAddressDriver?.state.isNullOrEmpty()) {
             SingletonTicket.stateOffender = infraction.driverAddressDriver?.state ?: ""
@@ -242,7 +242,7 @@ class SearchFr : Fragment()
             SingletonTicket.stateLicenseOffender = infraction.driverLicense?.state_license ?: ""
         }
         SingletonTicket.nameAgent = "${infraction.personTownhall?.name} ${infraction.personTownhall?.paternal} ${infraction.personTownhall?.maternal}"
-        SingletonTicket.idAgent = infraction.personTownhall?.idPersona.toString()
+        SingletonTicket.noEmployee = infraction.personTownhall?.idPersona!!.toInt()
         SingletonTicket.modelVehicle = infraction.vehicleVehicles?.year ?: ""
 
         infraction.fractions?.forEach { fracc ->
@@ -281,7 +281,7 @@ class SearchFr : Fragment()
         }
 
         infraction.captureLines?.forEach {
-            SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "Sin descuento" else "Con ${it.discount} de descuento", it.date, "%.2f".format(it.amount)))
+            SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "Sin descuento" else "Con ${it.discount} de descuento", it.date, "%.2f".format(it.amount)))
         }
 
         Ticket.printTicket(activity, object : Ticket.TicketListener {
@@ -307,7 +307,7 @@ class SearchFr : Fragment()
         SingletonTicket.rfcOffender = infraction.driver?.rfc.toString()
 
         if (infraction.isAbsent) {
-            if(infraction.driver?.address !=null){
+            if (infraction.driver?.address != null) {
                 if (infraction.driver.address.street?.isNotBlank()!!) {
                     SingletonTicket.streetOffender = infraction.driver.address.street
                 }
@@ -397,7 +397,7 @@ class SearchFr : Fragment()
         }
 
         infraction.captureLines?.forEach {
-            SingletonTicket.captureLines.add(
+            SingletonTicket.captureLineList.add(
                     SingletonTicket.CaptureLine(it?.key!!, if (it.discount_label == "0%") "Sin descuento" else "Con ${it.discount_label} de descuento", it.date!!, it.amount!!)
             )
         }
@@ -574,7 +574,7 @@ class SearchFr : Fragment()
                 activity.showLoader(getString(R.string.l_preparing_printer))
                 printInfractionOnline(infraction)//PaymentsTransfer.print(activity, printInfraction(infraction), null, this)
             }
-            PAYMENT ->{
+            PAYMENT -> {
                 SingletonInfraction.tokenInfraction = TOKEN_INFRACTION
                 infraction.fractions?.forEach {
                     SingletonInfraction.motivationList.add(SingletonInfraction.DtoMotivation(Articles(), Fractions(uma = it?.uma!!.toInt()), ""))
@@ -587,14 +587,14 @@ class SearchFr : Fragment()
                 intent.putExtra(EXTRA_OPTION_INFRACTION, OPTION_UPDATE_INFRACTION)
                 startActivityForResult(intent, OK_PAYMENT)
             }
-          /*      if (!infraction.isAbsent!!) {
-                    //doPaymentProcess(infraction)
-                    SnackbarHelper.showErrorSnackBar(activity,"Opción no disponible", Snackbar.LENGTH_SHORT)
-                    //idPerson = infraction.id_person
-                } else {*/
-                    //mandar a pantalla de actualizacion del pago
+            /*      if (!infraction.isAbsent!!) {
+                      //doPaymentProcess(infraction)
+                      SnackbarHelper.showErrorSnackBar(activity,"Opción no disponible", Snackbar.LENGTH_SHORT)
+                      //idPerson = infraction.id_person
+                  } else {*/
+            //mandar a pantalla de actualizacion del pago
 
-               // }
+            // }
         }
     }
 
@@ -688,10 +688,10 @@ class SearchFr : Fragment()
         // TODO("not implemented") To change body of created functions use File | Settings | File Templates.
     }*/
 
-   /* override fun onTxVoucherFailed(message: String) {
-        SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
-    }
-*/
+    /* override fun onTxVoucherFailed(message: String) {
+         SnackbarHelper.showErrorSnackBar(activity, message, Snackbar.LENGTH_SHORT)
+     }
+ */
     override fun onResultSearchOffLine(listInfractions: MutableList<InfractionItem>) {
         activity.hideLoader()
         itemInfraOffLine = listInfractions

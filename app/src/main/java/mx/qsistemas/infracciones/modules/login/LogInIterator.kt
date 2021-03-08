@@ -1,4 +1,4 @@
-package mx.qsistemas.infracciones.modules.login
+    package mx.qsistemas.infracciones.modules.login
 
 import android.util.Log
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -76,6 +76,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             }
             if (it.exception == null && it.result != null) {
                 val cipher = ((it.result?.data) as HashMap<*, *>)["value"].toString()
+                Application.prefs.saveData(R.string.sp_session_token, cipher)
                 val request = LogInRequest(cipher)
                 NetworkApi().getNetworkService().login(request).enqueue(object : Callback<LogInResult> {
                     override fun onResponse(call: Call<LogInResult>, response: Response<LogInResult>) {

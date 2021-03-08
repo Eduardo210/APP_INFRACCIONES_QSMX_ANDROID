@@ -26,7 +26,7 @@ object SingletonInfraction {
 
     /* Infracion Information */
     var zipCodeInfraction: ZipCodes = ZipCodes(0, "", "Selecciona...", "", true)
-    var colonnyInfraction: Colony = Colony(0, "", "Selecciona...", "", true)
+    var colonnyInfraction: String=""//Colony = Colony(0, "", "Selecciona...", "", true)
     var streetInfraction: String = ""
     var betweenStreet1: String = ""
     var betweenStreet2: String = ""
@@ -50,7 +50,7 @@ object SingletonInfraction {
     var stateOffender: GenericCatalog = GenericCatalog()
     var townshipOffender: City = City(0, "", "Selecciona...", "", true)
     var zipCodeOffender: ZipCodes = ZipCodes(0, "", "Selecciona...", "", true)
-    var colonyOffender: Colony = Colony(0, "", "Selecciona...", "", true)
+    var colonyOffender: String=""//Colony = Colony(0, "", "Selecciona...", "", true)
     var streetOffender: String = ""
     var noExtOffender: String = ""
     var noIntOffender: String = ""
@@ -98,7 +98,7 @@ object SingletonInfraction {
 
         /* Infraction Information Reset */
         zipCodeInfraction = ZipCodes(0, "", "Selecciona...", "", true)
-        colonnyInfraction = Colony(0, "", "Selecciona...", "", true)
+        colonnyInfraction = ""//Colony(0, "", "Selecciona...", "", true)
         streetInfraction = ""
         betweenStreet1 = ""
         betweenStreet2 = ""
@@ -120,7 +120,7 @@ object SingletonInfraction {
         stateOffender = GenericCatalog()
         townshipOffender = City(0, "", "Selecciona...", "", true)
         zipCodeOffender = ZipCodes(0, "", "Selecciona...", "", true)
-        colonyOffender = Colony(0, "", "Selecciona...", "", true)
+        colonyOffender = ""//Colony(0, "", "Selecciona...", "", true)
         streetOffender = ""
         noExtOffender = ""
         noIntOffender = ""

@@ -1,6 +1,7 @@
 package mx.qsistemas.infracciones.db_web.managers
 
 import android.annotation.SuppressLint
+import android.provider.Settings
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -12,6 +13,10 @@ object SendInfractionManagerWeb {
     fun getInfractionsToSend(): MutableList<InfringementInfringements> = runBlocking {
         return@runBlocking Application.m_database_web.infractionDaoWeb().selectInfractionsToSend()
     }
+    fun getInfractionsToken(idInfraction: Long): InfringementInfringements = runBlocking {
+        return@runBlocking Application.m_database_web.infractionDaoWeb().selectInfraction(idInfraction)
+    }
+
 
     fun getInfractionPictures(idInfraction: Long): MutableList<InfringementPicturesInfringement> = runBlocking {
         return@runBlocking Application.m_database_web.pictureInfractionDaoWeb().selectPicturesToSend(idInfraction)
@@ -49,7 +54,7 @@ object SendInfractionManagerWeb {
         return@runBlocking Application.m_database_web.captureLineDaoWeb().selectCaptureLine(idInfraction)
     }
 
-    fun getPayments(): MutableList<InfringementPayorderToSend> = runBlocking {
+    fun getPayments(): MutableList<InfringementPayorder> = runBlocking {
         return@runBlocking Application.m_database_web.payorderDaoWeb().selectToSend()
     }
 
@@ -64,4 +69,14 @@ object SendInfractionManagerWeb {
             Application.m_database_web.payorderDaoWeb().update(idPayment)
         }
     }
+    fun getAllPhotos(): MutableList<InfringementPicturesInfringement> = runBlocking{
+            return@runBlocking Application.m_database_web.infractionEvidenceDaoWeb().selectPhotosToSend()
+
+    }
+    fun deletePhotos(idInfraction: Long){
+        GlobalScope.launch {
+            Application.m_database_web.infractionEvidenceDaoWeb().deleteSentPhotos(idInfraction)
+        }
+    }
+
 }

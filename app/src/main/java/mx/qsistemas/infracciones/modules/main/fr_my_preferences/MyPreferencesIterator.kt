@@ -21,7 +21,7 @@ class MyPreferencesIterator(private val listener: MyPreferencesContracts.Present
     internal lateinit var articlesList: MutableList<Articles>
     internal lateinit var fractionList: MutableList<Fractions>
 
-    override fun getPostalCodesAdapter(): ArrayAdapter<String> {
+    /*override fun getPostalCodesAdapter(): ArrayAdapter<String> {
         postalCodesList = CatalogsFirebaseManager.getZipCodesByCityId("%${Application.prefs.loadData(R.string.sp_id_township, "")!!}%")
         val strings = mutableListOf<String>()
         postalCodesList.add(0, ZipCodes(0, "", "Selecciona...", Application.prefs.loadData(R.string.sp_id_township, "")!!, true))
@@ -41,7 +41,7 @@ class MyPreferencesIterator(private val listener: MyPreferencesContracts.Present
         val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
         adapter.setDropDownViewResource(R.layout.custom_spinner_item)
         return adapter
-    }
+    }*/
 
     override fun getArticlesAdapter() {
         articlesList = mutableListOf()
@@ -107,8 +107,8 @@ class MyPreferencesIterator(private val listener: MyPreferencesContracts.Present
         Application.prefs.saveData(R.string.sp_default_motivation, motivation)
     }
 
-    override fun saveDefaultDirection(zipCode: String, colony: String, street: String, street1: String, street2: String) {
-        Application.prefs.saveData(R.string.sp_default_zip_code, zipCode)
+    override fun saveDefaultDirection(colony: String, street: String, street1: String, street2: String) {
+        //Application.prefs.saveData(R.string.sp_default_zip_code, zipCode)
         Application.prefs.saveData(R.string.sp_default_colony, colony)
         Application.prefs.saveData(R.string.sp_default_street, street)
         Application.prefs.saveData(R.string.sp_default_street1, street1)
@@ -134,7 +134,7 @@ class MyPreferencesIterator(private val listener: MyPreferencesContracts.Present
         return 0
     }
 
-    override fun getPositionZipCode(): Int {
+    /*override fun getPositionZipCode(): Int {
         val postalCodeKey = Application.prefs.loadData(R.string.sp_default_zip_code, "")!!
         postalCodesList.forEachIndexed { index, zipCode ->
             if (zipCode.key == postalCodeKey)
@@ -150,5 +150,5 @@ class MyPreferencesIterator(private val listener: MyPreferencesContracts.Present
                 return index
         }
         return 0
-    }
+    }*/
 }

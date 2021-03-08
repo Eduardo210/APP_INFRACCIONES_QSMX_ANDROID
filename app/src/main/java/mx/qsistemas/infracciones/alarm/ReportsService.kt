@@ -14,9 +14,7 @@ import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.request_web.*
 import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.InfractionResult
-import mx.qsistemas.infracciones.utils.CHANNEL_ID_REPORT
-import mx.qsistemas.infracciones.utils.NOTIF_SEND_REPORTS
-import mx.qsistemas.infracciones.utils.Validator
+import mx.qsistemas.infracciones.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,6 +30,12 @@ class ReportsService : JobService() {
     }
 
     override fun onStartJob(params: JobParameters?): Boolean {
+        sendReports()
+        sendPhotosInEvidence()
+        return true
+    }
+
+    private fun sendReports() {
         /* Create Infraction Notification Builder */
         val builderInfraction = NotificationCompat.Builder(this, CHANNEL_ID_REPORT).apply {
             setContentTitle(getString(R.string.app_name))
@@ -40,6 +44,7 @@ class ReportsService : JobService() {
             color = ContextCompat.getColor(this@ReportsService, R.color.colorPrimary)
             priority = NotificationCompat.PRIORITY_HIGH
         }
+
         if (Validator.isNetworkEnable(Application.getContext())) {
             //Get the reports to send
             val reportsToSend = SendInfractionManagerWeb.getInfractionsToSend()
@@ -57,46 +62,104 @@ class ReportsService : JobService() {
                     SendInfractionManagerWeb.getInfractionPictures(it.id).forEach { pic -> requestPictures.add(PicturesItem(pic.image)) }
                     //Get address of the infraction
                     val addresInfraction = SendInfractionManagerWeb.getInfractionAddress(it.id)
+                    val requestAddresInfraction = AddressInfraction(
+                            addresInfraction.state_id,
+                            addresInfraction.city_id,
+                            null,
+                            addresInfraction.colony,
+                            addresInfraction.street,
+                            addresInfraction.street_a,
+                            addresInfraction.street_b,
+                            addresInfraction.latitude,
+                            addresInfraction.longitude)
                     // Get infraction fractions and motivations list
                     val requestMotivations = mutableListOf<FractionsItem>()
                     SendInfractionManagerWeb.getInfractionMotivationList(it.id).forEach { x ->
-                        requestMotivations.add(FractionsItem(x.reason, x.amount.toString(), x.uma.toString(), x.fraction_id))
+                        requestMotivations.add(FractionsItem(x.reason, x.fraction_id, x.uma.toString(), x.amount.toString()))
                     }
                     // Get offender license
                     val personLicense = SendInfractionManagerWeb.getPersonLicense(it.id)
+                    var requestPersonLicense = DriverLicense()
+                    if (personLicense != null) {
+                        requestPersonLicense = DriverLicense(
+                                personLicense.license_number,
+                                personLicense.license_type_id,
+                                personLicense.state_license_id)
+                    }
                     // Get offender address
                     val personAddress = SendInfractionManagerWeb.getPersonAddress(it.driver_id)
-                    val requestAddressDriver = AddressDriver(personAddress.colony_id, personAddress.internal_num, personAddress.city_id, personAddress.street, personAddress.exterior_num, personAddress.state_id, personAddress.cp_id)
+                    var requestAddressDriver = AddressDriver()
+                    if (personAddress != null) {
+                        requestAddressDriver = AddressDriver(personAddress.city_id, personAddress.colony, personAddress.street, personAddress.exterior_num, personAddress.internal_num)
+                    }
                     // Get person information
                     val personInfo = SendInfractionManagerWeb.getPersonInformation(it.id)
-                    val requestPerson = DriverRequest("", personInfo.name, personInfo.rfc, personInfo.paternal, personInfo.maternal)
+                    var requestPerson = DriverRequest()
+                    if (personInfo != null) {
+                        requestPerson = DriverRequest(personInfo.name, personInfo.paternal, personInfo.maternal)
+                    }
+
                     // Get payer information
                     val payerInfo = SendInfractionManagerWeb.getPayerInformation(it.id)
-                    val requestPayer = DriverRequest("", payerInfo.name, payerInfo.rfc, payerInfo.paternal, payerInfo.maternal, payerInfo.business_name, payerInfo.email)
+                    var requestPayerInfo = PayerInfraction()
+                    if (payerInfo != null) {
+                        requestPayerInfo = PayerInfraction(
+                                payerInfo.name,
+                                payerInfo.paternal,
+                                payerInfo.maternal,
+                                payerInfo.rfc,
+                                payerInfo.business_name,
+                                payerInfo.email)
+                    }
                     //Get vehicle information of infraction
                     val vehicleInfraction = SendInfractionManagerWeb.getVehicleInformation(it.id)
+                    var requestVehicleInfraction = VehicleInfraction()
+                    if (vehicleInfraction != null) {
+                        requestVehicleInfraction = VehicleInfraction(
+                                vehicleInfraction.sub_brand_id,
+                                vehicleInfraction.identifier_document_id,
+                                vehicleInfraction.num_document,
+                                vehicleInfraction.issued_in_id,
+                                vehicleInfraction.colour_id,
+                                vehicleInfraction.class_type_id,
+                                vehicleInfraction.year
+                        )
+                    }
                     // Get the capture lines
                     val requestCaptureLines = mutableListOf<CaptureLinesItem>()
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd")
                     SendInfractionManagerWeb.getCaptureLines(it.id).forEach { line ->
-                        requestCaptureLines.add(CaptureLinesItem("%.2f".format(line.amount).toFloat(), line.key, line.order, line.discount, dateFormat.format(SimpleDateFormat("dd/MM/yyyy").parse(line.date))))
+                        requestCaptureLines.add(CaptureLinesItem(line.key, "%.2f".format(line.amount).toFloat(), line.order, dateFormat.format(SimpleDateFormat("dd/MM/yyyy").parse(line.date)), line.discount))
                     }
                     //Create the infraction subheader
-                    val infractionRequest = InfractionRequest(it.date, addresInfraction.colony_id, vehicleInfraction.colour_id, addresInfraction.city_id,
-                            if (vehicleInfraction.year == "-") null else vehicleInfraction.year.toInt(), vehicleInfraction.identifier_document_id,
-                            addresInfraction.latitude.toString(), it.town_hall_id, requestAddressDriver, requestPictures, vehicleInfraction.isNewColor,
-                            vehicleInfraction.class_type_id, vehicleInfraction.num_document, addresInfraction.street, vehicleInfraction.sub_brand_id,
-                            personLicense.state_license_id, vehicleInfraction.isNewSubBrand, vehicleInfraction.brand_reference, addresInfraction.longitude.toString(),
-                            addresInfraction.street_a, "", personLicense.license_type_id, addresInfraction.street_b,
-                            it.is_absent, it.is_impound, addresInfraction.cp_id, personLicense.license_number, vehicleInfraction.issued_in_id,
-                            requestPerson, requestPayer, requestCaptureLines, it.insured_document_id, it.folio, it.time, requestMotivations, "ACTIVO", it.third_impound_id)
+                    val infractionRequest = InfractionRequest(
+                            it.folio,
+                            it.town_hall_id,
+                            it.date,
+                            it.time,
+                            it.insured_document_id,
+                            it.is_impound,
+                            it.third_impound_id,
+                            requestAddresInfraction,
+                            requestVehicleInfraction,
+                            requestMotivations,
+                            it.is_absent,
+                            requestPerson,
+                            requestAddressDriver,
+                            requestPersonLicense,
+                            requestCaptureLines,
+                            it.is_paid,
+                            requestPayerInfo)
                     //Send the infractions list
-                    NetworkApi().getNetworkService().sendInfractionToServer("Bearer", infractionRequest).enqueue(object : Callback<InfractionResult> {
+                    val token = Application.prefs.loadData(R.string.sp_session_token, "")
+
+                    NetworkApi().getNetworkService().sendInfractionToServer("$token", infractionRequest).enqueue(object : Callback<InfractionResult> {
                         override fun onResponse(call: Call<InfractionResult>, response: Response<InfractionResult>) {
-                            if (response.code() == HttpsURLConnection.HTTP_OK) {
-                                val result = response.body()
-                                if (result?.status == "success") {
-                                    SendInfractionManagerWeb.updateInfractionSend(result.infringement.token, result.infringement.folio)
+                            if (response.code() == HttpsURLConnection.HTTP_OK || response.code() == HttpsURLConnection.HTTP_CREATED) {
+                                if (response.body() != null) {
+                                    val result = response.body()!!
+                                    //if (result?.status == "success") {
+                                    SendInfractionManagerWeb.updateInfractionSend(result.data.token, result.data.folio)
                                     reportsSend++
                                     sendPayments()
                                     // When done, update the notification one more time to remove the progress bar
@@ -108,6 +171,7 @@ class ReportsService : JobService() {
                                                 .setProgress(reportsToSend.size, reportsSend, true)
                                     }
                                     notification.notify(NOTIF_SEND_REPORTS, builderInfraction.build())
+
                                 } else {
                                     // When done, update the notification one more time to remove the progress bar
                                     builderInfraction.setContentText(getString(R.string.s_infraction_send) + reportsSend)
@@ -135,28 +199,131 @@ class ReportsService : JobService() {
                 sendPayments()
             }
         }
-        return true
     }
 
     private fun sendPayments() {
         val payments = SendInfractionManagerWeb.getPayments()
-        payments.forEach {
-            val request = PaymentRequest("%.2f".format(it.discount).toFloat(), it.folio_payment, it.observations, it.payment_date, it.payment_method,
-                    "%.2f".format(it.rounding).toFloat(), "%.2f".format(it.amount).toFloat(), "%.2f".format(it.surcharges).toFloat(),
-                    it.infringement_id_server, "%.2f".format(it.total).toFloat(), it.authorize_no.toString())
-            NetworkApi().getNetworkService().savePaymentToServer("Bearer ",
-                    it.id.toLong(), request).enqueue(object : Callback<GenericResult> {
+        payments.forEach { payToSend ->
+            //Obtenemos el token de la infracción
+            val infraction = SendInfractionManagerWeb.getInfractionsToken(payToSend.infringement_id)
+            //Llenamos la info del pago
+            val payerCard = PayerCardInfo(
+                    "%.2f".format(payToSend.amount),
+                    payToSend.tx_nb,
+                    payToSend.membership,
+                    payToSend.card_holder,
+                    payToSend.type,
+                    payToSend.tx_date,
+                    payToSend.app_label,
+                    payToSend.bank,
+                    payToSend.mobile_series,
+                    payToSend.tx_time,
+                    payToSend.control_number,
+                    payToSend.entry_type,
+                    payToSend.bank_reference,
+                    payToSend.authorize_no.toString())
+
+
+            //Llenamos la info para los datos de facturación
+            val bill = SendInfractionManagerWeb.getPayerInformation(payToSend.infringement_id)
+            var payer = Payer()
+            if (bill != null) {
+                payer = Payer(
+                        bill.business_name,
+                        bill.name,
+                        bill.rfc,
+                        bill.email,
+                        bill.paternal,
+                        bill.maternal)
+            }
+            val request = SendPaymentRequest(
+                    infraction.token_server,
+                    payer.name,
+                    payer.paternal,
+                    payer.maternal,
+                    payer.rfc,
+                    payer.businessName,
+                    payer.email,
+                    payerCard)
+            val token = Application.prefs.loadData(R.string.sp_session_token, "")!!
+            //TODO: DEcirle a Eric que genere una respuesta chida
+            NetworkApi().getNetworkService().savePaymentToServer(token,
+                    payToSend.id.toLong(), request).enqueue(object : Callback<GenericResult> {
                 override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
-                        if (response.body()?.status == "success") {
+                        if (response.body()?.error == "") {
                             SendInfractionManagerWeb.updatePaymentSend(call.request().headers()["idPayment"]!!.toLong())
+                        } else {
+
                         }
                     }
                 }
 
                 override fun onFailure(call: Call<GenericResult>, t: Throwable) {
+                    Log.d("PAYMENTS", t.message + "")
                 }
             })
         }
     }
+
+    private fun sendPhotosInEvidence() {
+        var photosToSendCount = 0
+        val builderImages = NotificationCompat.Builder(this, CHANNEL_ID_IMAGES).apply {
+            setContentTitle(getString(R.string.app_name))
+            setContentText("Enviando fotos...")
+            setSmallIcon(R.drawable.transparent_launcher)
+            color = ContextCompat.getColor(this@ReportsService, R.color.colorPrimary)
+            priority = NotificationCompat.PRIORITY_HIGH
+        }
+
+        val storageRef = Application.firebaseStorage.reference
+        val photosToSend = SendInfractionManagerWeb.getAllPhotos()
+        if (photosToSend.size > 0) {
+            val notification = NotificationManagerCompat.from(this).apply {
+                builderImages.setProgress(photosToSend.size, photosToSendCount, true)
+                notify(NOTIF_SEND_IMAGES, builderImages.build())
+            }
+            //traffic_violation/token_municipio/evidence/photos/documentoIdentificador_folio_I.jpg
+            photosToSend.forEach { photo ->
+                val township =
+                        Application.prefs.loadData(R.string.sp_id_township, "")!!
+                val pathToFirestore = "traffic_violation/$township/evidence/photos/${photo.name}"
+                val riversRef =
+                        storageRef.child(pathToFirestore)
+
+                val photoUri =
+                        Utils.getImageUriFromB64(Application.getContext(), photo.image, photo.name)
+                val uploadTask = riversRef.putFile(photoUri)
+
+                uploadTask.addOnProgressListener { taskSnapshot ->
+                    val progress =
+                            (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+                    //println("Upload is $progress% done")
+                }.addOnPausedListener {
+                }.addOnFailureListener {
+                    builderImages.setContentText(getString(R.string.e_send_images_incomplete + (photosToSend.size - photosToSendCount)))
+                            .setProgress(0, 0, false)
+                    notification.notify(NOTIF_SEND_IMAGES, builderImages.build())
+
+                }.addOnSuccessListener {
+                    photosToSendCount++
+                    val result = photosToSend.size - photosToSendCount
+                    if (result != 0) {
+                        SendInfractionManagerWeb.deletePhotos(photo.infringements_id)
+                        builderImages.setContentText(getString(R.string.s_images_send) + ": " + photosToSendCount)
+                                .setProgress(photosToSend.size, photosToSendCount, true)
+                        notification.notify(NOTIF_SEND_IMAGES, builderImages.build())
+                    } else {
+                        SendInfractionManagerWeb.deletePhotos(photo.infringements_id)
+                        builderImages.setContentText(getString(R.string.s_images_send) + ": " + photosToSendCount)
+                                .setProgress(0, 0, false)
+                        notification.notify(NOTIF_SEND_IMAGES, builderImages.build())
+                    }
+
+                }
+            }
+        }
+
+    }
+
 }

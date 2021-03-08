@@ -87,7 +87,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
+                    <!--<TextView
                         android:id="@+id/textView15"
                         style="@style/TextView_TitleItem2_Bold"
                         android:layout_width="0dp"
@@ -96,19 +96,21 @@
                         android:text="@string/t_zip_code"
                         android:textAlignment="textStart"
                         android:textSize="13sp"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView" />-->
 
-                    <Spinner
+                    <!--<Spinner
                         android:id="@+id/spn_zip_code"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:spinnerMode="dialog"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toStartOf="@+id/guideline8"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                        app:layout_constraintTop_toBottomOf="@+id/textView15" />-->
 
                     <TextView
                         android:id="@+id/textView3"
@@ -119,18 +121,25 @@
                         android:text="@string/t_colony"
                         android:textAlignment="textStart"
                         android:textSize="13sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintEnd_toEndOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-                    <Spinner
-                        android:id="@+id/spn_colony"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                    <EditText
+                        android:id="@+id/edt_colony"
+                        style="@style/EditText_InputItem"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"
+                        android:ems="10"
+                        android:hint="@string/h_colony"
+                        android:imeOptions="actionNext"
+                        android:inputType="textNoSuggestions"
+                        android:lines="1"
+                        android:maxLength="80"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/font_size_small"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
                     <TextView
@@ -144,7 +153,7 @@
                         android:textSize="13sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/spn_zip_code" />
+                        app:layout_constraintTop_toBottomOf="@+id/edt_colony" />
 
                     <EditText
                         android:id="@+id/edt_street"

@@ -38,10 +38,11 @@ class MyPreferencesFragment : Fragment(), MyPreferencesContracts.Presenter, View
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_preferences, container, false)
         binding.imgBack.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
-        binding.spnZipCode.onItemSelectedListener = this
+        //binding.spnZipCode.onItemSelectedListener = this
         binding.spnArticle.onItemSelectedListener = this
-        binding.spnZipCode.adapter = iterator.getPostalCodesAdapter()
-        binding.spnZipCode.setSelection(iterator.getPositionZipCode())
+        /*binding.spnZipCode.adapter = iterator.getPostalCodesAdapter()
+        binding.spnZipCode.setSelection(iterator.getPositionZipCode())*/
+        binding.edtColony.setText(Application.prefs.loadData(R.string.sp_default_colony,""))
         binding.edtStreet.setText(Application.prefs.loadData(R.string.sp_default_street, ""))
         binding.edtBetweenStreet1.setText(Application.prefs.loadData(R.string.sp_default_street1, ""))
         binding.edtBetweenStreet2.setText(Application.prefs.loadData(R.string.sp_default_street2, ""))
@@ -56,8 +57,8 @@ class MyPreferencesFragment : Fragment(), MyPreferencesContracts.Presenter, View
                 activity.onBackPressed()
             }
             binding.btnSave.id -> {
-                val postalCode = iterator.postalCodesList[binding.spnZipCode.selectedItemPosition].key
-                val colony = iterator.coloniesList[binding.spnColony.selectedItemPosition].key
+                //val postalCode = iterator.postalCodesList[binding.spnZipCode.selectedItemPosition].key
+                val colony = binding.edtColony.text.toString()
                 val street = binding.edtStreet.text.toString()
                 val betweenStreet = binding.edtBetweenStreet1.text.toString()
                 val andStreet = binding.edtBetweenStreet2.text.toString()
@@ -65,7 +66,7 @@ class MyPreferencesFragment : Fragment(), MyPreferencesContracts.Presenter, View
                 val idFraction = iterator.fractionList[binding.spnFraction.selectedItemPosition].childReference?.id ?: ""
                 val motivation = binding.edtMotivation.text.toString()
                 iterator.saveDefaultMotivation(idArticle, idFraction, motivation)
-                iterator.saveDefaultDirection(postalCode, colony, street, betweenStreet, andStreet)
+                iterator.saveDefaultDirection(colony, street, betweenStreet, andStreet,)
             }
         }
     }
@@ -84,10 +85,10 @@ class MyPreferencesFragment : Fragment(), MyPreferencesContracts.Presenter, View
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         when (p0?.id) {
-            binding.spnZipCode.id -> {
+           /* binding.spnZipCode.id -> {
                 binding.spnColony.adapter = iterator.getColoniesAdapter(iterator.postalCodesList[p2].key)
                 binding.spnColony.setSelection(iterator.getPositionColony())
-            }
+            }*/
             binding.spnArticle.id -> {
                 iterator.getFractionAdapter(p2)
             }

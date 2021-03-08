@@ -84,7 +84,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         listener.onTownshipsReady(adapter)
     }
 
-    override fun getZipCodesList(reference: String) {
+    /*override fun getZipCodesList(reference: String) {
         zipCodesList = if (reference.isNotBlank())
             CatalogsFirebaseManager.getZipCodesByCityId("%$reference%")
         else
@@ -97,9 +97,9 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
         adapter.setDropDownViewResource(R.layout.custom_spinner_item)
         listener.onZipCodesReady(adapter)
-    }
+    }*/
 
-    override fun getColoniesList(reference: String) {
+    /*override fun getColoniesList(reference: String) {
         coloniesList = if (reference.isNotBlank())
             CatalogsFirebaseManager.getColoniesByZipCode(if (reference.isBlank()) 0 else reference.toInt())
         else
@@ -112,7 +112,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
         adapter.setDropDownViewResource(R.layout.custom_spinner_item)
         listener.onColoniesReady(adapter)
-    }
+    }*/
 
     override fun getTypeLicenseAdapter() {
         Application.firestore.collection(FS_COL_TYPE_LIC).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
@@ -191,12 +191,12 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         return 0
     }
 
-    override fun getPositionZipCode(obj: ZipCodes): Int {
-        for (i in 0 until zipCodesList.size)
-            if (zipCodesList[i].key == obj.key)
-                return i
-        return 0
-    }
+    /* override fun getPositionZipCode(obj: ZipCodes): Int {
+         for (i in 0 until zipCodesList.size)
+             if (zipCodesList[i].key == obj.key)
+                 return i
+         return 0
+     }*/
 
     override fun getPositionStateLicense(obj: GenericCatalog): Int {
         for (i in 0 until stateIssuedLicenseList.size)
@@ -205,12 +205,12 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         return 0
     }
 
-    override fun getPositionColony(obj: Colony): Int {
+    /*override fun getPositionColony(obj: Colony): Int {
         for (i in 0 until coloniesList.size)
             if (coloniesList[i].key == obj.key)
                 return i
         return 0
-    }
+    }*/
 
     override fun getPositionTypeLicense(obj: GenericCatalog): Int {
         for (i in 0 until licenseTypeList.size)
@@ -302,8 +302,8 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                         SingletonInfraction.noIntOffender,
                         SingletonInfraction.townshipOffender.key,
                         if (SingletonInfraction.townshipOffender.key.isNotBlank()) SingletonInfraction.townshipOffender.value else "",
-                        SingletonInfraction.colonyOffender.key,
-                        if (SingletonInfraction.colonyOffender.key.isNotBlank()) SingletonInfraction.colonyOffender.value else "",
+                        SingletonInfraction.colonyOffender,
+                        if (SingletonInfraction.colonyOffender.isNotBlank()) SingletonInfraction.colonyOffender else "",
                         SingletonInfraction.zipCodeOffender.key,
                         if (SingletonInfraction.zipCodeOffender.key.isNotBlank()) SingletonInfraction.zipCodeOffender.value else "",
                         SingletonInfraction.idNewPersonInfraction.toString(),
@@ -341,8 +341,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     SingletonInfraction.betweenStreet2,
                     SingletonInfraction.townshipInfraction.childReference?.id ?: "",
                     SingletonInfraction.townshipInfraction.value,
-                    SingletonInfraction.colonnyInfraction.key,
-                    SingletonInfraction.colonnyInfraction.value,
+                    SingletonInfraction.colonnyInfraction,
                     SingletonInfraction.zipCodeInfraction.key,
                     SingletonInfraction.zipCodeInfraction.value,
                     SingletonInfraction.stateInfraction.documentReference?.id ?: "",
@@ -365,14 +364,24 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                 SaveInfractionManagerWeb.saveTrafficViolation(trafficViolation)
             }
             /* Step 9. Save Evidence Photos */
-            val evidence1 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
-            val evidence2 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
+            val evidence1 = InfringementPicturesInfringement(
+                    0,
+                    SingletonInfraction.evidence1,
+                    "",
+                    SingletonInfraction.idNewInfraction,
+                    "${SingletonInfraction.noDocument}_${newFolio}_I.jpg", 0)
+            val evidence2 = InfringementPicturesInfringement(
+                    0,
+                    SingletonInfraction.evidence1,
+                    "",
+                    SingletonInfraction.idNewInfraction,
+                    "${SingletonInfraction.noDocument}_${newFolio}_2.jpg", 0)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence1)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
             /* Step 9. */
             val oficial = PersonTownhall(
                     Application.prefs.loadData(R.string.sp_id_officer),
-                    Application.prefs.loadData(R.string.sp_person_name, "") ?: "","", "",
+                    Application.prefs.loadData(R.string.sp_person_name, "") ?: "", "", "",
                     SingletonInfraction.idNewInfraction
             )
             //Application.prefs.loadDataInt(R.string.sp_id_officer)!!.toLong()
@@ -385,8 +394,31 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     override fun savePayment(info: TransactionInfo) {
         this.txInfo = info
         /* Step 1. Save Pay Order Into Database */
-        val payorder = InfringementPayorder(0, SingletonInfraction.subTotalInfraction.toFloat(), 0F, SingletonInfraction.discountInfraction.toFloat(), 0F, SingletonInfraction.totalInfraction.toFloat(),
-                actualDay, "", "", "CARD", info.authorization.toLong(), SingletonInfraction.idNewInfraction, info.reference, false, "")
+        val payorder = InfringementPayorder(
+                0,
+                SingletonInfraction.subTotalInfraction.toFloat(),
+                0F,
+                SingletonInfraction.discountInfraction.toFloat(),
+                0F,
+                SingletonInfraction.totalInfraction.toFloat(),
+                actualDay,
+                "", "", "CARD",
+                info.authorization.toLong(),
+                SingletonInfraction.idNewInfraction,
+                info.reference,
+                false,
+                "",
+                info.al,
+                info.affiliation,
+                info.bank,
+                info.entryType,
+                info.noControl,
+                Application.prefs.loadData(R.string.sp_prefix, "")!!,
+                info.cardOwner,
+                info.typeTx,
+                info.authorization,
+                info.txDate,
+                info.txTime)
         SaveInfractionManagerWeb.savePayOrder(payorder)
         /* Step 2. Save Authorization Code into Singleton */
         SingletonInfraction.paymentAuthCode = info.authorization
@@ -409,7 +441,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         if (SingletonInfraction.noIntOffender.isNotEmpty()) {
             SingletonTicket.noIntOffender = SingletonInfraction.noIntOffender
         }
-        SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender.value
+        SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender
         if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
         }
@@ -440,18 +472,18 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
         SingletonTicket.andStreetInfraction = SingletonInfraction.betweenStreet2
-        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction.value
+        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction
         SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.value
         SingletonTicket.isRemitedInfraction = SingletonInfraction.isRemited
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
         SingletonTicket.nameAgent = "${Application.prefs.loadData(R.string.sp_person_name, "")}"
-        SingletonTicket.idAgent = Application.prefs.loadData(R.string.sp_id_officer).toString()
+        SingletonTicket.noEmployee = Application.prefs.loadData(R.string.sp_id_officer).toInt()
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
         captureLineList.forEach {
-            SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "Sin descuento" else "Con ${it.discount} de descuento", it.date, "%.2f".format(it.amount)))
+            SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "Sin descuento" else "Con ${it.discount} de descuento", it.date, "%.2f".format(it.amount)))
         }
 
         SingletonTicket.footers = SingletonInfraction.townshipInfraction.footer.values.toMutableList()
@@ -477,8 +509,14 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
     private fun Boolean.toInt() = if (this) 1 else 0
 
     private fun generateNewFolio(): String {
-        val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs.loadData(R.string.sp_prefix, "")}%")
-        val incremental = lastFolio.split("-")[1].toInt() + 1
-        return "${lastFolio.split("-")[0]}-$incremental"
+        val prefix = Application.prefs.loadData(R.string.sp_prefix, "")
+        val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%$prefix%")
+        val incremental: Int = if (lastFolio.isNullOrEmpty()) {
+            1
+        } else {
+            lastFolio.split("-")[1].toInt() + 1
+        }
+
+        return "$prefix-$incremental"
     }
 }

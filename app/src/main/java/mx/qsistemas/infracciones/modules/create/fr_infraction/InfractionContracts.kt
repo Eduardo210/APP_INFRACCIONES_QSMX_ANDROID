@@ -12,6 +12,7 @@ class InfractionContracts {
         fun fillFields()
         fun startLocationListener()
         fun onAddressLocated(colony: String, street: String, betweenStreet: String, andStreet: String)
+        fun onAddressEmpty(msg: String)
         fun validFields(): Boolean
         fun onError(msg: String)
         fun onZipCodesReady(adapter: ArrayAdapter<String>)

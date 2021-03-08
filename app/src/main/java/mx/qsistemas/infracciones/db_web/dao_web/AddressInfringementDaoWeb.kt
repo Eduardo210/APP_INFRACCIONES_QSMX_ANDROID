@@ -9,8 +9,8 @@ import mx.qsistemas.infracciones.db_web.entities.InfringementAddressInfringement
 @Dao
 interface AddressInfringementDaoWeb {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(addressInfringement: InfringementAddressInfringement): Long
+    suspend fun insert(addressInfringement: InfringementAddressInfringement): Long
 
     @Query("SELECT * FROM infringement_address_infringement WHERE infringement_id =:idInfraction")
-    fun selectInfractionAddres(idInfraction: Long): InfringementAddressInfringement
+    suspend fun selectInfractionAddres(idInfraction: Long): InfringementAddressInfringement
 }

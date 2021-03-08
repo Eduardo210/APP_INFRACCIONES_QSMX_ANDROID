@@ -5,14 +5,18 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import android.util.Base64
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -283,5 +287,18 @@ class Utils {
             array.forEach { sum += it }
             return (sum % 97 + 1).toString()
         }
+
+         fun getImageUriFromB64(ctx: Context, b64Img: String, name: String): Uri {
+            val bytes = ByteArrayOutputStream()
+            val imageBytes = Base64.decode(b64Img, 0)
+            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+            val path = MediaStore.Images.Media.insertImage(
+                    ctx.contentResolver,
+                    bitmap, name, null
+            )
+            return Uri.parse(path.toString())
+        }
+
     }
 }

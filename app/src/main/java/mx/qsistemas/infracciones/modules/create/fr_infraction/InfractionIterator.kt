@@ -153,8 +153,8 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     }
 
     override fun saveTownship() {
-        val cityReference = SingletonInfraction.zipCodeInfraction.reference.split("/")
-        Application.firestore.collection(FS_COL_CITIES).document(cityReference.last()).get().addOnSuccessListener { townshipSnapshot ->
+        val cityReference = Application.prefs.loadData(R.string.sp_id_township, "")!!
+        Application.firestore.collection(FS_COL_CITIES).document(cityReference).get().addOnSuccessListener { townshipSnapshot ->
             if (townshipSnapshot == null) {
                 Log.e(TAG, Application.getContext().getString(R.string.e_firestore_not_available))
             } else {
@@ -216,7 +216,11 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
             val addresses = geocoder.getFromLocation(lat, lon, 1)
             if (addresses.isNotEmpty()) {
                 listener.onAddressLocated(addresses[0].subLocality, addresses[0].subThoroughfare, addresses[0].locality, "")
+            }else{
+                listener.onAddressEmpty("Error al obtener dirección automática.")
+                Log.w("LocationInfra","No address returned!" )
             }
+
         }
     }
 }

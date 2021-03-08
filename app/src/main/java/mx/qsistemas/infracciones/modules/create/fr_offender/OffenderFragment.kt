@@ -64,8 +64,8 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.rdbAbsentYes.setOnCheckedChangeListener(this)
         binding.lytOffender.spnState.onItemSelectedListener = this
         binding.lytOffender.spnTownship.onItemSelectedListener = this
-        binding.lytOffender.spnZipCode.onItemSelectedListener = this
-        binding.lytOffender.spnColony.onItemSelectedListener = this
+        /*binding.lytOffender.spnZipCode.onItemSelectedListener = this
+        binding.lytOffender.spnColony.onItemSelectedListener = this*/
         binding.lytOffender.spnLicenseType.onItemSelectedListener = this
         binding.lytOffender.spnLicenseIssuedIn.onItemSelectedListener = this
         binding.btnPay.setOnClickListener(this)
@@ -75,7 +75,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             binding.lytOffender.edtOffenderFln.doOnTextChanged { text, _, _, _ -> SingletonInfraction.lastFatherName = text?.trim().toString() }
             binding.lytOffender.edtOffenderMln.doOnTextChanged { text, _, _, _ -> SingletonInfraction.lastMotherName = text?.trim().toString() }
         }
-
+        binding.lytOffender.edtColony.doOnTextChanged { text, _, _, _ -> SingletonInfraction.colonyOffender = text?.trim().toString() }
         binding.lytOffender.edtOffenderRfc.doOnTextChanged { text, _, _, _ -> SingletonInfraction.rfcOffenfer = text?.trim().toString() }
         binding.lytOffender.edtStreet.doOnTextChanged { text, _, _, _ -> SingletonInfraction.streetOffender = text?.trim().toString() }
         binding.lytOffender.edtOffenderNoExt.doOnTextChanged { text, _, _, _ -> SingletonInfraction.noExtOffender = text?.trim().toString() }
@@ -125,20 +125,20 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.spnTownship.setSelection(iterator.value.getPositionTownship(SingletonInfraction.townshipOffender))
     }
 
-    override fun onZipCodesReady(adapter: ArrayAdapter<String>) {
+   /* override fun onZipCodesReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnZipCode.adapter = adapter
         binding.lytOffender.spnZipCode.setSelection(iterator.value.getPositionZipCode(SingletonInfraction.zipCodeOffender))
-    }
+    }*/
 
     override fun onStatesIssuedReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnLicenseIssuedIn.adapter = adapter
         binding.lytOffender.spnLicenseIssuedIn.setSelection(iterator.value.getPositionStateLicense(SingletonInfraction.licenseIssuedInOffender))
     }
 
-    override fun onColoniesReady(adapter: ArrayAdapter<String>) {
+   /* override fun onColoniesReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnColony.adapter = adapter
         binding.lytOffender.spnColony.setSelection(iterator.value.getPositionColony(SingletonInfraction.colonyOffender))
-    }
+    }*/
 
     override fun onTypeLicenseReady(adapter: ArrayAdapter<String>) {
         binding.lytOffender.spnLicenseType.adapter = adapter
@@ -170,15 +170,15 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             }
             binding.lytOffender.spnTownship.id -> {
                 SingletonInfraction.townshipOffender = iterator.value.townshipList[p2]
-                iterator.value.getZipCodesList(SingletonInfraction.townshipOffender.key)
+                //iterator.value.getZipCodesList(SingletonInfraction.townshipOffender.key)
             }
-            binding.lytOffender.spnZipCode.id -> {
+            /*binding.lytOffender.spnZipCode.id -> {
                 SingletonInfraction.zipCodeOffender = iterator.value.zipCodesList[p2]
                 iterator.value.getColoniesList(SingletonInfraction.zipCodeOffender.key)
             }
             binding.lytOffender.spnColony.id -> {
                 SingletonInfraction.colonyOffender = iterator.value.coloniesList[p2]
-            }
+            }*/
             binding.lytOffender.spnLicenseType.id -> {
                 SingletonInfraction.typeLicenseOffender = iterator.value.licenseTypeList[p2]
             }
@@ -272,11 +272,11 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                                 isValid = false
                                 onError(getString(R.string.e_township_offender))
                             }
-                            SingletonInfraction.zipCodeOffender.key.isBlank() -> {
+                            /*SingletonInfraction.zipCodeOffender.key.isBlank() -> {
                                 isValid = false
                                 onError(getString(R.string.e_zip_code))
-                            }
-                            SingletonInfraction.colonyOffender.key.isBlank() -> {
+                            }*/
+                            SingletonInfraction.colonyOffender.isBlank() -> {
                                 isValid = false
                                 onError(getString(R.string.e_colony_offender))
                             }
@@ -318,7 +318,7 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
             SingletonInfraction.stateOffender.documentReference != null -> isAnswered = true
             SingletonInfraction.townshipOffender.key.isNotBlank() -> isAnswered = true
             SingletonInfraction.zipCodeOffender.key.isNotBlank() -> isAnswered = true
-            SingletonInfraction.colonyOffender.key.isNotBlank() -> isAnswered = true
+            SingletonInfraction.colonyOffender.isNotBlank() -> isAnswered = true
             SingletonInfraction.streetOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noExtOffender.isNotEmpty() -> isAnswered = true
             SingletonInfraction.noIntOffender.isNotEmpty() -> isAnswered = true

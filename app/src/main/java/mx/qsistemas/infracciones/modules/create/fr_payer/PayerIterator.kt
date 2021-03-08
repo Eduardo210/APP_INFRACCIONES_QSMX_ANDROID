@@ -5,9 +5,9 @@ import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.entities.*
 import mx.qsistemas.infracciones.db_web.managers.SaveInfractionManagerWeb
+import mx.qsistemas.infracciones.db_web.managers.SendInfractionManagerWeb
 import mx.qsistemas.infracciones.net.NetworkApi
-import mx.qsistemas.infracciones.net.request_web.DriverRequest
-import mx.qsistemas.infracciones.net.request_web.PaymentRequest
+import mx.qsistemas.infracciones.net.request_web.*
 import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
@@ -137,8 +137,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                         SingletonInfraction.noIntOffender,
                         SingletonInfraction.townshipOffender.key,
                         if (SingletonInfraction.townshipOffender.key.isNotBlank()) SingletonInfraction.townshipOffender.value else "",
-                        SingletonInfraction.colonyOffender.key,
-                        if (SingletonInfraction.colonyOffender.key.isNotBlank()) SingletonInfraction.colonyOffender.value else "",
+                        SingletonInfraction.colonyOffender,
+                        if (SingletonInfraction.colonyOffender.isNotBlank()) SingletonInfraction.colonyOffender else "",
                         SingletonInfraction.zipCodeOffender.key,
                         if (SingletonInfraction.zipCodeOffender.key.isNotBlank()) SingletonInfraction.zipCodeOffender.value else "",
                         SingletonInfraction.idNewPersonInfraction.toString(),
@@ -176,8 +176,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     SingletonInfraction.betweenStreet2,
                     SingletonInfraction.townshipInfraction.childReference?.id ?: "",
                     SingletonInfraction.townshipInfraction.value,
-                    SingletonInfraction.colonnyInfraction.key,
-                    SingletonInfraction.colonnyInfraction.value,
+                    SingletonInfraction.colonnyInfraction,
                     SingletonInfraction.zipCodeInfraction.key,
                     SingletonInfraction.zipCodeInfraction.value,
                     SingletonInfraction.stateInfraction.documentReference?.id ?: "",
@@ -200,8 +199,10 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                 SaveInfractionManagerWeb.saveTrafficViolation(trafficViolation)
             }
             /* Step 9. Save Evidence Photos */
-            val evidence1 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
-            val evidence2 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction)
+            val evidence1 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction,
+                    "${SingletonInfraction.noDocument}_${newFolio}_I.jpg",0)
+            val evidence2 = InfringementPicturesInfringement(0, SingletonInfraction.evidence1, "", SingletonInfraction.idNewInfraction,
+                    "${SingletonInfraction.noDocument}_${newFolio}_I.jpg",0)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence1)
             SaveInfractionManagerWeb.saveInfractionEvidence(evidence2)
             /* Step 9. Save Officer Information */
@@ -219,11 +220,19 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
     }
 
     override fun updatePayerData() {
-        val request = DriverRequest(SingletonInfraction.tokenInfraction, SingletonInfraction.payerName, SingletonInfraction.payerRfc, SingletonInfraction.payerLastName, SingletonInfraction.payerMotherLastName)
+        val request = PayerInfraction(
+                SingletonInfraction.payerName,
+                SingletonInfraction.payerLastName,
+                SingletonInfraction.payerMotherLastName,
+                SingletonInfraction.payerRfc,
+                SingletonInfraction.payerTaxDenomination,
+                SingletonInfraction.payerEmail,
+                SingletonInfraction.tokenInfraction
+        )
         NetworkApi().getNetworkService().updatePayer("Bearer ", request).enqueue(object : Callback<GenericResult> {
             override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                    if (response.body()?.status == "success") {
+                    if (response.body()?.error == "") {
                         listener.onDataUpdated()
                     } else {
                         listener.onError(response.body()?.error ?: "")
@@ -240,8 +249,31 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
     override fun savePayment(info: TransactionInfo) {
         this.txInfo = info
         /* Step 1. Save Pay Order Into Database */
-        val payorder = InfringementPayorder(0, SingletonInfraction.subTotalInfraction.toFloat(), 0F, SingletonInfraction.discountInfraction.toFloat(), 0F, SingletonInfraction.totalInfraction.toFloat(),
-                actualDay, "", "", "CARD", info.authorization.toLong(), SingletonInfraction.idNewInfraction, info.reference, false, "")
+        val payorder = InfringementPayorder(
+                0,
+                SingletonInfraction.subTotalInfraction.toFloat(),
+                0F,
+                SingletonInfraction.discountInfraction.toFloat(),
+                0F,
+                SingletonInfraction.totalInfraction.toFloat(),
+                actualDay,
+                "", "", "CARD",
+                info.authorization.toLong(),
+                SingletonInfraction.idNewInfraction,
+                info.reference,
+                false,
+                "",
+                info.al,
+                info.affiliation,
+                info.bank,
+                info.entryType,
+                info.noControl,
+                Application.prefs.loadData(R.string.sp_prefix, "")!!,
+                info.cardOwner,
+                info.typeTx,
+                "",
+                info.txDate,
+                info.txTime)
         SaveInfractionManagerWeb.savePayOrder(payorder)
         /* Step 2. Save Authorization Code into Singleton */
         SingletonInfraction.paymentAuthCode = info.authorization
@@ -268,7 +300,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         if (SingletonInfraction.noIntOffender.isNotEmpty()) {
             SingletonTicket.noIntOffender = SingletonInfraction.noIntOffender
         }
-        SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender.value
+        SingletonTicket.colonyOffender = SingletonInfraction.colonyOffender
         if (SingletonInfraction.stateOffender.documentReference != null) {
             SingletonTicket.stateOffender = SingletonInfraction.stateOffender.value
         }
@@ -299,18 +331,18 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         SingletonTicket.streetInfraction = SingletonInfraction.streetInfraction
         SingletonTicket.betweenStreetInfraction = SingletonInfraction.betweenStreet1
         SingletonTicket.andStreetInfraction = SingletonInfraction.betweenStreet2
-        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction.value
+        SingletonTicket.colonyInfraction = SingletonInfraction.colonnyInfraction
         SingletonTicket.retainedDocumentInfraction = SingletonInfraction.retainedDocument.value
         SingletonTicket.isRemitedInfraction = SingletonInfraction.isRemited
         if (SingletonInfraction.isRemited) {
             SingletonTicket.remitedDispositionInfraction = SingletonInfraction.dispositionRemited.value
         }
         SingletonTicket.nameAgent = "${Application.prefs.loadData(R.string.sp_person_name, "")}"
-        SingletonTicket.idAgent = Application.prefs.loadData(R.string.sp_id_officer).toString()
+        SingletonTicket.noEmployee = Application.prefs.loadData(R.string.sp_id_officer).toInt()
         SingletonTicket.paymentAuthCode = SingletonInfraction.paymentAuthCode
 
         captureLineList.forEach {
-            SingletonTicket.captureLines.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "Sin descuento" else "Con ${it.discount} de descuento", it.date, "%.2f".format(it.amount)))
+            SingletonTicket.captureLineList.add(SingletonTicket.CaptureLine(it.key, if (it.discount == "0%") "Sin descuento" else "Con ${it.discount} de descuento", it.date, "%.2f".format(it.amount)))
         }
 
         SingletonTicket.footers = SingletonInfraction.townshipInfraction.footer.values.toMutableList()
@@ -332,9 +364,47 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                 txInfo.needSign, PTX_MERCHANT_ID, Utils.getImeiDevice(activity), txInfo.entryType)
         PaymentsTransfer.reprintVoucher(activity, listener, voucher)
     }
-
     override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
-        val request = PaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
+        val payerCard = PayerCardInfo(
+                "%.2f".format(totalPayment),
+                "",
+                txInfo.affiliation,//TODO: Preguntar si es correcto
+                txInfo.cardOwner,
+                txInfo.typeTx,
+                txInfo.txDate,
+                txInfo.al, //TODO: Preguntar si es el correcto
+                txInfo.bank,
+                Application.prefs.loadData(R.string.sp_prefix,"")!!,
+                txInfo.txTime,
+                txInfo.noControl,
+                txInfo.entryType,
+                txInfo.reference,
+                txInfo.authorization)
+        val request = SendPaymentRequest(tokenInfraction,null,null, null,null,null,null,payerCard)
+        val token = Application.prefs.loadData(R.string.sp_session_token,"")!!
+        //TODO: DEcirle a Eric que genere una respuesta chida
+        NetworkApi().getNetworkService().savePaymentToServer(token,
+                0, request).enqueue(object : Callback<GenericResult> {
+            override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    if (response.body()?.error == "") {
+                        listener.onPaymentSaved()
+                    } else {
+                        listener.onError(response.body()?.error
+                                ?: Application.getContext().getString(R.string.e_other_problem_internet))
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<GenericResult>, t: Throwable) {
+                listener.onError(t.message
+                        ?: Application.getContext().getString(R.string.e_other_problem_internet))
+            }
+        })
+    }
+
+   /* override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
+        val request = SendPaymentRequest(discount.toFloat(), folioInfraction, "", actualDay, "CARD",
                 0F, subtotal.toFloat(), surcharges.toFloat(), tokenInfraction, totalPayment.toFloat(), txInfo.authorization)
         NetworkApi().getNetworkService().savePaymentToServer("Bearer",
                 0, request).enqueue(object : Callback<GenericResult> {
@@ -354,11 +424,20 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                         ?: Application.getContext().getString(R.string.e_other_problem_internet))
             }
         })
-    }
+    }*/
 
     private fun generateNewFolio(): String {
-        val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs.loadData(R.string.sp_prefix, "")}%")
+        /*val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%${Application.prefs.loadData(R.string.sp_prefix, "")}%")
         val incremental = lastFolio.split("-")[1].toInt() + 1
-        return "${lastFolio.split("-")[0]}-$incremental"
+        return "${lastFolio.split("-")[0]}-$incremental"*/
+        val prefix = Application.prefs.loadData(R.string.sp_prefix, "")
+        val lastFolio = SaveInfractionManagerWeb.getLastFolioSaved("%$prefix%")
+        val incremental: Int = if (lastFolio.isNullOrEmpty()) {
+            1
+        } else {
+            lastFolio.split("-")[1].toInt() + 1
+        }
+
+        return "$prefix-$incremental"
     }
 }

@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 open class NetworkApi {
 
     companion object {
-        var API_URL = "http://3.15.191.119:8080/"
+        var API_URL = "http://18.191.14.236:8080/"
         var HONOS_API_URL = "https://us-central1-honos-7f224.cloudfunctions.net/"
 
         private val interceptor = HttpLoggingInterceptor()

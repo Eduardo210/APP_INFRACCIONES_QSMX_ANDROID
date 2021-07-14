@@ -91,6 +91,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         binding.spnIssuedIn.onItemSelectedListener = this
         binding.spnColorVehicle.onItemSelectedListener = this
         binding.spnIdentifierDoc.onItemSelectedListener = this
+        binding.spnTypeService.onItemSelectedListener = this
         binding.edtNoDoc.doOnTextChanged { text, _, _, _ -> SingletonInfraction.noDocument = text?.trim().toString() }
         binding.edtNoCard.doOnTextChanged { text, _, _, _ -> SingletonInfraction.noCirculationCard = text?.trim().toString() }
         binding.edtYear.doOnTextChanged { text, _, _, _ ->
@@ -116,6 +117,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         iterator.value.getIdentifierDocAdapter()// Download catalog from Firebase
         iterator.value.getIssuedInAdapter() // Download catalog from Firebase
         iterator.value.getTypeDocument() // Download catalog from Firebase
+        iterator.value.getTypeService()  //Download catalog from Firebase
     }
 
     override fun fillFields() {
@@ -181,6 +183,12 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     override fun onTypeDocReady(adapter: ArrayAdapter<String>) {
         binding.spnTypeDoc.adapter = adapter
         binding.spnTypeDoc.setSelection(iterator.value.getPositionAuthority(SingletonInfraction.typeDocument))
+    }
+
+    override fun onTypeServiceReady(adapter: ArrayAdapter<String>) {
+        binding.spnTypeService.adapter = adapter
+        binding.spnBrandVehicle.setSelection(iterator.value.getPositionBrand(SingletonInfraction.brandVehicle))
+
     }
 
     override fun onClick(p0: View?) {
@@ -289,6 +297,11 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                     SingletonInfraction.isNewColor = false
                     binding.edtNewColor.visibility = GONE
                 }
+            }
+            binding.spnTypeService.id -> {
+                SingletonInfraction.brandVehicle = iterator.value.brandList[p2]
+                val reference = iterator.value.brandList[p2].documentReference
+                iterator.value.getSubBrandAdapter(reference)
             }
         }
     }

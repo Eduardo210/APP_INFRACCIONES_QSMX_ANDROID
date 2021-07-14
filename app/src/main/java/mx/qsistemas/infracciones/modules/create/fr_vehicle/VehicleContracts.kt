@@ -18,6 +18,7 @@ class VehicleContracts {
         fun onTypeDocReady(adapter: ArrayAdapter<String>)
         fun onColorsReady(adapter: ArrayAdapter<String>)
         fun onTypeVehicleReady(adapter: ArrayAdapter<String>)
+        fun onTypeServiceReady(adapter: ArrayAdapter<String>)
         fun validFields(): Boolean
     }
 
@@ -29,6 +30,7 @@ class VehicleContracts {
         fun getIdentifierDocAdapter()
         fun getIssuedInAdapter()
         fun getTypeDocument()
+        fun getTypeService()
         fun getPositionIdentifiedDoc(obj: GenericCatalog): Int
         fun getPositionState(obj: GenericCatalog): Int
         fun getPositionAuthority(obj: GenericCatalog): Int
@@ -36,5 +38,6 @@ class VehicleContracts {
         fun getPositionSubBrand(obj: GenericSubCatalog): Int
         fun getPositionType(obj: GenericCatalog): Int
         fun getPositionColor(obj: GenericCatalog): Int
+        fun getPositionTypeService(obj: GenericCatalog) : Int
     }
 }

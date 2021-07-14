@@ -1,6 +1,7 @@
 package mx.qsistemas.infracciones.modules.create.fr_vehicle
 
 import android.widget.ArrayAdapter
+import android.widget.RemoteViewsService
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import mx.qsistemas.infracciones.Application
@@ -17,6 +18,7 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
     internal lateinit var identifierDocList: MutableList<GenericCatalog>
     internal lateinit var statesList: MutableList<GenericCatalog>
     internal lateinit var authorityIssuesList: MutableList<GenericCatalog>
+    internal lateinit var typeServiceList : MutableList<GenericCatalog>
 
     override fun getBrandAdapter() {
         Application.firestore.collection(FS_COL_BRANDS).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
@@ -205,6 +207,33 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
         }
     }
 
+    override fun getTypeService() {
+        Application.firestore.collection(FS_COL_BRANDS).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
+            if (exception != null) {
+                listener.onError(exception.message
+                    ?: Application.getContext().getString(R.string.e_firestore_not_available))
+            }
+            typeServiceList = mutableListOf()
+            typeServiceList.add(GenericCatalog("Seleccionar...", true))
+            val list = mutableListOf<String>()
+            list.add("Seleccionar...")
+            if (snapshot != null && !snapshot.isEmpty) {
+                for (document in snapshot.documents) {
+                    val data = document.toObject(GenericCatalog::class.java)!!
+                    data.documentReference = document.reference
+                    list.add(data.value)
+                    typeServiceList.add(data)
+                }
+
+            }
+            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+            listener.onTypeServiceReady(adapter)
+        }
+
+
+    }
+
     override fun getPositionIdentifiedDoc(obj: GenericCatalog): Int {
         for (i in 0 until identifierDocList.size) {
             if (identifierDocList[i].documentReference == obj.documentReference) {
@@ -262,6 +291,15 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
     override fun getPositionColor(obj: GenericCatalog): Int {
         for (i in 0 until colorList.size) {
             if (colorList[i].documentReference == obj.documentReference) {
+                return i
+            }
+        }
+        return 0
+    }
+
+    override fun getPositionTypeService(obj: GenericCatalog): Int {
+        for (i in 0 until typeServiceList.size) {
+            if (typeServiceList[i].documentReference == obj.documentReference) {
                 return i
             }
         }

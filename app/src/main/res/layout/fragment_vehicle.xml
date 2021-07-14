@@ -187,6 +187,20 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/edt_no_doc" />
 
+                    <TextView
+                        android:id="@+id/textView21"
+                        style="@style/TextView_TitleItem2_Bold"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/t_type_service"
+                        android:textAlignment="textStart"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/edt_no_card" />
+
                     <Spinner
                         android:id="@+id/spn_issued_in"
                         style="@style/Widget.AppCompat.Spinner.Underlined"
@@ -452,7 +466,7 @@
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/edt_year" />
+                        app:layout_constraintTop_toBottomOf="@+id/spn_type_service" />
 
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guideline8"
@@ -460,6 +474,17 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.5" />
+
+                    <Spinner
+                        android:id="@+id/spn_type_service"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:spinnerMode="dialog"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

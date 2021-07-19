@@ -95,6 +95,7 @@ class Ticket {
             printlines.add(getPrintLine("AUTORIDAD QUE EXPIDE: ${SingletonTicket.expeditionAuthVehicle}", TextPrintLine.FONT_NORMAL, PrintLine.LEFT, false))
             printlines.add(getPrintLine("EXPEDIDO: ${SingletonTicket.stateExpVehicle}\n", TextPrintLine.FONT_NORMAL, PrintLine.LEFT, false))
 
+
             // Artículos y Fracciones
             printlines.add(getPrintLine("ARTÍCULOS  DEL  REGLAMENTO", TextPrintLine.FONT_NORMAL, PrintLine.CENTER, true))
             printlines.add(getPrintLine("DE  TRÁNSITO DEL ESTADO  DE", TextPrintLine.FONT_NORMAL, PrintLine.CENTER, true))

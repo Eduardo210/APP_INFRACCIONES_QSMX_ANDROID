@@ -8,6 +8,8 @@ data class InfractionRequest(
         val folio: String? = null,
         @field:SerializedName("town_hall")
         val townHall: Long? = null,
+        @field: SerializedName("type_service")
+        val typeService: String? = null,
         @field:SerializedName("date")
         val date: String? = null,
         @field:SerializedName("time")

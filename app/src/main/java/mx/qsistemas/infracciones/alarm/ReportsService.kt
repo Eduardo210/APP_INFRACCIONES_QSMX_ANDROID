@@ -135,6 +135,7 @@ class ReportsService : JobService() {
                     val infractionRequest = InfractionRequest(
                             it.folio,
                             it.town_hall_id,
+                        it.type_service,
                             it.date,
                             it.time,
                             it.insured_document_id,

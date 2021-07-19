@@ -187,7 +187,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
 
     override fun onTypeServiceReady(adapter: ArrayAdapter<String>) {
         binding.spnTypeService.adapter = adapter
-        binding.spnBrandVehicle.setSelection(iterator.value.getPositionBrand(SingletonInfraction.brandVehicle))
+        binding.spnTypeService.setSelection(iterator.value.getPositionBrand(SingletonInfraction.typeService))
 
     }
 
@@ -299,9 +299,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 }
             }
             binding.spnTypeService.id -> {
-                SingletonInfraction.brandVehicle = iterator.value.brandList[p2]
-                val reference = iterator.value.brandList[p2].documentReference
-                iterator.value.getSubBrandAdapter(reference)
+                SingletonInfraction.typeService = iterator.value.typeServiceList[p2]
             }
         }
     }

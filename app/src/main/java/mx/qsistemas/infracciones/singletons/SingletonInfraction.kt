@@ -23,6 +23,7 @@ object SingletonInfraction {
     var evidence2: String = ""
     var isNewSubBrand: Boolean = false
     var isNewColor: Boolean = false
+    var typeService : GenericCatalog = GenericCatalog()
 
     /* Infracion Information */
     var zipCodeInfraction: ZipCodes = ZipCodes(0, "", "Selecciona...", "", true)

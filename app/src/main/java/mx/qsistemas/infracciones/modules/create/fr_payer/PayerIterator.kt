@@ -1,6 +1,7 @@
 package mx.qsistemas.infracciones.modules.create.fr_payer
 
 import android.app.Activity
+import android.util.Log
 import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.db_web.entities.*
@@ -107,6 +108,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     0,
                     newFolio,
                     SingletonInfraction.isRemited,
+                SingletonInfraction.typeService.toString(),
                     totalUmas.toInt(),
                     false,
                     "active",

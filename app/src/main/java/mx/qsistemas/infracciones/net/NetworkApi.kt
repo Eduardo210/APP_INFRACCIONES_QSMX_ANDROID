@@ -22,6 +22,8 @@ import java.util.concurrent.TimeUnit
 open class NetworkApi {
 
     companion object {
+// 8080 Tepoz
+// 8000 San mateo
         var API_URL = "http://18.191.14.236:8080/"
         var HONOS_API_URL = "https://us-central1-honos-7f224.cloudfunctions.net/"
 

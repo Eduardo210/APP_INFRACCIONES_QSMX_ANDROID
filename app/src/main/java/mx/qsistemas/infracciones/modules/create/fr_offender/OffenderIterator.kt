@@ -272,6 +272,7 @@ class OffenderIterator(val listener: OffenderContracts.Presenter) : OffenderCont
                     0,
                     newFolio,
                     SingletonInfraction.isRemited,
+                SingletonInfraction.typeService.toString(),
                     totalUmas.toInt(),
                     false,
                     "active",

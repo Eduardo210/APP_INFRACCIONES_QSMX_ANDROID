@@ -98,6 +98,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     SingletonInfraction.noDocument,
                     SingletonInfraction.typeDocument.documentReference?.id ?: "",
                     SingletonInfraction.typeDocument.value)
+
             val idVehicle = SaveInfractionManagerWeb.saveVehicleInfraction(vehicleInfraction)
             /* Step 2. Save Person Information */
             val person = DriverDrivers(0, SingletonInfraction.nameOffender, SingletonInfraction.lastFatherName, SingletonInfraction.lastMotherName, SingletonInfraction.rfcOffenfer)
@@ -108,7 +109,7 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                     0,
                     newFolio,
                     SingletonInfraction.isRemited,
-                SingletonInfraction.typeService.toString(),
+                    SingletonInfraction.typeService.value,
                     totalUmas.toInt(),
                     false,
                     "active",

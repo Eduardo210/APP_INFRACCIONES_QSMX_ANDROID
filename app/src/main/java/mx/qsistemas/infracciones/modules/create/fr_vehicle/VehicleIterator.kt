@@ -248,103 +248,108 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
     }
 
     override fun getTypeService() {
-        Application.firestore.collection(FS_COL_BRANDS).whereEqualTo("is_active", true).orderBy("value", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                    ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            typeServiceList = mutableListOf()
-        typeServiceList.add(GenericCatalog("Seleccionar...", true))
-        val list = mutableListOf<String>()
-        list.add("Seleccionar...")
-        list.add("Público")
-        list.add("Particular")
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (document in snapshot.documents) {
-                    val data = document.toObject(GenericCatalog::class.java)!!
-                    data.documentReference = document.reference
-//                    list.add(data.value)
-                    typeServiceList.add(data)
+        Application.firestore.collection(FS_COL_BRANDS).whereEqualTo("is_active", true)
+            .orderBy("value", Query.Direction.ASCENDING)
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    listener.onError(
+                        exception.message
+                            ?: Application.getContext()
+                                .getString(R.string.e_firestore_not_available)
+                    )
                 }
-
+                typeServiceList = mutableListOf()
+                typeServiceList.add(GenericCatalog("Seleccionar...", true))
+                typeServiceList.add(GenericCatalog("Público",true))
+                typeServiceList.add(GenericCatalog("Particular",true))
+                val list = mutableListOf<String>()
+                list.add("Seleccionar...")
+                list.add("Público")
+                list.add("Particular")
+                if (snapshot != null && !snapshot.isEmpty) {
+                    for (document in snapshot.documents) {
+                        val data = document.toObject(GenericCatalog::class.java)!!
+                        data.documentReference = document.reference
+//                    list.add(data.value)
+//                        typeServiceList.add(data)
+                    }
+                }
+                val adapter =
+                    ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+                listener.onTypeServiceReady(adapter)
             }
-        val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-        adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-        listener.onTypeServiceReady(adapter)
     }
 
-
-}
-
-override fun getPositionIdentifiedDoc(obj: GenericCatalog): Int {
-    for (i in 0 until identifierDocList.size) {
-        if (identifierDocList[i].documentReference == obj.documentReference) {
-            return i
+    override fun getPositionIdentifiedDoc(obj: GenericCatalog): Int {
+        for (i in 0 until identifierDocList.size) {
+            if (identifierDocList[i].documentReference == obj.documentReference) {
+                return i
+            }
         }
+        return 0
     }
-    return 0
-}
 
-override fun getPositionState(obj: GenericCatalog): Int {
-    for (i in 0 until statesList.size) {
-        if (statesList[i].documentReference == obj.documentReference) {
-            return i
+    override fun getPositionState(obj: GenericCatalog): Int {
+        for (i in 0 until statesList.size) {
+            if (statesList[i].documentReference == obj.documentReference) {
+                return i
+            }
         }
+        return 0
     }
-    return 0
-}
 
-override fun getPositionAuthority(obj: GenericCatalog): Int {
-    for (i in 0 until authorityIssuesList.size) {
-        if (authorityIssuesList[i].documentReference == obj.documentReference) {
-            return i
+    override fun getPositionAuthority(obj: GenericCatalog): Int {
+        for (i in 0 until authorityIssuesList.size) {
+            if (authorityIssuesList[i].documentReference == obj.documentReference) {
+                return i
+            }
         }
+        return 0
     }
-    return 0
-}
 
-override fun getPositionBrand(obj: GenericCatalog): Int {
-    for (i in 0 until brandList.size) {
-        if (brandList[i].documentReference == obj.documentReference) {
-            return i
+    override fun getPositionBrand(obj: GenericCatalog): Int {
+        for (i in 0 until brandList.size) {
+            if (brandList[i].documentReference == obj.documentReference) {
+                return i
+            }
         }
+        return 0
     }
-    return 0
-}
 
-override fun getPositionType(obj: GenericCatalog): Int {
-    for (i in 0 until typeVehicleList.size) {
-        if (typeVehicleList[i].documentReference == obj.documentReference) {
-            return i
+    override fun getPositionType(obj: GenericCatalog): Int {
+        for (i in 0 until typeVehicleList.size) {
+            if (typeVehicleList[i].documentReference == obj.documentReference) {
+                return i
+            }
         }
+        return 0
     }
-    return 0
-}
 
-override fun getPositionSubBrand(obj: GenericSubCatalog): Int {
-    for (i in 0 until subBrandList.size) {
-        if (subBrandList[i].childReference == obj.childReference) {
-            return i
+    override fun getPositionSubBrand(obj: GenericSubCatalog): Int {
+        for (i in 0 until subBrandList.size) {
+            if (subBrandList[i].childReference == obj.childReference) {
+                return i
+            }
         }
+        return 0
     }
-    return 0
-}
 
-override fun getPositionColor(obj: GenericCatalog): Int {
-    for (i in 0 until colorList.size) {
-        if (colorList[i].documentReference == obj.documentReference) {
-            return i
+    override fun getPositionColor(obj: GenericCatalog): Int {
+        for (i in 0 until colorList.size) {
+            if (colorList[i].documentReference == obj.documentReference) {
+                return i
+            }
         }
+        return 0
     }
-    return 0
-}
 
-override fun getPositionTypeService(obj: GenericCatalog): Int {
-    for (i in 0 until typeServiceList.size) {
-        if (typeServiceList[i].documentReference == obj.documentReference) {
-            return i
+    override fun getPositionTypeService(obj: GenericCatalog): Int {
+        for (i in 0 until typeServiceList.size) {
+            if (typeServiceList[i].documentReference == obj.documentReference) {
+                return i
+            }
         }
+        return 0
     }
-    return 0
-}
 }

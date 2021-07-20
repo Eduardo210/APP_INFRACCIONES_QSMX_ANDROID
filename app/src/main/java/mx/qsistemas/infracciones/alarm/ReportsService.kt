@@ -135,7 +135,7 @@ class ReportsService : JobService() {
                     val infractionRequest = InfractionRequest(
                             it.folio,
                             it.town_hall_id,
-                        it.type_service,
+                            it.type_service,
                             it.date,
                             it.time,
                             it.insured_document_id,
@@ -289,6 +289,7 @@ class ReportsService : JobService() {
                 val township =
                         Application.prefs.loadData(R.string.sp_id_township, "")!!
                 val pathToFirestore = "traffic_violation/$township/evidence/photos/${photo.name}"
+                println("Ruta de Accion para guaradar las imagenes" + {pathToFirestore})
                 val riversRef =
                         storageRef.child(pathToFirestore)
 
@@ -299,11 +300,12 @@ class ReportsService : JobService() {
                 uploadTask.addOnProgressListener { taskSnapshot ->
                     val progress =
                             (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
-                    //println("Upload is $progress% done")
+//                    println("Upload is $progress% done")
                 }.addOnPausedListener {
                 }.addOnFailureListener {
                     builderImages.setContentText(getString(R.string.e_send_images_incomplete + (photosToSend.size - photosToSendCount)))
                             .setProgress(0, 0, false)
+                    println("Imagenes NO Enviadas a la ruta especificada")
                     notification.notify(NOTIF_SEND_IMAGES, builderImages.build())
 
                 }.addOnSuccessListener {
@@ -313,11 +315,13 @@ class ReportsService : JobService() {
                         SendInfractionManagerWeb.deletePhotos(photo.infringements_id)
                         builderImages.setContentText(getString(R.string.s_images_send) + ": " + photosToSendCount)
                                 .setProgress(photosToSend.size, photosToSendCount, true)
+                        println("Imagenes enviadas correctamente al servidor 1er intento")
                         notification.notify(NOTIF_SEND_IMAGES, builderImages.build())
                     } else {
                         SendInfractionManagerWeb.deletePhotos(photo.infringements_id)
                         builderImages.setContentText(getString(R.string.s_images_send) + ": " + photosToSendCount)
                                 .setProgress(0, 0, false)
+                        println("imagenes enviadas correctamente al sevidor al 2do intento")
                         notification.notify(NOTIF_SEND_IMAGES, builderImages.build())
                     }
 

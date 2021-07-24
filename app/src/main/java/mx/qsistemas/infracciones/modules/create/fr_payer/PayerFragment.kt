@@ -333,7 +333,8 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
                     message.toUpperCase(), getString(R.string.w_reintent_transaction), activity
             )
             builder.setPositiveButton("Sí") { _, _ ->
-                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+//                PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROD else MODE_TX_PROD, this)
+                PaymentsTransfer.runTransaction(activity, "1.00", if (BuildConfig.DEBUG) MODE_TX_PROD else MODE_TX_PROD, this)
             }
             builder.setNegativeButton("No") { _, _ ->
                 activity.runOnUiThread {
@@ -355,7 +356,8 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
     override fun onCtlsDoubleTap() {
         activity.runOnUiThread {
             activity.showLoader(getString(R.string.l_waiting_confirm))
-            Handler(Looper.getMainLooper()).postDelayed({ PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this) }, 3500)
+//            Handler(Looper.getMainLooper()).postDelayed({ PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROD else MODE_TX_PROD, this) }, 3500)
+            Handler(Looper.getMainLooper()).postDelayed({ PaymentsTransfer.runTransaction(activity, "1.00", if (BuildConfig.DEBUG) MODE_TX_PROD else MODE_TX_PROD, this) }, 3500)
         }
     }
 
@@ -383,7 +385,8 @@ class PayerFragment : Fragment(), PayerContracts.Presenter, View.OnClickListener
 
     override fun onAcceptPayment() {
         Log.d("PAYMENT", "Total a pagar: "+SingletonInfraction.totalInfraction)
-        PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+//        PaymentsTransfer.runTransaction(activity, SingletonInfraction.totalInfraction, if (BuildConfig.DEBUG) MODE_TX_PROD else MODE_TX_PROD, this)
+        PaymentsTransfer.runTransaction(activity, "1.00", if (BuildConfig.DEBUG) MODE_TX_PROD else MODE_TX_PROD, this)
     }
 
     companion object {

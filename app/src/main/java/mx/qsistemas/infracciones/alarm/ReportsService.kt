@@ -151,10 +151,12 @@ class ReportsService : JobService() {
                             requestCaptureLines,
                             it.is_paid,
                             requestPayerInfo)
+
+
                     //Send the infractions list
                     val token = Application.prefs.loadData(R.string.sp_session_token, "")
 
-                    NetworkApi().getNetworkService().sendInfractionToServer("$token", infractionRequest).enqueue(object : Callback<InfractionResult> {
+                      NetworkApi().getNetworkService().sendInfractionToServer("$token", infractionRequest).enqueue(object : Callback<InfractionResult> {
                         override fun onResponse(call: Call<InfractionResult>, response: Response<InfractionResult>) {
                             if (response.code() == HttpsURLConnection.HTTP_OK || response.code() == HttpsURLConnection.HTTP_CREATED) {
                                 if (response.body() != null) {

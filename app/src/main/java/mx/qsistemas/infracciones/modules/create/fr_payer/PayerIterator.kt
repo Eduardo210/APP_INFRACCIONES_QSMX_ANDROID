@@ -152,7 +152,8 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                 val driverLicense = DriverDriverLicense(
                         0,
                         SingletonInfraction.noLicenseOffender,
-                        idNewPersonAddress,
+//                    VALOR DE LA PERSONA
+                        SingletonInfraction.idNewPersonInfraction,
                         SingletonInfraction.typeLicenseOffender.documentReference?.id ?: "",
                         SingletonInfraction.licenseIssuedInOffender.documentReference?.id ?: "",
                         if (SingletonInfraction.licenseIssuedInOffender.documentReference != null) SingletonInfraction.licenseIssuedInOffender.value else "",
@@ -368,13 +369,15 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
         PaymentsTransfer.reprintVoucher(activity, listener, voucher)
     }
     override fun savePaymentToService(tokenInfraction: String, folioInfraction: String, txInfo: TransactionInfo, subtotal: String, discount: String, surcharges: String, totalPayment: String) {
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val currentDate = sdf.format(Date())
         val payerCard = PayerCardInfo(
                 "%.2f".format(totalPayment),
                 "",
                 txInfo.affiliation,//TODO: Preguntar si es correcto
                 txInfo.cardOwner,
                 txInfo.typeTx,
-                txInfo.txDate,
+                currentDate,
                 txInfo.al, //TODO: Preguntar si es el correcto
                 txInfo.bank,
                 Application.prefs.loadData(R.string.sp_prefix,"")!!,
@@ -383,7 +386,10 @@ class PayerIterator(val listener: PayerContracts.Presenter) : PayerContracts.Ite
                 txInfo.entryType,
                 txInfo.reference,
                 txInfo.authorization)
-        val request = SendPaymentRequest(tokenInfraction,null,null, null,null,null,null,payerCard)
+
+        val request = SendPaymentRequest(tokenInfraction,SingletonInfraction.payerName,SingletonInfraction.payerLastName,
+            SingletonInfraction.lastFatherName,SingletonInfraction.payerRfc,SingletonInfraction.payerTaxDenomination,SingletonInfraction.payerEmail,payerCard)
+
         val token = Application.prefs.loadData(R.string.sp_session_token,"")!!
         //TODO: DEcirle a Eric que genere una respuesta chida
         NetworkApi().getNetworkService().savePaymentToServer(token,

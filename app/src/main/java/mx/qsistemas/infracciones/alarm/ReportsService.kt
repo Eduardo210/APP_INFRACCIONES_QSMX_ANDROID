@@ -20,6 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
+import java.util.*
 import javax.net.ssl.HttpsURLConnection
 
 
@@ -205,6 +206,9 @@ class ReportsService : JobService() {
     }
 
     private fun sendPayments() {
+        val sdfDate = SimpleDateFormat("yyyy-MM-dd") //dd/MM/yyyy
+        val now = Date()
+        val strDate = sdfDate.format(now)
         val payments = SendInfractionManagerWeb.getPayments()
         payments.forEach { payToSend ->
             //Obtenemos el token de la infracción
@@ -216,7 +220,8 @@ class ReportsService : JobService() {
                     payToSend.membership,
                     payToSend.card_holder,
                     payToSend.type,
-                    payToSend.tx_date,
+                    strDate,
+//                    payToSend.tx_date,
                     payToSend.app_label,
                     payToSend.bank,
                     payToSend.mobile_series,

@@ -267,9 +267,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aaf79af6-5d15-4ed5-bf2d-db46c55613c0" name="Default Changelist" comment="* Inserción del método de pago y modiciacion del tipo de licencia con relacion a la base de datos">
+    <list default="true" id="aaf79af6-5d15-4ed5-bf2d-db46c55613c0" name="Default Changelist" comment="* Inserción del método de pago efectuado a producción">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt" afterDir="false" />
     </list>
     <list id="79cd0ed3-dd84-4ba1-bdfe-29f9d7f759ea" name="Ignore" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -280,7 +279,7 @@
   <component name="CodeInsightWorkspaceSettings">
     <option name="optimizeImportsOnTheFly" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[SerialNumber@0123456789ABCDEF]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[VirtualDevicePath@C:\Users\Qsistemas\.android\avd\Pixel_3a_API_30_x86.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -732,13 +731,6 @@
       <option name="presentableId" value="Default" />
       <updated>1534195955826</updated>
     </task>
-    <task id="LOCAL-00010" summary="* Update Remote Config Default">
-      <created>1560381755431</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1560381755431</updated>
-    </task>
     <task id="LOCAL-00011" summary="* Create report package&#10;* Search report package&#10;* Main activity">
       <created>1560439355218</created>
       <option name="number" value="00011" />
@@ -1075,7 +1067,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627137496199</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="* Inserción del método de pago efectuado a producción">
+      <created>1627143465131</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1627143465131</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1136,7 +1135,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="* Correction Payments Tranfer Library - Save Masked Pan&#10;* Update Login Activity - Offline download catalogs" />
     <MESSAGE value="* Correction Print Action: Show PrePrinting Loader&#10;* Correction Year Vehicle: Input New Filters&#10;* Update Payments Transfer Strings" />
     <MESSAGE value="* Correction Print Ticket: Import Format String" />
     <MESSAGE value="* New Ticket Format&#10;* New Print Ticket Class&#10;* New Ticket Singleton&#10;* Update Mapping Of Ticket Data" />
@@ -1161,7 +1159,8 @@
     <MESSAGE value="* Add type service al WS" />
     <MESSAGE value=" 23072021" />
     <MESSAGE value="* Inserción del método de pago y modiciacion del tipo de licencia con relacion a la base de datos" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Inserción del método de pago y modiciacion del tipo de licencia con relacion a la base de datos" />
+    <MESSAGE value="* Inserción del método de pago efectuado a producción" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Inserción del método de pago efectuado a producción" />
   </component>
   <component name="WindowStateProjectService">
     <state x="2139" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1627049487240">

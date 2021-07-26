@@ -85,7 +85,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     override fun initAdapters() {
         /* Set item listeners */
         binding.spnBrandVehicle.onItemSelectedListener = this
-        binding.spnSubBrandVehicle.onItemSelectedListener = this
+        binding.edtSubBrandVehicle.onItemSelectedListener = this
         binding.spnTypeDoc.onItemSelectedListener = this
         binding.spnType.onItemSelectedListener = this
         binding.spnIssuedIn.onItemSelectedListener = this
@@ -118,6 +118,7 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
         iterator.value.getIssuedInAdapter() // Download catalog from Firebase
         iterator.value.getTypeDocument() // Download catalog from Firebase
         iterator.value.getTypeService()  //Download catalog from Firebase
+
     }
 
     override fun fillFields() {
@@ -144,13 +145,13 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
     }
 
     override fun onSubBrandReady(adapter: ArrayAdapter<String>) {
-        binding.spnSubBrandVehicle.adapter = adapter
+//        binding.edtSubBrandVehicle.adapter = adapter
         if (SingletonInfraction.isNewSubBrand) {
             binding.edtNewSubBrand.visibility = VISIBLE
             binding.edtNewSubBrand.setText(SingletonInfraction.subBrandVehicle.value)
-            binding.spnSubBrandVehicle.setSelection(iterator.value.subBrandList.size - 1)
+            binding.edtSubBrandVehicle.setSelection(iterator.value.subBrandList.size - 1)
         } else {
-            binding.spnSubBrandVehicle.setSelection(iterator.value.getPositionSubBrand(SingletonInfraction.subBrandVehicle))
+            binding.edtSubBrandVehicle.setSelection(iterator.value.getPositionSubBrand(SingletonInfraction.subBrandVehicle))
         }
     }
 
@@ -276,17 +277,17 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
             binding.spnType.id -> {
                 SingletonInfraction.typeVehicle = iterator.value.typeVehicleList[p2]
             }
-            binding.spnSubBrandVehicle.id -> {
-                if (binding.spnBrandVehicle.selectedItemPosition > 0 && binding.spnSubBrandVehicle.selectedItem.toString() == "Otra...") {
-                    SingletonInfraction.subBrandVehicle = GenericSubCatalog("", null, true)
-                    SingletonInfraction.isNewSubBrand = true
-                    binding.edtNewSubBrand.visibility = VISIBLE
-                } else {
-                    SingletonInfraction.subBrandVehicle = iterator.value.subBrandList[p2]
-                    SingletonInfraction.isNewSubBrand = false
-                    binding.edtNewSubBrand.visibility = GONE
-                }
-            }
+//            binding.spnSubBrandVehicle.id -> {
+//                if (binding.spnBrandVehicle.selectedItemPosition > 0 && binding.spnSubBrandVehicle.selectedItem.toString() == "Otra...") {
+//                    SingletonInfraction.subBrandVehicle = GenericSubCatalog("", null, true)
+//                    SingletonInfraction.isNewSubBrand = true
+//                    binding.edtNewSubBrand.visibility = VISIBLE
+//                } else {
+//                    SingletonInfraction.subBrandVehicle = iterator.value.subBrandList[p2]
+//                    SingletonInfraction.isNewSubBrand = false
+//                    binding.edtNewSubBrand.visibility = GONE
+//                }
+//            }
             binding.spnColorVehicle.id -> {
                 if (binding.spnColorVehicle.selectedItem.toString() == "Otro...") {
                     SingletonInfraction.colorVehicle = GenericCatalog("", true)
@@ -339,10 +340,10 @@ class VehicleFragment : Fragment(), VehicleContracts.Presenter, AdapterView.OnIt
                 isValid = false
                 onError(getString(R.string.e_brand_vehicle))
             }
-            binding.spnSubBrandVehicle.selectedItemPosition == 0 || (binding.edtNewSubBrand.isVisible && binding.edtNewSubBrand.text.isBlank()) -> {
-                isValid = false
-                onError(getString(R.string.e_sub_brand_vehicle))
-            }
+//            binding.spnSubBrandVehicle.selectedItemPosition == 0 || (binding.edtNewSubBrand.isVisible && binding.edtNewSubBrand.text.isBlank()) -> {
+//                isValid = false
+//                onError(getString(R.string.e_sub_brand_vehicle))
+//            }
             binding.spnColorVehicle.selectedItemPosition == 0 || (binding.edtNewColor.isVisible && binding.edtNewColor.text.isBlank()) -> {
                 isValid = false
                 onError(getString(R.string.e_color_vehicle))

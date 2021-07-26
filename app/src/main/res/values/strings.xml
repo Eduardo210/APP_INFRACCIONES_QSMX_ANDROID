@@ -64,6 +64,7 @@
     <string name="h_color">Color</string>
     <string name="h_new_color">Nuevo color</string>
     <string name="h_circulation_card"># Tarjeta</string>
+    <string name="h_sub_brand_edt">Submarca</string>
     <string name="h_year"># Año</string>
     <string name="h_zip_code">Código postal</string>
     <string name="h_colony">Nombre colonia</string>
@@ -89,6 +90,7 @@
     <string name="t_btn_forgot_psw">
         <u>Olvidé mi contraseña</u>
     </string>
+    <string name="t_close_sesion">Cerrar Sesion</string>
 
     <!-- Initial C_Configuration Strings -->
     <string name="t_initial_configuration">Configuración Inicial</string>

@@ -66,9 +66,9 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                         )
                     }
                     subBrandList = mutableListOf()
-//                    subBrandList.add(GenericSubCatalog("Seleccionar...", reference, true))
+                    subBrandList.add(GenericSubCatalog("Seleccionar...", reference, true))
                     val list = mutableListOf<String>()
-//                    list.add("Seleccionar...")
+                    list.add("Seleccionar...")
                     if (snapshot != null && !snapshot.isEmpty) {
                         for (document in snapshot.documents) {
                             val data = document.toObject(GenericSubCatalog::class.java)!!
@@ -76,11 +76,10 @@ class VehicleIterator(val listener: VehicleContracts.Presenter) : VehicleContrac
                             list.add(data.value)
                             subBrandList.add(data)
                         }
-//                        subBrandList.add(GenericSubCatalog("Otra...", null, true))
-//                        list.add("Otra...")
+                        subBrandList.add(GenericSubCatalog("Otra...", null, true))
+                        list.add("Otra...")
                     }
-                    val adapter =
-                        ArrayAdapter(Application.getContext(), R.layout.custom_tablayout_item, list)
+                    val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
                     adapter.setDropDownViewResource(R.layout.custom_spinner_item)
                     listener.onSubBrandReady(adapter)
                 }

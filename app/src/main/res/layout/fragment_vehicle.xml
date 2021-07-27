@@ -270,21 +270,13 @@
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
                         app:layout_constraintTop_toBottomOf="@+id/spn_type_doc" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/edt_sub_brand_vehicle"
-                        style="@style/EditText_InputItem"
+                    <Spinner
+                        android:id="@+id/spn_sub_brand_vehicle"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="5dp"
-                        android:ems="10"
-                        android:hint="@string/h_sub_brand_edt"
-                        android:imeOptions="actionNext"
-                        android:inputType="textNoSuggestions"
-                        android:maxLength="15"
-                        android:textColor="@color/colorLightBlack"
-                        android:textSize="@dimen/font_size_small"
+                        android:spinnerMode="dialog"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="@+id/guideline8"
                         app:layout_constraintTop_toBottomOf="@+id/txt_title_subtype_incidence" />
 
@@ -295,7 +287,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:ems="10"
-                        android:hint="@string/h_new_sub_brand"
+                        android:hint="@string/h_sub_brand_edt"
                         android:imeOptions="actionDone"
                         android:inputType="textNoSuggestions|textCapWords"
                         android:maxLength="30"

@@ -8,8 +8,8 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="articu" />
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="info" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="ok" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
@@ -267,13 +267,12 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="aaf79af6-5d15-4ed5-bf2d-db46c55613c0" name="Default Changelist" comment="* - Add EditText for sub brand this selection option other">
+    <list default="true" id="aaf79af6-5d15-4ed5-bf2d-db46c55613c0" name="Default Changelist" comment="* - save to preferences of module my preferences and show in the infraction module">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionContracts.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionContracts.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_payer/PayerFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_search.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_search.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/VehicleInfraction.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/VehicleInfraction.kt" afterDir="false" />
     </list>
     <list id="79cd0ed3-dd84-4ba1-bdfe-29f9d7f759ea" name="Ignore" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -719,13 +718,6 @@
       <option name="presentableId" value="Default" />
       <updated>1534195955826</updated>
     </task>
-    <task id="LOCAL-00014" summary="* All DAO's&#10;* Update loader">
-      <created>1560899511181</created>
-      <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1560899511181</updated>
-    </task>
     <task id="LOCAL-00015" summary="* Update Payment Transfer Library&#10;* Create infraction module">
       <created>1561126856302</created>
       <option name="number" value="00015" />
@@ -1062,7 +1054,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627397031887</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="* - save to preferences of module my preferences and show in the infraction module">
+      <created>1627567436594</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1627567436594</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1123,7 +1122,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="* New Ticket Format&#10;* New Print Ticket Class&#10;* New Ticket Singleton&#10;* Update Mapping Of Ticket Data" />
     <MESSAGE value="* Update Offender Data: Street" />
     <MESSAGE value="* Update Initial Configuration: Save Township Name&#10;* Update Print Ticket: Set Township Name From Shared Preferences" />
     <MESSAGE value="* Correction Payment Transfer: Replace comas to dots" />
@@ -1148,61 +1146,62 @@
     <MESSAGE value="* Inserción del método de pago efectuado a producción" />
     <MESSAGE value="&#10;*- Actualizacion de los campòs del paso 1 de infraccion vehicular" />
     <MESSAGE value="* - Add EditText for sub brand this selection option other" />
-    <option name="LAST_COMMIT_MESSAGE" value="* - Add EditText for sub brand this selection option other" />
+    <MESSAGE value="* - save to preferences of module my preferences and show in the infraction module" />
+    <option name="LAST_COMMIT_MESSAGE" value="* - save to preferences of module my preferences and show in the infraction module" />
   </component>
   <component name="WindowStateProjectService">
     <state x="2139" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1627049487240">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="2139" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627049487240" />
-    <state x="1786" y="52" width="1220" height="965" key="#xdebugger.evaluate" timestamp="1627508210390">
+    <state x="1786" y="52" width="1220" height="965" key="#xdebugger.evaluate" timestamp="1627576295500">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state x="1786" y="52" width="1220" height="965" key="#xdebugger.evaluate/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627508210390" />
-    <state x="2192" y="266" key="AndroidProcessChooserDialog" timestamp="1627508187491">
+    <state x="1786" y="52" width="1220" height="965" key="#xdebugger.evaluate/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576295500" />
+    <state x="2192" y="266" key="AndroidProcessChooserDialog" timestamp="1627576779393">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state x="2192" y="266" key="AndroidProcessChooserDialog/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627508187491" />
-    <state width="628" height="466" key="DebuggerActiveHint" timestamp="1627508266166">
+    <state x="2192" y="266" key="AndroidProcessChooserDialog/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576779393" />
+    <state width="628" height="466" key="DebuggerActiveHint" timestamp="1627573721906">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state width="628" height="466" key="DebuggerActiveHint/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627508266166" />
+    <state width="628" height="466" key="DebuggerActiveHint/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627573721906" />
     <state x="2180" y="260" key="FileChooserDialogImpl" timestamp="1627049509859">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="2180" y="260" key="FileChooserDialogImpl/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627049509859" />
-    <state width="1877" height="305" key="GridCell.Tab.0.bottom" timestamp="1627565720721">
+    <state width="1877" height="500" key="GridCell.Tab.0.bottom" timestamp="1627576948359">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="305" key="GridCell.Tab.0.bottom/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627565720721" />
-    <state width="1877" height="305" key="GridCell.Tab.0.center" timestamp="1627565720721">
+    <state width="1877" height="500" key="GridCell.Tab.0.bottom/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576948359" />
+    <state width="1877" height="500" key="GridCell.Tab.0.center" timestamp="1627576948359">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="305" key="GridCell.Tab.0.center/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627565720721" />
-    <state width="1877" height="305" key="GridCell.Tab.0.left" timestamp="1627565720721">
+    <state width="1877" height="500" key="GridCell.Tab.0.center/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576948359" />
+    <state width="1877" height="500" key="GridCell.Tab.0.left" timestamp="1627576948358">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="305" key="GridCell.Tab.0.left/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627565720721" />
-    <state width="1877" height="305" key="GridCell.Tab.0.right" timestamp="1627565720721">
+    <state width="1877" height="500" key="GridCell.Tab.0.left/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576948358" />
+    <state width="1877" height="500" key="GridCell.Tab.0.right" timestamp="1627576948359">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="305" key="GridCell.Tab.0.right/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627565720721" />
-    <state width="1877" height="305" key="GridCell.Tab.1.bottom" timestamp="1627565720722">
+    <state width="1877" height="500" key="GridCell.Tab.0.right/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576948359" />
+    <state width="1877" height="305" key="GridCell.Tab.1.bottom" timestamp="1627576852716">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="305" key="GridCell.Tab.1.bottom/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627565720722" />
-    <state width="1877" height="305" key="GridCell.Tab.1.center" timestamp="1627565720722">
+    <state width="1877" height="305" key="GridCell.Tab.1.bottom/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576852716" />
+    <state width="1877" height="305" key="GridCell.Tab.1.center" timestamp="1627576852716">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="305" key="GridCell.Tab.1.center/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627565720722" />
-    <state width="1877" height="305" key="GridCell.Tab.1.left" timestamp="1627565720722">
+    <state width="1877" height="305" key="GridCell.Tab.1.center/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576852716" />
+    <state width="1877" height="305" key="GridCell.Tab.1.left" timestamp="1627576852716">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="305" key="GridCell.Tab.1.left/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627565720722" />
-    <state width="1877" height="305" key="GridCell.Tab.1.right" timestamp="1627565720722">
+    <state width="1877" height="305" key="GridCell.Tab.1.left/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576852716" />
+    <state width="1877" height="305" key="GridCell.Tab.1.right" timestamp="1627576852716">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="305" key="GridCell.Tab.1.right/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627565720722" />
+    <state width="1877" height="305" key="GridCell.Tab.1.right/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627576852716" />
     <state x="1816" y="158" key="MergeDialog" timestamp="1626447155268">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
@@ -1232,10 +1231,10 @@
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="2016" y="233" key="git4idea.branch.GitSmartOperationDialog/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1626447111599" />
-    <state x="2147" y="234" width="672" height="504" key="search.everywhere.popup" timestamp="1627484987574">
+    <state x="2147" y="234" width="672" height="504" key="search.everywhere.popup" timestamp="1627571944827">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
-    <state x="2147" y="234" width="672" height="504" key="search.everywhere.popup/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627484987574" />
+    <state x="2147" y="234" width="672" height="504" key="search.everywhere.popup/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627571944827" />
     <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/2560.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1625755850115" />
   </component>
   <component name="XDebuggerManager">
@@ -2201,217 +2200,217 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>159</line>
+          <line>160</line>
           <option name="timeStamp" value="366" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>161</line>
+          <line>162</line>
           <option name="timeStamp" value="367" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>162</line>
+          <line>163</line>
           <option name="timeStamp" value="368" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>163</line>
+          <line>164</line>
           <option name="timeStamp" value="369" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>165</line>
+          <line>166</line>
           <option name="timeStamp" value="370" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>166</line>
+          <line>167</line>
           <option name="timeStamp" value="371" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>170</line>
+          <line>171</line>
           <option name="timeStamp" value="373" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>257</line>
+          <line>258</line>
           <option name="timeStamp" value="374" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>258</line>
+          <line>259</line>
           <option name="timeStamp" value="375" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>259</line>
+          <line>260</line>
           <option name="timeStamp" value="376" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>260</line>
+          <line>261</line>
           <option name="timeStamp" value="377" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>261</line>
+          <line>262</line>
           <option name="timeStamp" value="378" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>262</line>
+          <line>263</line>
           <option name="timeStamp" value="379" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>174</line>
+          <line>175</line>
           <option name="timeStamp" value="380" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>176</line>
+          <line>177</line>
           <option name="timeStamp" value="381" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>181</line>
+          <line>182</line>
           <option name="timeStamp" value="382" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>182</line>
+          <line>183</line>
           <option name="timeStamp" value="383" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>187</line>
+          <line>188</line>
           <option name="timeStamp" value="384" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>188</line>
+          <line>189</line>
           <option name="timeStamp" value="385" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>186</line>
+          <line>187</line>
           <option name="timeStamp" value="386" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>195</line>
+          <line>196</line>
           <option name="timeStamp" value="387" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>197</line>
+          <line>198</line>
           <option name="timeStamp" value="388" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>196</line>
+          <line>197</line>
           <option name="timeStamp" value="389" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>135</line>
+          <line>136</line>
           <option name="timeStamp" value="390" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>136</line>
+          <line>137</line>
           <option name="timeStamp" value="391" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>137</line>
+          <line>138</line>
           <option name="timeStamp" value="392" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>138</line>
+          <line>139</line>
           <option name="timeStamp" value="393" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>139</line>
+          <line>140</line>
           <option name="timeStamp" value="394" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>140</line>
+          <line>141</line>
           <option name="timeStamp" value="395" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>141</line>
+          <line>142</line>
           <option name="timeStamp" value="396" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>143</line>
+          <line>144</line>
           <option name="timeStamp" value="397" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>142</line>
+          <line>143</line>
           <option name="timeStamp" value="398" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>144</line>
+          <line>145</line>
           <option name="timeStamp" value="399" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>145</line>
+          <line>146</line>
           <option name="timeStamp" value="400" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>146</line>
+          <line>147</line>
           <option name="timeStamp" value="401" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>147</line>
+          <line>148</line>
           <option name="timeStamp" value="402" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>148</line>
+          <line>149</line>
           <option name="timeStamp" value="403" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>149</line>
+          <line>150</line>
           <option name="timeStamp" value="404" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>150</line>
+          <line>151</line>
           <option name="timeStamp" value="405" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>151</line>
+          <line>152</line>
           <option name="timeStamp" value="406" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>152</line>
+          <line>153</line>
           <option name="timeStamp" value="407" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>153</line>
+          <line>154</line>
           <option name="timeStamp" value="408" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>157</line>
+          <line>158</line>
           <option name="timeStamp" value="409" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -3091,262 +3090,262 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>119</line>
+          <line>120</line>
           <option name="timeStamp" value="550" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>120</line>
+          <line>121</line>
           <option name="timeStamp" value="552" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>121</line>
+          <line>122</line>
           <option name="timeStamp" value="553" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>122</line>
+          <line>123</line>
           <option name="timeStamp" value="554" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>123</line>
+          <line>124</line>
           <option name="timeStamp" value="555" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>124</line>
+          <line>125</line>
           <option name="timeStamp" value="556" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>125</line>
+          <line>126</line>
           <option name="timeStamp" value="557" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>129</line>
+          <line>130</line>
           <option name="timeStamp" value="558" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>131</line>
+          <line>132</line>
           <option name="timeStamp" value="560" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>130</line>
+          <line>131</line>
           <option name="timeStamp" value="561" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>211</line>
+          <line>212</line>
           <option name="timeStamp" value="562" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>212</line>
+          <line>213</line>
           <option name="timeStamp" value="563" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>214</line>
+          <line>215</line>
           <option name="timeStamp" value="564" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>217</line>
+          <line>218</line>
           <option name="timeStamp" value="565" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>216</line>
+          <line>217</line>
           <option name="timeStamp" value="566" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>220</line>
+          <line>221</line>
           <option name="timeStamp" value="567" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>219</line>
+          <line>220</line>
           <option name="timeStamp" value="569" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>218</line>
+          <line>219</line>
           <option name="timeStamp" value="570" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>221</line>
+          <line>222</line>
           <option name="timeStamp" value="571" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>228</line>
+          <line>229</line>
           <option name="timeStamp" value="573" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>224</line>
+          <line>225</line>
           <option name="timeStamp" value="574" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>225</line>
+          <line>226</line>
           <option name="timeStamp" value="575" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>226</line>
+          <line>227</line>
           <option name="timeStamp" value="576" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>227</line>
+          <line>228</line>
           <option name="timeStamp" value="577" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>229</line>
+          <line>230</line>
           <option name="timeStamp" value="578" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>230</line>
+          <line>231</line>
           <option name="timeStamp" value="579" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>231</line>
+          <line>232</line>
           <option name="timeStamp" value="580" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>236</line>
+          <line>237</line>
           <option name="timeStamp" value="581" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>235</line>
+          <line>236</line>
           <option name="timeStamp" value="582" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>237</line>
+          <line>238</line>
           <option name="timeStamp" value="583" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>239</line>
+          <line>240</line>
           <option name="timeStamp" value="585" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>238</line>
+          <line>239</line>
           <option name="timeStamp" value="586" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>241</line>
+          <line>242</line>
           <option name="timeStamp" value="587" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>240</line>
+          <line>241</line>
           <option name="timeStamp" value="588" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>242</line>
+          <line>243</line>
           <option name="timeStamp" value="589" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>243</line>
+          <line>244</line>
           <option name="timeStamp" value="590" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>244</line>
+          <line>245</line>
           <option name="timeStamp" value="591" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>248</line>
+          <line>249</line>
           <option name="timeStamp" value="593" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>250</line>
+          <line>251</line>
           <option name="timeStamp" value="595" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>251</line>
+          <line>252</line>
           <option name="timeStamp" value="596" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>252</line>
+          <line>253</line>
           <option name="timeStamp" value="597" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>253</line>
+          <line>254</line>
           <option name="timeStamp" value="598" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>254</line>
+          <line>255</line>
           <option name="timeStamp" value="599" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>255</line>
+          <line>256</line>
           <option name="timeStamp" value="600" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>249</line>
+          <line>250</line>
           <option name="timeStamp" value="601" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>247</line>
+          <line>248</line>
           <option name="timeStamp" value="602" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>246</line>
+          <line>247</line>
           <option name="timeStamp" value="603" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>270</line>
+          <line>271</line>
           <option name="timeStamp" value="604" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>269</line>
+          <line>270</line>
           <option name="timeStamp" value="605" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>267</line>
+          <line>268</line>
           <option name="timeStamp" value="606" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>271</line>
+          <line>272</line>
           <option name="timeStamp" value="607" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>193</line>
+          <line>194</line>
           <option name="timeStamp" value="608" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
@@ -3491,12 +3490,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>132</line>
+          <line>133</line>
           <option name="timeStamp" value="638" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/alarm/ReportsService.kt</url>
-          <line>223</line>
+          <line>224</line>
           <option name="timeStamp" value="639" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">

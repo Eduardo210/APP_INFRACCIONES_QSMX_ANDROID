@@ -3,6 +3,8 @@ package mx.qsistemas.infracciones.net.request_web
 import com.google.gson.annotations.SerializedName
 
 data class VehicleInfraction(
+        @field:SerializedName("brand")
+        val brand: String? =null,
         @field:SerializedName("sub_brand")
         val subBrand: String?=null,
         @field:SerializedName("identifier_document")
@@ -16,5 +18,6 @@ data class VehicleInfraction(
         @field:SerializedName("class_type")
         val classType: String?=null,
         @field:SerializedName("year")
-        val year: String?=null
+        val year: String?=null,
+
 )

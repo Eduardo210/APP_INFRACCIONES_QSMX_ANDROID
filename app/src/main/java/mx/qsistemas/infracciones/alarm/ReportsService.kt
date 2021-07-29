@@ -117,6 +117,7 @@ class ReportsService : JobService() {
                     var requestVehicleInfraction = VehicleInfraction()
                     if (vehicleInfraction != null) {
                         requestVehicleInfraction = VehicleInfraction(
+                                vehicleInfraction.brand_reference,
                                 vehicleInfraction.sub_brand_id,
                                 vehicleInfraction.identifier_document_id,
                                 vehicleInfraction.num_document,

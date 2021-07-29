@@ -81,6 +81,9 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         return binding.root
     }
 
+
+
+
     override fun initAdapters() {
         binding.rcvArticles.layoutManager = GridLayoutManager(activity, 1, RecyclerView.VERTICAL, false)
         /* Init listener of components*/
@@ -97,6 +100,12 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
         binding.edtStreet.doOnTextChanged { text, _, _, _ -> SingletonInfraction.streetInfraction = text?.trim().toString() }
         binding.edtBetweenStreet1.doOnTextChanged { text, _, _, _ -> SingletonInfraction.betweenStreet1 = text?.trim().toString() }
         binding.edtBetweenStreet2.doOnTextChanged { text, _, _, _ -> SingletonInfraction.betweenStreet2 = text?.trim().toString() }
+
+        binding.edtColony.setText(Application.prefs.loadData(R.string.sp_default_colony,""))
+        binding.edtStreet.setText(Application.prefs.loadData(R.string.sp_default_street,""))
+        binding.edtBetweenStreet1.setText(Application.prefs.loadData(R.string.sp_default_street1, ""))
+        binding.edtBetweenStreet2.setText(Application.prefs.loadData(R.string.sp_default_street2, ""))
+
         /* Init adapters */
         iterator.value.getZipCodes()  // Download From Firebase
         iterator.value.getArticlesAdapter()  // Download From Firebase
@@ -362,10 +371,10 @@ class InfractionFragment : Fragment(), InfractionContracts.Presenter, AdapterVie
                 isValid = false
                 onError(getString(R.string.e_disposition_remitted))
             }
-            binding.spnRetainedDoc.selectedItemPosition == 0 -> {
-                isValid = false
-                onError(getString(R.string.e_retained_doc))
-            }
+//            binding.spnRetainedDoc.selectedItemPosition == 0 -> {
+//                isValid = false
+//                onError(getString(R.string.e_retained_doc))
+//            }
             SingletonInfraction.motivationList.isNotEmpty() -> {
                 SingletonInfraction.motivationList.forEach {
                     if (it.motivation.trim().isEmpty()) {

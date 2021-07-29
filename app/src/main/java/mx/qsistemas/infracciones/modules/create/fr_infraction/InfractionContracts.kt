@@ -37,5 +37,6 @@ class InfractionContracts {
         fun getPositionRetainedDoc(obj: GenericCatalog): Int
         fun getPositionDisposition(obj: GenericCatalog): Int
         fun getAddressFromCoordinates(lat: Double, lon: Double)
+
     }
 }

@@ -52,27 +52,54 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     }
 
     override fun getArticlesAdapter() {
-        Application.firestore.collection(FS_COL_ARTICLES).whereEqualTo("is_active", true).orderBy("number", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
-            if (exception != null) {
-                listener.onError(exception.message
-                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
-            }
-            articlesList = mutableListOf()
-            articlesList.add(Articles("Selecciona...", "Selecciona...", true))
-            val list = mutableListOf<String>()
-            list.add("Selecciona...")
-            if (snapshot != null && !snapshot.isEmpty) {
-                for (document in snapshot.documents) {
-                    val data = document.toObject(Articles::class.java)!!
-                    data.documentReference = document.reference
-                    list.add("Art. ${data.number}")
-                    articlesList.add(data)
+//        Application.firestore.collection(FS_COL_ARTICLES).whereEqualTo("is_active", true).orderBy("number", Query.Direction.ASCENDING).addSnapshotListener { snapshot, exception ->
+//            if (exception != null) {
+//                listener.onError(exception.message
+//                        ?: Application.getContext().getString(R.string.e_firestore_not_available))
+//            }
+//            articlesList = mutableListOf()
+//            articlesList.add(Articles("Selecciona...", "Selecciona...", true))
+//            val list = mutableListOf<String>()
+//            list.add("Selecciona...")
+//            if (snapshot != null && !snapshot.isEmpty) {
+//                for (document in snapshot.documents) {
+//                    val data = document.toObject(Articles::class.java)!!
+//                    data.documentReference = document.reference
+//                    list.add("Art. ${data.number}")
+//                    articlesList.add(data)
+//                }
+//            }
+//            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+//            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+//            listener.onArticlesReady(adapter)
+//        }
+
+        articlesList = mutableListOf()
+        val stateRef = Application.firestore.collection(FS_COL_STATES).document(Application.prefs.loadData(R.string.sp_id_state, "")!!)
+        Application.firestore.collection(FS_COL_ARTICLES).whereArrayContains("states", stateRef).whereEqualTo("is_active", true)
+            .orderBy("number").get().addOnSuccessListener { querySnapshot ->
+                if (querySnapshot != null && !querySnapshot.isEmpty) {
+                    querySnapshot.documents.forEach { document ->
+                        val article = document.toObject(Articles::class.java)!!
+                        article.documentReference = document.reference
+                        articlesList.add(article)
+                        Log.i("articulo", article.toString())
+                    }
                 }
+                val list = mutableListOf<String>()
+                articlesList.add(0, Articles("Selecciona...", "", true, null))
+                articlesList.forEach { article ->
+                    if (article.documentReference == null) list.add("Selecciona...") else list.add("Artículo ${article.number}")
+                    Log.i("art", article.documentReference.toString())
+                }
+
+                val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
+                adapter.setDropDownViewResource(R.layout.custom_spinner_item)
+                listener.onArticlesReady(adapter)
+            }.addOnFailureListener { exception ->
+                Log.e(Application.TAG, exception.toString())
+                listener.onError(Application.getContext().getString(R.string.e_firestore_not_available))
             }
-            val adapter = ArrayAdapter(Application.getContext(), R.layout.custom_spinner_item, list)
-            adapter.setDropDownViewResource(R.layout.custom_spinner_item)
-            listener.onArticlesReady(adapter)
-        }
     }
 
     override fun getFractionAdapter(reference: DocumentReference?) {
@@ -150,7 +177,17 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
     override fun saveNewArticle(posArticle: Int, posFraction: Int) {
         SingletonInfraction.motivationList.add(0, SingletonInfraction.DtoMotivation(articlesList[posArticle],
                 fractionList[posFraction], ""))
+
     }
+
+//    override fun getPositionFraction(): Int {
+//        val idFraction = Application.prefs.loadData(R.string.sp_default_fraction, "")!!
+//        fractionList.forEachIndexed { index, fraction ->
+//            if (fraction.childReference?.id == idFraction)
+//                return index
+//        }
+//        return 0
+//    }
 
     override fun saveTownship() {
         val cityReference = Application.prefs.loadData(R.string.sp_id_township, "")!!
@@ -217,7 +254,7 @@ class InfractionIterator(val listener: InfractionContracts.Presenter) : Infracti
             if (addresses.isNotEmpty()) {
                 listener.onAddressLocated(addresses[0].subLocality, addresses[0].subThoroughfare, addresses[0].locality, "")
             }else{
-                listener.onAddressEmpty("Error al obtener dirección automática.")
+//                listener.onAddressEmpty("Error al obtener dirección automática.")
                 Log.w("LocationInfra","No address returned!" )
             }
 

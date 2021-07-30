@@ -55,6 +55,16 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                outputFileName = "Infracciones_V${defaultConfig.versionName}_${buildTime()}.apk"
+            }
+        }
+
+    }
 }
 
 dependencies {
@@ -117,4 +127,8 @@ dependencies {
     // Payment Transfer Library
     implementation 'com.github.QuetzalcoatlSistemas:payments_transfer:0.1.4-alpha12'
     //implementation project(':payments_transfer')
+}
+
+def buildTime() {
+    return new Date().format("dd-MM-yyyy", TimeZone.getTimeZone("UTC"))
 }

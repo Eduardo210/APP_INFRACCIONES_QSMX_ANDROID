@@ -33,7 +33,7 @@ private const val DB_VERSION_WEB = 1
             InfringementRelfractionInfringements::class,
             PersonTownhall::class,
             Permissions::class,
-            VehicleVehicles::class
+            VehicleVehicles::class,
         ], version = DB_VERSION_WEB, exportSchema = false
 )
 

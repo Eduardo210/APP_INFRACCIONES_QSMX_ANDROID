@@ -23,6 +23,7 @@ import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.helpers.activity_helper.Direction
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
+import mx.qsistemas.infracciones.utils.Utils.Companion.getViewsByTag
 
 /**
  * A simple [Fragment] subclass.
@@ -70,6 +71,12 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
         binding.lytOffender.spnLicenseIssuedIn.onItemSelectedListener = this
         binding.btnPay.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
+
+        binding.lytOffender.imgDisplayLicenseOffender.setOnClickListener(this)
+        binding.lytOffender.txtLicenseOffenderTitle.setOnClickListener(this)
+        binding.lytOffender.imgDisplayAddressOffender.setOnClickListener(this)
+        binding.lytOffender.txtAddressOffenderTitle.setOnClickListener(this)
+
         if (SingletonInfraction.nameOffender == "Quien") {
             binding.lytOffender.edtOffenderName.doOnTextChanged { text, _, _, _ -> SingletonInfraction.nameOffender = text?.trim().toString() }
             binding.lytOffender.edtOffenderFln.doOnTextChanged { text, _, _, _ -> SingletonInfraction.lastFatherName = text?.trim().toString() }
@@ -233,6 +240,24 @@ class OffenderFragment : Fragment(), OffenderContracts.Presenter, CompoundButton
                         builder2.show()
                     }
 
+                }
+            }
+            binding.lytOffender.imgDisplayLicenseOffender.id, binding.lytOffender.txtLicenseOffenderTitle.id -> {
+                val views = getViewsByTag(binding.root, getString(R.string.tag_license_offender))
+                if (views != null && views.isNotEmpty()) {
+                    binding.lytOffender.imgDisplayLicenseOffender.setImageResource(if (views[0].visibility == GONE) R.drawable.ic_arrow_down else R.drawable.ic_arrow_right)
+                    views.forEach {
+                        if (it.visibility == GONE) it.visibility = VISIBLE else it.visibility = GONE
+                    }
+                }
+            }
+            binding.lytOffender.imgDisplayAddressOffender.id, binding.lytOffender.txtAddressOffenderTitle.id -> {
+                val views = getViewsByTag(binding.root, getString(R.string.tag_address_offender))
+                if (views != null && views.isNotEmpty()) {
+                    binding.lytOffender.imgDisplayAddressOffender.setImageResource(if (views[0].visibility == GONE) R.drawable.ic_arrow_down else R.drawable.ic_arrow_right)
+                    views.forEach {
+                        if (it.visibility == GONE) it.visibility = VISIBLE else it.visibility = GONE
+                    }
                 }
             }
         }

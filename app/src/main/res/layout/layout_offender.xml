@@ -38,7 +38,7 @@
             android:ems="10"
             android:hint="@string/h_name"
             android:imeOptions="actionNext"
-            android:inputType="textNoSuggestions|textPersonName|textCapWords"
+            android:inputType="textNoSuggestions|textPersonName|textCapCharacters"
             android:lines="1"
             android:maxLength="36"
             android:textColor="@color/colorLightBlack"
@@ -68,7 +68,7 @@
             android:ems="10"
             android:hint="@string/h_f_lastname"
             android:imeOptions="actionNext"
-            android:inputType="textNoSuggestions|textPersonName|textCapWords"
+            android:inputType="textNoSuggestions|textPersonName|textCapCharacters"
             android:lines="1"
             android:maxLength="36"
             android:textColor="@color/colorLightBlack"
@@ -98,7 +98,7 @@
             android:ems="10"
             android:hint="@string/h_m_lastname"
             android:imeOptions="actionNext"
-            android:inputType="textNoSuggestions|textPersonName|textCapWords"
+            android:inputType="textNoSuggestions|textPersonName|textCapCharacters"
             android:lines="1"
             android:maxLength="36"
             android:textColor="@color/colorLightBlack"
@@ -141,8 +141,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
+        <ImageView
+            android:id="@+id/img_display_address_offender"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_arrow_right"
+            app:tint="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_address_offender_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txt_address_offender_title" />
+
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/txt_address_offender_title"
             style="@style/TextView_TitleItem_Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -150,81 +160,36 @@
             android:text="@string/t_offender_direction"
             android:textAlignment="textStart"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_display_address_offender"
             app:layout_constraintTop_toBottomOf="@+id/edt_offender_rfc" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/textView9"
             style="@style/TextView_TitleItem2_Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:tag="@string/tag_address_offender"
             android:text="@string/t_offender_state"
             android:textAlignment="textStart"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_address_offender_title" />
 
         <Spinner
             android:id="@+id/spn_state"
             style="@style/Widget.AppCompat.Spinner.Underlined"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView19" />
-
-        <TextView
-            android:id="@+id/textView20"
-            style="@style/TextView_TitleItem2_Bold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/t_offender_township"
-            android:textAlignment="textStart"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-
-        <Spinner
-            android:id="@+id/spn_township"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dialog"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-        <!--<TextView
-            android:id="@+id/textView9"
-            style="@style/TextView_TitleItem2_Bold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/t_offender_zip_code"
-            android:textAlignment="textStart"
-            android:textSize="13sp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spn_state" />
-
-        <Spinner
-            android:id="@+id/spn_zip_code"
-            style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:spinnerMode="dialog"
+            android:tag="@string/tag_address_offender"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />-->
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
         <TextView
             android:id="@+id/textView10"
@@ -232,27 +197,60 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:tag="@string/tag_address_offender"
+            android:text="@string/t_offender_township"
+            android:textAlignment="textStart"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/txt_address_offender_title" />
+
+        <Spinner
+            android:id="@+id/spn_township"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            android:tag="@string/tag_address_offender"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+        <TextView
+            android:id="@+id/textView11"
+            style="@style/TextView_TitleItem2_Bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:tag="@string/tag_address_offender"
             android:text="@string/t_offender_colony"
             android:textAlignment="textStart"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spn_state" />
 
         <EditText
             android:id="@+id/edt_colony"
+            style="@style/EditText_InputItem"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
             android:hint="@string/h_colony"
             android:imeOptions="actionNext"
             android:inputType="textNoSuggestions"
             android:lines="1"
             android:maxLength="100"
+            android:tag="@string/tag_address_offender"
             android:textColor="@color/colorLightBlack"
             android:textSize="@dimen/font_size_small"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
         <TextView
             android:id="@+id/textView18"
@@ -260,12 +258,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:tag="@string/tag_address_offender"
             android:text="@string/t_offender_street"
             android:textAlignment="textStart"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_colony" />
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/spn_township" />
 
         <EditText
             android:id="@+id/edt_street"
@@ -277,10 +277,12 @@
             android:inputType="textNoSuggestions"
             android:lines="1"
             android:maxLength="100"
+            android:tag="@string/tag_address_offender"
             android:textColor="@color/colorLightBlack"
             android:textSize="@dimen/font_size_small"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <TextView
@@ -289,12 +291,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:tag="@string/tag_address_offender"
             android:text="@string/t_offender_no_ext"
             android:textAlignment="textStart"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_street" />
+            app:layout_constraintTop_toBottomOf="@+id/edt_colony" />
 
         <EditText
             android:id="@+id/edt_offender_no_ext"
@@ -307,8 +311,10 @@
             android:inputType="textNoSuggestions"
             android:lines="1"
             android:maxLength="20"
+            android:tag="@string/tag_address_offender"
             android:textColor="@color/colorLightBlack"
             android:textSize="@dimen/font_size_small"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
@@ -319,9 +325,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:tag="@string/tag_address_offender"
             android:text="@string/t_offender_no_int"
             android:textAlignment="textStart"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/edt_street" />
@@ -337,14 +345,26 @@
             android:inputType="textNoSuggestions"
             android:lines="1"
             android:maxLength="20"
+            android:tag="@string/tag_address_offender"
             android:textColor="@color/colorLightBlack"
             android:textSize="@dimen/font_size_small"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
+        <ImageView
+            android:id="@+id/img_display_license_offender"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_arrow_right"
+            app:tint="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_license_offender_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/txt_license_offender_title" />
+
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/txt_license_offender_title"
             style="@style/TextView_TitleItem_Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -352,7 +372,7 @@
             android:text="@string/t_offender_license"
             android:textAlignment="textStart"
             android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_display_license_offender"
             app:layout_constraintTop_toBottomOf="@+id/edt_offender_no_int" />
 
         <TextView
@@ -361,12 +381,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:tag="@string/tag_license_offender"
             android:text="@string/t_offender_license_no"
             android:textAlignment="textStart"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_license_offender_title" />
 
         <EditText
             android:id="@+id/edt_offender_license_no"
@@ -379,8 +401,10 @@
             android:inputType="textNoSuggestions"
             android:lines="1"
             android:maxLength="15"
+            android:tag="@string/tag_license_offender"
             android:textColor="@color/colorLightBlack"
             android:textSize="@dimen/font_size_small"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView15" />
@@ -391,12 +415,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:tag="@string/tag_license_offender"
             android:text="@string/t_offender_license_type"
             android:textAlignment="textStart"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_license_offender_title" />
 
         <Spinner
             android:id="@+id/spn_license_type"
@@ -404,6 +430,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:spinnerMode="dialog"
+            android:tag="@string/tag_license_offender"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/edt_offender_license_no"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -415,9 +443,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:tag="@string/tag_license_offender"
             android:text="@string/t_offender_license_issued_in"
             android:textAlignment="textStart"
             android:textSize="13sp"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_offender_license_no" />
@@ -428,6 +458,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:spinnerMode="dialog"
+            android:tag="@string/tag_license_offender"
+            android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView17" />

@@ -13,6 +13,8 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Base64
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -299,6 +301,23 @@ class Utils {
             )
             return Uri.parse(path.toString())
         }
+
+        fun getViewsByTag(root: View, tag: String): List<View>? {
+            val result: MutableList<View> = LinkedList()
+            if (root is ViewGroup) {
+                val childCount = root.childCount
+                for (i in 0 until childCount) {
+                    result.addAll(getViewsByTag(root.getChildAt(i), tag)!!)
+                }
+            }
+            val rootTag: Any? = root.tag
+            if (rootTag != null && tag == rootTag) {
+                result.add(root)
+            }
+            return result
+        }
+
+
 
     }
 }

@@ -17,6 +17,7 @@ import mx.qsistemas.infracciones.modules.main.fr_my_preferences.MyPreferencesFra
 import mx.qsistemas.payments_transfer.PaymentsTransfer
 
 class MainActivity : ActivityHelper(), MainContracts.Presenter {
+    private lateinit var activity: MainActivity
 
     val router by lazy { MainRouter(this) }
     private val iterator by lazy { MainIterator(this) }
@@ -49,10 +50,12 @@ class MainActivity : ActivityHelper(), MainContracts.Presenter {
     }
 
     override fun onBackPressed() {
-        when (supportFragmentManager.findFragmentById(R.id.main_container)) {
-            is MyPreferencesFragment -> {
-                router.presentInfractionList(Direction.BACK)
-            }
-        }
+//        when (supportFragmentManager.findFragmentById(R.id.main_container)) {
+//            is MyPreferencesFragment -> {
+//                router.presentInfractionList(Direction.BACK)
+//            }
+//        }
+            iterator.closeSession()
+            activity.router.presentLogIn()
     }
 }

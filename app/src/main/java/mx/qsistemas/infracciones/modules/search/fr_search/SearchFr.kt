@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import mx.qsistemas.infracciones.Application
 import mx.qsistemas.infracciones.Application.Companion.TAG
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.databinding.CustomCardviewBinding
@@ -26,6 +27,7 @@ import mx.qsistemas.infracciones.databinding.FragmentSearchBinding
 import mx.qsistemas.infracciones.db_web.entities.InfractionItem
 import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.CatalogsFirebaseManager
+import mx.qsistemas.infracciones.dialogs.DetailPaymentDialog
 import mx.qsistemas.infracciones.helpers.SnackbarHelper
 import mx.qsistemas.infracciones.modules.create.CreateInfractionActivity
 import mx.qsistemas.infracciones.modules.create.OPTION_UPDATE_INFRACTION
@@ -36,12 +38,14 @@ import mx.qsistemas.infracciones.modules.search.adapters.*
 import mx.qsistemas.infracciones.net.catalogs.Articles
 import mx.qsistemas.infracciones.net.catalogs.Fractions
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
+import mx.qsistemas.infracciones.net.result_web.detail_result.NewCaptureLines
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.infracciones.singletons.SingletonInfraction
 import mx.qsistemas.infracciones.singletons.SingletonTicket
 import mx.qsistemas.infracciones.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * A simple [Fragment] subclass.
@@ -419,117 +423,117 @@ class SearchFr : Fragment(), SearchContracts.Presenter, AdapterView.OnItemSelect
         }
     }
 
-    /*fun doPaymentProcess(infraction: DetailResult) {
-        var compareDate: Int
-        val newCaptureLines: MutableList<NewCaptureLines> = mutableListOf()
-        var captureSelected: NewCaptureLines = NewCaptureLines()
-        var total_umas = 0
-
-        infraction.captureLines?.forEach {
-
-            val originalFormat = SimpleDateFormat("yyyy-MM-dd")
-            val newDate = originalFormat.parse(it?.date)
-            newCaptureLines.add(NewCaptureLines(it?.amount, it?.key, it?.order, newDate, it?.discount_label))
-        }
-        newCaptureLines.forEach {
-            Log.v("CAPTURE_LINES", "No order: $it.date")
-        }
-        newCaptureLines.sortBy { captureLinesItem -> captureLinesItem.date }
-
-        newCaptureLines.forEach {
-            Log.v("CAPTURE_LINES", "Order: $it.date")
-        }
-        run loop@{
-            newCaptureLines.forEach { cDate ->
-                compareDate = CURRENT_DATE.compareTo(cDate.date)
-                //  0 comes when two date are same,
-                //  1 comes when date1 is higher then date2
-                // -1 comes when date1 is lower then date2
-                if (compareDate <= 0) { //Si hoy es menor o igual a la fecha límite
-                    captureSelected = cDate
-                    return@loop
-                }
-            }
-        }
-
-        infraction.fractions?.forEach {
-            SingletonInfraction.motivationList.add(SingletonInfraction.DtoMotivation(Articles(), Fractions(uma = it?.uma!!.toInt()), ""))
-        }
-
-
-        Log.d("DISCOUNT-amount", captureSelected.amount)
-        Log.d("DISCOUNT-subtotal", infraction.subtotal?.toString())
-        if (captureSelected.amount.isNullOrEmpty()) {
-            captureSelected = newCaptureLines[newCaptureLines.lastIndex]
-            //Hacer operación para calcular los recargos
-            Application.firestore.collection(FS_COL_CITIES)?.document(Application.prefs.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
-                if (townshipSnapshot == null) {
-                    Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
-                    onError(Application.getContext().getString(R.string.e_firestore_not_available))
-                    activity.hideLoader()
-                } else {
-                    val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
-                    val diff = Date().time - captureSelected.date?.time!!
-                    val days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
-                    discountInfraction = (infraction.subtotal!! - captureSelected.amount?.toDouble()!!).toFloat()
-                    folioInfraction = infraction.folio.toString()
-                    subtotalInfraction = infraction.subtotal?.toFloat()!!
-                    surchargesInfraction = days * township.surcharges_rate
-                    totalInfraction = subtotalInfraction + surchargesInfraction
-
-                    Log.d("PAYMENT", discountInfraction.toString())
-                    Log.d("PAYMENT", subtotalInfraction.toString())
-                    Log.d("PAYMENT", surchargesInfraction.toString())
-                    Log.d("PAYMENT", totalInfraction.toString())
-
-
-                    val completeName = infraction.townHall!!.split(" ")
-
-                    SingletonInfraction.nameOffender = completeName[0]
-                    SingletonInfraction.lastFatherName = completeName[1]
-                    SingletonInfraction.lastMotherName = completeName[2]
-                    SingletonInfraction.subTotalInfraction = subtotalInfraction.toString()
-                    SingletonInfraction.surchargesInfraction = "%.2f".format(days * township.surcharges_rate)
-                    SingletonInfraction.totalInfraction = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() + SingletonInfraction.surchargesInfraction.toFloat()).replace(",", ".")
-                    val dialog = DetailPaymentDialog()
-                    dialog.listener = this
-                    dialog.showDeclineOption = false
-                    dialog.isCancelable = false
-                    dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
-
-                    //PaymentsTransfer.runTransaction(activity, "%.2f".format(totalInfraction), if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
-                }
-            }
-        } else {
-            discountInfraction = (infraction.subtotal!! - captureSelected.amount?.toDouble()!!).toFloat()
-            folioInfraction = infraction.folio.toString()
-            subtotalInfraction = infraction.subtotal.toFloat()
-            surchargesInfraction = 0F
-            totalInfraction = subtotalInfraction
-            //PaymentsTransfer.runTransaction(activity, totalInfraction.toString(), if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
-
-            Log.d("PAYMENT", discountInfraction.toString())
-            Log.d("PAYMENT", subtotalInfraction.toString())
-            Log.d("PAYMENT", surchargesInfraction.toString())
-            Log.d("PAYMENT", totalInfraction.toString())
-            val completeName = infraction.townHall!!.split(" ")
-            completeName.forEach {
-                Log.v("OFFENDER", it)
-            }
-            SingletonInfraction.nameOffender = completeName[0]
-            SingletonInfraction.lastFatherName = completeName[1]
-            SingletonInfraction.lastMotherName = completeName[2]
-            SingletonInfraction.subTotalInfraction = subtotalInfraction.toString()
-            SingletonInfraction.discountInfraction = if (discountInfraction != 0F) "%.2f".format(discountInfraction) else "0.0"
-            SingletonInfraction.totalInfraction = "%.2f".format(captureSelected.amount!!.toFloat())
-            val dialog = DetailPaymentDialog()
-            dialog.listener = this
-            dialog.showDeclineOption = false
-            dialog.isCancelable = false
-            dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
-        }
-
-    }*/
+//    fun doPaymentProcess(infraction: DetailResult) {
+//        var compareDate: Int
+//        val newCaptureLines: MutableList<NewCaptureLines> = mutableListOf()
+//        var captureSelected: NewCaptureLines = NewCaptureLines()
+//        var total_umas = 0
+//
+//        infraction.captureLines?.forEach {
+//
+//            val originalFormat = SimpleDateFormat("yyyy-MM-dd")
+//            val newDate = originalFormat.parse(it?.date)
+//            newCaptureLines.add(NewCaptureLines(it?.amount, it?.key, it?.order, newDate, it?.discount_label))
+//        }
+//        newCaptureLines.forEach {
+//            Log.v("CAPTURE_LINES", "No order: $it.date")
+//        }
+//        newCaptureLines.sortBy { captureLinesItem -> captureLinesItem.date }
+//
+//        newCaptureLines.forEach {
+//            Log.v("CAPTURE_LINES", "Order: $it.date")
+//        }
+//        run loop@{
+//            newCaptureLines.forEach { cDate ->
+//                compareDate = CURRENT_DATE.compareTo(cDate.date)
+//                //  0 comes when two date are same,
+//                //  1 comes when date1 is higher then date2
+//                // -1 comes when date1 is lower then date2
+//                if (compareDate <= 0) { //Si hoy es menor o igual a la fecha límite
+//                    captureSelected = cDate
+//                    return@loop
+//                }
+//            }
+//        }
+//
+//        infraction.fractions?.forEach {
+//            SingletonInfraction.motivationList.add(SingletonInfraction.DtoMotivation(Articles(), Fractions(uma = it?.uma!!.toInt()), ""))
+//        }
+//
+//
+////        Log.d("DISCOUNT-amount", captureSelected.amount)
+////        Log.d("DISCOUNT-subtotal", infraction.subtotal?.toString())
+//        if (captureSelected.amount.isNullOrEmpty()) {
+//            captureSelected = newCaptureLines[newCaptureLines.lastIndex]
+//            //Hacer operación para calcular los recargos
+//            Application.firestore.collection(FS_COL_CITIES)?.document(Application.prefs.loadData(R.string.sp_id_township, "")!!)?.get()?.addOnSuccessListener { townshipSnapshot ->
+//                if (townshipSnapshot == null) {
+//                    Log.e(this.javaClass.simpleName, Application.getContext().getString(R.string.e_firestore_not_available))
+//                    onError(Application.getContext().getString(R.string.e_firestore_not_available))
+//                    activity.hideLoader()
+//                } else {
+//                    val township = townshipSnapshot.toObject(Townships::class.java) ?: Townships()
+//                    val diff = Date().time - captureSelected.date?.time!!
+//                    val days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
+//                    discountInfraction = (infraction.subtotal!! - captureSelected.amount?.toDouble()!!).toFloat()
+//                    folioInfraction = infraction.folio.toString()
+//                    subtotalInfraction = infraction.subtotal?.toFloat()!!
+//                    surchargesInfraction = days * township.surcharges_rate
+//                    totalInfraction = subtotalInfraction + surchargesInfraction
+//
+//                    Log.d("PAYMENT", discountInfraction.toString())
+//                    Log.d("PAYMENT", subtotalInfraction.toString())
+//                    Log.d("PAYMENT", surchargesInfraction.toString())
+//                    Log.d("PAYMENT", totalInfraction.toString())
+//
+//
+//                    val completeName = infraction.townHall!!.split(" ")
+//
+//                    SingletonInfraction.nameOffender = completeName[0]
+//                    SingletonInfraction.lastFatherName = completeName[1]
+//                    SingletonInfraction.lastMotherName = completeName[2]
+//                    SingletonInfraction.subTotalInfraction = subtotalInfraction.toString()
+//                    SingletonInfraction.surchargesInfraction = "%.2f".format(days * township.surcharges_rate)
+//                    SingletonInfraction.totalInfraction = "%.2f".format(SingletonInfraction.subTotalInfraction.toFloat() + SingletonInfraction.surchargesInfraction.toFloat()).replace(",", ".")
+//                    val dialog = DetailPaymentDialog()
+//                    dialog.listener = this
+//                    dialog.showDeclineOption = false
+//                    dialog.isCancelable = false
+//                    dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
+//
+//                    //PaymentsTransfer.runTransaction(activity, "%.2f".format(totalInfraction), if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+//                }
+//            }
+//        } else {
+//            discountInfraction = (infraction.subtotal!! - captureSelected.amount?.toDouble()!!).toFloat()
+//            folioInfraction = infraction.folio.toString()
+//            subtotalInfraction = infraction.subtotal.toFloat()
+//            surchargesInfraction = 0F
+//            totalInfraction = subtotalInfraction
+//            //PaymentsTransfer.runTransaction(activity, totalInfraction.toString(), if (BuildConfig.DEBUG) MODE_TX_PROBE_AUTH_ALWAYS else MODE_TX_PROD, this)
+//
+//            Log.d("PAYMENT", discountInfraction.toString())
+//            Log.d("PAYMENT", subtotalInfraction.toString())
+//            Log.d("PAYMENT", surchargesInfraction.toString())
+//            Log.d("PAYMENT", totalInfraction.toString())
+//            val completeName = infraction.townHall!!.split(" ")
+//            completeName.forEach {
+//                Log.v("OFFENDER", it)
+//            }
+//            SingletonInfraction.nameOffender = completeName[0]
+//            SingletonInfraction.lastFatherName = completeName[1]
+//            SingletonInfraction.lastMotherName = completeName[2]
+//            SingletonInfraction.subTotalInfraction = subtotalInfraction.toString()
+//            SingletonInfraction.discountInfraction = if (discountInfraction != 0F) "%.2f".format(discountInfraction) else "0.0"
+//            SingletonInfraction.totalInfraction = "%.2f".format(captureSelected.amount!!.toFloat())
+//            val dialog = DetailPaymentDialog()
+//            dialog.listener = this
+//            dialog.showDeclineOption = false
+//            dialog.isCancelable = false
+//            dialog.show(activity.supportFragmentManager, DetailPaymentDialog::class.java.simpleName)
+//        }
+//
+//    }
 
 
     override fun onPaymentClick(view: View, position: Int, origin: Int) {

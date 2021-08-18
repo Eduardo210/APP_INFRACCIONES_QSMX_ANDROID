@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.firebase-perf'
+//apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
@@ -54,6 +55,16 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                outputFileName = "Infracciones_V${defaultConfig.versionName}_${buildTime()}.apk"
+            }
+        }
+
     }
 }
 
@@ -117,4 +128,18 @@ dependencies {
     // Payment Transfer Library
     implementation 'com.github.QuetzalcoatlSistemas:payments_transfer:0.1.4-alpha12'
     //implementation project(':payments_transfer')
+//
+//    // crashlytics
+//    // Import the BoM for the Firebase platform
+//    implementation platform('com.google.firebase:firebase-bom:28.2.0')
+//
+//    // Declare the dependencies for the Crashlytics and Analytics libraries
+//    // When using the BoM, you don't specify versions in Firebase library dependencies
+//    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+//    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+}
+
+def buildTime() {
+    return new Date().format("dd-MM-yyyy", TimeZone.getTimeZone("UTC"))
 }

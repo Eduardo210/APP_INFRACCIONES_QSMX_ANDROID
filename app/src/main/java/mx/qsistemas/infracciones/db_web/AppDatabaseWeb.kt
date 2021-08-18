@@ -34,7 +34,10 @@ private const val DB_VERSION_WEB = 1
             PersonTownhall::class,
             Permissions::class,
             VehicleVehicles::class,
+<<<<<<< HEAD
             Recurrences::class
+=======
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
         ], version = DB_VERSION_WEB, exportSchema = false
 )
 

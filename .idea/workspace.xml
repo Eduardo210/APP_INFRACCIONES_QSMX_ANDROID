@@ -8,7 +8,10 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
+<<<<<<< HEAD
     <option name="TOOL_WINDOW_CUSTOM_FILTER" value="htt" />
+=======
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
     <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
@@ -266,6 +269,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="aaf79af6-5d15-4ed5-bf2d-db46c55613c0" name="Default Changelist" comment="* - Modificación del cerrar la sesion y ademas de menus de datos del infractor">
       <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/Recurrences.kt" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/result_web/RecurrenceGeneric.kt" afterDir="false" />
@@ -273,6 +277,15 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/AppDatabaseWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/AppDatabaseWeb.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/NetworkApi.kt" afterDir="false" />
+=======
+    <list default="true" id="aaf79af6-5d15-4ed5-bf2d-db46c55613c0" name="Default Changelist" comment="* - saved version 30/07/2021">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/entities/Recurrences.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/Application.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/AppDatabaseWeb.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/db_web/AppDatabaseWeb.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
     </list>
     <list id="79cd0ed3-dd84-4ba1-bdfe-29f9d7f759ea" name="Ignore" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -283,7 +296,7 @@
   <component name="CodeInsightWorkspaceSettings">
     <option name="optimizeImportsOnTheFly" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[SerialNumber@0123456789ABCDEF]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[VirtualDevicePath@C:\Users\Qsistemas\.android\avd\Pixel_3a_API_30_x86.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -320,7 +333,6 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="resourceFile" />
         <option value="layoutResourceFile_vertical" />
         <option value="Kotlin Interface" />
@@ -329,6 +341,12 @@
         <option value="valueResourceFile" />
         <option value="layoutResourceFile" />
         <option value="Kotlin File" />
+<<<<<<< HEAD
+=======
+        <option value="Interface" />
+        <option value="Class" />
+        <option value="Enum" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
         <option value="Kotlin Data Class" />
       </list>
     </option>
@@ -382,7 +400,7 @@
     <property name="format" value="PNG" />
     <property name="lastFolderRoot" value="S:/Pictures/PAP/icn_incidencia.png" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/app/src/main/res/mipmap-xxxhdpi" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Documents" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="method" value="Automatic" />
     <property name="not.eligible.for.single.variant.sync" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -398,7 +416,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+<<<<<<< HEAD
       <recent name="mx.qsistemas.infracciones.net.result_web" />
+=======
+      <recent name="mx.qsistemas.infracciones.db_web.entities" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
       <recent name="mx.qsistemas.infracciones.modules.search.fr_historical" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
@@ -413,18 +435,21 @@
       <recent name="mx.qsistemas.infracciones.modules" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Qsistemas\AndroidStudioProjects\APP_INFRACCIONES_QSMX_ANDROID" />
       <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\java\mx\qsistemas\infracciones\modules\search\fr_search" />
       <recent name="D:\Android\Projects\InfraccionesAndroid\payments_transfer\src\main\assets\loader" />
       <recent name="D:\Android\Projects\InfraccionesAndroid\payments_transfer\src\main\res\raw" />
       <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\java\mx\qsistemas\infracciones\dialogs" />
-      <recent name="D:\Android\Projects\InfraccionesAndroid\app\src\main\java\mx\qsistemas\infracciones" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="mx.qsistemas.infracciones.db_web.dao_web" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Qsistemas\AndroidStudioProjects\APP_INFRACCIONES_QSMX_ANDROID" />
       <recent name="D:\Android\Projects\APP_INFRACCIONES_QSMX_ANDROID\app" />
       <recent name="D:\Android\Projects\APP_INFRACCIONES_QSMX_ANDROID\app\src" />
       <recent name="D:\Android\Projects\APP_INFRACCIONES_QSMX_ANDROID\app\src\main\res\mipmap-xxxhdpi" />
       <recent name="D:\Android\Projects\APP_INFRACCIONES_QSMX_ANDROID\app\src\main\res\mipmap-xxhdpi" />
-      <recent name="D:\Android\Projects\APP_INFRACCIONES_QSMX_ANDROID\app\src\main\res\mipmap-xhdpi" />
     </key>
     <key name="android.template.parentActivityClass">
       <recent name="" />
@@ -720,6 +745,7 @@
       <option name="presentableId" value="Default" />
       <updated>1534195955826</updated>
     </task>
+<<<<<<< HEAD
     <task id="LOCAL-00016" summary="* Infraction fragment">
       <created>1561140348276</created>
       <option name="number" value="00016" />
@@ -727,6 +753,8 @@
       <option name="project" value="LOCAL" />
       <updated>1561140348276</updated>
     </task>
+=======
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
     <task id="LOCAL-00017" summary="* Infraction fragment design">
       <created>1561147831686</created>
       <option name="number" value="00017" />
@@ -1056,6 +1084,7 @@
       <option name="project" value="LOCAL" />
       <updated>1627567436594</updated>
     </task>
+<<<<<<< HEAD
     <task id="LOCAL-00064" summary="* - Modificación del cerrar la sesion y ademas de menus de datos del infractor">
       <created>1628701589745</created>
       <option name="number" value="00064" />
@@ -1064,6 +1093,23 @@
       <updated>1628701589746</updated>
     </task>
     <option name="localTasksCounter" value="65" />
+=======
+    <task id="LOCAL-00064" summary="* - app with changes in the requests the document the word">
+      <created>1627583138609</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1627583138609</updated>
+    </task>
+    <task id="LOCAL-00065" summary="* - saved version 30/07/2021">
+      <created>1627668171882</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1627668171883</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
     <servers />
   </component>
   <component name="TodoView">
@@ -1124,7 +1170,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+<<<<<<< HEAD
     <MESSAGE value="* Update Initial Configuration: Save Township Name&#10;* Update Print Ticket: Set Township Name From Shared Preferences" />
+=======
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
     <MESSAGE value="* Correction Payment Transfer: Replace comas to dots" />
     <MESSAGE value="* Update Send Process: Update Payments To Send" />
     <MESSAGE value="* Update Ticket Format:  New Font" />
@@ -1148,14 +1197,21 @@
     <MESSAGE value="&#10;*- Actualizacion de los campòs del paso 1 de infraccion vehicular" />
     <MESSAGE value="* - Add EditText for sub brand this selection option other" />
     <MESSAGE value="* - save to preferences of module my preferences and show in the infraction module" />
+<<<<<<< HEAD
     <MESSAGE value="* - Modificación del cerrar la sesion y ademas de menus de datos del infractor" />
     <option name="LAST_COMMIT_MESSAGE" value="* - Modificación del cerrar la sesion y ademas de menus de datos del infractor" />
+=======
+    <MESSAGE value="* - app with changes in the requests the document the word" />
+    <MESSAGE value="* - saved version 30/07/2021" />
+    <option name="LAST_COMMIT_MESSAGE" value="* - saved version 30/07/2021" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
   </component>
   <component name="WindowStateProjectService">
     <state x="2139" y="322" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1627049487240">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="2139" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627049487240" />
+<<<<<<< HEAD
     <state x="2191" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1628793614256">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
@@ -1172,6 +1228,24 @@
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="2192" y="266" key="AndroidProcessChooserDialog/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1628794265127" />
+=======
+    <state x="1887" y="392" width="712" height="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1627678492880">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1887" y="392" width="712" height="268" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627678492880" />
+    <state x="2025" y="311" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog" timestamp="1627680875360">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2025" y="311" key="#org.jetbrains.kotlin.idea.refactoring.move.moveDeclarations.ui.MoveKotlinTopLevelDeclarationsDialog/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627680875360" />
+    <state x="1786" y="52" width="1220" height="965" key="#xdebugger.evaluate" timestamp="1627930509479">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1786" y="52" width="1220" height="965" key="#xdebugger.evaluate/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930509479" />
+    <state x="2192" y="266" key="AndroidProcessChooserDialog" timestamp="1627930278211">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2192" y="266" key="AndroidProcessChooserDialog/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930278211" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
     <state width="628" height="466" key="DebuggerActiveHint" timestamp="1627573721906">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
@@ -1180,6 +1254,7 @@
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="2180" y="260" key="FileChooserDialogImpl/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627049509859" />
+<<<<<<< HEAD
     <state width="1877" height="245" key="GridCell.Tab.0.bottom" timestamp="1628795102852">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
@@ -1212,6 +1287,40 @@
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="282" key="GridCell.Tab.1.right/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1628794396903" />
+=======
+    <state width="1877" height="218" key="GridCell.Tab.0.bottom" timestamp="1627930278446">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="218" key="GridCell.Tab.0.bottom/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930278446" />
+    <state width="1877" height="218" key="GridCell.Tab.0.center" timestamp="1627930278446">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="218" key="GridCell.Tab.0.center/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930278446" />
+    <state width="1877" height="218" key="GridCell.Tab.0.left" timestamp="1627930278446">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="218" key="GridCell.Tab.0.left/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930278446" />
+    <state width="1877" height="218" key="GridCell.Tab.0.right" timestamp="1627930278446">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="218" key="GridCell.Tab.0.right/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930278446" />
+    <state width="1877" height="218" key="GridCell.Tab.1.bottom" timestamp="1627930283840">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="218" key="GridCell.Tab.1.bottom/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930283840" />
+    <state width="1877" height="218" key="GridCell.Tab.1.center" timestamp="1627930283840">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="218" key="GridCell.Tab.1.center/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930283840" />
+    <state width="1877" height="218" key="GridCell.Tab.1.left" timestamp="1627930283840">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="218" key="GridCell.Tab.1.left/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930283840" />
+    <state width="1877" height="218" key="GridCell.Tab.1.right" timestamp="1627930283840">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="218" key="GridCell.Tab.1.right/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627930283840" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
     <state x="1816" y="158" key="MergeDialog" timestamp="1626447155268">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
@@ -1220,10 +1329,17 @@
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="1901" y="165" key="SettingsEditor/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1626814503082" />
+<<<<<<< HEAD
     <state x="1992" y="253" key="Vcs.Push.Dialog.v2" timestamp="1628701650160">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="1992" y="253" key="Vcs.Push.Dialog.v2/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1628701650160" />
+=======
+    <state x="1992" y="253" key="Vcs.Push.Dialog.v2" timestamp="1627668178727">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1992" y="253" key="Vcs.Push.Dialog.v2/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627668178727" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
     <state width="968" height="528" key="XDebugger.FullValuePopup" timestamp="1627507181412">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
@@ -1241,10 +1357,17 @@
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="2016" y="233" key="git4idea.branch.GitSmartOperationDialog/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1626447111599" />
+<<<<<<< HEAD
     <state x="2147" y="234" width="672" height="504" key="search.everywhere.popup" timestamp="1628700686566">
       <screen x="1440" y="0" width="1920" height="1040" />
     </state>
     <state x="2147" y="234" width="672" height="504" key="search.everywhere.popup/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1628700686566" />
+=======
+    <state x="2564" y="262" width="672" height="504" key="search.everywhere.popup" timestamp="1627912991874">
+      <screen x="1440" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2564" y="262" width="672" height="504" key="search.everywhere.popup/0.0.1440.860/1440.0.1920.1040@1440.0.1920.1040" timestamp="1627912991874" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
     <state x="943" y="315" width="672" height="678" key="search.everywhere.popup/2560.0.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1625755850115" />
   </component>
   <component name="XDebuggerManager">
@@ -1262,56 +1385,124 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>72</line>
+          <line>73</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>73</line>
+          <line>74</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>74</line>
+          <line>75</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>75</line>
+          <line>76</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>77</line>
+          <line>78</line>
           <option name="timeStamp" value="21" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>78</line>
+          <line>79</line>
           <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>80</line>
+          <line>81</line>
           <option name="timeStamp" value="23" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>81</line>
+          <line>82</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>82</line>
+          <line>83</line>
           <option name="timeStamp" value="25" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
-          <line>83</line>
+          <line>84</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+<<<<<<< HEAD
+=======
+          <line>129</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>130</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>132</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>131</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>133</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>134</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>135</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>137</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>138</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>61</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+          <line>62</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInRouter.kt</url>
+          <line>9</line>
+          <option name="timeStamp" value="121" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInRouter.kt</url>
+          <line>10</line>
+          <option name="timeStamp" value="122" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInActivity.kt</url>
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
           <line>53</line>
           <option name="timeStamp" value="123" />
         </line-breakpoint>
@@ -3515,11 +3706,6 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt</url>
-          <line>93</line>
-          <option name="timeStamp" value="776" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_infraction/InfractionIterator.kt</url>
           <line>95</line>
           <option name="timeStamp" value="777" />
         </line-breakpoint>
@@ -3664,6 +3850,7 @@
           <option name="timeStamp" value="809" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+<<<<<<< HEAD
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt</url>
           <line>133</line>
           <option name="timeStamp" value="882" />
@@ -3707,6 +3894,362 @@
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/login/LogInIterator.kt</url>
           <line>167</line>
           <option name="timeStamp" value="899" />
+=======
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>249</line>
+          <option name="timeStamp" value="811" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>250</line>
+          <option name="timeStamp" value="812" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>251</line>
+          <option name="timeStamp" value="813" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>252</line>
+          <option name="timeStamp" value="814" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>253</line>
+          <option name="timeStamp" value="815" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>255</line>
+          <option name="timeStamp" value="816" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>256</line>
+          <option name="timeStamp" value="817" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>258</line>
+          <option name="timeStamp" value="818" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>260</line>
+          <option name="timeStamp" value="819" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>257</line>
+          <option name="timeStamp" value="820" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>259</line>
+          <option name="timeStamp" value="821" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>261</line>
+          <option name="timeStamp" value="822" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>262</line>
+          <option name="timeStamp" value="823" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>263</line>
+          <option name="timeStamp" value="824" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>265</line>
+          <option name="timeStamp" value="825" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>267</line>
+          <option name="timeStamp" value="826" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>271</line>
+          <option name="timeStamp" value="827" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>288</line>
+          <option name="timeStamp" value="828" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>304</line>
+          <option name="timeStamp" value="829" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>324</line>
+          <option name="timeStamp" value="830" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>325</line>
+          <option name="timeStamp" value="831" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>327</line>
+          <option name="timeStamp" value="832" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>340</line>
+          <option name="timeStamp" value="834" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>357</line>
+          <option name="timeStamp" value="835" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>366</line>
+          <option name="timeStamp" value="836" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>365</line>
+          <option name="timeStamp" value="837" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>372</line>
+          <option name="timeStamp" value="838" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>375</line>
+          <option name="timeStamp" value="839" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>377</line>
+          <option name="timeStamp" value="840" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>385</line>
+          <option name="timeStamp" value="841" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>387</line>
+          <option name="timeStamp" value="842" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>393</line>
+          <option name="timeStamp" value="843" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>428</line>
+          <option name="timeStamp" value="844" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>446</line>
+          <option name="timeStamp" value="845" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>452</line>
+          <option name="timeStamp" value="846" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>272</line>
+          <option name="timeStamp" value="847" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>273</line>
+          <option name="timeStamp" value="848" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>275</line>
+          <option name="timeStamp" value="849" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>276</line>
+          <option name="timeStamp" value="850" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>286</line>
+          <option name="timeStamp" value="851" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>292</line>
+          <option name="timeStamp" value="852" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>294</line>
+          <option name="timeStamp" value="853" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>301</line>
+          <option name="timeStamp" value="854" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>278</line>
+          <option name="timeStamp" value="855" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>280</line>
+          <option name="timeStamp" value="856" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>282</line>
+          <option name="timeStamp" value="857" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>284</line>
+          <option name="timeStamp" value="858" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>306</line>
+          <option name="timeStamp" value="859" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>307</line>
+          <option name="timeStamp" value="860" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>308</line>
+          <option name="timeStamp" value="861" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>310</line>
+          <option name="timeStamp" value="862" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>311</line>
+          <option name="timeStamp" value="863" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>313</line>
+          <option name="timeStamp" value="864" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>314</line>
+          <option name="timeStamp" value="865" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>316</line>
+          <option name="timeStamp" value="866" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>317</line>
+          <option name="timeStamp" value="867" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>320</line>
+          <option name="timeStamp" value="868" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>319</line>
+          <option name="timeStamp" value="869" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>318</line>
+          <option name="timeStamp" value="870" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>321</line>
+          <option name="timeStamp" value="871" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>322</line>
+          <option name="timeStamp" value="872" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>323</line>
+          <option name="timeStamp" value="873" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>328</line>
+          <option name="timeStamp" value="874" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>330</line>
+          <option name="timeStamp" value="875" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>332</line>
+          <option name="timeStamp" value="876" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>333</line>
+          <option name="timeStamp" value="877" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>338</line>
+          <option name="timeStamp" value="878" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>337</line>
+          <option name="timeStamp" value="879" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>336</line>
+          <option name="timeStamp" value="880" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>335</line>
+          <option name="timeStamp" value="881" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-function">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/net/request_web/LogInRequest.kt</url>
+          <line>4</line>
+          <properties class="mx.qsistemas.infracciones.net.request_web.LogInRequest" method="&lt;init&gt;" />
+          <option name="timeStamp" value="119" />
+>>>>>>> e89ec0f132a22960f2d5436dd4a6facd6a093fdf
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-function">
           <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/main/MainRouter.kt</url>
@@ -3719,6 +4262,14 @@
           <line>386</line>
           <properties class="mx.qsistemas.infracciones.modules.create.fr_vehicle.VehicleFragment" />
           <option name="timeStamp" value="204" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-function">
+          <url>file://$PROJECT_DIR$/app/src/main/java/mx/qsistemas/infracciones/modules/create/fr_offender/OffenderIterator.kt</url>
+          <line>243</line>
+          <properties class="mx.qsistemas.infracciones.modules.create.fr_offender.OffenderIterator" method="saveData">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="810" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

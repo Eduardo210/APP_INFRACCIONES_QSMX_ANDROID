@@ -15,6 +15,8 @@ import mx.qsistemas.infracciones.db_web.entities.InfringementData
 import mx.qsistemas.infracciones.db_web.managers.SearchManagerWeb
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.GenericCatalog
+import mx.qsistemas.infracciones.net.request_web.PaymentRequest
+import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
@@ -120,30 +122,30 @@ class SearchIterator(private val listener: SearchContracts.Presenter) : SearchCo
         })
     }
 
-    /*override fun savePaymentToService(paymentRequest: PaymentRequest, token: String) {
-
-        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs.loadData(R.string.sp_access_token, "")!!}",
-                0L,
-                paymentRequest).enqueue(object : Callback<GenericResult> {
-            override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
-                val generic: GenericResult?
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    generic = response.body()
-                    if (generic?.status == "sucess") {
-                        listener.onResultSavePayment("El pago se guardó satisfactoriamente")
-                    } else {
-                        listener.onResultSavePayment("Error al guardar el pago.")
-                    }
-                } else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    listener.onError(response.message())
-                }
-            }
-
-            override fun onFailure(call: Call<GenericResult>, t: Throwable) {
-                listener.onError(t.message ?: "")
-            }
-        })
-    }*/
+//    override fun savePaymentToService(paymentRequest: PaymentRequest, token: String) {
+//
+//        NetworkApi().getNetworkService().savePaymentToServer("Bearer ${Application.prefs.loadData(R.string.sp_access_token, "")!!}",
+//                0L,
+//                paymentRequest).enqueue(object : Callback<GenericResult> {
+//            override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
+//                val generic: GenericResult?
+//                if (response.code() == HttpURLConnection.HTTP_OK) {
+//                    generic = response.body()
+//                    if (generic?.status == "sucess") {
+//                        listener.onResultSavePayment("El pago se guardó satisfactoriamente")
+//                    } else {
+//                        listener.onResultSavePayment("Error al guardar el pago.")
+//                    }
+//                } else if(response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+//                    listener.onError(response.message())
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<GenericResult>, t: Throwable) {
+//                listener.onError(t.message ?: "")
+//            }
+//        })
+//    }
 
     override fun doSearchByFilterOffLine(filter: String) {
         val query: SimpleSQLiteQuery

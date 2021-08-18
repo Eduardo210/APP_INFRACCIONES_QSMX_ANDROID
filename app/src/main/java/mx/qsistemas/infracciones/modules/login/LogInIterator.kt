@@ -1,7 +1,6 @@
-    package mx.qsistemas.infracciones.modules.login
+package mx.qsistemas.infracciones.modules.login
 
 import android.util.Log
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.functions.FirebaseFunctionsException
 import com.google.gson.Gson
@@ -11,7 +10,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import mx.qsistemas.infracciones.Application
-import mx.qsistemas.infracciones.BuildConfig
 import mx.qsistemas.infracciones.R
 import mx.qsistemas.infracciones.alarm.Alarms
 import mx.qsistemas.infracciones.db_web.entities.firebase_replica.City
@@ -22,15 +20,19 @@ import mx.qsistemas.infracciones.db_web.managers.PermissionsMgr
 import mx.qsistemas.infracciones.net.NetworkApi
 import mx.qsistemas.infracciones.net.catalogs.Cities
 import mx.qsistemas.infracciones.net.request_web.LogInRequest
+import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
+import mx.qsistemas.infracciones.net.result_web.RecurrenceGeneric
+import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
+import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
 import mx.qsistemas.infracciones.utils.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.net.HttpURLConnection
+import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
 
 class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContracts.Iterator {
     override fun registerAlarm() {
@@ -42,6 +44,7 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
         var zipCodes: MutableList<ZipCodes>
         var colonies: MutableList<Colony>
         var cities: MutableList<City>
+
         GlobalScope.launch(Dispatchers.IO) {
             zipCodes = getZipCodes()
             if (insertZipCodes(zipCodes)) {
@@ -63,73 +66,135 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
     }
 
     override fun login(userName: String, psd: String) {
-        val logInMap: HashMap<String, Any> = hashMapOf("isEncrypted" to false, "value" to "$userName|$psd")
-        Application.firebaseFunctions.getHttpsCallable(FF_CIPHER_DATA).call(logInMap).addOnCompleteListener {
-            if (!it.isSuccessful) {
-                val e = it.exception
-                e?.let {  Log.e(Application.TAG, e.toString()) }
-                if (e is FirebaseFunctionsException)
-                    listener.onError(e.details.toString())
-                else
-                    listener.onError(Application.getContext().getString(R.string.e_other_problem_internet))
-                return@addOnCompleteListener
-            }
-            if (it.exception == null && it.result != null) {
-                val cipher = ((it.result?.data) as HashMap<*, *>)["value"].toString()
-                Application.prefs.saveData(R.string.sp_session_token, cipher)
-                val request = LogInRequest(cipher)
-                NetworkApi().getNetworkService().login(request).enqueue(object : Callback<LogInResult> {
-                    override fun onResponse(call: Call<LogInResult>, response: Response<LogInResult>) {
-                        when (response.code()) {
-                            HttpURLConnection.HTTP_OK -> {
-                                if (response.body()?.data != null) {
-                                    PermissionsMgr.insertPermissions(response.body()?.data?.permissions!!)
+        val logInMap: HashMap<String, Any> =
+            hashMapOf("isEncrypted" to false, "value" to "$userName|$psd")
+        Application.firebaseFunctions.getHttpsCallable(FF_CIPHER_DATA).call(logInMap)
+            .addOnCompleteListener {
+                if (!it.isSuccessful) {
+                    val e = it.exception
+                    e?.let { Log.e(Application.TAG, e.toString()) }
+                    if (e is FirebaseFunctionsException)
+                        listener.onError(e.details.toString())
+                    else
+                        listener.onError(
+                            Application.getContext().getString(R.string.e_other_problem_internet)
+                        )
+                    return@addOnCompleteListener
+                }
+                if (it.exception == null && it.result != null) {
+                    val cipher = ((it.result?.data) as HashMap<*, *>)["value"].toString()
+                    Application.prefs.saveData(R.string.sp_session_token, cipher)
+                    val request = LogInRequest(cipher)
+                    NetworkApi().getNetworkService().login(request)
+                        .enqueue(object : Callback<LogInResult> {
+                            override fun onResponse(
+                                call: Call<LogInResult>,
+                                response: Response<LogInResult>
+                            ) {
+                                when (response.code()) {
+                                    HttpURLConnection.HTTP_OK -> {
+                                        if (response.body()?.data != null) {
+                                            PermissionsMgr.insertPermissions(response.body()?.data?.permissions!!)
+                                        }
+                                        Application.prefs.saveData(
+                                            R.string.sp_id_officer,
+                                            response.body()?.data?.idPerson ?: 0
+                                        )
+                                        Application.prefs.saveData(
+                                            R.string.sp_person_name,
+                                            response.body()?.data?.personName ?: ""
+                                        )
+                                        Application.prefs.saveData(
+                                            R.string.sp_person_paternal,
+                                            response.body()?.data?.personPaternal ?: ""
+                                        )
+                                        Application.prefs.saveData(
+                                            R.string.sp_person_maternal,
+                                            response.body()?.data?.personMaternal ?: ""
+                                        )
+                                        Application.prefs.saveData(
+                                            R.string.sp_person_photo_url,
+                                            NetworkApi.API_URL + response.body()?.data?.image
+                                        )
+                                        Application.prefs.saveData(
+                                            R.string.sp_no_employee,
+                                            response.body()?.data?.employee ?: ""
+                                        )
+                                        Application.prefs.saveData(R.string.sp_user, userName)
+                                        Application.prefs.saveDataBool(
+                                            R.string.sp_has_session,
+                                            true
+                                        )
+                                        val map =
+                                            hashMapOf<String, Any>("logged_user" to response.body()?.data?.idPerson!!)
+                                        val imei = Utils.getImeiDevice(Application.getContext())
+                                        Application.firestore.collection(FS_COL_TERMINALS)
+                                            .document(imei).set(map, SetOptions.merge())
+                                        listener.onLoginSuccessful()
+                                        getRecurrences()
+                                    }
+                                    HttpURLConnection.HTTP_UNAUTHORIZED -> listener.onError(
+                                        Application.getContext()
+                                            .getString(R.string.e_user_pss_incorrect)
+                                    )
+                                    else -> listener.onError(
+                                        Application.getContext()
+                                            .getString(R.string.e_other_problem_internet)
+                                    )
                                 }
-                                Application.prefs.saveData(R.string.sp_id_officer, response.body()?.data?.idPerson ?: 0)
-                                Application.prefs.saveData(R.string.sp_person_name, response.body()?.data?.personName ?: "")
-                                Application.prefs.saveData(R.string.sp_person_paternal, response.body()?.data?.personPaternal ?: "")
-                                Application.prefs.saveData(R.string.sp_person_maternal, response.body()?.data?.personMaternal ?: "")
-                                Application.prefs.saveData(R.string.sp_person_photo_url, NetworkApi.API_URL + response.body()?.data?.image)
-                                Application.prefs.saveData(R.string.sp_no_employee, response.body()?.data?.employee ?: "")
-                                Application.prefs.saveData(R.string.sp_user, userName)
-                                Application.prefs.saveDataBool(R.string.sp_has_session, true)
-                                val map = hashMapOf<String, Any>("logged_user" to response.body()?.data?.idPerson!!)
-                                val imei = Utils.getImeiDevice(Application.getContext())
-                                Application.firestore.collection(FS_COL_TERMINALS).document(imei).set(map, SetOptions.merge())
-                                listener.onLoginSuccessful()
                             }
-                            HttpURLConnection.HTTP_UNAUTHORIZED -> listener.onError(Application.getContext().getString(R.string.e_user_pss_incorrect))
-                            else -> listener.onError(Application.getContext().getString(R.string.e_other_problem_internet))
-                        }
-                    }
 
-                    override fun onFailure(call: Call<LogInResult>, t: Throwable) {
-                        listener.onError(t.message
-                                ?: Application.getContext().getString(R.string.e_other_problem_internet))
-                    }
-                })
+                            override fun onFailure(call: Call<LogInResult>, t: Throwable) {
+                                listener.onError(
+                                    t.message
+                                        ?: Application.getContext()
+                                            .getString(R.string.e_other_problem_internet)
+                                )
+                            }
+                        })
+                }
             }
-        }
+    }
+
+    private fun getRecurrences() {
+        var fecha_ini = "2020-12-02"
+        var fecha = fecha_ini
+        var format1 = SimpleDateFormat("yyyy-MM-dd")
+        var dateOjb = format1.parse(fecha)
+        var format2 = SimpleDateFormat("yyyy-MM-dd")
+        var nuevaFecha = format2.format(dateOjb)
+
+        val token = Application.prefs.loadData(R.string.sp_session_token, "")!!
+        NetworkApi().getNetworkService().saveRecurrences(token, nuevaFecha, nuevaFecha)
     }
 
     private suspend fun getZipCodes(): MutableList<ZipCodes> {
         val zipCodes = mutableListOf<ZipCodes>()
-        val firebase = Application.firebaseFunctions.getHttpsCallable(FF_ZIP_CODES).call(null).addOnCompleteListener {
-            if (!it.isSuccessful) {
-                val e = it.exception
-                if (e is FirebaseFunctionsException)
-                    listener.onError(e.details.toString())
-                else
-                    listener.onError("Error descargando códigos postales")
-                return@addOnCompleteListener
-            }
-            if (it.exception == null && it.result != null) {
-                val zipList = ((it.result?.data) as ArrayList<HashMap<*, *>>)
-                zipList.forEach { code ->
-                    zipCodes.add(ZipCodes(0, code["key"].toString(), code["value"].toString(), code["reference"].toString().split("/").last(), code["is_active"].toString().toBoolean()))
+        val firebase = Application.firebaseFunctions.getHttpsCallable(FF_ZIP_CODES).call(null)
+            .addOnCompleteListener {
+                if (!it.isSuccessful) {
+                    val e = it.exception
+                    if (e is FirebaseFunctionsException)
+                        listener.onError(e.details.toString())
+                    else
+                        listener.onError("Error descargando códigos postales")
+                    return@addOnCompleteListener
+                }
+                if (it.exception == null && it.result != null) {
+                    val zipList = ((it.result?.data) as ArrayList<HashMap<*, *>>)
+                    zipList.forEach { code ->
+                        zipCodes.add(
+                            ZipCodes(
+                                0,
+                                code["key"].toString(),
+                                code["value"].toString(),
+                                code["reference"].toString().split("/").last(),
+                                code["is_active"].toString().toBoolean()
+                            )
+                        )
+                    }
                 }
             }
-        }
         firebase.await()
         return zipCodes
     }
@@ -140,7 +205,8 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
         val jsonFile = File.createTempFile("tempColonies", "json")
         val firestore = reference.getFile(jsonFile).addOnSuccessListener {
             val jsonString = Utils.parseJsonFromFile(jsonFile)
-            val readColonies = Gson().fromJson(jsonString, Array<ColonyJson>::class.java).toMutableList()
+            val readColonies =
+                Gson().fromJson(jsonString, Array<ColonyJson>::class.java).toMutableList()
             readColonies.forEach {
                 colonies.add(Colony(0, it.key, it.value, it.reference, it.isActive))
             }
@@ -157,13 +223,19 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
             if (it != null && !it.isEmpty) {
                 it.documents.forEach { doc ->
                     val data = doc.toObject(Cities::class.java)!!
-                    cities.add(City(0, doc.id, data.value, data.reference?.id
-                            ?: "", data.is_active))
+                    cities.add(
+                        City(
+                            0, doc.id, data.value, data.reference?.id
+                                ?: "", data.is_active
+                        )
+                    )
                 }
             }
         }.addOnFailureListener {
-            listener.onError(it.message
-                    ?: Application.getContext().getString(R.string.e_firestore_not_available))
+            listener.onError(
+                it.message
+                    ?: Application.getContext().getString(R.string.e_firestore_not_available)
+            )
         }
         firestore.await()
         return cities
@@ -181,6 +253,12 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
         return CatalogsFirebaseManager.saveColonies(colonies)
     }
 
-    class ColonyJson(@SerializedName("key") val key: String, @SerializedName("value") val value: String,
-                     @SerializedName("reference") val reference: String, @SerializedName("is_active") val isActive: Boolean)
+    class ColonyJson(
+        @SerializedName("key") val key: String,
+        @SerializedName("value") val value: String,
+        @SerializedName("reference") val reference: String,
+        @SerializedName("is_active") val isActive: Boolean
+    )
 }
+
+

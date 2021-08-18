@@ -7,6 +7,7 @@ import mx.qsistemas.infracciones.net.request_web.*
 import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.InfractionResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
+import mx.qsistemas.infracciones.net.result_web.RecurrenceGeneric
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
 import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
 import okhttp3.CertificatePinner
@@ -72,5 +73,11 @@ open class NetworkApi {
 
         @GET("api/infringement/get-selected-infringement/")
         fun detailInfraction(@Header("token") tokenSession: String, @Query("param") token: String): Call<DetailResult>
+
+        @GET("api/infringement/get-infringements-to-date/")
+        fun saveRecurrences(@Header("token") tokenSession: String,
+                            @Query("date-init") dateInit: String,
+                            @Query("date-finis") dateFinist: String):
+                            Call<List<RecurrenceGeneric>>
     }
 }

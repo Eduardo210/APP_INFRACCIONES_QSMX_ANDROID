@@ -261,7 +261,7 @@ class ReportsService : JobService() {
                 override fun onResponse(call: Call<GenericResult>, response: Response<GenericResult>) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
                         if (response.body()?.error == "") {
-                            SendInfractionManagerWeb.updatePaymentSend(call.request().headers()["idPayment"]!!.toLong())
+                            SendInfractionManagerWeb.updatePaymentSend(call.request().headers["idPayment"]!!.toLong())
                         } else {
 
                         }

@@ -23,6 +23,7 @@ import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
 import mx.qsistemas.infracciones.net.result_web.RecurrenceGeneric
+import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
 import mx.qsistemas.infracciones.utils.*
@@ -157,18 +158,14 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
     }
 
     private fun getRecurrences() {
-        var fecha_ini = "2020-12-02"
-        var fecha = fecha_ini
-        var format1 = SimpleDateFormat("yyyy-MM-dd")
-        var dateOjb = format1.parse(fecha)
-        var format2 = SimpleDateFormat("yyyy-MM-dd")
-        var nuevaFecha = format2.format(dateOjb)
-
         val token = Application.prefs.loadData(R.string.sp_session_token, "")!!
-        NetworkApi().getNetworkService().saveRecurrences(token, nuevaFecha, nuevaFecha)
+        NetworkApi().getNetworkService().saveRecurrences(token, "2021-01-01", "2021-09-01")
+
     }
 
-    private suspend fun getZipCodes(): MutableList<ZipCodes> {
+    }
+
+private suspend fun getZipCodes(): MutableList<ZipCodes> {
         val zipCodes = mutableListOf<ZipCodes>()
         val firebase = Application.firebaseFunctions.getHttpsCallable(FF_ZIP_CODES).call(null)
             .addOnCompleteListener {

@@ -76,8 +76,8 @@ open class NetworkApi {
 
         @GET("api/infringement/get-infringements-to-date/")
         fun saveRecurrences(@Header("token") tokenSession: String,
-                            @Query("date-init") dateInit: String,
-                            @Query("date-finish") dateFinish: String,):
+                            @QueryMap params: Map<String, String>):
                             Call<List<RecurrenceGeneric>>
+
     }
 }

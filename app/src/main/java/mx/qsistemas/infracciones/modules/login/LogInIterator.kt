@@ -23,6 +23,7 @@ import mx.qsistemas.infracciones.net.request_web.LogInRequest
 import mx.qsistemas.infracciones.net.result_web.GenericResult
 import mx.qsistemas.infracciones.net.result_web.LogInResult
 import mx.qsistemas.infracciones.net.result_web.RecurrenceGeneric
+import mx.qsistemas.infracciones.net.result_web.RecurrenceGenericItem
 import mx.qsistemas.infracciones.net.result_web.detail_result.DetailResult
 import mx.qsistemas.infracciones.net.result_web.search_result.DataItem
 import mx.qsistemas.infracciones.net.result_web.search_result.SearchResult
@@ -158,10 +159,29 @@ class LogInIterator(private val listener: LogInContracts.Presenter) : LogInContr
     }
 
     private fun getRecurrences() {
-        val token = Application.prefs.loadData(R.string.sp_session_token, "")!!
-        NetworkApi().getNetworkService().saveRecurrences(token, "2021-01-01", "2021-09-01")
+        var date = "2020-01-01";
+        var date2 = "2021-09-01"
 
-    }
+        val mapData = mapOf(
+            "date-init" to date,
+            "date-finish" to date2,
+        )
+        val token = Application.prefs.loadData(R.string.sp_session_token, "")!!
+        NetworkApi().getNetworkService().saveRecurrences(token, mapData)
+            .enqueue(object : Callback<List<RecurrenceGeneric>>{
+                override fun onResponse(
+                    call: Call<List<RecurrenceGeneric>>,
+                    response: Response<List<RecurrenceGeneric>>
+                ) {
+                        val result = response.body()!!
+                        Log.d("eduardo", result[0].folio.toString())
+                }
+
+
+                override fun onFailure(call: Call<List<RecurrenceGeneric>>, t: Throwable) {
+                    Log.d("RESULT", t.message.toString())
+                }
+            })
 
     }
 
